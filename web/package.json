@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "author": "",
+  "name": "xinadmin",
+  "scripts": {
+    "dev": "max dev",
+    "build": "max build",
+    "postinstall": "max setup",
+    "setup": "max setup",
+    "start": "npm run dev",
+    "openapi": "max openapi",
+    "line": "max lint"
+  },
+  "dependencies": {
+    "@ant-design/charts": "^1.4.3",
+    "@ant-design/icons": "^5.3.6",
+    "@ant-design/pro-components": "^2.7.10",
+    "@umijs/max": "^4.2.13",
+    "ahooks": "^3.7.11",
+    "antd": "^5.16.0",
+    "antd-img-crop": "^4.21.0",
+    "dayjs": "^1.11.10",
+    "mockjs": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/mockjs": "^1.0.7",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "html-webpack-plugin": "^5.6.0",
+    "typescript": "^5.1.6"
+  }
+}
