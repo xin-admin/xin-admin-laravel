@@ -8,4 +8,5 @@ Route::controller(OnlineTableController::class)->group(function () {
     Route::post('/online/online_table/add', 'add');
     Route::put('/online/online_table/edit', 'edit');
     Route::delete('/online/online_table/delete', 'delete');
+    Route::post('/online/online_table/crud', 'crud');
 });

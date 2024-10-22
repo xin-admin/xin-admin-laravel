@@ -236,6 +236,7 @@ export const defaultCRUDConfig: OnlineType.CrudConfig = {
   modelPath: '',
   validatePath: '',
   pagePath: '',
+  autoDeletetime: false
 }
 
 /**

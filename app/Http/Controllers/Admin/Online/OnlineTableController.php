@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Online;
 
 use App\Attribute\Auth;
 use App\Http\Controllers\Admin\Controller;
+use App\Http\Requests\OnlineTableTypeRequest;
 use App\Models\OnlineTableModel;
 use Illuminate\Http\JsonResponse;
 use App\Service\OnlineTableService;
@@ -51,17 +52,11 @@ class OnlineTableController extends Controller
      * CRUD
      */
     #[Auth('crud')]
-    public function crud(): JsonResponse
+    public function crud(OnlineTableTypeRequest $request): JsonResponse
     {
-        $data = request()->all();
-        $validator = Validator::make($data, array_merge([
-            'password' => 'required|string|min:6|max:20',
-            'rePassword' => 'required|same:password',
-        ], $this->rule), $this->message);
-        if ($validator->fails()) {
-            return $this->warn($validator->errors()->first());
-        }
-        $crud = new OnlineTableService($validator->validate());
-        return $this->error('ok');
+        $data = $request->validated();
+        $crud = new OnlineTableService();
+        $sql = $crud->online($data);
+        return $this->error($sql);
     }
 }
