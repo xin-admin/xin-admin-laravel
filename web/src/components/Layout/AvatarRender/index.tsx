@@ -1,13 +1,19 @@
-import { Avatar, Button, Dropdown, DropdownProps, Modal } from 'antd';
+import { Avatar, type AvatarProps, Button, Dropdown, DropdownProps, Space } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Logout as UserLogout } from '@/services/api/user';
 import { Logout as AdminLogout } from '@/services/admin';
-import { index } from '@/services/api';
 import { useModel, useNavigate } from '@umijs/max';
+import React from 'react';
 
-export default () => {
-  const {initialState,setInitialState} = useModel('@@initialState');
+type AvatarRenderType = (props: AvatarProps, defaultDom: React.ReactNode) => React.ReactNode
 
+/**
+ * 头像渲染
+ * @constructor
+ */
+const AvatarRender: AvatarRenderType = () => {
+  const {initialState} = useModel('@@initialState');
+  let navigate = useNavigate();
   const logout =  async () => {
     if(initialState?.app === 'admin' && localStorage.getItem('x-token')) {
       await AdminLogout();
@@ -22,7 +28,7 @@ export default () => {
       window.location.href = '/';
     }
   }
-  let navigate = useNavigate();
+
   const dropItem = (): DropdownProps['menu']  => {
     let data: DropdownProps['menu'] = {
       items: [
@@ -46,12 +52,13 @@ export default () => {
   }
 
   return (
-    <>
+    <div>
       { initialState?.isLogin ?
-        <Dropdown
-          menu={dropItem()}
-        >
-          <Avatar src={initialState.currentUser?.avatar_url}/>
+        <Dropdown menu={dropItem()}>
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <Avatar src={initialState.currentUser?.avatar_url} style={{marginRight: '10px'}} />
+            { initialState.currentUser?.nickname || initialState.currentUser?.username || "" }
+          </div>
         </Dropdown>
         :
         <>
@@ -59,7 +66,8 @@ export default () => {
           <Button type={'link'} onClick={() => navigate('/client/reg')}>注册</Button>
         </>
       }
-    </>
-
+    </div>
   )
 }
+
+export default AvatarRender;

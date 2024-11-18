@@ -7,15 +7,18 @@ import { adminSettings, appSettings, Settings } from '@/default/settings';
 import { index } from '@/services/api';
 import defaultConfig from '@/utils/request';
 import menuDataRender from '@/utils/menuDataRender';
-import Footer from '@/components/Footer';
+import footerRender from '@/components/Layout/FooterRender';
+import menuFooterRender from '@/components/Layout/MenuFooterRender';
+import actionsRender from '@/components/Layout/ActionsRender';
+import AvatarRender from '@/components/Layout/AvatarRender';
+import headerTitleRender from '@/components/Layout/HeaderTitleRender';
+import headerContentRender from '@/components/Layout/HeaderContentRender';
 import Access from '@/components/Access';
 import SettingLayout from '@/components/SettingDrawer';
-import ActionsRender from '@/components/Layout/ActionsRender';
-import AvatarRender from '@/components/Layout/AvatarRender';
-import XinTabs from '@/components/XinTabs';
 import './app.less';
-import menuItemRender from "@/utils/menuItemRender";
-import subMenuItemRender from "@/utils/subMenuItemRender";
+// import menuItemRender from "@/utils/menuItemRender";
+// import subMenuItemRender from "@/utils/subMenuItemRender";
+import appList from '@/default/appList';
 
 // 全局初始化状态
 export async function getInitialState(): Promise<initialStateType> {
@@ -59,19 +62,25 @@ export async function getInitialState(): Promise<initialStateType> {
 
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return Object.assign(Settings, {
+    footerRender,
+    actionsRender,
+    menuFooterRender,
+    headerContentRender,
+    headerTitleRender,
+    avatarProps: {
+      render: () => <AvatarRender/>,
+    },
+    appList,
     logo: initialState?.webSetting?.logo,
     title: initialState?.webSetting?.title,
     menu: { request: async () => initialState?.menus },
     menuDataRender,
-    menuItemRender,
-    subMenuItemRender,
-    footerRender: () => <Footer />,
-    actionsRender: ActionsRender,
-    avatarProps: {
-      render: () => <AvatarRender />,
-    },
+    // menuItemRender, // 为了解决性能问题，暂时移除自定义，等Umi官方修复
+    // subMenuItemRender,
+    collapsedButtonRender: false, // 隐藏默认侧栏
+    collapsed: initialState?.collapsed, // 侧栏展开状态
     childrenRender: (children: any) => {
-      if (initialState?.app === 'admin') return <XinTabs><Access><SettingLayout />{children}</Access></XinTabs>;
+      if (initialState?.app === 'admin') return <Access><SettingLayout />{children}</Access>;
       return <Access>{children}</Access>;
     },
     ...initialState?.settings,

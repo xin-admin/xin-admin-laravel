@@ -19,6 +19,7 @@ const defaultInitialState: initialStateType  = {
   isLogin: false,
   isAccess: false,
   drawerShow: false,
+  collapsed: false,
   fetchUserInfo,
   fetchAdminInfo,
   currentUser: {},

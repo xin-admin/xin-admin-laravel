@@ -1,8 +1,12 @@
 import { GithubOutlined } from '@ant-design/icons';
-import { DefaultFooter } from '@ant-design/pro-components';
+import { DefaultFooter, ProLayoutProps } from '@ant-design/pro-components';
 import React from 'react';
 
-const Footer: React.FC = () => {
+/**
+ * 页面底部渲染
+ * @constructor
+ */
+const Footer: ProLayoutProps['footerRender'] = () => {
 
   const currentYear = new Date().getFullYear();
 

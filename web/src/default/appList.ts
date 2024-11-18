@@ -22,11 +22,5 @@ export default [
     title: 'dumi',
     desc: '为组件开发场景而生的文档工具',
     url: 'https://d.umijs.org/zh-CN',
-  },
-  {
-    icon: 'https://www.thinkphp.cn/asset/images/logo.fca9b4.svg',
-    title: 'Think PHP',
-    desc: '轻量级 PHP 框架',
-    url: 'https://www.thinkphp.cn/',
-  },
+  }
 ];
