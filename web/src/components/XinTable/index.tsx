@@ -102,7 +102,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const deleteButton = (record: TableData) => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.delete'):true }>
+      <Access accessible={ accessName?access.buttonAccess(accessName):true }>
         <Popconfirm
           title="Delete the task"
           description="你确定要删除这条数据吗？"
@@ -122,7 +122,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const editButton = (record: TableData) => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.edit'):true }>
+      <Access accessible={ accessName?access.buttonAccess(accessName):true }>
         <UpdateForm<TableData>
           values={record}
           columns={columns}
@@ -140,7 +140,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const addButton = () => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.add'):true}>
+      <Access accessible={ accessName?access.buttonAccess(accessName):true}>
         <CreateForm<TableData>
           columns = { columns }
           api={tableApi+'/add'}
@@ -240,7 +240,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       }
     },
     request: async (params, sorter, filter) => {
-      const { data, success } = await listApi(tableApi+'/list', {
+      const { data, success } = await listApi(tableApi, {
         ...params,
         sorter,
         filter,

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Attribute\Auth;
-use App\Http\Controllers\BaseController;
+use App\Http\BaseController;
 use App\Models\BaseModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;

@@ -46,3 +46,19 @@ if (! function_exists('trace')) {
         Log::channel('log')->info($message);
     }
 }
+
+if (! function_exists('getTreeData')) {
+    function getTreeData(&$list, int $parentId = 0): array
+    {
+        $data = [];
+        foreach ($list as $key => $item) {
+            if ($item['pid'] == $parentId) {
+                $children = getTreeData($list, $item['id']);
+                ! empty($children) && $item['children'] = $children;
+                $data[] = $item;
+                unset($list[$key]);
+            }
+        }
+        return $data;
+    }
+}

@@ -2,48 +2,59 @@
 
 namespace App\Http\Controllers\Admin\User;
 
-use App\Attribute\Auth;
-use App\Http\Controllers\Admin\Controller;
-use App\Http\Requests\UserRechargeRequest;
-use App\Http\Requests\UserResetPasswordRequest;
-use App\Service\User\UserResetPasswordService;
+use App\Attribute\Authorize;
+use App\Attribute\Autowired;
+use App\Attribute\route\PostMapping;
+use App\Attribute\route\RequestMapping;
+use App\Http\BaseController;
+use App\Http\Admin\Requests\UserRechargeRequest;
+use App\Http\Admin\Requests\UserResetPasswordRequest;
 use App\Models\User\UserModel;
-use App\Service\User\UserRechargeService;
+use App\Service\IUserService;
+use App\Trait\CreateTrait;
+use App\Trait\DeleteTrait;
+use App\Trait\BuilderTrait;
+use App\Trait\UpdateTrait;
 use Illuminate\Http\JsonResponse;
 
-class UserController extends Controller
+#[RequestMapping('/admin/user/user')]
+class UserController extends BaseController
 {
-    protected string $authName = 'user.list';
+    use BuilderTrait, UpdateTrait, DeleteTrait, CreateTrait;
+    const AUTH_NAME = 'admin.user';
 
-    protected string $model = UserModel::class;
+    #[Autowired]
+    protected IUserService $userService;
 
-    protected array $searchField = [
-        'group_id' => '=',
-        'created_at' => 'date'
-    ];
+    #[Autowired]
+    protected UserModel $modelObj;
 
-    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+    protected function initialize(): void
+    {
+        $this->searchField = [
+            'group_id' => '=',
+            'created_at' => 'date'
+        ];
+        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+        $this->rule = [];
+        $this->message = [];
+    }
 
-
-    /**
-     * 用户充值
-     */
-    #[Auth('recharge')]
+    #[Authorize('admin.user.recharge')]
+    #[PostMapping('/recharge')]
     public function recharge(UserRechargeRequest $request): JsonResponse
     {
         $data = $request->validated();
-        UserRechargeService::recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark']);
+        $this->userService->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark']);
         return $this->success('ok');
     }
 
-    /**
-     * 重置用户密码
-     */
-    #[Auth('resetPassword')]
+    #[Authorize('admin.user.resetPassword')]
+    #[PostMapping('/resetPassword')]
     public function resetPassword(UserResetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
-        UserResetPasswordService::reset($data['user_id'], $data['password']);
+        $this->userService->resetPassword($data['user_id'], $data['password']);
         return $this->success('ok');
     }
 }

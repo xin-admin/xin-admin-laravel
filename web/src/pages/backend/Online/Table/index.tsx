@@ -6,7 +6,7 @@ import { addApi } from "@/services/common/table";
 import {
   defaultCRUDConfig,
   defaultTableSetting,
-} from './Devise/components/defaultData';
+} from '@/pages/backend/Online/TableDevise/components/defaultData';
 
 interface Data {
   id: number
@@ -29,6 +29,11 @@ const OnlineTable = () => {
     {
       title: '表格名称',
       dataIndex: 'table_name',
+      valueType: 'text',
+    },
+    {
+      title: '数据表',
+      dataIndex: 'data_table',
       valueType: 'text',
     },
     {
@@ -66,8 +71,8 @@ const OnlineTable = () => {
       }}
       operateRender={(record: Data) => {
         return (
-          <Access accessible={access.buttonAccess('online.table.devise')}>
-            <Link to={'/online/table/devise?id=' + record.id}>设计页面</Link>
+          <Access accessible={access.buttonAccess('online.tableDevise')}>
+            <Link to={'/online/tableDevise?id=' + record.id}>设计页面</Link>
           </Access>
         )
       }}

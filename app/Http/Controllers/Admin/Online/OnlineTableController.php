@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin\Online;
 
 use App\Attribute\Auth;
 use App\Http\Controllers\Admin\Controller;
-use App\Http\Requests\OnlineTableTypeRequest;
+use App\Http\Admin\Requests\OnlineTableTypeRequest;
 use App\Models\OnlineTableModel;
 use Illuminate\Http\JsonResponse;
 use App\Service\OnlineTableService;
-use Illuminate\Support\Facades\Validator;
 
 class OnlineTableController extends Controller
 {
     protected string $model = OnlineTableModel::class;
+    
 
     protected array $searchField = [
         'id' => '=',

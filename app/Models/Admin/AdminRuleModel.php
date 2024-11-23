@@ -12,4 +12,31 @@ class AdminRuleModel extends BaseModel
 
     protected $fillable = ['pid', 'type', 'sort', 'name', 'path', 'icon', 'key', 'locale', 'status', 'show'];
 
+    /**
+     * 获取权限树
+     * @return array
+     */
+    public function getRuleTree(): array
+    {
+        $data = self::query()
+            ->orderBy('sort', 'desc')
+            ->get()
+            ->toArray();
+        return getTreeData($data);
+    }
+
+    /**
+     * 获取父级权限树
+     * @return array
+     */
+    public function getRulePid(): array
+    {
+        $data = self::query()
+            ->where('type', '<>', '2')
+            ->orderBy('sort', 'desc')
+            ->get()
+            ->toArray();
+        return getTreeData($data);
+    }
+
 }

@@ -11,5 +11,4 @@ export default [
   '/client/reg',
   '/client/login',
   '/user',
-  '/online/table/devisea'
 ];

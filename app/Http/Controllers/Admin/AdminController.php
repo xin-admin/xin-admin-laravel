@@ -141,14 +141,9 @@ class AdminController extends Controller
         // 实例化存储驱动
         $storage = new File();
         $user_id = Auth::getAdminId();
+        $type = FileType::IMAGE->value;
         // 执行文件上传
-        $fileInfo = $storage->upload(
-            FileType::IMAGE->value,
-            'public',
-            1,
-            $user_id,
-            20
-        );
+        $fileInfo = $storage->upload($type, 'public', 1, $user_id, 20);
         return $this->success(['fileInfo' => $fileInfo], '图片上传成功');
     }
 }
