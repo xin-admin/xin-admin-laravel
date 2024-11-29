@@ -4,10 +4,10 @@ import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import XinDict from '@/components/XinDict';
-import { useAccess, useModel } from '@@/exports';
+import { useModel } from '@@/exports';
 import RechargeModel from './components/RechargeModel';
-import { Access } from '@umijs/max';
 import UpdatePassword from './components/UpdatePassword';
+import ButtonAccess from '@/components/ButtonAccess';
 
 /**
  *  Api 接口
@@ -39,7 +39,6 @@ interface Data {
  */
 const User: React.FC = () => {
   const { dictEnum } = useModel('dictModel')
-  const access = useAccess();
   const columns: ProFormColumnsAndProColumns<Data>[] =
     [
       {
@@ -151,12 +150,12 @@ const User: React.FC = () => {
         editShow={false}
         operateRender={(data) => {
           return [
-            <Access accessible={access.buttonAccess('user.list.recharge')} key={'recharge'}>
+            <ButtonAccess auth={'user.list.recharge'} key={'recharge'}>
               <RechargeModel data={data} />
-            </Access>,
-            <Access accessible={access.buttonAccess('user.list.resetPassword')} key={'resetPassword'}>
+            </ButtonAccess>,
+            <ButtonAccess auth={'user.list.resetPassword'} key={'resetPassword'}>
               <UpdatePassword key={'resetPassword'} record={data} />
-            </Access>
+            </ButtonAccess>
           ]
         }}
         accessName={'user.list'}

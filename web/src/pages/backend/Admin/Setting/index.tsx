@@ -25,18 +25,20 @@ interface ResponseAdminList {
 
 const Table: React.FC = () => {
 
-  let { initialState } = useModel('@@initialState');
+  let userInfo = useModel('userModel', (model) => {
+    return model.userInfo;
+  });
+
   const formRef = useRef<ProFormInstance>();
   useEffect(() => {
-    if(initialState) {
-      let { currentUser} = initialState;
+    if(userInfo) {
       formRef.current?.setFieldsValue({
-        username: currentUser.username,
-        nickname: currentUser.nickname,
-        email: currentUser.email,
-        mobile: currentUser.mobile,
-        avatar_url: currentUser.avatar_url,
-        avatar_id: currentUser.avatar_id
+        username: userInfo.username,
+        nickname: userInfo.nickname,
+        email: userInfo.email,
+        mobile: userInfo.mobile,
+        avatar_url: userInfo.avatar_url,
+        avatar_id: userInfo.avatar_id
       })
     }
   },[])

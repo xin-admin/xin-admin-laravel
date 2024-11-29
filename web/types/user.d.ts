@@ -47,7 +47,7 @@ declare namespace USER {
   type AdminInfoResult = API.ResponseStructure<{
     menus: MenuType[],
     access: string[],
-    info: AdminInfo
+    info: UserInfo
   }>
 
   interface UserInfo {
