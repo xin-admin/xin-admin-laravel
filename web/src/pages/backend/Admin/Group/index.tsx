@@ -3,11 +3,11 @@ import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import React, { useEffect, useRef, useState } from 'react';
 import { useBoolean } from 'ahooks';
 import GroupRule from './components/GroupRule';
-import { Access, useAccess } from '@umijs/max';
 import * as tableApi from '@/services/common/table';
 import { message, Popconfirm } from 'antd';
 import {addApi, deleteApi, editApi} from '@/services/common/table';
 import { ActionType } from '@ant-design/pro-components';
+import ButtonAccess from '@/components/ButtonAccess';
 
 const api = '/adminGroup';
 
@@ -112,7 +112,6 @@ const Table : React.FC = () => {
       hideInForm: true,
     },
   ];
-  const access = useAccess();
 
   /**
    *  删除节点
@@ -180,10 +179,10 @@ const Table : React.FC = () => {
         operateRender={(data) =>
           <>
             { data.id !== 1 && <>
-              <Access accessible={access.buttonAccess('admin.group.rule')}>
+              <ButtonAccess auth={'admin.group.rule'}>
                 <GroupRule record={data} treeData={treeData}></GroupRule>
-              </Access>
-              <Access accessible={ access.buttonAccess('admin.group.delete')}>
+              </ButtonAccess>
+              <ButtonAccess auth={'admin.group.delete'}>
                 <Popconfirm
                   title="Delete the task"
                   description="你确定要删除这条数据吗？"
@@ -193,7 +192,7 @@ const Table : React.FC = () => {
                 >
                   <a>删除</a>
                 </Popconfirm>
-              </Access>
+              </ButtonAccess>
             </> }
           </>
         }

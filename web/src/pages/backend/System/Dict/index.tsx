@@ -3,8 +3,8 @@ import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import { Button } from 'antd';
 import DictItem from "./components/DictItem";
 import { useState } from "react";
-import { Access, useModel } from '@umijs/max';
-import { useAccess } from "@@/exports";
+import { useModel } from '@umijs/max';
+import ButtonAccess from '@/components/ButtonAccess';
 
 const api = '/system/dict';
 
@@ -77,7 +77,6 @@ const Table: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [record, setRecord] = useState<Data>({})
   const { refreshDict } = useModel('dictModel');
-  const access = useAccess();
   const onClose = () => setOpen(false);
 
   return (
@@ -98,12 +97,12 @@ const Table: React.FC = () => {
         }}
         operateRender={(record: Data) => {
           return (
-            <Access accessible={access.buttonAccess('system.dict.item.list')}>
+            <ButtonAccess auth={'system.dict.item.list'}>
               <a onClick={() => {
                 setRecord(record)
                 setOpen(true)
               }}>字典配置</a>
-            </Access>
+            </ButtonAccess>
           )
         }}
         accessName={'system.dict'}

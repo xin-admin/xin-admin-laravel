@@ -26,16 +26,15 @@ import {
 } from 'antd';
 import { getSettingGroup, saveSetting } from '@/services/admin/system';
 import { ProCard } from '@ant-design/pro-components';
-import { Access, useAccess } from '@umijs/max';
 import { deleteApi, listApi } from '@/services/common/table';
 import AddSettingGroup from './components/AddSettingGroup';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import SettingForm from '@/pages/backend/System/Setting/components/SettingForm';
+import ButtonAccess from '@/components/ButtonAccess';
 
 const { Text } = Typography;
 
 export default () => {
-  const access = useAccess();
   const [form] = Form.useForm();
   // 设置分组
   const [settingGroup, setSettingGroup] = useState([]);
@@ -78,9 +77,9 @@ export default () => {
         }}
         extra={
           <Space>
-            <Access accessible={access.buttonAccess('admin.group.rule')}>
+            <ButtonAccess auth={'admin.group.rule'}>
               <AddSettingGroup />
-            </Access>
+            </ButtonAccess>
             <SettingForm settingGroup={settingGroup} getSetting={getSetting}>
               <Button type={'primary'} icon={<PlusOutlined />} block>新增设置</Button>
             </SettingForm>

@@ -1,14 +1,14 @@
 import XinTable from '@/components/XinTable'
 import {ProFormColumnsAndProColumns} from '@/components/XinTable/typings';
 import XinDict from "@/components/XinDict";
-import {useAccess, useModel} from '@@/exports';
+import {useModel} from '@umijs/max';
 import { Avatar, message, Popconfirm } from 'antd';
 import UploadImgItem from "@/components/XinForm/UploadImgItem";
 import React, {useRef} from 'react';
 import UpdatePassword from './components/UpdatePassword';
 import {deleteApi, listApi} from '@/services/common/table';
-import {Access} from '@umijs/max';
 import {ActionType} from '@ant-design/pro-components';
+import ButtonAccess from '@/components/ButtonAccess';
 
 const api = '/admin';
 
@@ -186,7 +186,6 @@ const Table: React.FC = () => {
         },
     ];
 
-    const access = useAccess();
     const actionRef = useRef<ActionType>();
     /**
      *  删除节点
@@ -222,11 +221,11 @@ const Table: React.FC = () => {
             }}
             operateRender={(record) => (
                 <>
-                    <Access accessible={access.buttonAccess('admin.list.resetPassword')}>
+                    <ButtonAccess auth={'admin.list.resetPassword'}>
                         <UpdatePassword record={record}></UpdatePassword>
-                    </Access>
+                    </ButtonAccess>
                     {record.id !== 1 ?
-                        <Access accessible={access.buttonAccess('admin.list.delete')}>
+                        <ButtonAccess auth={'admin.list.delete'}>
                             <Popconfirm
                                 title="Delete the task"
                                 description="你确定要删除这条数据吗？"
@@ -238,7 +237,7 @@ const Table: React.FC = () => {
                             >
                                 <a>删除</a>
                             </Popconfirm>
-                        </Access>
+                        </ButtonAccess>
                         : null
                     }
                 </>
