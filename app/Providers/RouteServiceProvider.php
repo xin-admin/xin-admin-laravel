@@ -20,26 +20,26 @@ class RouteServiceProvider extends ServiceProvider
     {
         // 获取所有控制器
 
-        $dir = app_path("Http");
+        $dir = app_path('Http');
         $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
 
         foreach ($controllers as $controller) {
             try {
-                if (!$controller->isFile()) {
+                if (! $controller->isFile()) {
                     continue;
                 }
-                $filePath = str_replace(app_path("Http"), '', $controller->getPath());
-                if (!str_contains($controller->getFilename(), 'Controller')) {
+                $filePath = str_replace(app_path('Http'), '', $controller->getPath());
+                if (! str_contains($controller->getFilename(), 'Controller')) {
                     continue;
                 }
-                if($controller->getFilename() === 'BaseController.php'){
+                if ($controller->getFilename() === 'BaseController.php') {
                     continue;
                 }
-                $className = 'App\\Http' . $filePath . "\\" . basename($controller->getFileName(), ".php");
+                $className = 'App\\Http'.$filePath.'\\'.basename($controller->getFileName(), '.php');
                 $reflection = new ReflectionClass($className);
                 $routeBasePath = '';
                 foreach ($reflection->getAttributes() as $attribute) {
-                    if($attribute->getName() === 'App\Attribute\route\RequestMapping') {
+                    if ($attribute->getName() === 'App\Attribute\route\RequestMapping') {
                         $route = $attribute->newInstance();
                         $routeBasePath = $route->getRoute();
                     }

@@ -30,7 +30,7 @@ interface RuleType {
 }
 
 const Table: React.FC = () => {
-  const { getDictionaryData } = useModel('dictModel')
+  const { dictEnum } = useModel('dictModel')
   const allIcons: { [key: string]: any } = AntdIcons;
   const [ref, setRef] = useBoolean();
   const formType = ({ type }: any): any[] => {
@@ -111,10 +111,9 @@ const Table: React.FC = () => {
     return '-';
   };
 
-  const upDate = (value: boolean, index: string, id: number) => {
-    let data: any = { id };
+  const upDate = (value: boolean, index: 'show' | 'status', data: RuleType) => {
     data[index] = value ? 1 : 0;
-    editApi(api + '/edit', data).then(() => {
+    editApi(api, data).then(() => {
       message.success('修改成功');
     });
   };
@@ -124,7 +123,7 @@ const Table: React.FC = () => {
       title: '类型',
       dataIndex: 'type',
       valueType: 'radio',
-      request: async () => await getDictionaryData('ruleType'),
+      valueEnum: dictEnum.get('ruleType'),
       hideInTable: true,
       initialValue: '0',
       formItemProps: {
@@ -213,7 +212,7 @@ const Table: React.FC = () => {
           checkedChildren='显示'
           unCheckedChildren='隐藏'
           defaultValue={data.show === 1}
-          onChange={(value) => upDate(value, 'show', data.id!)}
+          onChange={(value) => upDate(value, 'show', data)}
         />;
       },
       colProps: { span: 4 },
@@ -231,7 +230,7 @@ const Table: React.FC = () => {
           checkedChildren='启用'
           unCheckedChildren='禁用'
           defaultChecked={data.status === 1}
-          onChange={(value) => upDate(value, 'status', data.id!)}
+          onChange={(value) => upDate(value, 'status', data)}
         />;
       },
       colProps: { span: 4 },
@@ -264,7 +263,7 @@ const Table: React.FC = () => {
         if (date.type === '0') {
           arr.pid = 0
         }
-        await addApi(api + '/add', arr);
+        await addApi(api, arr);
         return true;
       }}
       optionProps={{
@@ -275,46 +274,16 @@ const Table: React.FC = () => {
       handleUpdate={async (date) => {
         let arr: RuleType = {};
         if (date.type === '0') {
-          arr = {
-            id: date.id,
-            pid: 0,
-            type: 0,
-            sort: date.sort,
-            name: date.name,
-            path: date.path,
-            icon: date.icon,
-            key: date.key,
-            local: date.local
-          }
+          arr = { ...date, pid: 0, type: 0}
         } else if (date.type === '1') {
-          arr = {
-            id: date.id,
-            pid: date.pid,
-            type: 1,
-            sort: date.sort,
-            name: date.name,
-            path: date.path,
-            icon: date.icon,
-            key: date.key,
-            local: date.local
-          }
+          arr = { ...date, type: 1 }
         } else if (date.type === '2') {
-          arr = {
-            id: date.id,
-            pid: date.pid,
-            type: 2,
-            sort: date.sort,
-            name: date.name,
-            key: date.key,
-            path: '',
-            local: '',
-            icon: ''
-          }
+          arr = { ...date, type: 2, path: '', local: '', icon: '' }
         } else {
           message.warning('类型错误！');
           return false;
         }
-        await editApi(api + '/edit', arr);
+        await editApi(api, arr);
         message.success('更新成功！');
         return true
       }}

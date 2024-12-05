@@ -71,8 +71,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       render: () => <AvatarRender/>,
     },
     appList,
-    logo: initialState?.webSetting?.logo,
-    title: initialState?.webSetting?.title,
+    // logo: initialState?.webSetting?.logo,
+    // title: initialState?.webSetting?.title,
     menu: { request: async () => initialState?.menus },
     menuDataRender,
     // menuItemRender, // 为了解决性能问题，暂时移除自定义，等Umi官方修复

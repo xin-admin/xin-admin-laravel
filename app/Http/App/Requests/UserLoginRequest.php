@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserLoginRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -24,5 +23,4 @@ class UserLoginRequest extends FormRequest
             'password.min' => '密码至少需要 :min 个字符。',
         ];
     }
-
 }

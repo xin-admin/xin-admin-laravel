@@ -9,16 +9,14 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Enum\FileType;
-use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\App\Requests\UserSetPasswordRequest;
+use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\User\UserGroupModel;
 use App\Models\User\UserModel;
 use App\Models\User\UserMoneyLogModel;
 use App\Models\User\UserRuleModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Xin\File;
 use Xin\Token;
 
@@ -26,7 +24,6 @@ use Xin\Token;
 #[ApiController]
 class UserController extends BaseController
 {
-
     protected array $noPermission = ['refreshToken'];
 
     #[GetMapping]
@@ -111,6 +108,7 @@ class UserController extends BaseController
         if ($user->save()) {
             return $this->success('更新成功');
         }
+
         return $this->error('更新失败');
     }
 
@@ -127,6 +125,7 @@ class UserController extends BaseController
         if ($user->save()) {
             return $this->success('更新成功');
         }
+
         return $this->error('更新失败');
     }
 
@@ -146,5 +145,4 @@ class UserController extends BaseController
 
         return $this->success($list);
     }
-
 }

@@ -10,7 +10,7 @@ class UserRequest extends FormRequest
     {
         return [
             'id' => 'sometimes|required|integer|exists:users,id',
-            'username' => 'sometimes|required|string|max:30'
+            'username' => 'sometimes|required|string|max:30',
         ];
     }
 }

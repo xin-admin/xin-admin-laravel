@@ -86,7 +86,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       return
     }
     let ids = selectedRows.map(x => x.id)
-    deleteApi(tableApi+'/delete', { ids: ids.join() || '' }).then( res => {
+    deleteApi(tableApi, { ids: ids.join() || '' }).then( res => {
       if (res.success) {
         message.success(res.msg);
         actionRef.current?.reloadAndRest?.();
@@ -127,7 +127,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
           values={record}
           columns={columns}
           id={record.id}
-          api={tableApi+'/edit'}
+          api={tableApi}
           tableRef={actionRef}
           handleUpdate={handleUpdate}
         />
@@ -143,7 +143,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       <Access accessible={ accessName?access.buttonAccess(accessName):true}>
         <CreateForm<TableData>
           columns = { columns }
-          api={tableApi+'/add'}
+          api={tableApi}
           tableRef={actionRef}
           handleAdd={handleAdd}
           addBefore={addBefore}

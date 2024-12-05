@@ -4,10 +4,8 @@ namespace App\Attribute;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute]
 class Authorize
 {
-    public function __construct(string $name = ''){
-
-    }
+    public function __construct(string $name = '') {}
 }

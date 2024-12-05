@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserGroupRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -15,5 +14,4 @@ class UserGroupRequest extends FormRequest
             'pid' => 'required|integer',
         ];
     }
-
 }

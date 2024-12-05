@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserSetPasswordRequest extends FormRequest
 {
-
     public function rule(): array
     {
         return [
@@ -15,5 +14,4 @@ class UserSetPasswordRequest extends FormRequest
             'rePassword' => 'required|same:newPassword',
         ];
     }
-
 }

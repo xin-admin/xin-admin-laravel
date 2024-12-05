@@ -14,6 +14,10 @@ class DictItemModel extends BaseModel
 
     protected $fillable = ['dict_id', 'label', 'status', 'switch', 'value'];
 
+    /**
+     * 字典项关联字典表
+     * @return BelongsTo
+     */
     public function dict(): BelongsTo
     {
         return $this->belongsTo(DictModel::class, 'dict_id', 'id');

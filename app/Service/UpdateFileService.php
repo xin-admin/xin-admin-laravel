@@ -14,37 +14,32 @@ class UpdateFileService
 
     /**
      * 文件类型
-     * @var FileType
      */
     private FileType $fileType;
 
     /**
      * 储存磁盘
-     * @var string
      */
     private string $disk = 'public';
 
     /**
      * 分组ID
-     * @var int
      */
     private int $groupId = 0;
 
     /**
      * 上传用户ID
-     * @var int
      */
     private int $userId;
 
     /**
      * 上传来源 10：app； 20：admin；
-     * @var int
      */
     private int $channel;
 
     public function upload($group_id): JsonResponse
     {
-        $storage = new File();
+        $storage = new File;
         $user_id = Auth::getAdminId();
         $fileInfo = $storage->upload(
             $this->fileType->value,
@@ -53,6 +48,7 @@ class UpdateFileService
             $user_id,
             20
         );
+
         return $this->success(['fileInfo' => $fileInfo], '图片上传成功');
     }
 

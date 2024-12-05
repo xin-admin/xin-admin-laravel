@@ -13,48 +13,69 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRuleRequest;
 use App\Http\BaseController;
 use App\Models\Admin\AdminRuleModel;
-use App\Trait\BuilderTrait;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 管理员权限
+ */
 #[AdminController]
 #[RequestMapping('/admin/rule')]
 class SysUserRuleController extends BaseController
 {
-
-    use BuilderTrait;
-
     #[Autowired]
     protected AdminRuleModel $model;
 
+    /**
+     * 新增管理员权限
+     */
     #[PostMapping]
     #[Authorize('admin.rule.add')]
-    public function create(SysUserRuleRequest $request): JsonResponse {
-        return $this->createResponse($this->model, $request);
+    public function add(SysUserRuleRequest $request): JsonResponse
+    {
+        return $this->addResponse($this->model, $request);
     }
 
+    /**
+     * 获取权限树状列表
+     */
     #[GetMapping]
     #[Authorize('admin.rule.list')]
-    public function list(): JsonResponse {
+    public function list(): JsonResponse
+    {
         $rootNode = $this->model->getRuleTree();
+
         return $this->success(compact('rootNode'));
     }
 
+    /**
+     * 编辑权限
+     */
     #[PutMapping]
     #[Authorize('admin.rule.edit')]
-    public function edit(SysUserRuleRequest $request): JsonResponse {
-        return $this->updateResponse($this->model, $request);
+    public function edit(SysUserRuleRequest $request): JsonResponse
+    {
+        return $this->editResponse($this->model, $request);
     }
 
+    /**
+     * 删除权限
+     */
     #[DeleteMapping]
     #[Authorize('admin.rule.delete')]
-    public function delete(): JsonResponse {
+    public function delete(): JsonResponse
+    {
         return $this->deleteResponse($this->model);
     }
 
+    /**
+     * 获取权限pid
+     */
     #[GetMapping('/getRulePid')]
     #[Authorize('admin.rule.list')]
-    public function getRulePid(): JsonResponse {
+    public function getRulePid(): JsonResponse
+    {
         $data = $this->model->getRulePid();
+
         return $this->success(compact('data'));
     }
 }

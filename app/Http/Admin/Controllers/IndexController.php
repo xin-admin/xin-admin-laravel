@@ -4,14 +4,15 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
-use App\Trait\RequestJson;
+use App\Http\BaseController;
 use Illuminate\Http\JsonResponse;
 
 #[RequestMapping('/admin')]
-class IndexController
+class IndexController extends BaseController
 {
-    use RequestJson;
-
+    /**
+     * 测试接口
+     */
     #[GetMapping]
     public function index(): JsonResponse
     {

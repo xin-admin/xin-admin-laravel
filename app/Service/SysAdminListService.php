@@ -12,14 +12,13 @@ class SysAdminListService
 
     /**
      * 重置密码
-     * @param array $data
-     * @return JsonResponse
      */
     public function resetPassword(array $data): JsonResponse
     {
         $model = AdminModel::query()->find($data['id']);
         $model->password = password_hash($data['password'], PASSWORD_DEFAULT);
         $model->save();
+
         return $this->success('ok');
     }
 }

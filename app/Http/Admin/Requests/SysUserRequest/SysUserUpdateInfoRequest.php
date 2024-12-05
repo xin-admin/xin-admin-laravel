@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SysUserUpdateInfoRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -21,5 +20,4 @@ class SysUserUpdateInfoRequest extends FormRequest
             'status' => 'required|in:1,0',
         ];
     }
-
 }

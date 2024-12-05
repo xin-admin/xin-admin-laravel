@@ -14,12 +14,10 @@ use Xin\Token;
 
 class SysAdminUserService
 {
-
     use RequestJson;
 
     /**
      * 刷新Token
-     * @return JsonResponse
      */
     public function refreshToken(): JsonResponse
     {
@@ -32,9 +30,10 @@ class SysAdminUserService
             try {
                 $token = md5(random_bytes(10));
             } catch (RandomException $e) {
-                return $this->error('刷新Token失败：' . $e->getMessage());
+                return $this->error('刷新Token失败：'.$e->getMessage());
             }
             $Token->set($token, 'admin', $user_id);
+
             return $this->success(compact('token'));
         } else {
             return $this->error('请先登录！');
@@ -43,9 +42,6 @@ class SysAdminUserService
 
     /**
      * 登录
-     * @param string $username
-     * @param string $password
-     * @return JsonResponse
      */
     public function login(string $username, string $password): JsonResponse
     {
@@ -53,14 +49,15 @@ class SysAdminUserService
         $data = $model->login($username, $password);
         if ($data) {
             new Monitor('管理员登录', false, $data['id']);
+
             return $this->success($data);
         }
+
         return $this->error($model->getErrorMsg());
     }
 
     /**
      * 退出登录
-     * @return JsonResponse
      */
     public function logout(): JsonResponse
     {
@@ -75,7 +72,6 @@ class SysAdminUserService
 
     /**
      * 获取管理员信息
-     * @return JsonResponse
      */
     public function getAdminInfo(): JsonResponse
     {
@@ -102,30 +98,28 @@ class SysAdminUserService
 
     /**
      * 修改密码
-     * @param array $data
-     * @return JsonResponse
      */
     public function updatePassword(array $data): JsonResponse
     {
         $user_id = Auth::getAdminId();
         $model = AdminModel::query()->find($user_id);
-        if (!password_verify($data['oldPassword'], $model->password)) {
+        if (! password_verify($data['oldPassword'], $model->password)) {
             return $this->error('旧密码不正确');
         }
         $model->password = password_hash($data['newPassword'], PASSWORD_DEFAULT);
         $model->save();
+
         return $this->success('ok');
     }
 
     /**
      * 修改管理员信息
-     * @param array $data
-     * @return JsonResponse
      */
     public function updateAdmin(array $data): JsonResponse
     {
         $user_id = Auth::getAdminId();
         AdminModel::query()->find($user_id)->update($data);
+
         return $this->success();
     }
 }

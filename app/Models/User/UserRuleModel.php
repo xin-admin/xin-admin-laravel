@@ -15,7 +15,6 @@ class UserRuleModel extends BaseModel
 
     /**
      * 获取权限树
-     * @return array
      */
     public function getRuleTree(): array
     {
@@ -23,12 +22,12 @@ class UserRuleModel extends BaseModel
             ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
+
         return getTreeData($data);
     }
 
     /**
      * 获取父级权限树
-     * @return array
      */
     public function getRulePid(): array
     {
@@ -37,7 +36,7 @@ class UserRuleModel extends BaseModel
             ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
+
         return getTreeData($data);
     }
-
 }

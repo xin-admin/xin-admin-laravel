@@ -15,7 +15,7 @@ const api = {
  * 获取系统字典
  */
 export const gitDict = () => {
-  return request<API.ResponseStructure<any>>(api.gitDictApi, {
+  return request<API.ResponseStructure<any>>('/admin/dict/item', {
     method: 'get',
   })
 }

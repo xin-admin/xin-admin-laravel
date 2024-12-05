@@ -7,7 +7,9 @@ import { useModel } from '@umijs/max';
  */
 const headerContentRender = () => {
   const {initialState, setInitialState} = useModel('@@initialState');
-
+  if(initialState?.app === 'api') {
+    return null;
+  }
   return (
     <div style={{display: 'flex', alignItems: 'center'}}>
       <Button

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SettingRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -17,5 +16,4 @@ class SettingRequest extends FormRequest
             'type' => 'required',
         ];
     }
-
 }

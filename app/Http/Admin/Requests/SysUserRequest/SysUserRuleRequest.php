@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SysUserRuleRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [

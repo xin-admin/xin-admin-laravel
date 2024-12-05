@@ -53,9 +53,9 @@ const Login: React.FC = () => {
     <LoginFormPage
       backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
       // backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
-      logo={initialState!.webSetting.logo || "https://file.xinadmin.cn/file/favicons.ico"}
-      title={initialState!.webSetting.title || "Xin Admin"}
-      subTitle={initialState!.webSetting.subtitle || "用技术改变世界"}
+      logo={initialState?.webSetting?.logo || "https://file.xinadmin.cn/file/favicons.ico"}
+      title={initialState?.webSetting?.title || "Xin Admin"}
+      subTitle={initialState?.webSetting?.subtitle || "用技术改变世界"}
       actions={
         <>
           <Divider plain>其他登录方式</Divider>

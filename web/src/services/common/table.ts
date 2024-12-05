@@ -15,8 +15,6 @@ interface XinApi {
     ): Promise<API.ResponseStructure<any>>
 }
 
-let app = '/admin'
-
 /**
  * 公共查询接口
  * @param url
@@ -24,7 +22,7 @@ let app = '/admin'
  * @param options
  */
 export const listApi: XinApi = (url,params,options) =>  {
-  return request<API.ResponseStructure<any>>(app+ url, {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'GET',
     params: {
       ...params,
@@ -40,7 +38,7 @@ export const listApi: XinApi = (url,params,options) =>  {
  * @param options
  */
 export const addApi: XinApi = (url,data,options) => {
-  return request<API.ResponseStructure<any>>(app+ url, {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -57,7 +55,7 @@ export const addApi: XinApi = (url,data,options) => {
  * @param options
  */
 export const editApi: XinApi = (url,data,options) =>  {
-  return request<API.ResponseStructure<any>>(app+ url, {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'PUT',
     data: { ...data },
     ...(options || {}),
@@ -71,7 +69,7 @@ export const editApi: XinApi = (url,data,options) =>  {
  * @param options
  */
 export const deleteApi: XinApi = (url,params,options) => {
-  return request<API.ResponseStructure<any>>(app+ url, {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'DELETE',
     params: { ...params },
     ...(options || {}),

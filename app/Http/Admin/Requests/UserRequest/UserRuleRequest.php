@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRuleRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -23,5 +22,4 @@ class UserRuleRequest extends FormRequest
             'locale' => 'nullable|string|max:255',
         ];
     }
-
 }

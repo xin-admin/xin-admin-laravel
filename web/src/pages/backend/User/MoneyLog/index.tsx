@@ -9,7 +9,7 @@ import { useModel } from '@umijs/max';
 /**
  *  Api 接口
  */
-const api = '/user/userMoneyLog'
+const api = '/user/money/log'
 
 /**
  *  数据类型

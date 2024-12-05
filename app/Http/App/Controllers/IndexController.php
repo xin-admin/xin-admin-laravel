@@ -18,9 +18,13 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/api')]
 class IndexController extends BaseController
 {
-
+    // 权限验证白名单
     protected array $noPermission = ['index', 'login', 'register'];
 
+    /**
+     * index
+     * @return JsonResponse
+     */
     #[GetMapping('/index')]
     public function index(): JsonResponse
     {
@@ -32,26 +36,38 @@ class IndexController extends BaseController
             ->toArray();
         $menus = getTreeData($menus);
         $web_setting = get_setting('web');
+
         return $this->success(compact('web_setting', 'menus'));
     }
 
+    /**
+     * 用户登录
+     * @param UserLoginRequest $request
+     * @return JsonResponse
+     */
     #[PostMapping('/login')]
     public function login(UserLoginRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new UserModel();
+        $model = new UserModel;
         $data = $model->login($data['username'], $data['password']);
         if ($data) {
             return $this->success($data);
         }
+
         return $this->error($model->getErrorMsg());
     }
 
+    /**
+     * 用户注册
+     * @param UserRegisterRequest $request
+     * @return JsonResponse
+     */
     #[PostMapping('/register')]
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new UserModel();
+        $model = new UserModel;
         $model->username = $data['username'];
         $model->password = password_hash($data['password'], PASSWORD_DEFAULT);
         $model->email = $data['email'];
@@ -59,6 +75,7 @@ class IndexController extends BaseController
         if ($model->save()) {
             return $this->success();
         }
+
         return $this->error('创建用户失败');
     }
 }

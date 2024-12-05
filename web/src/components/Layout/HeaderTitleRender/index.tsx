@@ -1,4 +1,6 @@
 import { ProLayoutProps } from '@ant-design/pro-components';
+import { useModel } from '@umijs/max';
+import { CSSProperties } from 'react';
 
 /**
  * 自定义头标题的方法，mix 模式和 top 模式下生效
@@ -8,22 +10,19 @@ import { ProLayoutProps } from '@ant-design/pro-components';
  * @constructor
  */
 const HeaderTitleRender: ProLayoutProps['headerTitleRender'] = (logo, title, props) => {
-  const defaultDom = (
-    <a>
-      {logo}
-      {title}
-    </a>
-  );
-  if (typeof window === 'undefined') return defaultDom;
-  if (document.body.clientWidth < 1400) {
-    return defaultDom;
+  const {initialState} = useModel('@@initialState')
+
+  const titleDivStyle: CSSProperties = {
+    display: 'flex',
+    alignItems: 'center'
   }
-  if (props.isMobile) return defaultDom;
+
   return (
-    <div>
-      {defaultDom}
+    <div style={titleDivStyle}>
+      <img src={ initialState?.webSetting?.logo } alt="logo" />
+      <h1 style={{fontSize: 18}}>{ initialState?.webSetting?.title }</h1>
     </div>
-  );
+  )
 }
 
 export default HeaderTitleRender;

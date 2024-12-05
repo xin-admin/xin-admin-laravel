@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SysUserUpdatePasswordRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -25,5 +24,4 @@ class SysUserUpdatePasswordRequest extends FormRequest
             'rePassword.same' => '两次密码不一致',
         ];
     }
-
 }

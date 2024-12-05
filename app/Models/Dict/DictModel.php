@@ -2,20 +2,51 @@
 
 namespace App\Models\Dict;
 
-use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * 字典模型
  */
-class DictModel extends BaseModel
+class DictModel extends Model
 {
     protected $table = 'dict';
 
     protected $fillable = ['name', 'type', 'code', 'describe'];
 
+    /**
+     * 关联字典子项
+     * @return HasMany
+     */
     public function dictItems(): HasMany
     {
         return $this->hasMany(DictItemModel::class, 'dict_id', 'id');
+    }
+
+    /**
+     * 获取字典子项
+     * @return array
+     */
+    public function getDictItems(): array
+    {
+        return $this->query()
+            ->with('dictItems')
+            ->get()
+            ->map(function ($dict) {
+                return [
+                    'id' => $dict->id,
+                    'name' => $dict->name,
+                    'type' => $dict->type,
+                    'code' => $dict->code,
+                    'describe' => $dict->describe,
+                    'dictItems' => $dict->dictItems->map(function ($dictItem) {
+                        return [
+                            'label' => $dictItem->label,
+                            'value' => $dictItem->value,
+                            'status' => $dictItem->status,
+                        ];
+                    }),
+                ];
+            });
     }
 }

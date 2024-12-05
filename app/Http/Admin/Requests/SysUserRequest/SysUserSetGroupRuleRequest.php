@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SysUserSetGroupRuleRequest extends FormRequest
 {
-    
     public function rules(): array
     {
         return [
@@ -24,5 +23,4 @@ class SysUserSetGroupRuleRequest extends FormRequest
             'rules.exists' => '权限规则不存在',
         ];
     }
-
 }

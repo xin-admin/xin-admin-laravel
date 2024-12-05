@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OnlineTableRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -15,8 +14,7 @@ class OnlineTableRequest extends FormRequest
             'columns' => 'required|json',
             'crud_config' => 'required|json',
             'table_config' => 'required|json',
-            'describe' => 'required'
+            'describe' => 'required',
         ];
     }
-
 }

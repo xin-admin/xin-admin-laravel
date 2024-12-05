@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class FileUpdateInfoRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -24,5 +23,4 @@ class FileUpdateInfoRequest extends FormRequest
             'file_bitrate' => 'required',
         ];
     }
-
 }

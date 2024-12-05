@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Attribute\Autowired;
@@ -32,7 +33,7 @@ class AutowireServiceProvider extends ServiceProvider
                     }
                 }
             }
-        }catch (\ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             return;
         }
     }

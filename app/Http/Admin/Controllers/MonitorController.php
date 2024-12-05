@@ -7,30 +7,35 @@ use App\Attribute\Authorize;
 use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
+use App\Http\BaseController;
 use App\Models\MonitorModel;
-use App\Trait\BuilderTrait;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 监控管理
+ */
 #[AdminController]
 #[RequestMapping('/monitor')]
-class MonitorController
+class MonitorController extends BaseController
 {
-    use BuilderTrait;
-
     #[Autowired]
     protected MonitorModel $model;
 
+    // 查询字段
+    protected array $searchField = [
+        'user_id' => '=',
+        'name' => '=',
+        'ip' => '=',
+        'created_at' => 'date',
+    ];
+
+    /**
+     * 获取监控数据列表
+     */
     #[GetMapping]
     #[Authorize('admin.monitor.list')]
     public function list(): JsonResponse
     {
-        $searchField = [
-            'user_id' => '=',
-            'name' => '=',
-            'ip' => '=',
-            'created_at' => 'date'
-        ];
-        return $this->listResponse($this->model, $searchField);
+        return $this->listResponse($this->model);
     }
-
 }

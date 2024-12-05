@@ -3,6 +3,7 @@ import { refreshUserToken } from '@/services/api/user';
 import type { AxiosResponse, RequestConfig } from '@umijs/max';
 import { request, history } from '@umijs/max';
 import { message, notification } from 'antd';
+import { AxiosError } from '@umijs/max';
 
 /**
  * 错误处理方案： 错误类型
@@ -45,6 +46,51 @@ const refreshToken = async (response: AxiosResponse) => {
 }
 
 /**
+ * 错误处理
+ */
+const errorHandler = async (data: API.ResponseStructure<any>) => {
+  let {
+    msg = '',
+    showType = 0,
+    description = ''
+  } = data;
+  switch (showType) {
+    case ErrorShowType.SILENT:
+      break;
+    case ErrorShowType.SUCCESS_MESSAGE:
+      message.success(msg);
+      break;
+    case ErrorShowType.WARN_MESSAGE:
+      message.warning(msg);
+      break;
+    case ErrorShowType.ERROR_MESSAGE:
+      message.error(msg);
+      break;
+    case ErrorShowType.SUCCESS_NOTIFICATION:
+      notification.success({
+        description: description,
+        message: msg,
+      });
+      break;
+    case ErrorShowType.WARN_NOTIFICATION:
+      notification.warning({
+        description: description,
+        message: msg,
+      });
+      break;
+    case ErrorShowType.ERROR_NOTIFICATION:
+      notification.error({
+        description: description,
+        message: msg,
+      });
+      break;
+    default:
+      message.error(msg);
+  }
+}
+
+
+/**
  * 响应拦截
  */
 const responseInterceptors: RequestConfig['responseInterceptors'] = [
@@ -54,50 +100,17 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
       if(response.status === 202) {
         return await refreshToken(response);
       }
-      let {
-        success,
-        msg = '',
-        showType = 0,
-        description = ''
-      } = data as API.ResponseStructure<any>;
-      if(success) return Promise.resolve(response);
-      switch (showType) {
-        case ErrorShowType.SILENT:
-          break;
-        case ErrorShowType.SUCCESS_MESSAGE:
-          message.success(msg);
-          break;
-        case ErrorShowType.WARN_MESSAGE:
-          message.warning(msg);
-          break;
-        case ErrorShowType.ERROR_MESSAGE:
-          message.error(msg);
-          break;
-        case ErrorShowType.SUCCESS_NOTIFICATION:
-          notification.success({
-            description: description,
-            message: msg,
-          });
-          break;
-        case ErrorShowType.WARN_NOTIFICATION:
-          notification.warning({
-            description: description,
-            message: msg,
-          });
-          break;
-        case ErrorShowType.ERROR_NOTIFICATION:
-          notification.error({
-            description: description,
-            message: msg,
-          });
-          break;
-        default:
-          message.error(msg);
-      }
+      if(data.success) return Promise.resolve(response);
+      await errorHandler(data);
       return Promise.reject(response);
     },
     async (error: any) => {
-      if(error.response?.status === 401) {
+      const {response} = error;
+      if(!response) {
+        message.error('网路请求错误！');
+        return Promise.reject(error);
+      }
+      if(response.status === 401) {
         message.error(`请先登录！`);
         if(localStorage.getItem('app') === 'admin') {
           history.push('/admin/login');
@@ -106,7 +119,11 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
         }
         return Promise.reject(error);
       }
-      message.error(`Response status:${error.response.status}`);
+      if(response.data) {
+        await errorHandler(response.data);
+      }else {
+        message.error(error.message);
+      }
       return Promise.reject(error);
     }
   ]

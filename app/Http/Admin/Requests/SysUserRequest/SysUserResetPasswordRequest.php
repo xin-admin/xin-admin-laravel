@@ -4,9 +4,8 @@ namespace App\Http\Admin\Requests\SysUserRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SysUserResetPasswordRequest  extends FormRequest
+class SysUserResetPasswordRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -15,5 +14,4 @@ class SysUserResetPasswordRequest  extends FormRequest
             'rePassword' => 'required|same:password',
         ];
     }
-
 }

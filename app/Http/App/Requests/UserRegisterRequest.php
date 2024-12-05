@@ -27,8 +27,7 @@ class UserRegisterRequest extends FormRequest
             'rePassword.required' => '请重复输入密码',
             'email.required' => '请输入邮箱',
             'email.email' => '邮箱格式不正确',
-            'mobile.required' => '请输入手机号'
+            'mobile.required' => '请输入手机号',
         ];
     }
-
 }

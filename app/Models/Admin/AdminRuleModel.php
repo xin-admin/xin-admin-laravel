@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Admin;
 
 use App\Models\BaseModel;
@@ -14,7 +15,6 @@ class AdminRuleModel extends BaseModel
 
     /**
      * 获取权限树
-     * @return array
      */
     public function getRuleTree(): array
     {
@@ -22,12 +22,12 @@ class AdminRuleModel extends BaseModel
             ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
+
         return getTreeData($data);
     }
 
     /**
      * 获取父级权限树
-     * @return array
      */
     public function getRulePid(): array
     {
@@ -36,7 +36,7 @@ class AdminRuleModel extends BaseModel
             ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
+
         return getTreeData($data);
     }
-
 }

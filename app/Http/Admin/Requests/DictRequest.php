@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DictRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -14,8 +13,7 @@ class DictRequest extends FormRequest
             'name' => 'required',
             'code' => 'required',
             'type' => 'required',
-            'describe' => 'required'
+            'describe' => 'required',
         ];
     }
-
 }

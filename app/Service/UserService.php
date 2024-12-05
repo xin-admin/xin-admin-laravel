@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Models\User\UserModel;
@@ -9,16 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class UserService
 {
-
     use RequestJson;
 
     /**
      * 用户余额充值
-     * @param int $userId 用户ID
-     * @param string $amount 金额
-     * @param string $mode 增加还是减少
-     * @param string $remark 备注
-     * @return JsonResponse
+     *
+     * @param  int  $userId  用户ID
+     * @param  string  $amount  金额
+     * @param  string  $mode  增加还是减少
+     * @param  string  $remark  备注
      */
     public function recharge(int $userId, string $amount = '0.00', string $mode = 'inc', string $remark = ''): JsonResponse
     {
@@ -37,16 +37,18 @@ class UserService
                 'user_id' => $userId,
                 'money' => $amount,
                 'describe' => $remark,
-                'scene' => 1
+                'scene' => 1,
             ]);
-            $user->money = bcadd(bcmul($user->money, '100', 0), $diffMoney, 0 );
+            $user->money = bcadd(bcmul($user->money, '100', 0), $diffMoney, 0);
             $user->save();
             // 提交事务
             DB::commit();
+
             return $this->success('充值成功');
         } catch (\Exception $e) {
             // 如果发生异常则回滚
             DB::rollBack();
+
             // 处理异常
             return $this->error('充值失败');
         }
@@ -54,15 +56,16 @@ class UserService
 
     /**
      * 重置用户密码
-     * @param int $userId 用户ID
-     * @param string $password 新密码
-     * @return JsonResponse
+     *
+     * @param  int  $userId  用户ID
+     * @param  string  $password  新密码
      */
     public function resetPassword(int $userId, string $password = ''): JsonResponse
     {
         $model = UserModel::query()->find($userId);
         $model->password = password_hash($password, PASSWORD_DEFAULT);
         $model->save();
+
         return $this->success('修改成功');
     }
 }

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OnlineTableTypeRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -141,7 +140,7 @@ class OnlineTableTypeRequest extends FormRequest
             'columns.*.unsign.boolean' => '是否无符号必须是布尔值。',
             'columns.*.mock.string' => '模拟数据必须是字符串。',
             'id.required' => 'ID是必填项。',
-            'id.string' => 'ID必须是字符串或整数。'
+            'id.string' => 'ID必须是字符串或整数。',
         ];
     }
 }

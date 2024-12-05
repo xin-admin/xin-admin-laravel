@@ -15,11 +15,13 @@ use App\Http\BaseController;
 use App\Service\SysAdminUserService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 管理员用户控制器
+ */
 #[AdminController]
 #[RequestMapping('/admin')]
-class SysUserController
+class SysUserController extends BaseController
 {
-
     /**
      * 权限验证白名单
      * @var array|string[]
@@ -33,7 +35,8 @@ class SysUserController
      * 用户登录
      */
     #[PostMapping('/login')]
-    public function login(SysUserLoginRequest $request): JsonResponse {
+    public function login(SysUserLoginRequest $request): JsonResponse
+    {
         $data = $request->validated();
         return $this->sysAdminUserService->login($data['username'], $data['password']);
     }
@@ -42,27 +45,44 @@ class SysUserController
      * 刷新Token
      */
     #[PostMapping('/refreshToken')]
-    public function refreshToken(): JsonResponse {
+    public function refreshToken(): JsonResponse
+    {
         return $this->sysAdminUserService->refreshToken();
     }
 
+    /**
+     * 退出登录
+     */
     #[PostMapping('/logout')]
-    public function logout(): JsonResponse {
+    public function logout(): JsonResponse
+    {
         return $this->sysAdminUserService->logout();
     }
 
-    #[GetMapping]
-    public function getAdminInfo(): JsonResponse {
+    /**
+     * 获取用户信息
+     */
+    #[GetMapping('/info')]
+    public function getAdminInfo(): JsonResponse
+    {
         return $this->sysAdminUserService->getAdminInfo();
     }
 
+    /**
+     * 更新用户信息
+     */
     #[PutMapping]
-    public function updateAdmin(SysUserUpdateInfoRequest $request): JsonResponse {
+    public function updateAdmin(SysUserUpdateInfoRequest $request): JsonResponse
+    {
         return $this->sysAdminUserService->updateAdmin($request->validated());
     }
 
+    /**
+     * 更新用户密码
+     */
     #[PostMapping('/updatePassword')]
-    public function updatePassword(SysUserUpdatePasswordRequest $request): JsonResponse {
+    public function updatePassword(SysUserUpdatePasswordRequest $request): JsonResponse
+    {
         return $this->sysAdminUserService->updatePassword($request->validated());
     }
 }

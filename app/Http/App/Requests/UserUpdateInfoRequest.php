@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateInfoRequest extends FormRequest
 {
-
     public function rules(): array
     {
         return [
@@ -18,5 +17,4 @@ class UserUpdateInfoRequest extends FormRequest
             'mobile' => 'required|regex:/^1[34578]\d{9}$/',
         ];
     }
-
 }

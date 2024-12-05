@@ -11,11 +11,13 @@ use App\Enum\FileType;
 use App\Service\UpdateFileService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 上传文件
+ */
 #[AdminController]
 #[RequestMapping('/admin/update')]
 class UpdateFileController
 {
-
     #[Autowired]
     protected UpdateFileService $updateFileService;
 
@@ -27,6 +29,7 @@ class UpdateFileController
     public function image(int $id): JsonResponse
     {
         $this->updateFileService->setFileType(FileType::IMAGE);
+
         return $this->updateFileService->upload($id);
     }
 
@@ -38,6 +41,7 @@ class UpdateFileController
     public function video(int $id): JsonResponse
     {
         $this->updateFileService->setFileType(FileType::VIDEO);
+
         return $this->updateFileService->upload($id);
     }
 
@@ -49,6 +53,7 @@ class UpdateFileController
     public function zip(int $id): JsonResponse
     {
         $this->updateFileService->setFileType(FileType::ZIP);
+
         return $this->updateFileService->upload($id);
     }
 
@@ -60,6 +65,7 @@ class UpdateFileController
     public function mp3(int $id): JsonResponse
     {
         $this->updateFileService->setFileType(FileType::MP3);
+
         return $this->updateFileService->upload($id);
     }
 
@@ -71,9 +77,7 @@ class UpdateFileController
     public function annex(int $id): JsonResponse
     {
         $this->updateFileService->setFileType(FileType::ANNEX);
+
         return $this->updateFileService->upload($id);
     }
-
-
-
 }

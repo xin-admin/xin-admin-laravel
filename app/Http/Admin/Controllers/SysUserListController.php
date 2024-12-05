@@ -12,52 +12,75 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserResetPasswordRequest;
+use App\Http\BaseController;
 use App\Models\Admin\AdminModel;
 use App\Service\SysAdminListService;
-use App\Trait\BuilderTrait;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 管理员列表
+ */
 #[AdminController]
 #[RequestMapping('/admin/list')]
-class SysUserListController
+class SysUserListController extends BaseController
 {
-    use BuilderTrait;
-
     #[Autowired]
     protected AdminModel $model;
 
     #[Autowired]
     protected SysAdminListService $adminListService;
 
+    /**
+     * 添加用户
+     */
     #[PostMapping]
-    #[Authorize('admin.list.create')]
-    public function create(SysUserRequest $request): JsonResponse {
-        return $this->createResponse($this->model, $request);
+    #[Authorize('admin.list.add')]
+    public function add(SysUserRequest $request): JsonResponse
+    {
+        return $this->addResponse($this->model, $request);
     }
 
+    /**
+     * 获取用户列表
+     */
     #[GetMapping]
     #[Authorize('admin.list.list')]
-    public function list(): JsonResponse {
-        $searchField = [ 'group_id' => '=', 'created_at' => 'date'];
+    public function list(): JsonResponse
+    {
+        $searchField = ['group_id' => '=', 'created_at' => 'date'];
         $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+
         return $this->listResponse($this->model, $searchField, $quickSearchField);
     }
 
+    /**
+     * 编辑用户信息
+     */
     #[PutMapping]
     #[Authorize('admin.list.edit')]
-    public function edit(SysUserRequest $request): JsonResponse {
-        return $this->updateResponse($this->model, $request);
+    public function edit(SysUserRequest $request): JsonResponse
+    {
+        return $this->editResponse($this->model, $request);
     }
 
+    /**
+     * 删除用户
+     */
     #[DeleteMapping]
     #[Authorize('admin.list.delete')]
-    public function delete(): JsonResponse {
+    public function delete(): JsonResponse
+    {
         return $this->deleteResponse($this->model);
     }
 
+    /**
+     * 重置用户密码
+     */
     #[PostMapping('/resetPassword')]
     #[Authorize('admin.list.resetPassword')]
-    public function resetPassword(SysUserResetPasswordRequest $request): JsonResponse {
-        return $this->adminListService->resetPassword($request->validated());
+    public function resetPassword(SysUserResetPasswordRequest $request): JsonResponse
+    {
+        return $this->adminListService
+            ->resetPassword($request->validated());
     }
 }
