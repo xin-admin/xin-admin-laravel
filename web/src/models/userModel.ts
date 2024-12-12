@@ -1,9 +1,7 @@
 import { useBoolean } from 'ahooks';
 import { useEffect, useState } from 'react';
-import { getAdminInfo } from '@/services/admin';
-import { getUserInfo } from '@/services/api/user';
-
-const useUserModel = () => {
+import { getAdminInfo } from '@/services';
+const useUser = () => {
 
   // 登录状态
   const [isLogin, setLoginStatus] = useBoolean();
@@ -16,28 +14,16 @@ const useUserModel = () => {
 
   // 获取用户信息
   const getUser = async () => {
-    let appType = localStorage.getItem('app');
-    if (appType || appType === 'admin') {
-      let token = localStorage.getItem('x-token');
-      if(!token) {
-        return Promise.reject();
-      }
-      let {data} = await getAdminInfo();
-      setUserInfo(data.info);
-      setUserAccess(data.access);
-      setMenus(data.menus);
-      setLoginStatus.setTrue();
-    } else {
-      let token = localStorage.getItem('x-user-token');
-      if(!token) {
-        return Promise.reject();
-      }
-      let {data} = await getUserInfo();
-      setUserInfo(data.info);
-      setUserAccess(data.access);
-      setMenus(data.menus);
-      setLoginStatus.setTrue();
+    let token = localStorage.getItem('x-token');
+    if(!token) {
+      return Promise.reject();
     }
+    let {data} = await getAdminInfo();
+    setUserInfo(data.info);
+    setUserAccess(data.access);
+    setMenus(data.menus);
+    localStorage.setItem('menus', JSON.stringify(data.menus));
+    setLoginStatus.setTrue();
   }
 
   // 刷新用户信息
@@ -72,4 +58,4 @@ const useUserModel = () => {
   }
 }
 
-export default useUserModel;
+export default useUser;

@@ -1,26 +1,33 @@
 import { Button } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { useModel } from '@umijs/max';
+import { FormattedMessage, useModel } from '@umijs/max';
 
 /**
  * 自定义头内容的渲染
  */
 const headerContentRender = () => {
-  const {initialState, setInitialState} = useModel('@@initialState');
-  if(initialState?.app === 'api') {
-    return null;
-  }
+  const {collapsed, setInitialState} = useModel('@@initialState', ({initialState, setInitialState}) => {
+    return {
+      collapsed: initialState?.collapsed,
+      setInitialState
+    }
+  });
   return (
     <div style={{display: 'flex', alignItems: 'center'}}>
       <Button
         type={'text'}
         style={{marginRight: 20}}
-        icon={ initialState?.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onClick={() => {
-          setInitialState({...initialState! , collapsed: !initialState?.collapsed})
+          setInitialState((init) => {
+            return {
+              ...init,
+              collapsed: !init?.collapsed,
+            }
+          })
         }}
       />
-      <div>欢迎进入 XinAdmin 企业级管理系统</div>
+      <div><FormattedMessage id={'app.welcome'}/></div>
     </div>
   )
 }

@@ -7,8 +7,6 @@ interface initialStateType {
   borderShow?: boolean;
   // 菜单设置
   drawerShow?: boolean;
-  // 当前app
-  app?: 'api' | 'admin';
   // 其它
   webSetting?: { [key: string] : any };
   // 侧栏展开状态

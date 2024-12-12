@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "",
+  "author": "xiaoliu",
   "name": "xinadmin",
   "scripts": {
     "dev": "max dev",
@@ -13,14 +13,13 @@
   },
   "dependencies": {
     "@ant-design/charts": "^1.4.3",
-    "@ant-design/icons": "^5.5.1",
+    "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.2",
-    "@umijs/max": "^4.3.35",
-    "ahooks": "^3.8.1",
-    "antd": "^5.22.2",
-    "antd-img-crop": "^4.21.0",
-    "dayjs": "^1.11.10",
-    "mockjs": "^1.1.0"
+    "@umijs/max": "^4.3.36",
+    "ahooks": "^3.8.4",
+    "antd": "^5.22.4",
+    "antd-img-crop": "^4.23.0",
+    "dayjs": "^1.11.13"
   },
   "devDependencies": {
     "@types/mockjs": "^1.0.7",

@@ -2,8 +2,8 @@
 
 use App\Enum\ShowType;
 use App\Exception\AuthorizeException;
-use App\Middleware\AllowCrossDomain;
 use App\Exception\HttpResponseException;
+use App\Middleware\AllowCrossDomain;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,21 +23,21 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'msg' => $e->getMessage(),
                 'showType' => ShowType::ERROR_MESSAGE->value,
-                'success' => false
+                'success' => false,
             ], $e->getCode());
         });
-        $exceptions->render(function (NotFoundHttpException $e){
+        $exceptions->render(function (NotFoundHttpException $e) {
             return response()->json([
-                'msg' => '地址不存在：' . $e->getMessage(),
+                'msg' => '地址不存在：'.$e->getMessage(),
                 'showType' => ShowType::WARN_MESSAGE->value,
-                'success' => false
-            ],404);
+                'success' => false,
+            ], 404);
         });
         $exceptions->render(function (ValidationException $e) {
             return response()->json([
                 'msg' => $e->validator->errors()->first(),
                 'showType' => ShowType::WARN_MESSAGE->value,
-                'success' => false
+                'success' => false,
             ]);
         });
     })->create();

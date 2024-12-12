@@ -2,7 +2,7 @@ import { useModel } from '@umijs/max';
 import React from 'react';
 
 interface PropsTypes {
-  auth: string;
+  auth?: string;
   children: React.ReactNode;
 }
 
@@ -12,8 +12,12 @@ export default ( props: PropsTypes ) => {
     access: model.userAccess
   }));
 
-  const buttonAccess = (name:string) => {
-    return access.includes(name.toLowerCase())
+  const buttonAccess = (name?: string) => {
+    if( name) {
+      return access.includes(name.toLowerCase())
+    }else {
+      return true;
+    }
   }
 
   return (

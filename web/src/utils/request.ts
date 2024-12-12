@@ -1,9 +1,7 @@
-import { refreshAdminToken } from '@/services/admin';
-import { refreshUserToken } from '@/services/api/user';
-import type { AxiosResponse, RequestConfig } from '@umijs/max';
+import { refreshToken } from '@/services';
+import type { RequestConfig } from '@umijs/max';
 import { request, history } from '@umijs/max';
 import { message, notification } from 'antd';
-import { AxiosError } from '@umijs/max';
 
 /**
  * 错误处理方案： 错误类型
@@ -16,33 +14,6 @@ enum ErrorShowType {
   WARN_NOTIFICATION = 4,
   ERROR_NOTIFICATION = 5,
   SILENT = 99,
-}
-
-/**
- * 刷新Token
- * @param response
- */
-const refreshToken = async (response: AxiosResponse) => {
-  try {
-    // 登录状态过期，刷新令牌并重新发起请求
-    let app = localStorage.getItem('app');
-    if( !app || app === 'api'){
-      let res = await refreshUserToken()
-      localStorage.setItem('x-user-token', res.data.token);
-      response.headers!.xUserToken = res.data.token;
-      // 重新发送请求
-      return await request(response.config.url!, response.config);
-    }else {
-      let res = await refreshAdminToken()
-      localStorage.setItem('x-token', res.data.token);
-      response.headers!.xToken = res.data.token;
-      // 重新发送请求
-      let data = await request(response.config.url!,response.config);
-      return Promise.resolve(data);
-    }
-  }catch (e) {
-    return Promise.reject(e);
-  }
 }
 
 /**
@@ -98,7 +69,15 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
     async (response) => {
       const { data = {} as any } = response;
       if(response.status === 202) {
-        return await refreshToken(response);
+        try {
+          let res = await refreshToken()
+          localStorage.setItem('x-token', res.data.token);
+          response.headers!.xToken = res.data.token;
+          // 重新发送请求
+          return request(response.config.url!,response.config);
+        }catch (e) {
+          return Promise.reject(e);
+        }
       }
       if(data.success) return Promise.resolve(response);
       await errorHandler(data);
@@ -112,11 +91,7 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
       }
       if(response.status === 401) {
         message.error(`请先登录！`);
-        if(localStorage.getItem('app') === 'admin') {
-          history.push('/admin/login');
-        }else {
-          history.push('/client/login');
-        }
+        history.push('/login');
         return Promise.reject(error);
       }
       if(response.data) {

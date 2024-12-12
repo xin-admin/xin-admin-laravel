@@ -14,8 +14,8 @@ const MenuFooterRender: ProLayoutProps['menuFooterRender'] = (props) => {
         paddingBlockStart: 12,
       }}
     >
-      <div>© 2021 Made with love</div>
-      <div>by Ant Design</div>
+      <div>© 2024 Made with love</div>
+      <div>by Xin Admin</div>
     </div>
   );
 }

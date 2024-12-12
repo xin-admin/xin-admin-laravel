@@ -1,5 +1,5 @@
 // 全局共享数据示例
-import { gitDict } from '@/services/admin/system';
+import { gitDict } from '@/services/system';
 import { useRequest } from 'ahooks';
 import { ReactNode } from 'react';
 

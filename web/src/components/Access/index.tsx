@@ -1,7 +1,7 @@
 import { Link, useLocation, useModel } from '@umijs/max';
 import { Result } from 'antd';
 import React from 'react';
-import noAuthRouter from '@/default/noAuthRouter';
+import noAuthRouter from '@/default/noPermission';
 
 export  default  (
   props: {children: React.ReactNode}
@@ -11,7 +11,7 @@ export  default  (
   }));
   const { pathname } = useLocation();
   const urlAccess = (name:string) => {
-    let accessName = name.slice(1).toLowerCase().replace(/\//g,'.');
+    let accessName = name.slice(1).replace(/\//g,'.');
     return access.includes(accessName) || noAuthRouter.includes(name)
   }
 
