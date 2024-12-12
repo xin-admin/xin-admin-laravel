@@ -21,7 +21,7 @@ use Illuminate\Http\JsonResponse;
  * 前台用户列表
  */
 #[AdminController]
-#[RequestMapping('/admin/user')]
+#[RequestMapping('/user/list')]
 class UserListController extends BaseController
 {
     #[Autowired]
@@ -59,7 +59,7 @@ class UserListController extends BaseController
     /**
      * 充值
      */
-    #[Authorize('admin.user.recharge')]
+    #[Authorize('user.list.recharge')]
     #[PostMapping('/recharge')]
     public function recharge(UserRechargeRequest $request): JsonResponse
     {
@@ -72,7 +72,7 @@ class UserListController extends BaseController
     /**
      * 重置密码
      */
-    #[Authorize('admin.user.resetPassword')]
+    #[Authorize('user.list.resetPassword')]
     #[PostMapping('/resetPassword')]
     public function resetPassword(UserResetPasswordRequest $request): JsonResponse
     {

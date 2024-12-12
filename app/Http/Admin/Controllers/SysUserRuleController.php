@@ -42,9 +42,8 @@ class SysUserRuleController extends BaseController
     #[Authorize('admin.rule.list')]
     public function list(): JsonResponse
     {
-        $rootNode = $this->model->getRuleTree();
-
-        return $this->success(compact('rootNode'));
+        $data = $this->model->getRuleTree();
+        return $this->success(compact('data'));
     }
 
     /**

@@ -39,7 +39,7 @@ class DictModel extends Model
                     'type' => $dict->type,
                     'code' => $dict->code,
                     'describe' => $dict->describe,
-                    'dictItems' => $dict->dictItems->map(function ($dictItem) {
+                    'dict_items' => $dict->dictItems->map(function ($dictItem) {
                         return [
                             'label' => $dictItem->label,
                             'value' => $dictItem->value,
@@ -47,6 +47,6 @@ class DictModel extends Model
                         ];
                     }),
                 ];
-            });
+            })->toArray();
     }
 }

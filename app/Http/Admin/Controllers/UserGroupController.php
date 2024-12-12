@@ -13,7 +13,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserSetGroupRuleRequest;
 use App\Http\Admin\Requests\UserRequest\UserGroupRequest;
 use App\Http\BaseController;
-use App\Models\User\UserModel;
+use App\Models\User\UserGroupModel;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -24,16 +24,7 @@ use Illuminate\Http\JsonResponse;
 class UserGroupController extends BaseController
 {
     #[Autowired]
-    protected UserModel $model;
-
-    // 查询字段
-    protected array $searchField = [
-        'id' => '=',
-        'name' => 'like',
-        'pid' => '=',
-        'create_time' => 'date',
-        'update_time' => 'date',
-    ];
+    protected UserGroupModel $model;
 
     /**
      * 获取用户权限列表
@@ -42,8 +33,10 @@ class UserGroupController extends BaseController
     #[Authorize('user.group.list')]
     public function list(): JsonResponse
     {
+        $data = $this->model->query()->get()->toArray();
+        $data = getTreeData($data);
 
-        return $this->listResponse($this->model);
+        return $this->success(compact('data'));
     }
 
     /**

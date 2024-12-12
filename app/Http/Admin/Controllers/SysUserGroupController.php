@@ -43,7 +43,9 @@ class SysUserGroupController extends BaseController
     #[Authorize('admin.group.list')]
     public function list(): JsonResponse
     {
-        return $this->listResponse($this->model);
+        $data = $this->model->query()->get()->toArray();
+        $data = getTreeData($data);
+        return $this->success(compact('data'));
     }
 
     /**
