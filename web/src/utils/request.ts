@@ -89,7 +89,7 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
         message.error('网路请求错误！');
         return Promise.reject(error);
       }
-      if(response.status === 401) {
+      if(response.status === 401 && location.pathname !== '/login') {
         message.error(`请先登录！`);
         history.push('/login');
         return Promise.reject(error);

@@ -3,7 +3,7 @@ import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
 import { getRulePid } from '@/services/auth';
-import React from 'react';
+import React, { useState } from 'react';
 import { useBoolean } from 'ahooks';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
@@ -32,72 +32,54 @@ interface RuleType {
 
 const Table: React.FC = () => {
   const dictEnum = useModel('dictModel', ({dictEnum}) => dictEnum)
+  const [rulePid, setRulePid] = useState<RuleType[]>();
 
-  const [ref, setRef] = useBoolean();
+  // 菜单项
+  const parentItem: ProFormColumnsAndProColumns<RuleType> = {
+    title: '父节点',
+    dataIndex: 'pid',
+    valueType: 'treeSelect',
+    request: async () => rulePid!,
+    fieldProps: { fieldNames: { label: 'name', value: 'id' }},
+    formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
+    colProps: { span: 7 },
+  };
+  const ruleItem: ProFormColumnsAndProColumns<RuleType> = {
+    title: '权限标识',
+    dataIndex: 'key',
+    valueType: 'text',
+    tooltip: '例: 路由地址 "/index/index" , 权限标识为 "index.index" , 按钮权限请加上上级路由的权限标识，如：查询按钮权限 "index.index.list" ',
+    formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
+  };
+  const pathItem: ProFormColumnsAndProColumns<RuleType> = {
+    title: '路由地址',
+    dataIndex: 'path',
+    valueType: 'text',
+    formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
+    tooltip: '项目文件系统路径，忽略：pages 或 index.(ts|tsx)',
+  };
+  const iconItem: ProFormColumnsAndProColumns<RuleType> = {
+    title: '图标',
+    dataIndex: 'icon',
+    valueType: 'text',
+    renderFormItem: (form, config, schema) => <IconsItem dataIndex={form.key} form={schema} value={config.value}></IconsItem>,
+    colProps: { span: 6 },
+  };
+  const localeItem: ProFormColumnsAndProColumns<RuleType> = {
+    title: '多语言标识',
+    dataIndex: 'local',
+    valueType: 'text',
+    colProps: { span: 6 },
+  };
+
 
   const formType = ({ type }: any): any[] => {
-    const pid: ProFormColumnsAndProColumns<RuleType> = {
-      title: '父节点',
-      dataIndex: 'pid',
-      valueType: 'treeSelect',
-      request: async () => {
-        let res = await getRulePid();
-        return res.data.data;
-      },
-      fieldProps: {
-        fieldNames: { label: 'name', value: 'id' },
-      },
-      params: { ref },
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
-      colProps: { span: 7 },
-    };
-    const rule: ProFormColumnsAndProColumns<RuleType> = {
-      title: '权限标识',
-      dataIndex: 'key',
-      valueType: 'text',
-      tooltip: '例: 路由地址 "/index/index" , 权限标识为 "index.index" , 按钮权限请加上上级路由的权限标识，如：查询按钮权限 "index.index.list" ',
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
-    };
-    const path: ProFormColumnsAndProColumns<RuleType> = {
-      title: '路由地址',
-      dataIndex: 'path',
-      valueType: 'text',
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
-      tooltip: '项目文件系统路径，忽略：pages 或 index.(ts|tsx)',
-    };
-    const icon: ProFormColumnsAndProColumns<RuleType> = {
-      title: '图标',
-      dataIndex: 'icon',
-      valueType: 'text',
-      renderFormItem: (form, config, schema) => <IconsItem dataIndex={form.key} form={schema}
-                                                           value={config.value}></IconsItem>,
-      colProps: { span: 6 },
-    };
-    const locale: ProFormColumnsAndProColumns<RuleType> = {
-      title: '多语言标识',
-      dataIndex: 'local',
-      valueType: 'text',
-      colProps: { span: 6 },
-    };
-
     if (type === '0') {
-      return [path, rule, icon, locale];
+      return [pathItem, ruleItem, iconItem, localeItem];
     } else if (type === '1') {
-      return [pid, path, rule, icon, locale];
+      return [parentItem, pathItem, ruleItem, iconItem, localeItem];
     } else if (type === '2') {
-      return [pid, rule];
+      return [parentItem, ruleItem];
     }
     return [];
   }
@@ -129,22 +111,14 @@ const Table: React.FC = () => {
       valueEnum: dictEnum.get('ruleType'),
       hideInTable: true,
       initialValue: '0',
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
+      formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
       colProps: { span: 10 },
     },
     {
       title: '标题',
       dataIndex: 'name',
       valueType: 'text',
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
+      formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
       width: 200,
       colProps: { span: 7 },
       tooltip: '菜单的标题，可当作菜单栏标题，如果有多语言标识，该项会被覆盖！',
@@ -219,7 +193,6 @@ const Table: React.FC = () => {
         />;
       },
       colProps: { span: 4 },
-      hideInForm: true,
     },
     {
       title: '是否禁用',
@@ -237,7 +210,6 @@ const Table: React.FC = () => {
         />;
       },
       colProps: { span: 4 },
-      hideInForm: true,
     },
     {
       title: '创建时间',

@@ -2,9 +2,8 @@ import XinTable from '@/components/XinTable';
 import { ProFormColumnsAndProColumns, TableProps } from '@/components/XinTable/typings';
 import React, { useRef, useState } from 'react';
 import { useAsyncEffect } from 'ahooks';
-import GroupRule from './components/GroupRule';
 import * as tableApi from '@/services/common/table';
-import { Button, Card, Col, Drawer, message, Popconfirm, Row, Space, Tree } from 'antd';
+import { Card, Col, message, Popconfirm, Row, Tree } from 'antd';
 import {addApi, deleteApi, editApi} from '@/services/common/table';
 import { ActionType } from '@ant-design/pro-components';
 import ButtonAccess from '@/components/ButtonAccess';
@@ -167,6 +166,7 @@ export default () => {
     )
   }
 
+  // 表格属性
   const tableProps: TableProps<GroupListType> = {
     headerTitle: '分组列表',
     tableApi: '/admin/group',
