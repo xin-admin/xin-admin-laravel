@@ -12,7 +12,7 @@ use App\Http\Admin\Requests\SysUserRequest\SysUserLoginRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserUpdateInfoRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserUpdatePasswordRequest;
 use App\Http\BaseController;
-use App\Service\SysAdminUserService;
+use App\Service\AdminUserService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -29,7 +29,7 @@ class SysUserController extends BaseController
     protected array $noPermission = ['refreshToken', 'login'];
 
     #[Autowired]
-    protected SysAdminUserService $sysAdminUserService;
+    protected AdminUserService $sysAdminUserService;
 
     /**
      * 用户登录

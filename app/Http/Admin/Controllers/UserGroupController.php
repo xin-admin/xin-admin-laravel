@@ -13,7 +13,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserSetGroupRuleRequest;
 use App\Http\Admin\Requests\UserRequest\UserGroupRequest;
 use App\Http\BaseController;
-use App\Models\User\UserGroupModel;
+use App\Modelss\User\UserGroupModel;
 use Illuminate\Http\JsonResponse;
 
 /**

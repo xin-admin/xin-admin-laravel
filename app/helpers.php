@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Setting\SettingGroupModel;
+use App\Modelss\Setting\SettingGroupModel;
 use Illuminate\Support\Facades\Log;
 
 if (! function_exists('get_setting')) {

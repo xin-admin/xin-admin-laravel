@@ -5,13 +5,9 @@ namespace App\Middleware;
 use App\Attribute\AdminController;
 use App\Attribute\ApiController;
 use App\Attribute\Authorize;
-use App\Exception\AuthorizeException;
-use App\Models\Admin\AdminGroupModel;
-use App\Models\Admin\AdminModel;
-use App\Models\Admin\AdminRuleModel;
-use App\Models\User\UserGroupModel;
-use App\Models\User\UserModel;
-use App\Models\User\UserRuleModel;
+use App\Exceptions\AuthorizeException;
+use App\Exceptions\HttpResponseException;
+use App\Models\AdminUserModel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -31,7 +27,7 @@ class CheckPermission
         try {
             $reflection = new ReflectionClass($controller);
         } catch (\ReflectionException $e) {
-            throw new AuthorizeException('权限验证失败，控制器不存在！！');
+            throw new HttpResponseException(['success' => false, 'msg' => '权限验证失败，未找到控制器']);
         }
         // 权限验证白名单
         try {
@@ -47,7 +43,7 @@ class CheckPermission
         try {
             $methodReflection = $reflection->getMethod($method);
         } catch (\ReflectionException $e) {
-            throw new AuthorizeException('权限验证失败，'.$e->getMessage());
+            throw new HttpResponseException(['success' => false, 'msg' => '权限验证失败，未找到方法']);
         }
         // 获取方法内容
         $authorize = $methodReflection->getAttributes(Authorize::class);
@@ -62,70 +58,55 @@ class CheckPermission
         if (count($reflection->getAttributes(AdminController::class)) > 0) {
             $token = $request->header('x-token');
             if (empty($token)) {
-                throw new AuthorizeException('请先登录！！');
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
             $tokenData = (new Token)->get($token);
             if ($tokenData['type'] != 'admin' || ! empty($tokenData['user_id'])) {
-                throw new AuthorizeException('请先登录！！');
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
-            $user = AdminModel::query()
-                ->where('id', $tokenData['user_id'])
-                ->first();
-            if (! $user) {
-                throw new AuthorizeException('请先登录！！');
+            $adminUser = AdminUserModel::find($tokenData['user_id']);
+            if (! $adminUser) {
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
-            if (! $user['status']) {
-                throw new AuthorizeException('账户已被禁用！！');
+            if (! $adminUser['status']) {
+                throw new HttpResponseException(['success' => false, 'msg' => '账户已被禁用!'], 401);
             }
-            if (empty($authKey)) {
-                return $next($request);
+            if (! empty($authKey)) {
+                // 权限缓存
+                if (! Cache::has('admin_role_'.$adminUser->role_id)) {
+                    $role = $adminUser->role;
+                    if ($role) {
+                        $rules = $role->rules;
+                    } else {
+                        throw new HttpResponseException(['success' => false, 'msg' => '用户未分批角色组!'], 401);
+                    }
+                    Cache::add('admin_role_'.$adminUser->role_id, $rules);
+                } else {
+                    $rules = Cache::get('admin_role_'.$adminUser->role_id);
+                }
+                $rules = array_map('strtolower', $rules);
+                if (! in_array($authKey, $rules)) {
+                    throw new AuthorizeException('您没有权限操作！！');
+                }
             }
-            // 权限缓存
-            if (! Cache::has('admin_group_'.$user['group_id'])) {
-                $group = AdminGroupModel::query()->find($user['group_id']);
-                $rules = AdminRuleModel::query()->whereIn('id', $group->rules)->pluck('key')->toArray();
-                Cache::add('admin_group_'.$user['group_id'], $rules);
-            } else {
-                $rules = Cache::get('admin_group_'.$user['group_id']);
-            }
-            $rules = array_map('strtolower', $rules);
-            if (! in_array($authKey, $rules)) {
-                throw new AuthorizeException('您没有权限操作！！');
-            }
+
         }
         // Api控制器
         if (count($reflection->getAttributes(ApiController::class)) > 0) {
             $token = $request->header('x-user-token');
             if (empty($token)) {
-                throw new AuthorizeException('请先登录！！');
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
             $tokenData = (new Token)->get($token);
             if ($tokenData['type'] != 'user' || ! empty($tokenData['user_id'])) {
-                throw new AuthorizeException('请先登录！！');
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
-            $user = UserModel::query()
-                ->where('id', $tokenData['user_id'])
-                ->first();
-            if (! $user) {
-                throw new AuthorizeException('请先登录！！');
+            $adminUser = AdminUserModel::find($tokenData['user_id']);
+            if (! $adminUser) {
+                throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
             }
-            if (! $user['status']) {
-                throw new AuthorizeException('账户已被禁用！！');
-            }
-            if (empty($authKey)) {
-                return $next($request);
-            }
-            // 权限缓存
-            if (! Cache::has('user_group_'.$user['group_id'])) {
-                $group = UserGroupModel::query()->find($user['group_id']);
-                $rules = UserRuleModel::query()->whereIn('id', $group->rules)->pluck('key')->toArray();
-                Cache::add('user_group_'.$user['group_id'], $rules);
-            } else {
-                $rules = Cache::get('user_group_'.$user['group_id']);
-            }
-            $rules = array_map('strtolower', $rules);
-            if (! in_array($authKey, $rules)) {
-                throw new AuthorizeException('您没有权限操作！！');
+            if (! $adminUser['status']) {
+                throw new HttpResponseException(['success' => false, 'msg' => '账户已被禁用!'], 401);
             }
         }
 

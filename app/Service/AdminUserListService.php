@@ -2,11 +2,11 @@
 
 namespace App\Service;
 
-use App\Models\Admin\AdminModel;
+use App\Models\AdminUserModel;
 use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 
-class SysAdminListService
+class AdminUserListService
 {
     use RequestJson;
 
@@ -15,10 +15,9 @@ class SysAdminListService
      */
     public function resetPassword(array $data): JsonResponse
     {
-        $model = AdminModel::query()->find($data['id']);
-        $model->password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $model->save();
-
+        AdminUserModel::where('user_id', $data['id'])->update([
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        ]);
         return $this->success('ok');
     }
 }

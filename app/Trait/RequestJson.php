@@ -2,7 +2,7 @@
 namespace App\Trait;
 
 use App\Enum\ShowType as ShopTypeEnum;
-use App\Exception\HttpResponseException;
+use App\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
 /**

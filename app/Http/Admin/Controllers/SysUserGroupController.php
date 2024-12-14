@@ -14,7 +14,7 @@ use App\Http\Admin\Requests\SysUserRequest\SysUserGroupRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRuleRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserSetGroupRuleRequest;
 use App\Http\BaseController;
-use App\Models\Admin\AdminGroupModel;
+use App\Modelss\Admin\AdminGroupModel;
 use Illuminate\Http\JsonResponse;
 
 /**

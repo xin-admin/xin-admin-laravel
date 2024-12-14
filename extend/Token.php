@@ -2,7 +2,7 @@
 
 namespace Xin;
 
-use App\Exception\HttpResponseException;
+use App\Exceptions\HttpResponseException;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

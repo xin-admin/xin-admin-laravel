@@ -12,7 +12,7 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\DictItemRequest;
 use App\Http\BaseController;
-use App\Models\Dict\DictItemModel;
+use App\Modelss\Dict\DictItemModel;
 use Illuminate\Http\JsonResponse;
 
 /**

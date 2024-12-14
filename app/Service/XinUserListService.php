@@ -2,13 +2,14 @@
 
 namespace App\Service;
 
-use App\Models\User\UserModel;
-use App\Models\User\UserMoneyLogModel;
+use App\Models\XinUserModel;
+use App\Models\XinUserMoneyRecordModel;
 use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
-class UserService
+class XinUserListService
 {
     use RequestJson;
 
@@ -19,13 +20,15 @@ class UserService
      * @param  string  $amount  金额
      * @param  string  $mode  增加还是减少
      * @param  string  $remark  备注
+     *
+     * @throws Throwable
      */
     public function recharge(int $userId, string $amount = '0.00', string $mode = 'inc', string $remark = ''): JsonResponse
     {
         try {
             DB::beginTransaction();
             $amount = bcmul($amount, '100', 0);
-            $user = UserModel::query()->find($userId);
+            $user = XinUserModel::find($userId);
             if ($mode === 'inc') {
                 $diffMoney = $amount;
             } elseif ($mode === 'dec') {
@@ -33,14 +36,15 @@ class UserService
             } else {
                 $diffMoney = bcsub($amount, bcmul($user->money, '100', 0), 0);
             }
-            UserMoneyLogModel::query()->create([
+            XinUserMoneyRecordModel::create([
                 'user_id' => $userId,
                 'money' => $amount,
                 'describe' => $remark,
                 'scene' => 1,
             ]);
-            $user->money = bcadd(bcmul($user->money, '100', 0), $diffMoney, 0);
-            $user->save();
+            XinUserModel::where('user_id', $userId)->update([
+                'money' => bcadd(bcmul($user->money, '100', 0), $diffMoney, 0),
+            ]);
             // 提交事务
             DB::commit();
 
@@ -62,9 +66,9 @@ class UserService
      */
     public function resetPassword(int $userId, string $password = ''): JsonResponse
     {
-        $model = UserModel::query()->find($userId);
-        $model->password = password_hash($password, PASSWORD_DEFAULT);
-        $model->save();
+        XinUserModel::where('user_id', $userId)->update([
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+        ]);
 
         return $this->success('修改成功');
     }

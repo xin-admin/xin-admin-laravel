@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Attribute\Auth;
 use App\Enum\FileType;
 use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
@@ -40,7 +39,7 @@ class UpdateFileService
     public function upload($group_id): JsonResponse
     {
         $storage = new File;
-        $user_id = Auth::getAdminId();
+        $user_id = AdminUserService::getAdminUserId();
         $fileInfo = $storage->upload(
             $this->fileType->value,
             $this->disk,

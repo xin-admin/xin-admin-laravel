@@ -13,8 +13,8 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserResetPasswordRequest;
 use App\Http\BaseController;
-use App\Models\Admin\AdminModel;
-use App\Service\SysAdminListService;
+use App\Modelss\Admin\AdminModel;
+use App\Service\AdminUserListService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -28,7 +28,7 @@ class SysUserListController extends BaseController
     protected AdminModel $model;
 
     #[Autowired]
-    protected SysAdminListService $adminListService;
+    protected AdminUserListService $adminListService;
 
     /**
      * 添加用户

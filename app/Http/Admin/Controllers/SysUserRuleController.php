@@ -12,7 +12,7 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRuleRequest;
 use App\Http\BaseController;
-use App\Models\Admin\AdminRuleModel;
+use App\Modelss\Admin\AdminRuleModel;
 use Illuminate\Http\JsonResponse;
 
 /**

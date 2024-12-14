@@ -8,7 +8,7 @@ use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
-use App\Models\User\UserMoneyLogModel;
+use App\Modelss\User\UserMoneyLogModel;
 use Illuminate\Http\JsonResponse;
 
 /**

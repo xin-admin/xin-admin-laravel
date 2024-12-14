@@ -2,6 +2,7 @@
 
 namespace App\Attribute;
 
+use App\Service\AdminUserService;
 use Attribute;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ class Monitor
     public function __construct(string $name = '', bool $auth = true, string $user_id = '')
     {
         if ($auth) {
-            $user_id = Auth::getAdminId();
+            $user_id = AdminUserService::getAdminUserId();
         }
         $currentRoute = Route::current();
         $action = $currentRoute->getActionName();

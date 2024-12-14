@@ -13,8 +13,8 @@ use App\Http\Admin\Requests\UserRechargeRequest;
 use App\Http\Admin\Requests\UserRequest\UserRequest;
 use App\Http\Admin\Requests\UserResetPasswordRequest;
 use App\Http\BaseController;
-use App\Models\User\UserModel;
-use App\Service\UserService;
+use App\Modelss\User\UserModel;
+use App\Service\XinUserListService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -25,7 +25,7 @@ use Illuminate\Http\JsonResponse;
 class UserListController extends BaseController
 {
     #[Autowired]
-    protected UserService $userService;
+    protected XinUserListService $userService;
 
     #[Autowired]
     protected UserModel $model;

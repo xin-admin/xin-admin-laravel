@@ -9,9 +9,9 @@ use App\Attribute\route\RequestMapping;
 use App\Http\App\Requests\UserLoginRequest;
 use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
-use App\Models\User\UserGroupModel;
-use App\Models\User\UserModel;
-use App\Models\User\UserRuleModel;
+use App\Modelss\User\UserGroupModel;
+use App\Modelss\User\UserModel;
+use App\Modelss\User\UserRuleModel;
 use Illuminate\Http\JsonResponse;
 
 #[ApiController]

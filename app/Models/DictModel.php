@@ -1,18 +1,38 @@
 <?php
 
-namespace App\Models\Dict;
+/**
+ * Created by Reliese Model.
+ */
 
+namespace App\Models;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 字典模型
+ * Class Dict
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property string $describe
+ * @property string $code
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @mixin IdeHelperModel
  */
 class DictModel extends Model
 {
     protected $table = 'dict';
 
-    protected $fillable = ['name', 'type', 'code', 'describe'];
+    protected $fillable = [
+        'name',
+        'type',
+        'describe',
+        'code',
+    ];
 
     /**
      * 关联字典子项

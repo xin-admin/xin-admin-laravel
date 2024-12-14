@@ -10,7 +10,7 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\FileUpdateInfoRequest;
 use App\Http\BaseController;
-use App\Models\File\FileModel;
+use App\Modelss\File\FileModel;
 use Illuminate\Http\JsonResponse;
 
 /**
