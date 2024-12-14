@@ -30,6 +30,10 @@ class AdminUserListController extends BaseController
     #[Autowired]
     protected AdminUserListService $adminListService;
 
+    protected array $searchField = ['group_id' => '=', 'created_at' => 'date'];
+
+    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+
     /**
      * 添加用户
      */
@@ -47,10 +51,7 @@ class AdminUserListController extends BaseController
     #[Authorize('admin.list.list')]
     public function list(): JsonResponse
     {
-        $searchField = ['group_id' => '=', 'created_at' => 'date'];
-        $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
-
-        return $this->listResponse($this->model, $searchField, $quickSearchField);
+        return $this->listResponse($this->model);
     }
 
     /**

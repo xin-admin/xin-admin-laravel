@@ -28,7 +28,7 @@ class XinUserListService
         try {
             DB::beginTransaction();
             $amount = bcmul($amount, '100', 0);
-            $user = XinUserModel::find($userId);
+            $user = XinUserModel::where('id', $userId)->first();
             if ($mode === 'inc') {
                 $diffMoney = $amount;
             } elseif ($mode === 'dec') {
@@ -42,7 +42,7 @@ class XinUserListService
                 'describe' => $remark,
                 'scene' => 1,
             ]);
-            XinUserModel::where('user_id', $userId)->update([
+            XinUserModel::where('id', $userId)->update([
                 'money' => bcadd(bcmul($user->money, '100', 0), $diffMoney, 0),
             ]);
             // 提交事务

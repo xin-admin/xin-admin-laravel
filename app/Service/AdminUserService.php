@@ -103,7 +103,10 @@ class AdminUserService
     public function updatePassword(array $data): JsonResponse
     {
         $user_id = static::getAdminUserId();
-        $model = AdminUserModel::find($user_id);
+        $model = AdminUserModel::where('user_id', $user_id)->first();
+        if (! $model) {
+            return $this->error();
+        }
         if (! password_verify($data['oldPassword'], $model->password)) {
             return $this->error('旧密码不正确');
         }
