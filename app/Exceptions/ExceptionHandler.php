@@ -3,13 +3,13 @@
 namespace App\Exceptions;
 
 use App\Enum\ShowType;
-use Illuminate\Foundation\Exceptions\Handler as ;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
-class ExceptionHandler extends ExceptionHandler
+class ExceptionHandler extends Handler
 {
     /**
      * A list of the exception types that are not reported.
