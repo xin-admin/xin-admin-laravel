@@ -9,9 +9,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\App\Requests\UserLoginRequest;
 use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
-use App\Modelss\User\UserGroupModel;
-use App\Modelss\User\UserModel;
-use App\Modelss\User\UserRuleModel;
+use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 
 #[ApiController]
@@ -28,16 +26,9 @@ class IndexController extends BaseController
     #[GetMapping('/index')]
     public function index(): JsonResponse
     {
-        $group = UserGroupModel::query()->find(2)->toArray();
-        $menus = UserRuleModel::query()
-            ->whereIn('id', $group['rules'])
-            ->orderBy('sort', 'desc')
-            ->get()
-            ->toArray();
-        $menus = getTreeData($menus);
         $web_setting = get_setting('web');
 
-        return $this->success(compact('web_setting', 'menus'));
+        return $this->success(compact('web_setting'));
     }
 
     /**
@@ -49,7 +40,7 @@ class IndexController extends BaseController
     public function login(UserLoginRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new UserModel;
+        $model = new XinUserModel();
         $data = $model->login($data['username'], $data['password']);
         if ($data) {
             return $this->success($data);
@@ -67,7 +58,7 @@ class IndexController extends BaseController
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new UserModel;
+        $model = new XinUserModel;
         $model->username = $data['username'];
         $model->password = password_hash($data['password'], PASSWORD_DEFAULT);
         $model->email = $data['email'];

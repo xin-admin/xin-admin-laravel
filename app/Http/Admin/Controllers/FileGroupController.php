@@ -10,7 +10,7 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
-use App\Modelss\File\FileGroupModel;
+use App\Models\FileGroupModel;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 

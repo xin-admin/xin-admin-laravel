@@ -12,7 +12,7 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SettingRequest;
 use App\Http\BaseController;
-use App\Modelss\Setting\SettingModel;
+use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
 
 #[AdminController]

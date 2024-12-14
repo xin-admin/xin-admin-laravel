@@ -20,7 +20,7 @@ use Illuminate\Http\JsonResponse;
  */
 #[AdminController]
 #[RequestMapping('/admin')]
-class SysUserController extends BaseController
+class AdminUserController extends BaseController
 {
     /**
      * 权限验证白名单

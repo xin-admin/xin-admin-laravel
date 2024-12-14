@@ -3,7 +3,6 @@
 namespace App\Http\App\Controllers;
 
 use App\Attribute\ApiController;
-use App\Attribute\Auth;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -12,10 +11,6 @@ use App\Enum\FileType;
 use App\Http\App\Requests\UserSetPasswordRequest;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
-use App\Modelss\User\UserGroupModel;
-use App\Modelss\User\UserModel;
-use App\Modelss\User\UserMoneyLogModel;
-use App\Modelss\User\UserRuleModel;
 use Illuminate\Http\JsonResponse;
 use Xin\File;
 use Xin\Token;

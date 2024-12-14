@@ -13,7 +13,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\OnlineTableRequest;
 use App\Http\Admin\Requests\OnlineTableTypeRequest;
 use App\Http\BaseController;
-use App\Modelss\OnlineTableModel;
+use App\Models\OnlineTableModel;
 use Illuminate\Http\JsonResponse;
 
 /**

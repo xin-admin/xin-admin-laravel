@@ -8,7 +8,7 @@ use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
-use App\Modelss\User\UserMoneyLogModel;
+use App\Models\XinUserMoneyRecordModel;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -19,7 +19,7 @@ use Illuminate\Http\JsonResponse;
 class UserMoneyLogController extends BaseController
 {
     #[Autowired]
-    protected UserMoneyLogModel $model;
+    protected XinUserMoneyRecordModel $model;
 
     // 查询字段
     protected array $searchField = [

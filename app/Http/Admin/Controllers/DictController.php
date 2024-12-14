@@ -12,7 +12,7 @@ use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\DictRequest;
 use App\Http\BaseController;
-use App\Modelss\Dict\DictModel;
+use App\Models\DictModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 

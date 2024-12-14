@@ -8,7 +8,7 @@ use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
-use App\Modelss\MonitorModel;
+use App\Models\MonitorModel;
 use Illuminate\Http\JsonResponse;
 
 /**

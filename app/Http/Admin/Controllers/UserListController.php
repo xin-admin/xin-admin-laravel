@@ -13,7 +13,7 @@ use App\Http\Admin\Requests\UserRechargeRequest;
 use App\Http\Admin\Requests\UserRequest\UserRequest;
 use App\Http\Admin\Requests\UserResetPasswordRequest;
 use App\Http\BaseController;
-use App\Modelss\User\UserModel;
+use App\Models\XinUserModel;
 use App\Service\XinUserListService;
 use Illuminate\Http\JsonResponse;
 
@@ -28,7 +28,7 @@ class UserListController extends BaseController
     protected XinUserListService $userService;
 
     #[Autowired]
-    protected UserModel $model;
+    protected XinUserModel $model;
 
     // 查询字段
     protected array $searchField = ['group_id' => '=', 'created_at' => 'date'];

@@ -13,7 +13,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SysUserRequest\SysUserRequest;
 use App\Http\Admin\Requests\SysUserRequest\SysUserResetPasswordRequest;
 use App\Http\BaseController;
-use App\Modelss\Admin\AdminModel;
+use App\Models\AdminUserModel;
 use App\Service\AdminUserListService;
 use Illuminate\Http\JsonResponse;
 
@@ -22,10 +22,10 @@ use Illuminate\Http\JsonResponse;
  */
 #[AdminController]
 #[RequestMapping('/admin/list')]
-class SysUserListController extends BaseController
+class AdminUserListController extends BaseController
 {
     #[Autowired]
-    protected AdminModel $model;
+    protected AdminUserModel $model;
 
     #[Autowired]
     protected AdminUserListService $adminListService;
