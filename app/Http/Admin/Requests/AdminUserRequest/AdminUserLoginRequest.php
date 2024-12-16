@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Admin\Requests\SysUserRequest;
+namespace App\Http\Admin\Requests\AdminUserRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SysUserLoginRequest extends FormRequest
+class AdminUserLoginRequest extends FormRequest
 {
 
     public function rules(): array

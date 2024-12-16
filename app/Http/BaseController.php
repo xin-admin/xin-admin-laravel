@@ -8,12 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: '1.0.0', description: "
-XinAdmin [ A Full stack framework ] \n
-Copyright (c) 2023~2024 http://xinadmin.cn All rights reserved. \n
-Apache License ( http://www.apache.org/licenses/LICENSE-2.0 ) \n
-Author: 小刘同学 <2302563948@qq.com> \n
-", title: 'Xin Admin 开发文档')]
+#[OA\Info(
+    version: '1.0.0',
+    description: 'XinAdmin [ A Full stack framework ] <br> Copyright (c) 2023~2024 http://xinadmin.cn All rights reserved. <br> Apache License ( http://www.apache.org/licenses/LICENSE-2.0 ) <br> Author: 小刘同学 <2302563948@qq.com> <br>',
+    title: 'XinAdmin DOCUMENTS',
+)]
 abstract class BaseController
 {
     use RequestJson;

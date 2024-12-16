@@ -11,6 +11,7 @@ use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
+use OpenApi\Attributes as OA;
 
 #[ApiController]
 #[RequestMapping('/api')]
@@ -21,9 +22,9 @@ class IndexController extends BaseController
 
     /**
      * index
-     * @return JsonResponse
      */
     #[GetMapping('/index')]
+    #[OA\Get(path: '/api/index', description: '首页', tags: ['首页'], responses: [new OA\Response(response: 200, description: 'successful operation')])]
     public function index(): JsonResponse
     {
         $web_setting = get_setting('web');
@@ -33,14 +34,12 @@ class IndexController extends BaseController
 
     /**
      * 用户登录
-     * @param UserLoginRequest $request
-     * @return JsonResponse
      */
     #[PostMapping('/login')]
     public function login(UserLoginRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new XinUserModel();
+        $model = new XinUserModel;
         $data = $model->login($data['username'], $data['password']);
         if ($data) {
             return $this->success($data);
@@ -51,8 +50,6 @@ class IndexController extends BaseController
 
     /**
      * 用户注册
-     * @param UserRegisterRequest $request
-     * @return JsonResponse
      */
     #[PostMapping('/register')]
     public function register(UserRegisterRequest $request): JsonResponse

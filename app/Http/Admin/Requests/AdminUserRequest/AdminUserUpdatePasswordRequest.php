@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Admin\Requests\SysUserRequest;
+namespace App\Http\Admin\Requests\AdminUserRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SysUserUpdatePasswordRequest extends FormRequest
+class AdminUserUpdatePasswordRequest extends FormRequest
 {
     public function rules(): array
     {

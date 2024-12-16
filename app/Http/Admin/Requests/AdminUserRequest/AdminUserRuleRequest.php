@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Admin\Requests\SysUserRequest;
+namespace App\Http\Admin\Requests\AdminUserRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SysUserRuleRequest extends FormRequest
+class AdminUserRuleRequest extends FormRequest
 {
     public function rules(): array
     {

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Attribute\Monitor;
 use App\Exceptions\HttpResponseException;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use App\Trait\RequestJson;
@@ -42,8 +43,11 @@ class AdminUserService
     /**
      * 登录
      */
-    public function login(string $username, string $password): JsonResponse
+    public function login(AdminUserLoginRequest $request): JsonResponse
     {
+        $data = $request->validated();
+        $username = $data['username'];
+        $password = $data['password'];
         $adminUser = AdminUserModel::where('username', '=', $username)->first();
         if (! $adminUser) {
             return $this->error('用户不存在');

@@ -10,9 +10,9 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\SysUserRequest\SysUserGroupRequest;
-use App\Http\Admin\Requests\SysUserRequest\SysUserRuleRequest;
-use App\Http\Admin\Requests\SysUserRequest\SysUserSetGroupRuleRequest;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserGroupRequest;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserRuleRequest;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserSetGroupRuleRequest;
 use App\Http\BaseController;
 use App\Models\AdminRoleModel;
 use Illuminate\Http\JsonResponse;
@@ -53,7 +53,7 @@ class AdminUserRoleController extends BaseController
      */
     #[PostMapping]
     #[Authorize('admin.group.add')]
-    public function add(SysUserGroupRequest $request): JsonResponse
+    public function add(AdminUserGroupRequest $request): JsonResponse
     {
         return $this->addResponse($this->model, $request);
     }
@@ -63,7 +63,7 @@ class AdminUserRoleController extends BaseController
      */
     #[PutMapping]
     #[Authorize('admin.group.edit')]
-    public function edit(SysUserRuleRequest $request): JsonResponse
+    public function edit(AdminUserRuleRequest $request): JsonResponse
     {
         return $this->editResponse($this->model, $request);
     }
@@ -83,7 +83,7 @@ class AdminUserRoleController extends BaseController
      */
     #[PostMapping('/setGroupRule')]
     #[Authorize('admin.group.edit')]
-    public function setGroupRule(SysUserSetGroupRuleRequest $request): JsonResponse
+    public function setGroupRule(AdminUserSetGroupRuleRequest $request): JsonResponse
     {
         $group = $this->model::query()->find($request->validated('id'));
         $group->rules = implode(',', $request->validated('rule_ids'));

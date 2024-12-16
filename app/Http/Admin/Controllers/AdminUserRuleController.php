@@ -10,7 +10,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\SysUserRequest\SysUserRuleRequest;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserRuleRequest;
 use App\Http\BaseController;
 use App\Models\AdminRuleModel;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +30,7 @@ class AdminUserRuleController extends BaseController
      */
     #[PostMapping]
     #[Authorize('admin.rule.add')]
-    public function add(SysUserRuleRequest $request): JsonResponse
+    public function add(AdminUserRuleRequest $request): JsonResponse
     {
         return $this->addResponse($this->model, $request);
     }
@@ -51,7 +51,7 @@ class AdminUserRuleController extends BaseController
      */
     #[PutMapping]
     #[Authorize('admin.rule.edit')]
-    public function edit(SysUserRuleRequest $request): JsonResponse
+    public function edit(AdminUserRuleRequest $request): JsonResponse
     {
         return $this->editResponse($this->model, $request);
     }
