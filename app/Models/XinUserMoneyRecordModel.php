@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class XinUserMoneyRecord
@@ -31,10 +32,20 @@ class XinUserMoneyRecordModel extends Model
         'money' => 'float',
     ];
 
+    protected $with = ['user'];
+
     protected $fillable = [
         'user_id',
         'scene',
         'money',
         'describe',
     ];
+
+    /**
+     * 关联用户
+     */
+    public function user(): HasOne
+    {
+        return $this->HasOne(XinUserModel::class, 'id', 'user_id');
+    }
 }

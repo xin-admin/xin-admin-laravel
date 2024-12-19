@@ -18,10 +18,10 @@ use App\Models\AdminRoleModel;
 use Illuminate\Http\JsonResponse;
 
 /**
- * 管理员分组
+ * 角色管理
  */
 #[AdminController]
-#[RequestMapping('/admin/group')]
+#[RequestMapping('/admin/role')]
 class AdminUserRoleController extends BaseController
 {
     #[Autowired]
@@ -37,7 +37,7 @@ class AdminUserRoleController extends BaseController
     ];
 
     /**
-     * 获取用户分组列表
+     * 角色列表
      */
     #[GetMapping]
     #[Authorize('admin.group.list')]
@@ -49,7 +49,7 @@ class AdminUserRoleController extends BaseController
     }
 
     /**
-     * 添加用户分组
+     * 添加角色
      */
     #[PostMapping]
     #[Authorize('admin.group.add')]
@@ -59,7 +59,7 @@ class AdminUserRoleController extends BaseController
     }
 
     /**
-     * 编辑用户分组
+     * 编辑角色
      */
     #[PutMapping]
     #[Authorize('admin.group.edit')]
@@ -69,7 +69,7 @@ class AdminUserRoleController extends BaseController
     }
 
     /**
-     * 删除用户分组
+     * 删除角色
      */
     #[DeleteMapping]
     #[Authorize('admin.group.delete')]
@@ -79,7 +79,7 @@ class AdminUserRoleController extends BaseController
     }
 
     /**
-     * 设置分组权限
+     * 设置角色权限
      */
     #[PostMapping('/setGroupRule')]
     #[Authorize('admin.group.edit')]

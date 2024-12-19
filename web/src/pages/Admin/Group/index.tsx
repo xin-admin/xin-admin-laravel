@@ -192,15 +192,12 @@ export default () => {
               checkable
               defaultExpandAll
               blockNode={false}
-              treeData={treeData}
               fieldNames={{
                 title: 'name',
                 key: 'id',
                 children: 'children',
               }}
               showLine
-              onCheck={onCheck}
-              checkedKeys={checkedKeys}
             />
           }
         </Card>

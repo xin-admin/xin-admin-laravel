@@ -2,17 +2,11 @@ import XinTable from '@/components/XinTable';
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import { getRulePid } from '@/services/auth';
 import React, { useState } from 'react';
-import { useBoolean } from 'ahooks';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
-import * as AntdIcons from '@ant-design/icons';
-const allIcons: { [key: string]: any } = AntdIcons;
-
-const api = '/admin/rule';
 
 interface RuleType {
   id?: number;
@@ -72,33 +66,10 @@ const Table: React.FC = () => {
     colProps: { span: 6 },
   };
 
-
-  const formType = ({ type }: any): any[] => {
-    if (type === '0') {
-      return [pathItem, ruleItem, iconItem, localeItem];
-    } else if (type === '1') {
-      return [parentItem, pathItem, ruleItem, iconItem, localeItem];
-    } else if (type === '2') {
-      return [parentItem, ruleItem];
-    }
-    return [];
-  }
-
-  const getIcon = (icon: any): React.ReactNode => {
-    if(typeof icon === 'string' && icon) {
-      if (icon.startsWith('icon-')) {
-        return <IconFont type={icon} className={icon} />
-      } else {
-        return React.createElement(allIcons[icon]);
-      }
-    }
-    return '-';
-  };
-
   const upDate = (value: boolean, index: string, id: number) => {
     let data: any = { id };
     data[index] = value ? 1 : 0;
-    editApi(api, data).then(() => {
+    editApi('/admin/rule', data).then(() => {
       message.success('修改成功');
     });
   };
@@ -127,7 +98,7 @@ const Table: React.FC = () => {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'text',
-      renderText: (text, date) => date.icon ? getIcon(text) : '-',
+      renderText: (_, date) => date.icon ? <IconFont name={date.icon}/> : '-',
       width: 60,
       align: 'center',
       hideInForm: true,
@@ -136,7 +107,16 @@ const Table: React.FC = () => {
       valueType: 'dependency',
       name: ['type'],
       hideInTable: true,
-      columns: formType,
+      columns: ({ type }: any): any[] => {
+        if (type === '0') {
+          return [pathItem, ruleItem, iconItem, localeItem];
+        } else if (type === '1') {
+          return [parentItem, pathItem, ruleItem, iconItem, localeItem];
+        } else if (type === '2') {
+          return [parentItem, ruleItem];
+        }
+        return [];
+      },
     },
     {
       title: '类型',
@@ -182,15 +162,15 @@ const Table: React.FC = () => {
       align: 'center',
       width: 120,
       render: (_, data) => {
-        if (data.type === '2') {
-          return '-';
-        }
-        return <Switch
-          checkedChildren='显示'
-          unCheckedChildren='隐藏'
-          defaultValue={data.show === 1}
-          onChange={(value) => upDate(value, 'show', data.id!)}
-        />;
+        if (data.type === '2') { return '-' }
+        return (
+          <Switch
+            checkedChildren='显示'
+            unCheckedChildren='隐藏'
+            defaultValue={data.show === 1}
+            onChange={(value) => upDate(value, 'show', data.id!)}
+          />
+        )
       },
       colProps: { span: 4 },
     },
@@ -227,41 +207,47 @@ const Table: React.FC = () => {
     },
   ];
 
+  /**
+   * 添加菜单
+   * @param ruleData
+   */
+  const handleAdd = async (ruleData: RuleType) => {
+    let data = Object.assign(ruleData, {show: 1, status: 1})
+    if(data.type === '0') { data.pid = 0 }
+    await addApi('/admin/rule', data);
+    return true;
+  }
+
+  /**
+   * 编辑菜单
+   * @param ruleData
+   */
+  const handleUpdate = async (ruleData: RuleType) => {
+    let data: RuleType = {};
+    if (ruleData.type === '0') {
+      data = Object.assign(ruleData, { pid: 0, type: 0})
+    } else if (ruleData.type === '1') {
+      data = Object.assign(ruleData, { type: 1 })
+    } else if (ruleData.type === '2') {
+      data = Object.assign(ruleData, { type: 2, path: '', local: '', icon: '' })
+    } else {
+      message.warning('类型错误！');
+      return false;
+    }
+    await editApi('/admin/rule' , data );
+    message.success('更新成功！');
+    return true
+  }
+
   return (
     <XinTable<RuleType>
-      tableApi={api}
+      tableApi={'/admin/rule'}
       columns={columns}
       search={false}
       pagination={false}
-      handleAdd={async (date) => {
-        let arr = Object.assign(date, {show: 1, status: 1})
-        if(date.type === '0') {
-          arr.pid = 0
-        }
-        await addApi(api, arr );
-        return true;
-      }}
-      optionProps={{
-        fixed: 'right',
-        width: 100,
-        align: "center"
-      }}
-      handleUpdate={async (date) => {
-        let arr: RuleType = {};
-        if (date.type === '0') {
-          arr = { ...date, pid: 0, type: 0}
-        } else if (date.type === '1') {
-          arr = { ...date, type: 1 }
-        } else if (date.type === '2') {
-          arr = { ...date, type: 2, path: '', local: '', icon: '' }
-        } else {
-          message.warning('类型错误！');
-          return false;
-        }
-        await editApi(api , arr );
-        message.success('更新成功！');
-        return true
-      }}
+      handleAdd={handleAdd}
+      handleUpdate={handleUpdate}
+      optionProps={{ fixed: 'right', width: 100, align: "center" }}
       addBefore={() => setRef.toggle()}
       accessName={'admin.rule'}
       scroll={{ x: 1480 }}

@@ -15,8 +15,8 @@ use Illuminate\Http\JsonResponse;
  * 余额记录列表
  */
 #[AdminController]
-#[RequestMapping('/user/money/log')]
-class UserMoneyLogController extends BaseController
+#[RequestMapping('/user/money/record')]
+class UserMoneyRecordController extends BaseController
 {
     #[Autowired]
     protected XinUserMoneyRecordModel $model;

@@ -84,22 +84,27 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
       return Promise.reject(response);
     },
     async (error: any) => {
+      console.log(error);
+      console.log(location.pathname);
       const {response} = error;
       if(!response) {
         message.error('网路请求错误！');
-        return Promise.reject(error);
+        return Promise.reject(response);
       }
-      if(response.status === 401 && location.pathname !== '/login') {
+      if(response.status === 401 && location.pathname != '/login') {
         message.error(`请先登录！`);
-        history.push('/login');
-        return Promise.reject(error);
+        localStorage.clear();
+        setTimeout(() => {
+          history.push('/login');
+        }, 100);
+        return Promise.reject(response);
       }
       if(response.data) {
         await errorHandler(response.data);
       }else {
         message.error(error.message);
       }
-      return Promise.reject(error);
+      return Promise.reject(response);
     }
   ]
 ]

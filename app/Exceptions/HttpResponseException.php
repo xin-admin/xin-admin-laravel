@@ -33,7 +33,7 @@ class HttpResponseException extends RuntimeException
         $this->success = $data['success'] ?? true;
         if (empty($data['showType']) && $this->success) {
             $this->showType = ShowType::SUCCESS_MESSAGE;
-        } elseif (empty($data['showType'] && ! $this->success)) {
+        } elseif (empty($data['showType']) && ! $this->success) {
             $this->showType = ShowType::ERROR_MESSAGE;
         } else {
             $this->showType = $data['showType'];

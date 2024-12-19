@@ -21,7 +21,7 @@ const menuItemRender = (menus: USER.MenuType[]): MenuItem[] => {
     }
     if (item.icon) {
       if (item.icon.startsWith('icon-')) {
-        menuItem.icon = <IconFont type={item.icon} className={item.icon}/>;
+        menuItem.icon = <IconFont name={item.icon}/>;
       } else {
         menuItem.icon = React.createElement(allIcons[item.icon]);
       }
@@ -43,14 +43,14 @@ const MenuRender: React.FC = () => {
     history.push(e.key);
   };
 
-  const [width, setWidth] = useState<number>(256);
-  useEffect(() => setWidth(collapsed ? 64 : 256), [collapsed]);
+  const [width, setWidth] = useState<number>(228);
+  useEffect(() => setWidth(collapsed ? 64 : 228), [collapsed]);
 
 
   const menuBoxStyle: CSSProperties = {
     width: width,
     overflow: 'hidden',
-    flex: '0 0 256px',
+    flex: `0 0 ${width}px`,
     maxWidth: width,
     minWidth: width,
     transition: '0.2s'
@@ -61,7 +61,7 @@ const MenuRender: React.FC = () => {
     height: 'calc(100% - 56px)',
     transition: '0.2s',
     insetBlockStart: 56,
-    flex: '0 0 256px',
+    flex: `0 0 ${width}px`,
     maxWidth: width,
     minWidth: width,
     width: width,

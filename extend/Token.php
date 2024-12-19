@@ -60,15 +60,15 @@ class Token
         trace($sql->getBindings());
         $data = Db::table($this->table)->where('token', $this->getEncryptedToken($token))->first();
         if (! $data) {
-            throw new HttpResponseException(['msg' => 'Invalid Token'], 401);
+            throw new HttpResponseException(['msg' => 'Invalid Token', 'success' => false], 401);
         }
         // token过期-触发前端刷新token
         if ($data->expire_time && $data->expire_time <= time() && $expirationException) {
             if ($data->type == 'user-refresh' || $data->type == 'admin-refresh') {
                 // 刷新 Token 过期重新登录
-                throw new HttpResponseException(['msg' => 'Logout'], 401);
+                throw new HttpResponseException(['msg' => 'Logout', 'success' => false], 401);
             }
-            throw new HttpResponseException(['msg' => 'Refresh Token'], 202);
+            throw new HttpResponseException(['msg' => 'Refresh Token', 'success' => false], 202);
         }
         // 返回data
         $tokenData = [];

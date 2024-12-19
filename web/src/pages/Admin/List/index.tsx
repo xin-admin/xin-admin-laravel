@@ -35,7 +35,7 @@ const Table: React.FC = () => {
     const columns: ProFormColumnsAndProColumns<ResponseAdminList>[] = [
         {
             title: '用户ID',
-            dataIndex: 'id',
+            dataIndex: 'user_id',
             hideInForm: true,
             hideInSearch: true,
             sorter: true,

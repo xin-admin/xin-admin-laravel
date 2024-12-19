@@ -35,6 +35,7 @@ const iconDivStyle: CSSProperties = {
 const Login: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const refreshUserInfo = useModel('userModel', ({refreshUserInfoAsync}) => refreshUserInfoAsync)
+  const refreshDict = useModel('dictModel', ({refreshDict}) => refreshDict)
   const [loginType, setLoginType] = useState<USER.LoginType>('account');
   const handleSubmit = async (values: USER.UserLoginFrom) => {
     // 登录
@@ -42,6 +43,7 @@ const Login: React.FC = () => {
     localStorage.setItem('x-token', msg.data.token);
     localStorage.setItem('x-refresh-token', msg.data.refresh_token);
     await refreshUserInfo();
+    refreshDict();
     message.success('登录成功！');
     history.push('/');
     return;

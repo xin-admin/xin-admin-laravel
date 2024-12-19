@@ -13,4 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // 全局跨域中间件
         $middleware->append(AllowCrossDomain::class);
     })
+    ->withSingletons([
+        'Illuminate\Foundation\Exceptions\Handler' => 'App\Exceptions\ExceptionHandler',
+    ])
     ->withExceptions(function (Exceptions $exceptions) {})->create();

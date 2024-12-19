@@ -15,7 +15,7 @@
     "@ant-design/charts": "^1.4.3",
     "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.2",
-    "@umijs/max": "^4.3.36",
+    "@umijs/max": "^4.4.2",
     "ahooks": "^3.8.4",
     "antd": "^5.22.4",
     "antd-img-crop": "^4.23.0",
