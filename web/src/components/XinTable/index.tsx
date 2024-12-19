@@ -67,7 +67,6 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
         keys = keys.concat(collectKeys(item.children));
       }
     });
-    console.log(keys);
     return keys;
   };
 

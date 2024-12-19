@@ -13,6 +13,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserRuleRequest;
 use App\Http\BaseController;
 use App\Models\AdminRuleModel;
+use App\Service\AdminUserRuleService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -25,9 +26,9 @@ class AdminUserRuleController extends BaseController
     #[Autowired]
     protected AdminRuleModel $model;
 
-    /**
-     * 新增管理员权限
-     */
+    #[Autowired]
+    protected AdminUserRuleService $adminUserRuleService;
+
     #[PostMapping]
     #[Authorize('admin.rule.add')]
     public function add(AdminUserRuleRequest $request): JsonResponse
@@ -35,25 +36,39 @@ class AdminUserRuleController extends BaseController
         return $this->addResponse($this->model, $request);
     }
 
-    /**
-     * 获取权限树状列表
-     */
     #[GetMapping]
     #[Authorize('admin.rule.list')]
     public function list(): JsonResponse
     {
-        $data = $this->model->getRuleTree();
-        return $this->success(compact('data'));
+        return $this->adminUserRuleService->getDataTree();
     }
 
-    /**
-     * 编辑权限
-     */
+    #[GetMapping('/parent')]
+    #[Authorize('admin.rule.list')]
+    public function getRulesParent(): JsonResponse
+    {
+        return $this->adminUserRuleService->getRuleParent();
+    }
+
     #[PutMapping]
     #[Authorize('admin.rule.edit')]
     public function edit(AdminUserRuleRequest $request): JsonResponse
     {
         return $this->editResponse($this->model, $request);
+    }
+
+    #[PutMapping('/show/{ruleID}')]
+    #[Authorize('admin.rule.edit')]
+    public function show($ruleID): JsonResponse
+    {
+        return $this->adminUserRuleService->setShow($ruleID);
+    }
+
+    #[PutMapping('/status/{ruleID}')]
+    #[Authorize('admin.rule.edit')]
+    public function status($ruleID): JsonResponse
+    {
+        return $this->adminUserRuleService->setStatus($ruleID);
     }
 
     /**

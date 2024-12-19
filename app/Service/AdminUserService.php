@@ -12,9 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Random\RandomException;
 use Xin\Token;
 
-class AdminUserService
+class AdminUserService extends BaseService
 {
-    use RequestJson;
 
     /**
      * 刷新Token
@@ -189,20 +188,5 @@ class AdminUserService
         }
 
         return $adminUser->toArray();
-    }
-
-    private function getTreeData(&$list, int $parentId = 0): array
-    {
-        $data = [];
-        foreach ($list as $key => $item) {
-            if ($item['parent_id'] == $parentId) {
-                $children = $this->getTreeData($list, $item['rule_id']);
-                ! empty($children) && $item['children'] = $children;
-                $data[] = $item;
-                unset($list[$key]);
-            }
-        }
-
-        return $data;
     }
 }

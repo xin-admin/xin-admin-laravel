@@ -2,14 +2,15 @@ import XinTable from '@/components/XinTable';
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import React, { useState } from 'react';
+import React from 'react';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
+import { show as showApi, status as statusApi, getRuleParent } from '@/services/adminRule';
 
 interface RuleType {
-  id?: number;
+  rule_id?: number;
   pid?: number;
   type?: string | number;
   sort?: number;
@@ -26,15 +27,17 @@ interface RuleType {
 
 const Table: React.FC = () => {
   const dictEnum = useModel('dictModel', ({dictEnum}) => dictEnum)
-  const [rulePid, setRulePid] = useState<RuleType[]>();
 
   // 菜单项
   const parentItem: ProFormColumnsAndProColumns<RuleType> = {
     title: '父节点',
-    dataIndex: 'pid',
+    dataIndex: 'parent_id',
     valueType: 'treeSelect',
-    request: async () => rulePid!,
-    fieldProps: { fieldNames: { label: 'name', value: 'id' }},
+    request: async () => {
+      let data = await getRuleParent();
+      return data.data.data
+    },
+    fieldProps: { fieldNames: { label: 'name', value: 'rule_id' }},
     formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
     colProps: { span: 7 },
   };
@@ -64,14 +67,6 @@ const Table: React.FC = () => {
     dataIndex: 'local',
     valueType: 'text',
     colProps: { span: 6 },
-  };
-
-  const upDate = (value: boolean, index: string, id: number) => {
-    let data: any = { id };
-    data[index] = value ? 1 : 0;
-    editApi('/admin/rule', data).then(() => {
-      message.success('修改成功');
-    });
   };
 
   const columns: ProFormColumnsAndProColumns<RuleType>[] = [
@@ -168,7 +163,10 @@ const Table: React.FC = () => {
             checkedChildren='显示'
             unCheckedChildren='隐藏'
             defaultValue={data.show === 1}
-            onChange={(value) => upDate(value, 'show', data.id!)}
+            onChange={ async () => {
+              await statusApi(data.rule_id)
+              message.success('修改成功')
+            }}
           />
         )
       },
@@ -182,12 +180,17 @@ const Table: React.FC = () => {
       align: 'center',
       width: 120,
       render: (_, data) => {
-        return <Switch
-          checkedChildren='启用'
-          unCheckedChildren='禁用'
-          defaultChecked={data.status === 1}
-          onChange={(value) => upDate(value, 'status', data.id!)}
-        />;
+        return (
+          <Switch
+            checkedChildren='启用'
+            unCheckedChildren='禁用'
+            defaultChecked={data.status === 1}
+            onChange={async () => {
+              await showApi(data.rule_id)
+              message.success('修改成功')
+            }}
+          />
+        )
       },
       colProps: { span: 4 },
     },
@@ -247,10 +250,9 @@ const Table: React.FC = () => {
       pagination={false}
       handleAdd={handleAdd}
       handleUpdate={handleUpdate}
-      optionProps={{ fixed: 'right', width: 100, align: "center" }}
-      addBefore={() => setRef.toggle()}
       accessName={'admin.rule'}
       scroll={{ x: 1480 }}
+      rowKey={'rule_id'}
     />
   )
 }

@@ -44,7 +44,7 @@ const MenuRender: React.FC = () => {
   };
 
   const [width, setWidth] = useState<number>(228);
-  useEffect(() => setWidth(collapsed ? 64 : 228), [collapsed]);
+  useEffect(() => setWidth(collapsed ? 56 : 228), [collapsed]);
 
 
   const menuBoxStyle: CSSProperties = {

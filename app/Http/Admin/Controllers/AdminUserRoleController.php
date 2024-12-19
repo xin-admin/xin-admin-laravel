@@ -43,7 +43,7 @@ class AdminUserRoleController extends BaseController
     #[Authorize('admin.group.list')]
     public function list(): JsonResponse
     {
-        $data = $this->model->query()->get()->toArray();
+        $data = $this->model->get()->toArray();
         $data = getTreeData($data);
         return $this->success(compact('data'));
     }
