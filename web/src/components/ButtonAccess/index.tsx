@@ -13,6 +13,8 @@ export default ( props: PropsTypes ) => {
   }));
 
   const buttonAccess = (name?: string) => {
+    // TODO 开发过程全部开放权限
+    return true;
     if( name) {
       return access.includes(name.toLowerCase())
     }else {

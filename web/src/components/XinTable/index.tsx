@@ -12,7 +12,6 @@ import CreateForm from './components/CreateForm';
 import { ProTableProps } from "@ant-design/pro-components";
 import ButtonAccess from '@/components/ButtonAccess';
 
-
 function XinTable<TableData extends Record<string, any>>(props: TableProps<TableData>) {
   const {
     tableApi,

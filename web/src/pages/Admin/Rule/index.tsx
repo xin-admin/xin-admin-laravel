@@ -164,7 +164,7 @@ const Table: React.FC = () => {
             unCheckedChildren='隐藏'
             defaultValue={data.show === 1}
             onChange={ async () => {
-              await statusApi(data.rule_id)
+              await showApi(data.rule_id)
               message.success('修改成功')
             }}
           />
@@ -186,7 +186,7 @@ const Table: React.FC = () => {
             unCheckedChildren='禁用'
             defaultChecked={data.status === 1}
             onChange={async () => {
-              await showApi(data.rule_id)
+              await statusApi(data.rule_id)
               message.success('修改成功')
             }}
           />

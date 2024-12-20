@@ -80,16 +80,4 @@ class AdminUserRuleController extends BaseController
     {
         return $this->deleteResponse($this->model);
     }
-
-    /**
-     * 获取权限pid
-     */
-    #[GetMapping('/getRulePid')]
-    #[Authorize('admin.rule.list')]
-    public function getRulePid(): JsonResponse
-    {
-        $data = $this->model->getRulePid();
-
-        return $this->success(compact('data'));
-    }
 }

@@ -27,24 +27,11 @@ class AdminUserRoleController extends BaseController
     #[Autowired]
     protected AdminRoleModel $model;
 
-    // 查询字段
-    protected array $searchField = [
-        'id' => '=',
-        'name' => 'like',
-        'pid' => '=',
-        'create_time' => 'date',
-        'update_time' => 'date',
-    ];
-
-    /**
-     * 角色列表
-     */
     #[GetMapping]
-    #[Authorize('admin.group.list')]
+    #[Authorize('admin.role.list')]
     public function list(): JsonResponse
     {
-        $data = $this->model->get()->toArray();
-        $data = getTreeData($data);
+        $data = $this->model->get(['role_id', 'name', 'sort', 'created_at', 'updated_at'])->toArray();
         return $this->success(compact('data'));
     }
 
@@ -52,7 +39,7 @@ class AdminUserRoleController extends BaseController
      * 添加角色
      */
     #[PostMapping]
-    #[Authorize('admin.group.add')]
+    #[Authorize('admin.role.add')]
     public function add(AdminUserGroupRequest $request): JsonResponse
     {
         return $this->addResponse($this->model, $request);
@@ -62,7 +49,7 @@ class AdminUserRoleController extends BaseController
      * 编辑角色
      */
     #[PutMapping]
-    #[Authorize('admin.group.edit')]
+    #[Authorize('admin.role.edit')]
     public function edit(AdminUserRuleRequest $request): JsonResponse
     {
         return $this->editResponse($this->model, $request);
@@ -72,7 +59,7 @@ class AdminUserRoleController extends BaseController
      * 删除角色
      */
     #[DeleteMapping]
-    #[Authorize('admin.group.delete')]
+    #[Authorize('admin.role.delete')]
     public function delete(): JsonResponse
     {
         return $this->deleteResponse($this->model);
@@ -81,9 +68,9 @@ class AdminUserRoleController extends BaseController
     /**
      * 设置角色权限
      */
-    #[PostMapping('/setGroupRule')]
-    #[Authorize('admin.group.edit')]
-    public function setGroupRule(AdminUserSetGroupRuleRequest $request): JsonResponse
+    #[PostMapping('/rule')]
+    #[Authorize('admin.role.edit')]
+    public function setRoleRule(AdminUserSetGroupRuleRequest $request): JsonResponse
     {
         $group = $this->model::query()->find($request->validated('id'));
         $group->rules = implode(',', $request->validated('rule_ids'));

@@ -3,7 +3,7 @@ import {
   BaseQueryFilterProps,
   ProColumns, ProFormColumnsType, ProTableProps,
 } from '@ant-design/pro-components';
-import {react} from "@babel/types";
+import React from 'react';
 
 type ProFormColumnsAndProColumns<T> = ProFormColumnsType<T> &
   ProColumns<T>;
