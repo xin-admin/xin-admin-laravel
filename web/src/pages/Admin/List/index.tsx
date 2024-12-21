@@ -9,7 +9,7 @@ import {deleteApi, listApi} from '@/services/common/table';
 import { ActionType, ProTable } from '@ant-design/pro-components';
 import ButtonAccess from '@/components/ButtonAccess';
 import CreateFormRender from '@/pages/Admin/List/components/CreateFormRender';
-
+import XinTableV2 from '@/components/XinTableV2';
 export interface AdminListType {
   user_id?: number
   username?: string
@@ -234,21 +234,28 @@ const Table: React.FC = () => {
 
   return (
     <>
-      <ProTable<AdminListType>
-        headerTitle={'管理员列表'}
+      <XinTableV2
+        api={'/admin/list'}
         columns={columns}
-        actionRef={actionRef}
         rowKey={'user_id'}
-        toolBarRender={() => [
-          <ButtonAccess auth={'admin.list.add'}>
-            <CreateFormRender columns={columns} actionRef={actionRef}/>
-          </ButtonAccess>
-        ]}
-        request={async (params, sorter, filter) => {
-          const { data, success } = await listApi('/admin/list', { ...params, sorter, filter });
-          return { ...data, success, }
-        }}
+        accessName={'admin.list'}
+        title={'管理员列表'}
       />
+      {/*<ProTable<AdminListType>*/}
+      {/*  headerTitle={'管理员列表'}*/}
+      {/*  columns={columns}*/}
+      {/*  actionRef={actionRef}*/}
+      {/*  rowKey={'user_id'}*/}
+      {/*  toolBarRender={() => [*/}
+      {/*    <ButtonAccess auth={'admin.list.add'}>*/}
+      {/*      <CreateFormRender columns={columns} actionRef={actionRef}/>*/}
+      {/*    </ButtonAccess>*/}
+      {/*  ]}*/}
+      {/*  request={async (params, sorter, filter) => {*/}
+      {/*    const { data, success } = await listApi('/admin/list', { ...params, sorter, filter });*/}
+      {/*    return { ...data, success, }*/}
+      {/*  }}*/}
+      {/*/>*/}
     </>
   )
 }
