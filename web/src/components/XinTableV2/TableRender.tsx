@@ -1,11 +1,13 @@
 import { deleteApi, listApi } from '@/services/common/table';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
+import { ProColumns, ProTable, ProTableProps } from '@ant-design/pro-components';
 import React from 'react';
 import { Button, Divider, message, Popconfirm, Space } from 'antd';
 import ButtonAccess from '@/components/ButtonAccess';
 import { TableRenderProps } from './typings';
 
 export default function TableRender<T extends Record<string, any>>(props: TableRenderProps<T>) {
+  const { tableProps = {} } = props
+
   // 新增按钮点击事件
   const addButtonClick = () => {
     props.setFormInitValue(false)
@@ -24,22 +26,21 @@ export default function TableRender<T extends Record<string, any>>(props: TableR
 
   // 表格操作列
   const operateRender = (): ProColumns<T>[]  => {
-    if(props.operateShow === false) return [];
+    if(tableProps.operateShow === false) return [];
     const operate: ProColumns<T> = {
       title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
       hideInForm: true,
       hideInSearch: true,
       hideInDescriptions: true,
       render: (_, record) => (
         <Space split={ <Divider type="vertical" /> } size={0}>
-          { props.addShow !== false &&
+          { tableProps.operate?.(record) }
+          {tableProps.editShow !== false &&
             <ButtonAccess auth={ props.accessName + '.edit' }>
-              <Button children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
+              <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
             </ButtonAccess>
           }
-          { props.editShow !== false &&
+          { tableProps.deleteShow !== false &&
             <ButtonAccess auth={ props.accessName + '.delete'}>
               <Popconfirm
                 okText="确认"
@@ -48,11 +49,10 @@ export default function TableRender<T extends Record<string, any>>(props: TableR
                 description="你确定要删除这条数据吗？"
                 onConfirm={() => deleteButtonClick(record)}
               >
-                <Button type={'link'}>删除</Button>
+                <a>删除</a>
               </Popconfirm>
             </ButtonAccess>
           }
-          { props.operateRender }
         </Space>
       ),
     }
@@ -62,28 +62,31 @@ export default function TableRender<T extends Record<string, any>>(props: TableR
   // 操作栏渲染
   const toolBarRender = ():  React.ReactNode[] => {
     let defaultToolbar: React.ReactNode[] = [
-      <ButtonAccess auth={ props.accessName + '.add'}>
-        <Button children={'新增'} type={'link'} onClick={addButtonClick} />
-      </ButtonAccess>
+      <>
+        { tableProps.addShow !== false &&
+          <ButtonAccess auth={ props.accessName + '.add'}>
+            <Button children={'新增'} type={'primary'} onClick={addButtonClick} />
+          </ButtonAccess>
+        }
+      </>
     ]
-    if(props.toolBarRender) {
-      defaultToolbar = [...defaultToolbar, ...props.toolBarRender]
+    if(tableProps.toolBar) {
+      defaultToolbar = [...defaultToolbar, ...tableProps.toolBar]
     }
     return defaultToolbar
   }
 
+  const proTableProps: ProTableProps<T, any> = {
+    ...props.tableProps,
+    columns: [...props.columns, ...operateRender()],
+    toolBarRender,
+    request: async (params, sorter, filter) => {
+      const { data, success } = await listApi(props.api, { ...params, sorter, filter });
+      return { ...data, success, }
+    }
+  }
+
   return (
-    <ProTable<T>
-      columns={[...props.columns, ...operateRender()]}
-      actionRef={props.actionRef}
-      headerTitle={props.title}
-      rowKey={props.rowKey}
-      toolBarRender={toolBarRender}
-      request={async (params, sorter, filter) => {
-        const { data, success } = await listApi(props.api, { ...params, sorter, filter });
-        return { ...data, success, }
-      }}
-      {...props.tableProps}
-    />
+    <ProTable<T> {...proTableProps} />
   )
 }

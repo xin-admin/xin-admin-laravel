@@ -1,4 +1,5 @@
-import { request } from '@umijs/max';
+import { request } from
+    '@umijs/max';
 
 const api = {
   updateAdmin: '/admin/admin/updateAdmin'

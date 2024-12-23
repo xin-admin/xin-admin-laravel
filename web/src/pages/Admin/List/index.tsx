@@ -1,49 +1,35 @@
-import {ProFormColumnsAndProColumns} from '@/components/XinTable/typings';
-import XinDict from "@/components/XinDict";
-import {useModel} from '@umijs/max';
-import { Avatar, message, Popconfirm, Space, Tag } from 'antd';
-import UploadImgItem from "@/components/XinForm/UploadImgItem";
-import React, {useRef} from 'react';
+import XinDict from '@/components/XinDict';
+import { useModel } from '@umijs/max';
+import { Avatar, Tag } from 'antd';
+import UploadImgItem from '@/components/XinForm/UploadImgItem';
+import React from 'react';
 import UpdatePassword from './components/UpdatePassword';
-import {deleteApi, listApi} from '@/services/common/table';
-import { ActionType, ProTable } from '@ant-design/pro-components';
+import { listApi } from '@/services/common/table';
 import ButtonAccess from '@/components/ButtonAccess';
-import CreateFormRender from '@/pages/Admin/List/components/CreateFormRender';
 import XinTableV2 from '@/components/XinTableV2';
+import { XinTableColumnType } from '@/components/XinTableV2/typings';
+
 export interface AdminListType {
-  user_id?: number
-  username?: string
-  nickname?: string
-  avatar?: string
-  avatar_url?: string
-  email?: string
-  mobile?: string
-  status?: number
-  group_id?: number
-  sex?: number
-  role_name?: string
-  create_time?: string
-  update_time?: string
+  user_id?: number;
+  username?: string;
+  nickname?: string;
+  avatar?: string;
+  avatar_url?: string;
+  email?: string;
+  mobile?: string;
+  status?: number;
+  group_id?: number;
+  sex?: number;
+  role_name?: string;
+  create_time?: string;
+  update_time?: string;
 }
 
 const Table: React.FC = () => {
 
-  const {dictEnum} = useModel('dictModel')
+  const { dictEnum } = useModel('dictModel');
 
-  const actionRef = useRef<ActionType>();
-
-  // 删除
-  const handleRemove = async (record: AdminListType) => {
-    let res = await deleteApi('/admin/list', {id: record.user_id})
-    if (res.success) {
-      message.success('删除成功');
-      actionRef.current?.reloadAndRest?.();
-    } else {
-      message.warning(res.msg);
-    }
-  }
-
-  const columns: ProFormColumnsAndProColumns<AdminListType>[] = [
+  const columns: XinTableColumnType<AdminListType>[] = [
     {
       title: '用户ID',
       dataIndex: 'user_id',
@@ -58,15 +44,15 @@ const Table: React.FC = () => {
       hideInForm: true,
       hideInTable: true,
       fieldProps: {
-        placeholder: '输入ID\\账号\\昵称\\手机号\\邮箱搜索'
-      }
+        placeholder: '输入ID\\账号\\昵称\\手机号\\邮箱搜索',
+      },
     },
     {
       title: '用户名',
       dataIndex: 'username',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {rules: [{required: true, message: '该项为必填'}]},
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
       align: 'center',
     },
     {
@@ -74,8 +60,8 @@ const Table: React.FC = () => {
       dataIndex: 'nickname',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-      colProps: {md: 7,},
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
+      colProps: { md: 7 },
       align: 'center',
     },
     {
@@ -83,8 +69,7 @@ const Table: React.FC = () => {
       dataIndex: 'sex',
       valueType: 'radio',
       valueEnum: dictEnum.get('sex'),
-      render: (_, date) => <XinDict value={date.sex} dict={'sex'}/>,
-      colProps: {md: 6,},
+      render: (_, date) => <XinDict value={date.sex} dict={'sex'} />,
       filters: true,
       hideInSearch: true,
       align: 'center',
@@ -94,8 +79,8 @@ const Table: React.FC = () => {
       dataIndex: 'email',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-      colProps: {md: 6,},
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
+      colProps: { md: 6 },
       align: 'center',
     },
     {
@@ -103,17 +88,16 @@ const Table: React.FC = () => {
       dataIndex: 'role_id',
       valueType: 'select',
       formItemProps: {
-        rules: [{required: true, message: '该项为必填'}],
+        rules: [{ required: true, message: '该项为必填' }],
       },
       render: (_, record) => <Tag color="processing">{record.role_name}</Tag>,
       fieldProps: {
-        fieldNames: {label: 'name', value: 'role_id' },
+        fieldNames: { label: 'name', value: 'role_id' },
       },
       request: async () => {
-        let res = await listApi('/admin/role')
-        return res.data.data
+        let res = await listApi('/admin/role');
+        return res.data.data;
       },
-      colProps: {md: 6,},
       align: 'center',
     },
     {
@@ -130,8 +114,7 @@ const Table: React.FC = () => {
           status: 'Success',
         },
       },
-      formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-      colProps: {md: 6,},
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
       filters: true,
       hideInSearch: true,
       align: 'center',
@@ -141,8 +124,7 @@ const Table: React.FC = () => {
       dataIndex: 'mobile',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-      colProps: {md: 6,},
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
       align: 'center',
     },
     {
@@ -167,36 +149,33 @@ const Table: React.FC = () => {
           api={'admin/admin/upAvatar'}
           defaultFile={form.getFieldValue('avatar_url')}
           crop={true}
-        />
+        />;
       },
-      colProps: {md: 12,},
     },
     {
       valueType: 'dependency',
       hideInTable: true,
       hideInSearch: true,
-      name: ['id'],
-      columns: ({id}) => {
-        if (!id) {
+      name: ['user_id'],
+      columns: ({ user_id }) => {
+        if (!user_id) {
           return [
             {
               title: '密码',
               dataIndex: 'password',
               valueType: 'password',
-              formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-              colProps: {md: 6,},
+              formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
             },
             {
               title: '确认密码',
               dataIndex: 'rePassword',
               valueType: 'password',
-              formItemProps: {rules: [{required: true, message: '该项为必填'}]},
-              colProps: {md: 6,},
+              formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
             },
-          ]
+          ];
         }
-        return []
-      }
+        return [];
+      },
     },
     {
       valueType: 'fromNow',
@@ -204,32 +183,6 @@ const Table: React.FC = () => {
       hideInForm: true,
       dataIndex: 'created_at',
     },
-    {
-      title: '操作栏',
-      hideInForm: true,
-      hideInSearch: true,
-      render: (_, record) => {
-        if(record.user_id === 1) return <></>
-        return (
-          <Space>
-            <ButtonAccess auth={'admin.list.resetPassword'}>
-              <UpdatePassword record={record}></UpdatePassword>
-            </ButtonAccess>
-            <ButtonAccess auth={'admin.list.delete'}>
-              <Popconfirm
-                title="Delete the task"
-                description="你确定要删除这条数据吗？"
-                onConfirm={() => handleRemove(record)}
-                okText="确认"
-                cancelText="取消"
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </ButtonAccess>
-          </Space>
-        )
-      }
-    }
   ];
 
   return (
@@ -239,25 +192,16 @@ const Table: React.FC = () => {
         columns={columns}
         rowKey={'user_id'}
         accessName={'admin.list'}
-        title={'管理员列表'}
+        tableProps={{
+          operate: (record) => (
+            <ButtonAccess auth={'admin.list.resetPassword'}>
+              <UpdatePassword record={record}></UpdatePassword>
+            </ButtonAccess>
+          ),
+        }}
       />
-      {/*<ProTable<AdminListType>*/}
-      {/*  headerTitle={'管理员列表'}*/}
-      {/*  columns={columns}*/}
-      {/*  actionRef={actionRef}*/}
-      {/*  rowKey={'user_id'}*/}
-      {/*  toolBarRender={() => [*/}
-      {/*    <ButtonAccess auth={'admin.list.add'}>*/}
-      {/*      <CreateFormRender columns={columns} actionRef={actionRef}/>*/}
-      {/*    </ButtonAccess>*/}
-      {/*  ]}*/}
-      {/*  request={async (params, sorter, filter) => {*/}
-      {/*    const { data, success } = await listApi('/admin/list', { ...params, sorter, filter });*/}
-      {/*    return { ...data, success, }*/}
-      {/*  }}*/}
-      {/*/>*/}
     </>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;

@@ -6,7 +6,6 @@ import { editApi } from "@/services/common/table";
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import { UserOutlined } from '@ant-design/icons';
 
-
 interface UpDatePasswordForm {
   id?: number;
   avatar?: string;

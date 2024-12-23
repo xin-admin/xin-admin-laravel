@@ -1,24 +1,13 @@
 import { useBoolean } from 'ahooks';
 import React, { useRef, useState } from 'react';
-import { ActionType, ProColumns, ProFormColumnsType, ProFormInstance } from '@ant-design/pro-components';
+import { ActionType, ProFormInstance } from '@ant-design/pro-components';
 import FormRender from './FormRender';
 import TableRender from './TableRender';
-import { XinTableColumnType } from './typings';
+import { XinTablePropsType } from './typings';
 
-export default function XinTable<T extends Record<string, any>>(props: {
-  // 表单 columns
-  columns: XinTableColumnType<T>[];
-  // API
-  api: string;
-  // 主键
-  rowKey: string;
-  // 权限
-  accessName: string;
-  // 标题
-  title: React.ReactNode;
-}) {
+export default function XinTable<T extends Record<string, any>>(props: XinTablePropsType<T>) {
 
-  const {api, rowKey, columns, accessName, title} = props
+  const { api, rowKey, columns, accessName, formProps, tableProps } = props;
   // 表格 Ref
   const actionRef = useRef<ActionType>();
   // 表单 Ref
@@ -40,20 +29,19 @@ export default function XinTable<T extends Record<string, any>>(props: {
         afterFinish={() => {
           actionRef.current?.reloadAndRest?.();
         }}
-        modelProps={{
-          onCancel: setOpen.setFalse,
-        }}
+        modelProps={{ onCancel: setOpen.setFalse }}
+        formProps={props.formProps}
       />
       <TableRender<T>
         api={api}
-        title={title}
         rowKey={rowKey}
         columns={columns}
         accessName={accessName}
         actionRef={actionRef}
         openForm={setOpen.setTrue}
         setFormInitValue={setFormInitValue}
+        tableProps={tableProps}
       />
     </>
-  )
+  );
 }
