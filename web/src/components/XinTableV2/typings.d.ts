@@ -50,7 +50,7 @@ export interface FormPropsType {
 // 表格扩展配置 Props
 export type TablePropsType<T> =  ProTableProps<T, any> & {
   // 工具栏渲染
-  toolBar?: React.ReactNode[];
+  toolBarOperate?: React.ReactNode[];
   // 操作栏渲染
   operate?: (record: T) => React.ReactNode;
   // 表格操作列显示

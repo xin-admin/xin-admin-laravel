@@ -70,8 +70,8 @@ export default function TableRender<T extends Record<string, any>>(props: TableR
         }
       </>
     ]
-    if(tableProps.toolBar) {
-      defaultToolbar = [...defaultToolbar, ...tableProps.toolBar]
+    if(tableProps.toolBarOperate) {
+      defaultToolbar = [...defaultToolbar, ...tableProps.toolBarOperate]
     }
     return defaultToolbar
   }

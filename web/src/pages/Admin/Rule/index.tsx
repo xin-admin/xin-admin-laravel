@@ -1,4 +1,4 @@
-import XinTable from '@/components/XinTable';
+import XinTableV2 from '@/components/XinTableV2';
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
@@ -39,7 +39,6 @@ const Table: React.FC = () => {
     },
     fieldProps: { fieldNames: { label: 'name', value: 'rule_id' }},
     formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
-    colProps: { span: 7 },
   };
   const ruleItem: ProFormColumnsAndProColumns<RuleType> = {
     title: '权限标识',
@@ -60,13 +59,11 @@ const Table: React.FC = () => {
     dataIndex: 'icon',
     valueType: 'text',
     renderFormItem: (form, config, schema) => <IconsItem dataIndex={form.key} form={schema} value={config.value}></IconsItem>,
-    colProps: { span: 6 },
   };
   const localeItem: ProFormColumnsAndProColumns<RuleType> = {
     title: '多语言标识',
     dataIndex: 'local',
     valueType: 'text',
-    colProps: { span: 6 },
   };
 
   const columns: ProFormColumnsAndProColumns<RuleType>[] = [
@@ -78,15 +75,12 @@ const Table: React.FC = () => {
       hideInTable: true,
       initialValue: '0',
       formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
-      colProps: { span: 10 },
     },
     {
       title: '标题',
       dataIndex: 'name',
       valueType: 'text',
       formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
-      width: 200,
-      colProps: { span: 7 },
       tooltip: '菜单的标题，可当作菜单栏标题，如果有多语言标识，该项会被覆盖！',
     },
     {
@@ -94,7 +88,6 @@ const Table: React.FC = () => {
       dataIndex: 'icon',
       valueType: 'text',
       renderText: (_, date) => date.icon ? <IconFont name={date.icon}/> : '-',
-      width: 60,
       align: 'center',
       hideInForm: true,
     },
@@ -121,7 +114,6 @@ const Table: React.FC = () => {
       render: (_, date) => <XinDict value={date.type} dict={'ruleType'} />,
       hideInForm: true,
       align: 'center',
-      width: 120,
     },
     {
       title: '排序',
@@ -129,8 +121,6 @@ const Table: React.FC = () => {
       valueType: 'text',
       tooltip: '数字越大排序越靠前',
       align: 'center',
-      width: 100,
-      colProps: { span: 4 },
     },
     {
       title: '权限标识',
@@ -138,7 +128,6 @@ const Table: React.FC = () => {
       valueType: 'text',
       hideInForm: true,
       tooltip: '例: 路由地址 "/index/index" , 权限标识为 "index.index" , 按钮权限请加上上级路由的权限标识，如：查询按钮权限 "index.index.list" ',
-      width: 200,
     },
     {
       title: '路由地址',
@@ -147,7 +136,6 @@ const Table: React.FC = () => {
       hideInForm: true,
       renderText: (text, record) => record.type !== '2' ? text : '-',
       tooltip: '项目文件系统路径，忽略：pages 或 index.(ts|tsx)',
-      width: 200,
     },
     {
       title: '显示状态',
@@ -155,7 +143,6 @@ const Table: React.FC = () => {
       valueType: 'switch',
       tooltip: '菜单栏显示状态，控制菜单是否显示再导航中（菜单规则依然生效）',
       align: 'center',
-      width: 120,
       render: (_, data) => {
         if (data.type === '2') { return '-' }
         return (
@@ -170,7 +157,6 @@ const Table: React.FC = () => {
           />
         )
       },
-      colProps: { span: 4 },
     },
     {
       title: '是否禁用',
@@ -178,7 +164,6 @@ const Table: React.FC = () => {
       valueType: 'switch',
       tooltip: '权限是否禁用（将不会参与权限验证）',
       align: 'center',
-      width: 120,
       render: (_, data) => {
         return (
           <Switch
@@ -192,7 +177,6 @@ const Table: React.FC = () => {
           />
         )
       },
-      colProps: { span: 4 },
     },
     {
       title: '创建时间',
@@ -243,17 +227,35 @@ const Table: React.FC = () => {
   }
 
   return (
-    <XinTable<RuleType>
-      tableApi={'/admin/rule'}
+    <XinTableV2
       columns={columns}
-      search={false}
-      pagination={false}
-      handleAdd={handleAdd}
-      handleUpdate={handleUpdate}
+      api={'/admin/rule'}
       accessName={'admin.rule'}
-      scroll={{ x: 1480 }}
       rowKey={'rule_id'}
+      tableProps={{
+        rowSelection: {
+          type: 'checkbox',
+        },
+        cardProps: {bordered: true},
+        search: false,
+        headerTitle:'权限列表',
+        indentSize: 20,
+        toolbar: {
+          settings: []
+        }
+      }}
     />
+    // <XinTable<RuleType>
+    //   tableApi={'/admin/rule'}
+    //   columns={columns}
+    //   search={false}
+    //   pagination={false}
+    //   handleAdd={handleAdd}
+    //   handleUpdate={handleUpdate}
+    //   accessName={'admin.rule'}
+    //   scroll={{ x: 1480 }}
+    //   rowKey={'rule_id'}
+    // />
   )
 }
 
