@@ -2,7 +2,7 @@ import XinTableV2 from '@/components/XinTableV2';
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import React from 'react';
+import React, { useState } from 'react';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
@@ -226,6 +226,8 @@ const Table: React.FC = () => {
     return true
   }
 
+  const [params, setParams] = useState<any>();
+
   return (
     <XinTableV2
       columns={columns}
@@ -236,12 +238,20 @@ const Table: React.FC = () => {
         rowSelection: {
           type: 'checkbox',
         },
+        params: params,
         cardProps: {bordered: true},
         search: false,
         headerTitle:'权限列表',
         indentSize: 20,
         toolbar: {
-          settings: []
+          settings: [],
+          search: {
+            onSearch: (value) => {
+              setParams({
+                keywordSearch: value
+              })
+            }
+          }
         }
       }}
     />

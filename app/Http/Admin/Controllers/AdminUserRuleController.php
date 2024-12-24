@@ -17,67 +17,64 @@ use App\Service\AdminUserRuleService;
 use Illuminate\Http\JsonResponse;
 
 /**
- * 管理员权限
+ * 管理员权限控制器
  */
 #[AdminController]
 #[RequestMapping('/admin/rule')]
 class AdminUserRuleController extends BaseController
 {
-    #[Autowired]
-    protected AdminRuleModel $model;
+    public function __construct()
+    {
+        $this->model = new AdminRuleModel;
+        $this->service = new AdminUserRuleService;
+    }
 
-    #[Autowired]
-    protected AdminUserRuleService $adminUserRuleService;
-
-    #[PostMapping]
-    #[Authorize('admin.rule.add')]
+    /** 新增管理员权限 */
+    #[PostMapping] #[Authorize('admin.rule.add')]
     public function add(AdminUserRuleRequest $request): JsonResponse
     {
-        return $this->addResponse($this->model, $request);
+        return $this->addResponse($request);
     }
 
-    #[GetMapping]
-    #[Authorize('admin.rule.list')]
+    /** 管理员权限列表 */
+    #[GetMapping] #[Authorize('admin.rule.list')]
     public function list(): JsonResponse
     {
-        return $this->adminUserRuleService->getDataTree();
+        return $this->service->getDataTree();
     }
 
-    #[GetMapping('/parent')]
-    #[Authorize('admin.rule.list')]
+    /** 获取父级权限 */
+    #[GetMapping('/parent')] #[Authorize('admin.rule.list')]
     public function getRulesParent(): JsonResponse
     {
-        return $this->adminUserRuleService->getRuleParent();
+        return $this->service->getRuleParent();
     }
 
-    #[PutMapping]
-    #[Authorize('admin.rule.edit')]
+    /** 编辑管理员权限 */
+    #[PutMapping] #[Authorize('admin.rule.edit')]
     public function edit(AdminUserRuleRequest $request): JsonResponse
     {
-        return $this->editResponse($this->model, $request);
+        return $this->editResponse($request);
     }
 
-    #[PutMapping('/show/{ruleID}')]
-    #[Authorize('admin.rule.edit')]
+    /** 设置显示 */
+    #[PutMapping('/show/{ruleID}')] #[Authorize('admin.rule.edit')]
     public function show($ruleID): JsonResponse
     {
-        return $this->adminUserRuleService->setShow($ruleID);
+        return $this->service->setShow($ruleID);
     }
 
-    #[PutMapping('/status/{ruleID}')]
-    #[Authorize('admin.rule.edit')]
+    /** 设置状态 */
+    #[PutMapping('/status/{ruleID}')] #[Authorize('admin.rule.edit')]
     public function status($ruleID): JsonResponse
     {
-        return $this->adminUserRuleService->setStatus($ruleID);
+        return $this->service->setStatus($ruleID);
     }
 
-    /**
-     * 删除权限
-     */
-    #[DeleteMapping]
-    #[Authorize('admin.rule.delete')]
+    /** 删除权限 */
+    #[DeleteMapping] #[Authorize('admin.rule.delete')]
     public function delete(): JsonResponse
     {
-        return $this->deleteResponse($this->model);
+        return $this->deleteResponse();
     }
 }

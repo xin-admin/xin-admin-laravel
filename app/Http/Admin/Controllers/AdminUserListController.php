@@ -4,7 +4,6 @@ namespace App\Http\Admin\Controllers;
 
 use APP\Attribute\AdminController;
 use App\Attribute\Authorize;
-use App\Attribute\Autowired;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
@@ -17,53 +16,53 @@ use App\Models\AdminUserModel;
 use App\Service\AdminUserListService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 管理员列表控制器
+ */
 #[AdminController]
 #[RequestMapping('/admin/list')]
 class AdminUserListController extends BaseController
 {
-    #[Autowired]
-    protected AdminUserModel $model;
+    public function __construct()
+    {
+        $this->model = new AdminUserModel;
+        $this->service = new AdminUserListService;
+        $this->searchField = ['role_id' => '=', 'created_at' => 'date'];
+        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+    }
 
-    #[Autowired]
-    protected AdminUserListService $adminListService;
-
-    protected array $searchField = ['group_id' => '=', 'created_at' => 'date'];
-
-    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
-
-    #[PostMapping]
-    #[Authorize('admin.list.add')]
+    /** 新增管理员用户 */
+    #[PostMapping] #[Authorize('admin.list.add')]
     public function add(AdminUserRequest $request): JsonResponse
     {
-        return $this->addResponse($this->model, $request);
+        return $this->addResponse($request);
     }
 
-    #[GetMapping]
-    #[Authorize('admin.list.list')]
+    /** 获取管理员用户列表 */
+    #[GetMapping] #[Authorize('admin.list.list')]
     public function list(): JsonResponse
     {
-        return $this->listResponse($this->model);
+        return $this->listResponse();
     }
 
-    #[PutMapping]
-    #[Authorize('admin.list.edit')]
+    /** 编辑管理员用户 */
+    #[PutMapping] #[Authorize('admin.list.edit')]
     public function edit(AdminUserRequest $request): JsonResponse
     {
-        return $this->editResponse($this->model, $request);
+        return $this->editResponse($request);
     }
 
-    #[DeleteMapping]
-    #[Authorize('admin.list.delete')]
+    /** 删除管理员用户 */
+    #[DeleteMapping] #[Authorize('admin.list.delete')]
     public function delete(): JsonResponse
     {
-        return $this->deleteResponse($this->model);
+        return $this->deleteResponse();
     }
 
-    #[PostMapping('/resetPassword')]
-    #[Authorize('admin.list.resetPassword')]
+    /** 重置管理员密码 */
+    #[PostMapping('/resetPassword')] #[Authorize('admin.list.resetPassword')]
     public function resetPassword(AdminUserResetPasswordRequest $request): JsonResponse
     {
-        return $this->adminListService
-            ->resetPassword($request->validated());
+        return $this->service->resetPassword($request->validated());
     }
 }

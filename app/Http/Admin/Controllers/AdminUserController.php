@@ -3,7 +3,6 @@
 namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
-use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -15,51 +14,58 @@ use App\Http\BaseController;
 use App\Service\AdminUserService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * 管理员用户控制器
+ */
 #[AdminController]
 #[RequestMapping('/admin')]
 class AdminUserController extends BaseController
 {
-    /**
-     * 权限验证白名单
-     */
-    protected array $noPermission = ['refreshToken', 'login'];
+    public function __construct()
+    {
+        $this->service = new AdminUserService;
+        $this->noPermission = ['refreshToken', 'login'];
+    }
 
-    #[Autowired]
-    protected AdminUserService $adminUserService;
-
+    /** 会员登录 */
     #[PostMapping('/login')]
     public function login(AdminUserLoginRequest $request): JsonResponse
     {
-        return $this->adminUserService->login($request);
+        return $this->service->login($request);
     }
 
+    /** 刷新 Token */
     #[PostMapping('/refreshToken')]
     public function refreshToken(): JsonResponse
     {
-        return $this->adminUserService->refreshToken();
+        return $this->service->refreshToken();
     }
 
+    /** 退出登录 */
     #[PostMapping('/logout')]
     public function logout(): JsonResponse
     {
-        return $this->adminUserService->logout();
+        return $this->service->logout();
     }
 
+    /** 获取管理员信息 */
     #[GetMapping('/info')]
     public function getAdminInfo(): JsonResponse
     {
-        return $this->adminUserService->getAdminInfo();
+        return $this->service->getAdminInfo();
     }
 
+    /** 更新管理员信息 */
     #[PutMapping]
     public function updateAdmin(AdminUserUpdateInfoRequest $request): JsonResponse
     {
-        return $this->adminUserService->updateAdmin($request->validated());
+        return $this->service->updateAdmin($request->validated());
     }
 
+    /** 修改密码 */
     #[PostMapping('/updatePassword')]
     public function updatePassword(AdminUserUpdatePasswordRequest $request): JsonResponse
     {
-        return $this->adminUserService->updatePassword($request->validated());
+        return $this->service->updatePassword($request->validated());
     }
 }

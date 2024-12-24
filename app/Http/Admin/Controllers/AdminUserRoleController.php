@@ -4,7 +4,6 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
-use App\Attribute\Autowired;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
@@ -18,58 +17,55 @@ use App\Models\AdminRoleModel;
 use Illuminate\Http\JsonResponse;
 
 /**
- * 角色管理
+ * 角色管理控制器
  */
 #[AdminController]
 #[RequestMapping('/admin/role')]
 class AdminUserRoleController extends BaseController
 {
-    #[Autowired]
-    protected AdminRoleModel $model;
+    public function __construct()
+    {
+        $this->model = new AdminRoleModel;
+    }
 
-    #[GetMapping]
-    #[Authorize('admin.role.list')]
+    /** 获取角色列表 */
+    #[GetMapping] #[Authorize('admin.role.list')]
     public function list(): JsonResponse
     {
-        $data = $this->model->get(['role_id', 'name', 'sort', 'created_at', 'updated_at'])->toArray();
+        $data = $this->model->get([
+            'role_id',
+            'name',
+            'sort',
+            'created_at',
+            'updated_at',
+        ])->toArray();
+
         return $this->success(compact('data'));
     }
 
-    /**
-     * 添加角色
-     */
-    #[PostMapping]
-    #[Authorize('admin.role.add')]
+    /** 添加角色 */
+    #[PostMapping] #[Authorize('admin.role.add')]
     public function add(AdminUserGroupRequest $request): JsonResponse
     {
-        return $this->addResponse($this->model, $request);
+        return $this->addResponse($request);
     }
 
-    /**
-     * 编辑角色
-     */
-    #[PutMapping]
-    #[Authorize('admin.role.edit')]
+    /** 编辑角色 */
+    #[PutMapping] #[Authorize('admin.role.edit')]
     public function edit(AdminUserRuleRequest $request): JsonResponse
     {
-        return $this->editResponse($this->model, $request);
+        return $this->editResponse($request);
     }
 
-    /**
-     * 删除角色
-     */
-    #[DeleteMapping]
-    #[Authorize('admin.role.delete')]
+    /** 删除角色 */
+    #[DeleteMapping] #[Authorize('admin.role.delete')]
     public function delete(): JsonResponse
     {
-        return $this->deleteResponse($this->model);
+        return $this->deleteResponse();
     }
 
-    /**
-     * 设置角色权限
-     */
-    #[PostMapping('/rule')]
-    #[Authorize('admin.role.edit')]
+    /** 设置角色权限 */
+    #[PostMapping('/rule')] #[Authorize('admin.role.edit')]
     public function setRoleRule(AdminUserSetGroupRuleRequest $request): JsonResponse
     {
         $group = $this->model::query()->find($request->validated('id'));

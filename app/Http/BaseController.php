@@ -18,6 +18,16 @@ abstract class BaseController
     use RequestJson;
 
     /**
+     * model
+     */
+    protected Model $model;
+
+    /**
+     * service
+     */
+    protected mixed $service;
+
+    /**
      * 权限验证白名单
      */
     protected array $noPermission = [];
@@ -35,9 +45,9 @@ abstract class BaseController
     /**
      * 查询响应
      */
-    protected function listResponse(Model $model): JsonResponse
+    protected function listResponse(): JsonResponse
     {
-        [$buildModel, $paginate] = $this->buildSearch($model);
+        [$buildModel, $paginate] = $this->buildSearch();
         // TODO 分页响应优化，去除不需要的参数
         $data = $buildModel->paginate(
             $paginate['prePage'],
@@ -50,12 +60,11 @@ abstract class BaseController
     /**
      * 更新响应
      */
-    public function editResponse(Model $model, FormRequest $request): JsonResponse
+    public function editResponse(FormRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $key = $model->getKeyName();
-        $model->query()->where($key, $data[$key])->update($data);
-
+        $key = $this->model->getKeyName();
+        $this->model->where($key, $data[$key])->update($data);
         return $this->success('ok');
     }
 
@@ -64,26 +73,25 @@ abstract class BaseController
      *
      * @param  FormRequest  $request  请求
      */
-    public function addResponse(Model $model, FormRequest $request): JsonResponse
+    public function addResponse(FormRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model->query()->create($data);
-
+        $this->model->create($data);
         return $this->success('ok');
     }
 
     /**
      * 删除响应
      */
-    public function deleteResponse(Model $model): JsonResponse
+    public function deleteResponse(): JsonResponse
     {
         $data = request()->all();
-        $key = $model->getKeyName();
+        $key = $this->model->getKeyName();
         if (! isset($data[$key])) {
             return $this->error('请输入删除KEY！');
         }
         $delArr = explode(',', $data[$key]);
-        $delNum = $model->destroy($delArr);
+        $delNum = $this->model->destroy($delArr);
         if ($delNum != 0) {
             return $this->success('删除成功，删除了'.$delNum.'条数据');
         } else {
@@ -94,10 +102,10 @@ abstract class BaseController
     /**
      * 构建查询方法
      */
-    private function buildSearch(Model $model): array
+    private function buildSearch(): array
     {
         $params = request()->query();
-        $model = $model->query();
+        $model = $this->model->query();
         // 构建筛选
         if (isset($params['filter']) && $params['filter'] != '') {
             $filter = json_decode($params['filter'], true);

@@ -9,8 +9,8 @@ class AdminUserRuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'sometimes|required|integer|exists:admin_rule,id',
-            'pid' => 'required|integer',
+            'rule_id' => 'sometimes|required|integer|exists:admin_rule,id',
+            'parent_id' => 'required|integer',
             'name' => 'required|string|max:50',
             'type' => 'required|integer|in:0,1,2',
             'key' => 'required|string|max:50',
