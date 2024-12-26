@@ -16,69 +16,57 @@ use App\Models\DictModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * 字典管理
+ */
 #[AdminController]
 #[RequestMapping('/admin/dict')]
 class DictController extends BaseController
 {
-    #[Autowired]
-    protected DictModel $model;
+    public function __construct()
+    {
+        $this->model = new DictModel;
+        $this->searchField = [
+            'id' => '=',
+            'name' => 'like',
+            'code' => '=',
+            'type' => '=',
+            'created_at' => 'date',
+            'updated_at' => 'date',
+        ];
+    }
 
-    // 查询字段
-    protected array $searchField = [
-        'id' => '=',
-        'name' => 'like',
-        'code' => '=',
-        'type' => '=',
-        'created_at' => 'date',
-        'updated_at' => 'date',
-    ];
-
-    /**
-     * 获取字典列表
-     */
-    #[GetMapping]
-    #[Authorize('list')]
+    /** 获取字典列表 */
+    #[GetMapping] #[Authorize('list')]
     public function list(): JsonResponse
     {
-        return $this->listResponse($this->model);
+        return $this->listResponse();
     }
 
-    /**
-     * 添加字典
-     */
-    #[PostMapping]
-    #[Authorize('add')]
+    /** 添加字典 */
+    #[PostMapping] #[Authorize('add')]
     public function add(DictRequest $request): JsonResponse
     {
-        return $this->addResponse($this->model, $request);
+        return $this->addResponse($request);
     }
 
-    /**
-     * 修改字典信息
-     */
-    #[PutMapping]
-    #[Authorize('admin.dict.edit')]
+    /** 修改字典信息 */
+    #[PutMapping] #[Authorize('admin.dict.edit')]
     public function edit(DictRequest $request): JsonResponse
     {
-        return $this->editResponse($this->model, $request);
+        return $this->editResponse($request);
     }
 
-    /**
-     * 删除字典
-     */
-    #[DeleteMapping]
-    #[Authorize('admin.dict.delete')]
+    /** 删除字典 */
+    #[DeleteMapping] #[Authorize('admin.dict.delete')]
     public function delete(): JsonResponse
     {
         // TODO 删除字典需判断是否有子项
-        return $this->deleteResponse($this->model);
+        return $this->deleteResponse();
     }
 
-    /**
-     * 获取字典
-     */
-    #[GetMapping('/list')]
-    #[Authorize('admin.dict.list')]
+    /** 获取字典 */
+    #[GetMapping('/list')] #[Authorize('admin.dict.list')]
     public function itemList(): JsonResponse
     {
         if (Cache::has('sys_dict')) {

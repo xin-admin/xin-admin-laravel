@@ -10,9 +10,7 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/admin')]
 class IndexController extends BaseController
 {
-    /**
-     * 测试接口
-     */
+    /** 测试接口 */
     #[GetMapping]
     public function index(): JsonResponse
     {

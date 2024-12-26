@@ -18,22 +18,19 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/user/money/record')]
 class UserMoneyRecordController extends BaseController
 {
-    #[Autowired]
-    protected XinUserMoneyRecordModel $model;
+    public function __construct()
+    {
+        $this->model = new XinUserMoneyRecordModel;
+        $this->searchField = [
+            'created_at' => 'date',
+            'user_id' => '=',
+        ];
+    }
 
-    // 查询字段
-    protected array $searchField = [
-        'created_at' => 'date',
-        'user_id' => '=',
-    ];
-
-    /**
-     * 获取用户余额记录列表
-     */
-    #[GetMapping]
-    #[Authorize('user.moneyLog.list')]
+    /** 获取用户余额记录列表 */
+    #[GetMapping] #[Authorize('user.moneyLog.list')]
     public function list(): JsonResponse
     {
-        return $this->listResponse($this->model);
+        return $this->listResponse();
     }
 }

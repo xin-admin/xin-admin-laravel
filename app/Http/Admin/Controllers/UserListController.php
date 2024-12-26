@@ -24,60 +24,44 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/user/list')]
 class UserListController extends BaseController
 {
-    #[Autowired]
-    protected XinUserListService $userService;
+    public function __construct()
+    {
+        $this->model = new XinUserModel;
+        $this->service = new XinUserListService;
+        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+        $this->searchField = ['group_id' => '=', 'created_at' => 'date'];
+    }
 
-    #[Autowired]
-    protected XinUserModel $model;
-
-    // 查询字段
-    protected array $searchField = ['group_id' => '=', 'created_at' => 'date'];
-
-    // 快速搜索字段
-    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
-
-    /**
-     * 获取用户列表
-     */
-    #[GetMapping]
-    #[Authorize('user.list.list')]
+    /** 获取用户列表 */
+    #[GetMapping] #[Authorize('user.list.list')]
     public function list(): JsonResponse
     {
-        return $this->listResponse($this->model);
+        return $this->listResponse();
     }
 
-    /**
-     * 编辑用户信息
-     */
-    #[PutMapping]
-    #[Authorize('user.list.edit')]
+    /** 编辑用户信息 */
+    #[PutMapping] #[Authorize('user.list.edit')]
     public function edit(UserRequest $request): JsonResponse
     {
-        return $this->editResponse($this->model, $request);
+        return $this->editResponse($request);
     }
 
-    /**
-     * 充值
-     */
-    #[Authorize('user.list.recharge')]
-    #[PostMapping('/recharge')]
+    /** 充值 */
+    #[Authorize('user.list.recharge')] #[PostMapping('/recharge')]
     public function recharge(UserRechargeRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $this->userService->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark']);
+        $this->service->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark']);
 
         return $this->success('ok');
     }
 
-    /**
-     * 重置密码
-     */
-    #[Authorize('user.list.resetPassword')]
-    #[PostMapping('/resetPassword')]
+    /** 重置密码 */
+    #[Authorize('user.list.resetPassword')] #[PostMapping('/resetPassword')]
     public function resetPassword(UserResetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $this->userService->resetPassword($data['user_id'], $data['password']);
+        $this->service->resetPassword($data['user_id'], $data['password']);
 
         return $this->success('ok');
     }
