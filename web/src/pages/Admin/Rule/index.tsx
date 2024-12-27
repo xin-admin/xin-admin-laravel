@@ -1,35 +1,22 @@
 import XinTableV2 from '@/components/XinTableV2';
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
+import { XinTableColumn, XinTableRef } from '@/components/XinTableV2/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
 import { show as showApi, status as statusApi, getRuleParent } from '@/services/adminRule';
+import { IRule } from '@/domain/rule';
+import { RedoOutlined } from '@ant-design/icons';
 
-interface RuleType {
-  rule_id?: number;
-  pid?: number;
-  type?: string | number;
-  sort?: number;
-  name?: string;
-  path?: string;
-  icon?: string;
-  key?: string;
-  local?: string;
-  status?: number;
-  show?: number;
-  created_at?: string;
-  updated_at?: string;
-}
-
-const Table: React.FC = () => {
+export default () => {
+  // 字典
   const dictEnum = useModel('dictModel', ({dictEnum}) => dictEnum)
-
+  const tableRef = useRef<XinTableRef>();
   // 菜单项
-  const parentItem: ProFormColumnsAndProColumns<RuleType> = {
+  const parentItem: XinTableColumn<IRule> = {
     title: '父节点',
     dataIndex: 'parent_id',
     valueType: 'treeSelect',
@@ -40,33 +27,26 @@ const Table: React.FC = () => {
     fieldProps: { fieldNames: { label: 'name', value: 'rule_id' }},
     formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
   };
-  const ruleItem: ProFormColumnsAndProColumns<RuleType> = {
-    title: '权限标识',
-    dataIndex: 'key',
-    valueType: 'text',
-    tooltip: '例: 路由地址 "/index/index" , 权限标识为 "index.index" , 按钮权限请加上上级路由的权限标识，如：查询按钮权限 "index.index.list" ',
-    formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
-  };
-  const pathItem: ProFormColumnsAndProColumns<RuleType> = {
+  const pathItem: XinTableColumn<IRule> = {
     title: '路由地址',
     dataIndex: 'path',
     valueType: 'text',
     formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
     tooltip: '项目文件系统路径，忽略：pages 或 index.(ts|tsx)',
   };
-  const iconItem: ProFormColumnsAndProColumns<RuleType> = {
+  const iconItem: XinTableColumn<IRule> = {
     title: '图标',
     dataIndex: 'icon',
     valueType: 'text',
     renderFormItem: (form, config, schema) => <IconsItem dataIndex={form.key} form={schema} value={config.value}></IconsItem>,
   };
-  const localeItem: ProFormColumnsAndProColumns<RuleType> = {
+  const localeItem: XinTableColumn<IRule> = {
     title: '多语言标识',
     dataIndex: 'local',
     valueType: 'text',
   };
 
-  const columns: ProFormColumnsAndProColumns<RuleType>[] = [
+  const columns: XinTableColumn<IRule>[] = [
     {
       title: '类型',
       dataIndex: 'type',
@@ -97,13 +77,12 @@ const Table: React.FC = () => {
       hideInTable: true,
       columns: ({ type }: any): any[] => {
         if (type === '0') {
-          return [pathItem, ruleItem, iconItem, localeItem];
+          return [pathItem, iconItem, localeItem];
         } else if (type === '1') {
-          return [parentItem, pathItem, ruleItem, iconItem, localeItem];
-        } else if (type === '2') {
-          return [parentItem, ruleItem];
+          return [parentItem, pathItem, iconItem, localeItem];
+        } else {
+          return [parentItem];
         }
-        return [];
       },
     },
     {
@@ -116,18 +95,19 @@ const Table: React.FC = () => {
       align: 'center',
     },
     {
-      title: '排序',
-      dataIndex: 'sort',
-      valueType: 'text',
-      tooltip: '数字越大排序越靠前',
-      align: 'center',
-    },
-    {
       title: '权限标识',
       dataIndex: 'key',
       valueType: 'text',
-      hideInForm: true,
+      formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
       tooltip: '例: 路由地址 "/index/index" , 权限标识为 "index.index" , 按钮权限请加上上级路由的权限标识，如：查询按钮权限 "index.index.list" ',
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      valueType: 'digit',
+      tooltip: '数字越大排序越靠前',
+      align: 'center',
+      colProps: { span: 6 }
     },
     {
       title: '路由地址',
@@ -143,6 +123,7 @@ const Table: React.FC = () => {
       valueType: 'switch',
       tooltip: '菜单栏显示状态，控制菜单是否显示再导航中（菜单规则依然生效）',
       align: 'center',
+      colProps: { span: 6 },
       render: (_, data) => {
         if (data.type === '2') { return '-' }
         return (
@@ -164,6 +145,7 @@ const Table: React.FC = () => {
       valueType: 'switch',
       tooltip: '权限是否禁用（将不会参与权限验证）',
       align: 'center',
+      colProps: { span: 6 },
       render: (_, data) => {
         return (
           <Switch
@@ -198,7 +180,7 @@ const Table: React.FC = () => {
    * 添加菜单
    * @param ruleData
    */
-  const handleAdd = async (ruleData: RuleType) => {
+  const handleAdd = async (ruleData: IRule) => {
     let data = Object.assign(ruleData, {show: 1, status: 1})
     if(data.type === '0') { data.pid = 0 }
     await addApi('/admin/rule', data);
@@ -209,8 +191,8 @@ const Table: React.FC = () => {
    * 编辑菜单
    * @param ruleData
    */
-  const handleUpdate = async (ruleData: RuleType) => {
-    let data: RuleType = {};
+  const handleUpdate = async (ruleData: IRule) => {
+    let data: IRule = {};
     if (ruleData.type === '0') {
       data = Object.assign(ruleData, { pid: 0, type: 0})
     } else if (ruleData.type === '1') {
@@ -234,39 +216,29 @@ const Table: React.FC = () => {
       api={'/admin/rule'}
       accessName={'admin.rule'}
       rowKey={'rule_id'}
+      ref={tableRef}
       tableProps={{
-        rowSelection: {
-          type: 'checkbox',
-        },
+        rowSelection: { type: 'checkbox' },
         params: params,
-        cardProps: {bordered: true},
+        cardProps: { bordered: true },
         search: false,
         headerTitle:'权限列表',
-        indentSize: 20,
-        toolbar: {
-          settings: [],
-          search: {
-            onSearch: (value) => {
-              setParams({
-                keywordSearch: value
-              })
+        toolbar: { settings: [
+            {
+              icon: <RedoOutlined />,
+              onClick: () => {
+                console.log("刷新表格");
+                console.log(tableRef.current);
+                tableRef.current?.tableRef?.current?.reload?.()
+              },
+              tooltip: "刷新表格"
             }
-          }
-        }
+        ]}
+      }}
+      formProps={{
+        grid: true,
+        colProps: { span: 12 },
       }}
     />
-    // <XinTable<RuleType>
-    //   tableApi={'/admin/rule'}
-    //   columns={columns}
-    //   search={false}
-    //   pagination={false}
-    //   handleAdd={handleAdd}
-    //   handleUpdate={handleUpdate}
-    //   accessName={'admin.rule'}
-    //   scroll={{ x: 1480 }}
-    //   rowKey={'rule_id'}
-    // />
   )
 }
-
-export default Table
