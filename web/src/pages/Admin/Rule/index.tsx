@@ -1,15 +1,14 @@
 import XinTableV2 from '@/components/XinTableV2';
-import { XinTableColumn, XinTableRef } from '@/components/XinTableV2/typings';
+import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTableV2/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import IconsItem from '@/components/XinForm/IconsItem';
 import { message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
 import { show as showApi, status as statusApi, getRuleParent } from '@/services/adminRule';
 import { IRule } from '@/domain/rule';
-import { RedoOutlined } from '@ant-design/icons';
 
 export default () => {
   // 字典
@@ -177,63 +176,46 @@ export default () => {
   ];
 
   /**
-   * 添加菜单
-   * @param ruleData
+   * 表单提交
+   * @param formData
+   * @param initialData
    */
-  const handleAdd = async (ruleData: IRule) => {
-    let data = Object.assign(ruleData, {show: 1, status: 1})
-    if(data.type === '0') { data.pid = 0 }
-    await addApi('/admin/rule', data);
-    return true;
-  }
-
-  /**
-   * 编辑菜单
-   * @param ruleData
-   */
-  const handleUpdate = async (ruleData: IRule) => {
+  const onFinish: XinTableProps<IRule>['onFinish'] = async (formData, initialData) => {
     let data: IRule = {};
-    if (ruleData.type === '0') {
-      data = Object.assign(ruleData, { pid: 0, type: 0})
-    } else if (ruleData.type === '1') {
-      data = Object.assign(ruleData, { type: 1 })
-    } else if (ruleData.type === '2') {
-      data = Object.assign(ruleData, { type: 2, path: '', local: '', icon: '' })
+    if (formData.type === '0') {
+      data = Object.assign(formData, { parent_id: 0, type: 0})
+    } else if (formData.type === '1') {
+      data = Object.assign(formData, { type: 1 })
+    } else if (formData.type === '2') {
+      data = Object.assign(formData, { type: 2, path: '', local: '', icon: '' })
     } else {
       message.warning('类型错误！');
       return false;
     }
-    await editApi('/admin/rule' , data );
-    message.success('更新成功！');
-    return true
+    if (initialData) {
+      await editApi('/admin/rule', Object.assign(initialData, data));
+    } else {
+      await addApi('/admin/rule', data);
+    }
+    tableRef.current?.tableRef?.current?.reset?.();
+    message.success('提交成功');
+    return true;
   }
 
-  const [params, setParams] = useState<any>();
-
   return (
-    <XinTableV2
+    <XinTableV2<IRule>
       columns={columns}
       api={'/admin/rule'}
       accessName={'admin.rule'}
       rowKey={'rule_id'}
-      ref={tableRef}
+      tableRef={tableRef}
+      onFinish={onFinish}
       tableProps={{
         rowSelection: { type: 'checkbox' },
-        params: params,
         cardProps: { bordered: true },
         search: false,
         headerTitle:'权限列表',
-        toolbar: { settings: [
-            {
-              icon: <RedoOutlined />,
-              onClick: () => {
-                console.log("刷新表格");
-                console.log(tableRef.current);
-                tableRef.current?.tableRef?.current?.reload?.()
-              },
-              tooltip: "刷新表格"
-            }
-        ]}
+        toolbar: { settings: []}
       }}
       formProps={{
         grid: true,

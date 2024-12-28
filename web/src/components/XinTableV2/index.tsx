@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks';
-import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import {
   ActionType,
   BetaSchemaForm,
@@ -11,11 +11,24 @@ import {
 import { addApi, deleteApi, editApi, listApi } from '@/services/common/table';
 import { Button, Divider, message, Popconfirm, Space } from 'antd';
 import ButtonAccess from '@/components/ButtonAccess';
-import { XinTableProps, XinTableRef } from '@/components/XinTableV2/typings';
+import { XinTableProps } from '@/components/XinTableV2/typings';
 
-export default forwardRef(function XinTable<T extends Record<string, any>>(props: XinTableProps<T>, ref: Ref<XinTableRef | undefined>) {
+export default function XinTable<T extends Record<string, any>>(props: XinTableProps<T>) {
   /** 表格参数 */
-  const { api, rowKey, columns, accessName, operateShow, editShow, addShow, deleteShow, beforeOperateRender, afterOperateRender, toolBarRender = [], } = props;
+  const {
+    api,
+    rowKey,
+    columns,
+    tableRef,
+    accessName,
+    operateShow,
+    editShow,
+    addShow,
+    deleteShow,
+    beforeOperateRender,
+    afterOperateRender,
+    toolBarRender = [],
+  } = props;
   /** 表格 Ref */
   const actionRef = useRef<ActionType>();
   /** 表单 Ref */
@@ -25,7 +38,7 @@ export default forwardRef(function XinTable<T extends Record<string, any>>(props
   /** 表单初始数据 */
   const [formInitValue, setFormInitValue] = useState<T | false>(false);
   /** Ref */
-  useImperativeHandle(ref, () => ({
+  useImperativeHandle(tableRef, () => ({
     tableRef: actionRef,
     formRef: formRef,
   }));
@@ -34,36 +47,39 @@ export default forwardRef(function XinTable<T extends Record<string, any>>(props
     setFormInitValue(false);
     formRef.current?.resetFields();
     setFormOpen.setTrue();
-  }
+  };
   /** 编辑按钮点击事件 */
   const editButtonClick = (record: T) => {
     setFormInitValue(record);
-    formRef.current?.setFieldsValue(record);
     setFormOpen.setTrue();
-  }
+    formRef.current?.setFieldsValue(record);
+  };
   /** 删除按钮点击事件 */
   const deleteButtonClick = async (record: T) => {
-    await deleteApi(api, { ids: record[rowKey] })
-    message.success('删除成功！')
-  }
+    await deleteApi(api, { [rowKey]: record[rowKey] });
+    message.success('删除成功！');
+    actionRef.current?.reset?.();
+  };
   /** 提交表单 */
   const onFinish = async (formData: T) => {
-    if(props.onFinish) {
-      return await props.onFinish(formData, formInitValue);
+    if (props.onFinish) {
+      let ba = await props.onFinish(formData, formInitValue);
+      if(ba) setFormOpen.setFalse()
+      return;
     }
     if (formInitValue) {
-      let data: T = Object.assign(formInitValue, formData)
+      let data: T = Object.assign(formInitValue, formData);
       await editApi(api, data);
     } else {
       await addApi(api, formData);
     }
     actionRef.current?.reset?.();
     message.success('提交成功');
-    return true;
+    setFormOpen.setFalse();
   };
   /** 表格操作列 */
-  const operate = (): ProColumns<T>[]  => {
-    if(operateShow === false) return [];
+  const operate = (): ProColumns<T>[] => {
+    if (operateShow === false) return [];
     return [
       {
         title: '操作',
@@ -71,15 +87,15 @@ export default forwardRef(function XinTable<T extends Record<string, any>>(props
         hideInSearch: true,
         hideInDescriptions: true,
         render: (_, record) => (
-          <Space split={ <Divider type="vertical" /> } size={0}>
-            { beforeOperateRender?.(record) }
-            { editShow !== false &&
-              <ButtonAccess auth={ props.accessName + '.edit' }>
+          <Space split={<Divider type="vertical" />} size={0}>
+            {beforeOperateRender?.(record)}
+            {editShow !== false &&
+              <ButtonAccess auth={props.accessName + '.edit'}>
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
-            { deleteShow !== false &&
-              <ButtonAccess auth={ props.accessName + '.delete'}>
+            {deleteShow !== false &&
+              <ButtonAccess auth={props.accessName + '.delete'}>
                 <Popconfirm
                   okText="确认"
                   cancelText="取消"
@@ -91,33 +107,34 @@ export default forwardRef(function XinTable<T extends Record<string, any>>(props
                 </Popconfirm>
               </ButtonAccess>
             }
-            { afterOperateRender?.(record) }
+            {afterOperateRender?.(record)}
           </Space>
         ),
-      }
-    ]
-  }
+      },
+    ];
+  };
   /** 表格参数 */
   const tableProps: ProTableProps<T, any> = {
+    actionRef,
     columns: [...props.columns, ...operate()],
     toolBarRender: () => {
       return [
         <>
-          { addShow !== false &&
-            <ButtonAccess auth={ accessName + '.add'}>
+          {addShow !== false &&
+            <ButtonAccess auth={accessName + '.add'}>
               <Button children={'新增'} type={'primary'} onClick={addButtonClick} />
             </ButtonAccess>
           }
         </>,
-        ...toolBarRender
-      ]
+        ...toolBarRender,
+      ];
     },
     request: async (params, sorter, filter) => {
       const { data, success } = await listApi(props.api, { ...params, sorter, filter });
-      return { ...data, success, }
+      return { ...data, success };
     },
     ...props.tableProps,
-  }
+  };
   return (
     <>
       <BetaSchemaForm<T>
@@ -126,10 +143,10 @@ export default forwardRef(function XinTable<T extends Record<string, any>>(props
         onFinish={onFinish}
         columns={columns}
         formRef={formRef}
-        modalProps={{ onCancel: setFormOpen.setFalse }}
+        modalProps={{ onCancel: setFormOpen.setFalse, forceRender: true }}
         {...props.formProps}
       />
       <ProTable<T> {...tableProps} />
     </>
-  )
-})
+  );
+}

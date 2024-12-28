@@ -6,7 +6,7 @@ import {
   ProFormInstance,
   ProTableProps,
 } from '@ant-design/pro-components';
-import React from 'react';
+import React, { Ref } from 'react';
 import { ColProps, RowProps } from 'antd';
 
 export type XinTableColumn<T> = ProFormColumnsType<T> & ProColumns<T>;
@@ -45,6 +45,8 @@ export type XinTableProps<T> = {
   beforeOperateRender?: (record: T) => React.ReactNode;
   /** 操作栏之后渲染 */
   afterOperateRender?: (record: T) => React.ReactNode;
+  /**  */
+  tableRef?: Ref<XinTableRef | undefined>;
   /** 工具栏渲染 */
   toolBarRender?: React.ReactNode[];
   /**

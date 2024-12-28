@@ -59,7 +59,7 @@ class AdminUserRuleService extends BaseService
     public function getRuleParent(): JsonResponse
     {
         $model = new AdminRuleModel;
-        $data = $model->whereIn('type', [0, 1])->get()->toArray();
+        $data = $model->whereIn('type', [0, 1])->get(['name', 'rule_id', 'parent_id'])->toArray();
         $data = $this->getTreeData($data);
 
         return $this->success(compact('data'));
