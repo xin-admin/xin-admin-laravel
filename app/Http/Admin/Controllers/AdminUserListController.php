@@ -28,7 +28,7 @@ class AdminUserListController extends BaseController
         $this->model = new AdminUserModel;
         $this->service = new AdminUserListService;
         $this->searchField = ['role_id' => '=', 'created_at' => 'date'];
-        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
     }
 
     /** 新增管理员用户 */

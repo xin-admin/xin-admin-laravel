@@ -24,7 +24,7 @@ class AdminUserRuleRequest extends FormRequest
                 'sort' => ['required', 'integer'],
                 'path' => ['nullable', 'string', 'max:50'],
                 'icon' => ['nullable', 'string', 'max:50'],
-                'locale' => ['nullable', 'string', 'max:50'],
+                'local' => ['nullable', 'string', 'max:50'],
             ];
         }
 
@@ -35,7 +35,7 @@ class AdminUserRuleRequest extends FormRequest
                     $fail('The '.$attribute.' must exist in the database or be equal to 0.');
                 }
             }, ],
-            'key' => ['required', 'string', 'max:50', 'unique:App\Models\AdminRuleModel,key'],
+            'key' => ['required', 'string', 'max:50'],
             'name' => ['required', 'string', 'max:50'],
             'type' => ['required', 'integer', 'in:0,1,2'],
             'show' => ['required', 'integer', 'between:0,1'],
@@ -43,7 +43,7 @@ class AdminUserRuleRequest extends FormRequest
             'sort' => ['required', 'integer'],
             'path' => ['nullable', 'string', 'max:50'],
             'icon' => ['nullable', 'string', 'max:50'],
-            'locale' => ['nullable', 'string', 'max:50'],
+            'local' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

@@ -39,7 +39,7 @@ class AdminUserRuleController extends BaseController
     #[GetMapping] #[Authorize('admin.rule.list')]
     public function list(): JsonResponse
     {
-        return $this->service->getDataTree();
+        return $this->service->list();
     }
 
     /** 获取父级权限 */

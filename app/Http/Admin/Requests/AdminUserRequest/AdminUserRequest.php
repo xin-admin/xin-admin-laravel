@@ -9,12 +9,13 @@ class AdminUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'sometimes|required|exists:admin,id|integer',
+            'user_id' => 'sometimes|required|exists:admin_user,user_id|integer',
             'username' => 'required',
             'mobile' => 'required',
             'email' => 'required|email',
             'avatar_id' => 'required|exists:file,file_id',
-            'group_id' => 'required|exists:admin_group,id',
+            'role_id' => 'required|exists:App\Models\AdminRoleModel,role_id',
+            'dept_id' => 'required|exists:App\Models\AdminDeptModel,dept_id',
             'nickname' => 'required',
             'sex' => 'required',
             'status' => 'required|in:1,0',
@@ -30,7 +31,7 @@ class AdminUserRequest extends FormRequest
             'email.email' => '邮箱格式不正确',
             'avatar_id.required' => '头像不能为空',
             'avatar_id.exists' => '头像不存在',
-            'group_id.required' => '用户组不能为空',
+            'role_id.required' => '用户组不能为空',
             'group_id.exists' => '用户组不存在',
         ];
     }

@@ -95,7 +95,7 @@ class AdminUserService extends BaseService
             ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
-        $menus = $this->getTreeData($menus);
+        $menus = $this->getTreeData($menus, 'rule_id');
 
         return $this->success(compact('menus', 'access', 'info'));
     }

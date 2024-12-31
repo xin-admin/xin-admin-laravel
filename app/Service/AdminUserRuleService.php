@@ -10,11 +10,11 @@ class AdminUserRuleService extends BaseService
     /**
      * 获取权限树状列表
      */
-    public function getDataTree(): JsonResponse
+    public function list(): JsonResponse
     {
         $model = new AdminRuleModel;
         $data = $model->orderBy('sort', 'desc')->get()->toArray();
-        $data = $this->getTreeData($data);
+        $data = $this->getTreeData($data, 'rule_id');
 
         return $this->success(compact('data'));
     }
@@ -60,7 +60,7 @@ class AdminUserRuleService extends BaseService
     {
         $model = new AdminRuleModel;
         $data = $model->whereIn('type', [0, 1])->get(['name', 'rule_id', 'parent_id'])->toArray();
-        $data = $this->getTreeData($data);
+        $data = $this->getTreeData($data, 'rule_id');
 
         return $this->success(compact('data'));
     }

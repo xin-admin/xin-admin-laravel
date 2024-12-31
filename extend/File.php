@@ -5,7 +5,7 @@ namespace Xin;
 use App\Enum\FileType;
 use App\Enum\ShowType as ShopTypeEnum;
 use App\Exceptions\HttpResponseException;
-use App\Modelss\File\FileModel;
+use App\Models\FileModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 

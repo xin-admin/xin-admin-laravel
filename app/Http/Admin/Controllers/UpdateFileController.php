@@ -15,12 +15,20 @@ use Illuminate\Http\JsonResponse;
  * 上传文件
  */
 #[AdminController]
-#[RequestMapping('/admin/update')]
+#[RequestMapping('/admin/upload')]
 class UpdateFileController extends BaseController
 {
     public function __construct()
     {
         $this->service = new UpdateFileService;
+    }
+
+    /** 上传头像 */
+    #[PostMapping('/avatar')] #[Authorize('admin.update.avatar')]
+    public function avatar(): JsonResponse
+    {
+        $this->service->setFileType(FileType::IMAGE);
+        return $this->service->upload(0);
     }
 
     /** 上传图片 */

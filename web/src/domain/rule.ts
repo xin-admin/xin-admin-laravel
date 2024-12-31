@@ -15,4 +15,5 @@ export interface IRule {
   show?: number;
   created_at?: string;
   updated_at?: string;
+  children?: IRule[];
 }

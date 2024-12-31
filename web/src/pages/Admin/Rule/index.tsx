@@ -2,9 +2,9 @@ import XinTableV2 from '@/components/XinTableV2';
 import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTableV2/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import IconsItem from '@/components/XinForm/IconsItem';
-import { message, Switch } from 'antd';
+import { Button, message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
 import { show as showApi, status as statusApi, getRuleParent } from '@/services/adminRule';
@@ -202,6 +202,21 @@ export default () => {
     return true;
   }
 
+  // 展开所有
+  const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
+  const [allKeys, setAllKeys] = useState([]);
+  const collectKeys = (data: IRule[]) => {
+    let keys: any = [];
+    data.forEach((item) => {
+      if(item.type === '2') { return }
+      keys.push(item.rule_id);
+      if (item.children) {
+        keys = keys.concat(collectKeys(item.children));
+      }
+    });
+    return keys;
+  };
+
   return (
     <XinTableV2<IRule>
       columns={columns}
@@ -210,12 +225,32 @@ export default () => {
       rowKey={'rule_id'}
       tableRef={tableRef}
       onFinish={onFinish}
+      toolBarRender={[
+        <Button onClick={() => setExpandedRowKeys(allKeys)}>
+          展开全部
+        </Button>,
+        <Button onClick={() => setExpandedRowKeys([])}>
+          折叠全部
+        </Button>
+      ]}
       tableProps={{
         rowSelection: { type: 'checkbox' },
         cardProps: { bordered: true },
         search: false,
         headerTitle:'权限列表',
-        toolbar: { settings: []}
+        toolbar: { settings: []},
+        postData: (data: IRule[]) => {
+          setAllKeys(collectKeys(data))
+          return data;
+        },
+        expandable: {
+          expandRowByClick: true,
+          expandedRowKeys: expandedRowKeys,
+          onExpandedRowsChange: (expandedKeys) => {
+            console.log(expandedKeys);
+            setExpandedRowKeys([...expandedKeys])
+          }
+        },
       }}
       formProps={{
         grid: true,

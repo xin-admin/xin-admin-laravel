@@ -3,10 +3,15 @@
 namespace App\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        Handler::class => \App\Exceptions\Handler::class,
+    ];
+
     /**
      * Register any application services.
      */

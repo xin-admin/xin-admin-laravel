@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $dept_id
  * @property int|null $parent_id
- * @property string|null $ancestors
  * @property string $name
  * @property int $sort
  * @property string|null $leader
@@ -40,7 +39,6 @@ class AdminDeptModel extends Model
 
     protected $fillable = [
         'parent_id',
-        'ancestors',
         'name',
         'sort',
         'leader',

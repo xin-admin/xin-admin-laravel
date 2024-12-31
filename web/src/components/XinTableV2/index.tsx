@@ -67,7 +67,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
       if(ba) setFormOpen.setFalse()
       return;
     }
-    if (formInitValue) {
+    if (formInitValue && formInitValue[rowKey]) {
       let data: T = Object.assign(formInitValue, formData);
       await editApi(api, data);
     } else {
@@ -85,17 +85,18 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
         title: '操作',
         hideInForm: true,
         hideInSearch: true,
+        key: 'operate',
         hideInDescriptions: true,
         render: (_, record) => (
           <Space split={<Divider type="vertical" />} size={0}>
             {beforeOperateRender?.(record)}
             {editShow !== false &&
-              <ButtonAccess auth={props.accessName + '.edit'}>
+              <ButtonAccess auth={props.accessName + '.edit'} key={'edit'}>
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
             {deleteShow !== false &&
-              <ButtonAccess auth={props.accessName + '.delete'}>
+              <ButtonAccess auth={props.accessName + '.delete'}  key={'delete '}>
                 <Popconfirm
                   okText="确认"
                   cancelText="取消"
@@ -116,12 +117,13 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
   /** 表格参数 */
   const tableProps: ProTableProps<T, any> = {
     actionRef,
+    rowKey,
     columns: [...props.columns, ...operate()],
     toolBarRender: () => {
       return [
         <>
           {addShow !== false &&
-            <ButtonAccess auth={accessName + '.add'}>
+            <ButtonAccess auth={accessName + '.add'} key={'add'}>
               <Button children={'新增'} type={'primary'} onClick={addButtonClick} />
             </ButtonAccess>
           }
