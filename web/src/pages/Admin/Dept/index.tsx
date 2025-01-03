@@ -1,14 +1,14 @@
 import { XinTableColumn } from '@/components/XinTableV2/typings';
-import { IAdminDept } from '@/domain/adminDept';
+import { IDept } from '@/domain/iDept';
 import XinTableV2 from '@/components/XinTableV2';
 import { listApi } from '@/services/common/table';
 import React, { useState } from 'react';
-import { IRule } from '@/domain/rule';
+import { IRule } from '@/domain/iRule';
 import { Button } from 'antd';
 
 export default () => {
 
-  const columns: XinTableColumn<IAdminDept>[] = [
+  const columns: XinTableColumn<IDept>[] = [
     {
       title: '部门ID',
       dataIndex: 'dept_id',
@@ -77,7 +77,7 @@ export default () => {
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
   const [allKeys, setAllKeys] = useState([]);
-  const collectKeys = (data: IAdminDept[]) => {
+  const collectKeys = (data: IDept[]) => {
     let keys: any = [];
     data.forEach((item) => {
       keys.push(item.dept_id);
@@ -90,7 +90,7 @@ export default () => {
 
 
   return (
-    <XinTableV2<IAdminDept>
+    <XinTableV2<IDept>
       api={'/admin/dept'}
       rowKey={'dept_id'}
       columns={columns}
@@ -103,10 +103,12 @@ export default () => {
           折叠全部
         </Button>
       ]}
+      editShow={(i) => i.dept_id !== 1}
+      deleteShow={(i) => i.dept_id !== 1}
       tableProps={{
         search: false,
         headerTitle: '部门管理',
-        postData: (data: IAdminDept[]) => {
+        postData: (data: IDept[]) => {
           let keys = collectKeys(data);
           setAllKeys(keys);
           setExpandedRowKeys(keys);

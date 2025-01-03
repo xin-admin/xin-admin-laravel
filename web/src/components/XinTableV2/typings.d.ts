@@ -38,9 +38,9 @@ export type XinTableProps<T> = {
   /** 编辑按钮显示 */
   addShow?: boolean;
   /** 编辑按钮显示 */
-  editShow?: boolean;
+  editShow?: ((record: T) => boolean) | boolean;
   /** 操作栏之后渲染 */
-  deleteShow?: boolean;
+  deleteShow?: ((record: T) => boolean) | boolean;
   /** 操作栏之后渲染 */
   beforeOperateRender?: (record: T) => React.ReactNode;
   /** 操作栏之后渲染 */

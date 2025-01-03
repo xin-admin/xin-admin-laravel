@@ -2,7 +2,6 @@
  * 管理员列表
  */
 export interface IAdminUserList {
-
   user_id?: number;
   username?: string;
   nickname?: string;

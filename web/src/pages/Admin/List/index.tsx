@@ -1,14 +1,17 @@
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import { Avatar, Tag } from 'antd';
+import { Avatar, Card, Col, Row, Tag, Tree } from 'antd';
 import UploadImgItem from '@/components/XinForm/UploadImgItem';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UpdatePassword from './components/UpdatePassword';
 import ButtonAccess from '@/components/ButtonAccess';
 import XinTableV2 from '@/components/XinTableV2';
 import { XinTableColumn, XinTableRef } from '@/components/XinTableV2/typings';
-import { IAdminUserList } from '@/domain/adminList';
+import { IAdminUserList } from '@/domain/iAdminList';
 import { listApi } from '@/services/common/table';
+import { ProCard, ProTableProps } from '@ant-design/pro-components';
+import { IDept } from '@/domain/iDept';
+import { DownOutlined } from '@ant-design/icons';
 
 const Table: React.FC = () => {
   const { dictEnum } = useModel('dictModel');
@@ -168,47 +171,85 @@ const Table: React.FC = () => {
     },
   ];
 
-  const [tableParams, setParams] = useState({
-    keywordSearch: '',
-  });
+  const [tableParams, setParams] = useState<{
+    keywordSearch?: string;
+    dept_id?: string | number | bigint;
+  }>();
+
+  const tableProps: ProTableProps<IDept, any> = {
+    params: tableParams,
+    search: false,
+    toolbar: {
+      search: {
+        placeholder: '请输入昵称、账户、手机号搜索',
+        style: { width: 304 },
+        onSearch: (value: string) => {
+          setParams({ keywordSearch: value });
+        },
+      },
+      settings: [],
+    },
+    cardProps: {
+      bordered: true
+    },
+    postData: (data: IAdminUserList[]) => {
+      return data.map(item => {
+        delete item.rules;
+        return item;
+      });
+    },
+  }
+
+  const [deptData, setDeptData] = useState()
+
+  useEffect(() => {
+    listApi('/admin/dept').then((res) => {
+      setDeptData(res.data.data);
+    })
+  }, [])
 
   return (
-    <XinTableV2<IAdminUserList>
-      api={'/admin/list'}
-      columns={columns}
-      rowKey={'user_id'}
-      tableRef={tableRef}
-      accessName={'admin.list'}
-      afterOperateRender={(record) => (
-        <ButtonAccess auth={'admin.list.resetPassword'}>
-          <UpdatePassword record={record}></UpdatePassword>
-        </ButtonAccess>
-      )}
-      tableProps={{
-        params: tableParams,
-        search: false,
-        toolbar: {
-          search: {
-            placeholder: '请输入昵称、账户、手机号搜索',
-            style: { width: 304 },
-            onSearch: (value: string) => {
-              setParams({ keywordSearch: value });
-            },
-          },
-          settings: [],
-        },
-        postData: (data: IAdminUserList[]) => {
-          return data.map(item => {
-            delete item.rules;
-            return item;
-          });
-        },
-      }}
-      formProps={{
-        grid: true,
-        colProps: { span: 12 },
-      }}
-    />
+    <Row gutter={20}>
+      <Col flex="300px">
+        <ProCard title={'部门'} bordered={true} loading={!deptData}>
+          {deptData && (
+            <Tree
+              showLine
+              defaultExpandAll
+              switcherIcon={<DownOutlined />}
+              onSelect={(value) => setParams({ dept_id: value[0] })}
+              treeData={deptData}
+              fieldNames={{key: 'dept_id', title: 'name'}}
+            />
+          )}
+        </ProCard>
+      </Col>
+      <Col flex="auto">
+        <XinTableV2<IAdminUserList>
+          api={'/admin/list'}
+          columns={columns}
+          rowKey={'user_id'}
+          tableRef={tableRef}
+          accessName={'admin.list'}
+          afterOperateRender={(record) => (
+            <>
+              {record.user_id !== 1 &&
+                <ButtonAccess auth={'admin.list.resetPassword'}>
+                  <UpdatePassword record={record}></UpdatePassword>
+                </ButtonAccess>
+              }
+            </>
+          )}
+          editShow={(i) => i.user_id !== 1}
+          deleteShow={(i) => i.user_id !== 1}
+          tableProps={tableProps}
+          formProps={{
+            grid: true,
+            colProps: { span: 12 },
+          }}
+        />
+      </Col>
+    </Row>
   );
 };
 

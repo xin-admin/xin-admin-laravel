@@ -1,7 +1,7 @@
 /**
  * 管理员部门表
  */
-export interface IAdminDept {
+export interface IDept {
   dept_id?: number;
   parent_id?: number;
   name?: string;
@@ -12,5 +12,5 @@ export interface IAdminDept {
   status?: number;
   created_at?: string;
   updated_at?: string;
-  children?: IAdminDept[];
+  children?: IDept[];
 }

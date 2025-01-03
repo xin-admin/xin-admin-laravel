@@ -27,7 +27,7 @@ class AdminUserListController extends BaseController
     {
         $this->model = new AdminUserModel;
         $this->service = new AdminUserListService;
-        $this->searchField = ['role_id' => '=', 'created_at' => 'date'];
+        $this->searchField = ['dept_id' => '='];
         $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
     }
 

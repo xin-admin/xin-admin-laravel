@@ -22,9 +22,9 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
     tableRef,
     accessName,
     operateShow,
-    editShow,
-    addShow,
-    deleteShow,
+    editShow = true,
+    addShow = true,
+    deleteShow = true,
     beforeOperateRender,
     afterOperateRender,
     toolBarRender = [],
@@ -90,12 +90,12 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
         render: (_, record) => (
           <Space split={<Divider type="vertical" />} size={0}>
             {beforeOperateRender?.(record)}
-            {editShow !== false &&
+            {(typeof editShow === 'function' ? editShow(record) : editShow)  &&
               <ButtonAccess auth={props.accessName + '.edit'} key={'edit'}>
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
-            {deleteShow !== false &&
+            {(typeof deleteShow === 'function' ? deleteShow(record) : editShow) !== false &&
               <ButtonAccess auth={props.accessName + '.delete'}  key={'delete '}>
                 <Popconfirm
                   okText="确认"
@@ -122,7 +122,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
     toolBarRender: () => {
       return [
         <>
-          {addShow !== false &&
+          {addShow &&
             <ButtonAccess auth={accessName + '.add'} key={'add'}>
               <Button children={'新增'} type={'primary'} onClick={addButtonClick} />
             </ButtonAccess>

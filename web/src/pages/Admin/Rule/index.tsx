@@ -8,7 +8,8 @@ import { Button, message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';
 import { show as showApi, status as statusApi, getRuleParent } from '@/services/adminRule';
-import { IRule } from '@/domain/rule';
+import { IRule } from '@/domain/iRule';
+import { ProTableProps } from '@ant-design/pro-components';
 
 export default () => {
   // 字典
@@ -217,6 +218,27 @@ export default () => {
     return keys;
   };
 
+  // 表格参数
+  const tableProps: ProTableProps<IRule, any> = {
+    rowSelection: { type: 'checkbox' },
+    cardProps: { bordered: true },
+    search: false,
+    headerTitle:'权限列表',
+    toolbar: { settings: []},
+    postData: (data: IRule[]) => {
+      setAllKeys(collectKeys(data))
+      return data;
+    },
+    expandable: {
+      expandRowByClick: true,
+      expandedRowKeys: expandedRowKeys,
+      onExpandedRowsChange: (expandedKeys) => {
+        console.log(expandedKeys);
+        setExpandedRowKeys([...expandedKeys])
+      }
+    },
+  }
+
   return (
     <XinTableV2<IRule>
       columns={columns}
@@ -233,25 +255,7 @@ export default () => {
           折叠全部
         </Button>
       ]}
-      tableProps={{
-        rowSelection: { type: 'checkbox' },
-        cardProps: { bordered: true },
-        search: false,
-        headerTitle:'权限列表',
-        toolbar: { settings: []},
-        postData: (data: IRule[]) => {
-          setAllKeys(collectKeys(data))
-          return data;
-        },
-        expandable: {
-          expandRowByClick: true,
-          expandedRowKeys: expandedRowKeys,
-          onExpandedRowsChange: (expandedKeys) => {
-            console.log(expandedKeys);
-            setExpandedRowKeys([...expandedKeys])
-          }
-        },
-      }}
+      tableProps={tableProps}
       formProps={{
         grid: true,
         colProps: { span: 12 },

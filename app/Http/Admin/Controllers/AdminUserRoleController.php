@@ -9,7 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserGroupRequest;
+use App\Http\Admin\Requests\AdminUserRequest\AdminUserRoleRequest;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserRuleRequest;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserSetGroupRuleRequest;
 use App\Http\BaseController;
@@ -36,6 +36,7 @@ class AdminUserRoleController extends BaseController
             'role_id',
             'name',
             'sort',
+            'description',
             'created_at',
             'updated_at',
         ])->toArray();
@@ -45,14 +46,14 @@ class AdminUserRoleController extends BaseController
 
     /** 添加角色 */
     #[PostMapping] #[Authorize('admin.role.add')]
-    public function add(AdminUserGroupRequest $request): JsonResponse
+    public function add(AdminUserRoleRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 编辑角色 */
     #[PutMapping] #[Authorize('admin.role.edit')]
-    public function edit(AdminUserRuleRequest $request): JsonResponse
+    public function edit(AdminUserRoleRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
