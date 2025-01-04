@@ -11,7 +11,7 @@ class AdminUserRoleRequest extends FormRequest
         return [
             'role_id' => 'sometimes|required|integer|exists:admin_role,role_id',
             'name' => 'required|string',
-            'description' => 'sometimes|required|string',
+            'description' => 'string',
             'sort' => 'required|integer',
         ];
     }

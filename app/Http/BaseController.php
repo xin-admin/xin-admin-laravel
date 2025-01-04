@@ -45,6 +45,17 @@ abstract class BaseController
     /**
      * 查询响应
      */
+    protected function getResponse($id): JsonResponse
+    {
+        $key = $this->model->getKeyName();
+        $data = $this->model->where($key, $id)->first()->toArray();
+
+        return $this->success($data);
+    }
+
+    /**
+     * 列表响应
+     */
     protected function listResponse(): JsonResponse
     {
         [$buildModel, $paginate] = $this->buildSearch();
@@ -65,6 +76,7 @@ abstract class BaseController
         $data = $request->validated();
         $key = $this->model->getKeyName();
         $this->model->where($key, $data[$key])->update($data);
+
         return $this->success('ok');
     }
 
@@ -77,6 +89,7 @@ abstract class BaseController
     {
         $data = $request->validated();
         $this->model->create($data);
+
         return $this->success('ok');
     }
 

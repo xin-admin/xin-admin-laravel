@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @mixin IdeHelperModel
  */
 class AdminRoleModel extends Model
@@ -36,10 +37,9 @@ class AdminRoleModel extends Model
     protected $fillable = [
         'name',
         'sort',
-        'rules',
+        'description',
         'status',
     ];
-
 
     /**
      * 权限列表
@@ -47,7 +47,10 @@ class AdminRoleModel extends Model
     protected function rules(): Attribute
     {
         return Attribute::make(
-            get: function (string $value): array {
+            get: function ($value): array {
+                if (empty($value)) {
+                    return [];
+                }
                 if ($value == '*') {
                     return AdminRuleModel::query()
                         ->where('status', 1)
@@ -55,7 +58,7 @@ class AdminRoleModel extends Model
                         ->toArray();
                 } else {
                     return AdminRuleModel::query()
-                        ->whereIn('id', explode(',', $value))
+                        ->whereIn('rule_id', explode(',', $value))
                         ->where('status', 1)
                         ->pluck('key')
                         ->toArray();

@@ -17,7 +17,7 @@ export default {
   'menu.user.rule': '权限管理',
   'menu.user.moneyLog': '余额记录',
   'menu.admin': '管理员',
-  'menu.admin.list': '管理员列表',
+  'menu.admin.list': '用户管理',
   'menu.admin.role': '角色管理',
   'menu.admin.dept': '部门管理',
   'menu.admin.rule': '权限管理',

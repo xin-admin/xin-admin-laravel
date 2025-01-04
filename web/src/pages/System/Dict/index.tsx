@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useModel } from '@umijs/max';
 import ButtonAccess from '@/components/ButtonAccess';
 
-const api = '/system/dict';
+const api = '/admin/dict';
 
 interface Data {
   id?: number
@@ -19,7 +19,7 @@ interface Data {
 
 const columns: ProFormColumnsAndProColumns<Data>[] = [
   {
-    title: 'ID',
+    title: '字典ID',
     dataIndex: 'id',
     hideInForm: true,
     sorter: true

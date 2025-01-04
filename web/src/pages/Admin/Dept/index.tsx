@@ -114,6 +114,7 @@ export default () => {
           setExpandedRowKeys(keys);
           return data;
         },
+        toolbar: { settings: []},
         expandable: {
           expandRowByClick: true,
           expandedRowKeys: expandedRowKeys,
