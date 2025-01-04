@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class XinUser
  *
- * @property int $id
+ * @property int $user_id
  * @property string $mobile
  * @property string $username
  * @property string $email
@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
 class XinUserModel extends Model
 {
     protected $table = 'xin_user';
+
+    protected $primaryKey = 'user_id';
 
     protected $casts = [
         'avatar_id' => 'int',

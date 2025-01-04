@@ -28,7 +28,7 @@ class UserListController extends BaseController
     {
         $this->model = new XinUserModel;
         $this->service = new XinUserListService;
-        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
+        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
         $this->searchField = ['group_id' => '=', 'created_at' => 'date'];
     }
 

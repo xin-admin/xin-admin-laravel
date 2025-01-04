@@ -1,6 +1,7 @@
 <?php
 
 use App\Modelss\Setting\SettingGroupModel;
+use App\Service\IAuthorizeService;
 use Illuminate\Support\Facades\Log;
 
 if (! function_exists('get_setting')) {
@@ -44,6 +45,13 @@ if (! function_exists('trace')) {
     function trace(string|array $message): void
     {
         Log::channel('log')->info($message);
+    }
+}
+
+if (! function_exists('auth')) {
+    function auth()
+    {
+        return app(IAuthorizeService::class);
     }
 }
 

@@ -2,12 +2,10 @@
 
 namespace App\Service;
 
+use App\Models\XinBalanceRecordModel;
 use App\Models\XinUserModel;
-use App\Models\XinUserMoneyRecordModel;
 use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class XinUserListService
 {
@@ -20,42 +18,34 @@ class XinUserListService
      * @param  string  $amount  金额
      * @param  string  $mode  增加还是减少
      * @param  string  $remark  备注
-     *
-     * @throws Throwable
      */
     public function recharge(int $userId, string $amount = '0.00', string $mode = 'inc', string $remark = ''): JsonResponse
     {
-        try {
-            DB::beginTransaction();
-            $amount = bcmul($amount, '100', 0);
-            $user = XinUserModel::where('id', $userId)->first();
-            if ($mode === 'inc') {
-                $diffMoney = $amount;
-            } elseif ($mode === 'dec') {
-                $diffMoney = -$amount;
-            } else {
-                $diffMoney = bcsub($amount, bcmul($user->money, '100', 0), 0);
-            }
-            XinUserMoneyRecordModel::create([
-                'user_id' => $userId,
-                'money' => $amount,
-                'describe' => $remark,
-                'scene' => 1,
-            ]);
-            XinUserModel::where('id', $userId)->update([
-                'money' => bcadd(bcmul($user->money, '100', 0), $diffMoney, 0),
-            ]);
-            // 提交事务
-            DB::commit();
-
-            return $this->success('充值成功');
-        } catch (\Exception $e) {
-            // 如果发生异常则回滚
-            DB::rollBack();
-
-            // 处理异常
-            return $this->error('充值失败');
+        $user = XinUserModel::where('user_id', $userId)->first();
+        if ($mode === 'inc') {
+            $diff = round($amount, 2);
+        } elseif ($mode === 'dec') {
+            $diff = -round($amount, 2);
+        } else {
+            $diff = bcsub($amount, $user->balance, 2);
         }
+        // 变动后
+        $diffBalance = bcadd($diff, $user->balance, 2);
+        XinBalanceRecordModel::create([
+            'user_id' => $userId,
+            'balance' => $diff,
+            'after' => $diffBalance,
+            'before' => $user->balance,
+            'describe' => $remark,
+            'scene' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => auth()->id(),
+        ]);
+        XinUserModel::where('user_id', $userId)->update([
+            'balance' => $diffBalance,
+        ]);
+
+        return $this->success('充值成功');
     }
 
     /**

@@ -19,14 +19,14 @@ const RechargeModel = (props: { data: any }) => {
         {
           title: '用户ID',
           dataIndex: 'user_id',
-          initialValue: data.id,
+          initialValue: data.user_id,
           readonly: true,
           valueType: 'number'
         },
         {
           title: '剩余金额',
-          dataIndex: 'money',
-          initialValue: data.money,
+          dataIndex: 'balance',
+          initialValue: data.balance,
           valueType: 'money',
           readonly: true,
         },

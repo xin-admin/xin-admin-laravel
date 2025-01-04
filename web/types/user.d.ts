@@ -53,7 +53,7 @@ declare namespace USER {
   interface UserInfo {
     id?: string
     name?: string
-    money?: string
+    balance?: string
     nickname?: string
     username?: string
     email?: string

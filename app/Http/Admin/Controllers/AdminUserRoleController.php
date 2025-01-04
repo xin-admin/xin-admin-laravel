@@ -41,16 +41,7 @@ class AdminUserRoleController extends BaseController
     #[GetMapping] #[Authorize('admin.role.list')]
     public function list(): JsonResponse
     {
-        $data = $this->model->get([
-            'role_id',
-            'name',
-            'sort',
-            'description',
-            'created_at',
-            'updated_at',
-        ])->toArray();
-
-        return $this->success(compact('data'));
+        return $this->listResponse();
     }
 
     /** 添加角色 */

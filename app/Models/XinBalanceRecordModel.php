@@ -19,25 +19,32 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property float $money
  * @property string $describe
  * @property Carbon|null $created_at
+ *
  * @mixin IdeHelperModel
  */
-class XinUserMoneyRecordModel extends Model
+class XinBalanceRecordModel extends Model
 {
-    protected $table = 'xin_user_money_record';
+    protected $table = 'xin_balance_record';
 
     public $timestamps = false;
 
     protected $casts = [
         'user_id' => 'int',
-        'money' => 'float',
+        'scene' => 'int',
+        'balance' => 'float',
+        'before' => 'float',
+        'after' => 'float',
+        'created_by' => 'int',
     ];
 
-    protected $with = ['user'];
+    protected $with = ['user', 'createUser'];
 
     protected $fillable = [
         'user_id',
         'scene',
-        'money',
+        'balance',
+        'after',
+        'before',
         'describe',
     ];
 
@@ -46,6 +53,11 @@ class XinUserMoneyRecordModel extends Model
      */
     public function user(): HasOne
     {
-        return $this->HasOne(XinUserModel::class, 'id', 'user_id');
+        return $this->HasOne(XinUserModel::class, 'user_id', 'user_id');
+    }
+
+    public function createUser(): HasOne
+    {
+        return $this->HasOne(XinUserModel::class, 'user_id', 'created_by');
     }
 }

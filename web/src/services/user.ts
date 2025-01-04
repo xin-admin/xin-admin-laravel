@@ -2,7 +2,7 @@ import { request } from '@umijs/max';
 
 const api = {
   vagueSearchApi: '/admin/user/user/vagueSearch', // 搜索用户
-  rechargeApi: '/admin/user/user/recharge'
+  rechargeApi: '/user/list/recharge'
 }
 
 /**

@@ -9,7 +9,7 @@ import { useModel } from '@umijs/max';
 /**
  *  Api 接口
  */
-const api = '/user/money/record'
+const api = '/user/balance/record'
 
 /**
  *  数据类型
@@ -19,7 +19,9 @@ interface Data {
   user_id: string;
   user: USER.UserInfo;
   scene: string;
-  money: string;
+  balance: string;
+  after: string;
+  before: string;
   describe: string;
   remark: string;
   created_at: string;
@@ -38,7 +40,7 @@ const User: React.FC = () => {
         <p>用户昵称：{info.nickname}</p>
         <p>用户名：{info.username}</p>
         <p>用户邮箱：{info.email}</p>
-        <p>用户余额：{info.money} ￥</p>
+        <p>用户余额：{info.balance} ￥</p>
       </>
     )
   }
@@ -73,7 +75,21 @@ const User: React.FC = () => {
         valueType: 'money',
         title: '变动金额',
         order: 91,
-        dataIndex: 'money',
+        dataIndex: 'balance',
+        search: false
+      },
+      {
+        valueType: 'money',
+        title: '变动前',
+        order: 91,
+        dataIndex: 'before',
+        search: false
+      },
+      {
+        valueType: 'money',
+        title: '变动后',
+        order: 91,
+        dataIndex: 'after',
         search: false
       },
       {

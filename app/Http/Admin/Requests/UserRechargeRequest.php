@@ -10,7 +10,7 @@ class UserRechargeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer|exists:user,id',
+            'user_id' => 'required|integer|exists:xin_user,user_id',
             'mode' => 'required|string|in:inc,dec,end',
             'amount' => 'required|integer',
             'remark' => 'nullable|string',

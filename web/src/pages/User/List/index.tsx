@@ -18,7 +18,7 @@ const api = '/user/list'
  *  数据类型
  */
 interface Data {
-  id: number;
+  user_id: number;
   mobile: string;
   username: string;
   email: string;
@@ -26,7 +26,7 @@ interface Data {
   avatar: string;
   gender: string;
   birthday: string;
-  money: string;
+  balance: string;
   score: string;
   motto: string;
   create_time: string;
@@ -56,7 +56,7 @@ const User: React.FC = () => {
         valueType: 'digit',
         title: 'ID',
         hideInForm: true,
-        dataIndex: 'id',
+        dataIndex: 'user_id',
         sorter: true,
         hideInSearch: true
       },
@@ -104,7 +104,7 @@ const User: React.FC = () => {
         valueType: 'money',
         title: '余额',
         hideInSearch: true,
-        dataIndex: 'money',
+        dataIndex: 'balance',
       },
       {
         valueType: 'textarea',

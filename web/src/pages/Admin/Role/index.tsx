@@ -120,7 +120,6 @@ export default () => {
   const tableProps: ProTableProps<IRole, any> = {
     headerTitle: '角色列表',
     search: false,
-    pagination: false,
     rowSelection: {
       type: 'radio',
       alwaysShowAlert: true,
