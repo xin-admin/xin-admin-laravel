@@ -13,7 +13,7 @@ use App\Http\Admin\Requests\AdminUserRequest\AdminUserRequest;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserResetPasswordRequest;
 use App\Http\BaseController;
 use App\Models\AdminUserModel;
-use App\Service\AdminUserListService;
+use App\Service\impl\AdminUserListService;
 use Illuminate\Http\JsonResponse;
 
 /**

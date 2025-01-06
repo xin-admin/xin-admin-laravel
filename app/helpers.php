@@ -1,7 +1,8 @@
 <?php
 
 use App\Modelss\Setting\SettingGroupModel;
-use App\Service\IAuthorizeService;
+use App\Service\AuthorizeService;
+use App\Service\ITokenService;
 use Illuminate\Support\Facades\Log;
 
 if (! function_exists('get_setting')) {
@@ -51,7 +52,14 @@ if (! function_exists('trace')) {
 if (! function_exists('auth')) {
     function auth()
     {
-        return app(IAuthorizeService::class);
+        return app('auth');
+    }
+}
+
+if (! function_exists('token')) {
+    function token()
+    {
+        return app(ITokenService::class);
     }
 }
 
@@ -67,6 +75,7 @@ if (! function_exists('getTreeData')) {
                 unset($list[$key]);
             }
         }
+
         return $data;
     }
 }

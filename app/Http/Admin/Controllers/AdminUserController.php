@@ -11,7 +11,7 @@ use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserUpdateInfoRequest;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserUpdatePasswordRequest;
 use App\Http\BaseController;
-use App\Service\AdminUserService;
+use App\Service\impl\AdminUserService;
 use Illuminate\Http\JsonResponse;
 
 /**

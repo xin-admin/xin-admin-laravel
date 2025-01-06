@@ -4,7 +4,6 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
-use App\Attribute\Autowired;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -14,7 +13,7 @@ use App\Http\Admin\Requests\UserRequest\UserRequest;
 use App\Http\Admin\Requests\UserResetPasswordRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
-use App\Service\XinUserListService;
+use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
 
 /**

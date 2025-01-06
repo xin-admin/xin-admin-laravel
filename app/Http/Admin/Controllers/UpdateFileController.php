@@ -8,7 +8,7 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
 use App\Enum\FileType;
 use App\Http\BaseController;
-use App\Service\UpdateFileService;
+use App\Service\impl\UpdateFileService;
 use Illuminate\Http\JsonResponse;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace App\Attribute;
 
-use App\Service\AdminUserService;
+use App\Service\impl\AdminUserService;
 use Attribute;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;

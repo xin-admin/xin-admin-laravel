@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Service\impl\LengthAwarePaginatorService;
+use App\Service\impl\TokenService;
+use App\Service\ITokenService;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('Illuminate\Pagination\LengthAwarePaginator', function ($app, $options) {
             return new LengthAwarePaginatorService($options['items'], $options['total'], $options['perPage'], $options['currentPage'], $options['options']);
+        });
+        $this->app->singleton(ITokenService::class, function () {
+            return new TokenService(config('token'));
         });
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);

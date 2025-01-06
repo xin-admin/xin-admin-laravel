@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\impl;
 
 use App\Models\AdminDeptModel;
 use App\Trait\RequestJson;

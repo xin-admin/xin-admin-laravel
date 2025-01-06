@@ -2,10 +2,10 @@
 
 namespace App\Service\impl;
 
-use App\Service\IAuthorizeService;
+use App\Service\AuthorizeService;
 use Xin\Token;
 
-class AuthorizeService implements IAuthorizeService
+class AuthorizeServiceImpl implements AuthorizeService
 {
     private string $token;
 
@@ -19,7 +19,7 @@ class AuthorizeService implements IAuthorizeService
     {
         $request = app('request');
         $this->token = $request->header('x-token');
-        $this->tokenData = (new Token)->get($this->token);
+        $this->tokenData = token()->get($this->token);
     }
 
     public function id(): int

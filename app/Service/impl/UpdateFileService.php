@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\impl;
 
 use App\Enum\FileType;
 use App\Trait\RequestJson;

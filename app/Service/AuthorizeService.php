@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-interface IAuthorizeService
+interface AuthorizeService
 {
     /**
      * 获取用户ID
@@ -21,4 +21,10 @@ interface IAuthorizeService
      * @return array
      */
     public function tokenData(): array;
+
+    /**
+     * 获取用户信息
+     * @return array
+     */
+    public function userInfo(): array;
 }

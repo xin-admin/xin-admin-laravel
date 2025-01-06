@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\impl;
 
 use App\Attribute\Monitor;
+use App\Enum\TokenEnum;
 use App\Exceptions\HttpResponseException;
 use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
-use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
-use Random\RandomException;
 use Xin\Token;
 
 class AdminUserService extends BaseService
 {
-
     /**
      * 刷新Token
      */
@@ -23,15 +21,9 @@ class AdminUserService extends BaseService
         $token = request()->header('x-token');
         $reToken = request()->header('x-refresh-token');
         if ($reToken) {
-            $tokenServer = new Token;
-            $tokenServer->delete($token);
-            $user_id = $tokenServer->get($reToken)['user_id'];
-            try {
-                $token = md5(random_bytes(10));
-            } catch (RandomException $e) {
-                return $this->error('刷新Token失败：'.$e->getMessage());
-            }
-            $tokenServer->set($token, 'admin', $user_id);
+            token()->delete($token);
+            $user_id = token()->get($reToken)['user_id'];
+            $token = token()->set($user_id, TokenEnum::ADMIN);
 
             return $this->success(compact('token'));
         } else {
@@ -56,9 +48,12 @@ class AdminUserService extends BaseService
             return $this->error('密码错误');
         }
         new Monitor('管理员登录', false, $adminUser->user_id);
-        $token = $this->getToken($adminUser->user_id);
+        $data = [];
+        $data['refresh_token'] = token()->set($adminUser->user_id, TokenEnum::REFRESH_ADMIN);
+        $data['token'] = token()->set($adminUser->user_id, TokenEnum::ADMIN);
+        $data['id'] = $adminUser->user_id;
 
-        return $this->success($token);
+        return $this->success($data);
     }
 
     /**
@@ -72,9 +67,8 @@ class AdminUserService extends BaseService
         if (! $user) {
             throw new HttpResponseException(['success' => false, 'msg' => '管理员用户不存在'], 401);
         }
-        $token = new Token;
-        $token->clear('admin', $user['id']);
-        $token->clear('admin-refresh', $user['id']);
+        token()->clear('admin', $user['user_id']);
+        token()->clear('admin-refresh', $user['user_id']);
 
         return $this->success('退出登录成功');
     }
@@ -129,34 +123,6 @@ class AdminUserService extends BaseService
         AdminUserModel::where('user_id', $user_id)->update($data);
 
         return $this->success();
-    }
-
-    /**
-     * 获取 Token
-     */
-    private function getToken(int $user_id): array|false
-    {
-        try {
-            $token = new Token;
-            $data = [];
-            $data['refresh_token'] = md5(random_bytes(10));
-            $data['token'] = md5(random_bytes(10));
-            $data['id'] = $user_id;
-            if (
-                $token->set($data['token'], 'admin', $user_id, 600) &&
-                $token->set($data['refresh_token'], 'admin-refresh', $user_id, 2592000)
-            ) {
-                return $data;
-            } else {
-                $this->throwError('token 生成失败');
-
-                return false;
-            }
-        } catch (\Exception $e) {
-            $this->throwError($e->getMessage());
-
-            return false;
-        }
     }
 
     /**
