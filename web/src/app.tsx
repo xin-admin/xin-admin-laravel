@@ -40,7 +40,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     menuRender, // 菜单
     collapsedButtonRender: false, // 隐藏默认侧栏
     collapsed: initialState?.collapsed, // 侧栏展开状态
-    // childrenRender: (children: any) => <Access>{children}</Access>, // 页面内容
+    childrenRender: (children: any) => <Access>{children}</Access>, // 页面内容
     ...initialState?.settings,
   }
 }

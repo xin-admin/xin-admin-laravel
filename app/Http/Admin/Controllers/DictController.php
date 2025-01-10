@@ -4,7 +4,6 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
-use App\Attribute\Autowired;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
@@ -23,6 +22,8 @@ use Illuminate\Support\Facades\Cache;
 #[RequestMapping('/admin/dict')]
 class DictController extends BaseController
 {
+    protected array $noPermission = ['itemList'];
+
     public function __construct()
     {
         $this->model = new DictModel;
@@ -66,7 +67,7 @@ class DictController extends BaseController
     }
 
     /** 获取字典 */
-    #[GetMapping('/list')] #[Authorize('admin.dict.list')]
+    #[GetMapping('/list')]
     public function itemList(): JsonResponse
     {
         if (Cache::has('sys_dict')) {

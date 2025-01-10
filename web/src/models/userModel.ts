@@ -20,7 +20,7 @@ const useUser = () => {
     }
     let {data} = await getAdminInfo();
     setUserInfo(data.info);
-    setUserAccess(data.access);
+    setUserAccess(data.access.map(item => item.toLowerCase()));
     setMenus(data.menus);
     localStorage.setItem('menus', JSON.stringify(data.menus));
     setLoginStatus.setTrue();
