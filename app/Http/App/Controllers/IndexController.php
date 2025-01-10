@@ -2,7 +2,7 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\ApiController;
+use App\Attribute\AppController;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
@@ -13,7 +13,7 @@ use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
-#[ApiController]
+#[AppController]
 #[RequestMapping('/api')]
 class IndexController extends BaseController
 {

@@ -10,21 +10,19 @@ use Illuminate\Support\Facades\DB;
 use Psr\SimpleCache\InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
-class TokenService implements TokenService
+class TokenService implements ITokenService
 {
     /**
      * 数据表句柄
      */
     protected Builder $handler;
 
-    public function __construct(array $config)
+    public function __construct()
     {
-        $this->handler = Db::table($config['table']);
+        $this->handler = Db::table(config('token.table'));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function set($user_id, $type): ?string
     {
         $token = Uuid::uuid4()->toString();

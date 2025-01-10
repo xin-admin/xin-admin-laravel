@@ -39,7 +39,7 @@ class AdminUserListController extends BaseController
     }
 
     /** 获取管理员用户列表 */
-    #[GetMapping] #[Authorize('admin.list.list')]
+    #[GetMapping] #[Authorize('admin.list.list123')]
     public function list(): JsonResponse
     {
         return $this->listResponse();

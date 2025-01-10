@@ -2,7 +2,7 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\ApiController;
+use App\Attribute\AppController;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -16,7 +16,7 @@ use Xin\File;
 use Xin\Token;
 
 #[RequestMapping('/api/user')]
-#[ApiController]
+#[AppController]
 class UserController extends BaseController
 {
     protected array $noPermission = ['refreshToken'];

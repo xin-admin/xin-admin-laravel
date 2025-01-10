@@ -110,7 +110,7 @@ trait RequestJson
         string $msg,
         string $description,
         ShopTypeEnum $showTypeEnum = ShopTypeEnum::SUCCESS_NOTIFICATION,
-        string $placement = 'topLeft'
+        string $placement = 'topRight'
     ): JsonResponse {
         $showType = $showTypeEnum->value;
         $success = false;

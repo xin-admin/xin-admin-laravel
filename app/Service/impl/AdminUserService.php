@@ -9,7 +9,6 @@ use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
-use Xin\Token;
 
 class AdminUserService extends BaseService
 {
@@ -61,7 +60,7 @@ class AdminUserService extends BaseService
      */
     public function logout(): JsonResponse
     {
-        $user_id = static::getAdminUserId();
+        $user_id = customAuth('admin')->id();
         new Monitor('管理员退出登录', false, $user_id);
         $user = AdminUserModel::find($user_id);
         if (! $user) {
@@ -78,9 +77,9 @@ class AdminUserService extends BaseService
      */
     public function getAdminInfo(): JsonResponse
     {
-        $info = static::getAdminUserInfo();
+        $info = customAuth('admin')->userInfo();
         // 权限
-        $access = $info['rules'];
+        $access = customAuth('admin')->permission();
         // 菜单
         $menus = AdminRuleModel::where('show', '=', 1)
             ->where('status', '=', 1)
@@ -99,7 +98,7 @@ class AdminUserService extends BaseService
      */
     public function updatePassword(array $data): JsonResponse
     {
-        $user_id = static::getAdminUserId();
+        $user_id = customAuth('admin')->id();
         $model = AdminUserModel::where('user_id', $user_id)->first();
         if (! $model) {
             return $this->error();
@@ -119,40 +118,9 @@ class AdminUserService extends BaseService
      */
     public function updateAdmin(array $data): JsonResponse
     {
-        $user_id = static::getAdminUserId();
+        $user_id = customAuth('admin')->id();
         AdminUserModel::where('user_id', $user_id)->update($data);
 
         return $this->success();
-    }
-
-    /**
-     * 获取用户ID
-     */
-    public static function getAdminUserId(): int
-    {
-        $token = request()->header('x-token');
-        $tokenData = (new Token)->get($token);
-        if (! $tokenData) {
-            throw new HttpResponseException(['success' => false, 'msg' => '请先登录!'], 401);
-        }
-        if ($tokenData['type'] != 'admin' || ! isset($tokenData['user_id'])) {
-            throw new HttpResponseException(['success' => false, 'msg' => '管理员用户不存在'], 401);
-        }
-
-        return (int) $tokenData['user_id'];
-    }
-
-    /**
-     * 获取管理员信息
-     */
-    public static function getAdminUserInfo(): array
-    {
-        $user_id = static::getAdminUserId();
-        $adminUser = AdminUserModel::find($user_id);
-        if (! $adminUser) {
-            throw new HttpResponseException(['success' => false, 'msg' => '管理员用户不存在'], 401);
-        }
-
-        return $adminUser->toArray();
     }
 }

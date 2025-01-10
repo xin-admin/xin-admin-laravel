@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Enum\ShowType;
+use App\Trait\RequestJson;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -12,6 +13,8 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use RequestJson;
+
     /**
      * A list of the exception types that are not reported.
      * 未报告的异常类型列表
@@ -32,20 +35,20 @@ class Handler extends ExceptionHandler
 
         // Authorize Exception 权限验证异常
         if ($e instanceof AuthorizeException) {
-            return response()->json([
-                'msg' => $e->getMessage(),
-                'showType' => ShowType::ERROR_NOTIFICATION->value,
-                'success' => false,
-            ]);
+            return $this->notification(
+                'No Permission',
+                $e->getMessage(),
+                ShowType::WARN_NOTIFICATION
+            );
         }
 
         // NotFoundHttpException 地址不存在
         if ($e instanceof NotFoundHttpException) {
-            return response()->json([
-                'msg' => '请求地址不存在：'.$e->getMessage(),
-                'showType' => ShowType::WARN_MESSAGE->value,
-                'success' => false,
-            ], 404);
+            return $this->notification(
+                'Route does not exist',
+                $e->getMessage(),
+                ShowType::WARN_NOTIFICATION
+            );
         }
 
         // ValidationException 数据验证异常

@@ -1,7 +1,7 @@
 <?php
 
 use App\Modelss\Setting\SettingGroupModel;
-use App\Service\AuthorizeService;
+use App\Service\IAuthorizeService;
 use App\Service\ITokenService;
 use Illuminate\Support\Facades\Log;
 
@@ -49,17 +49,29 @@ if (! function_exists('trace')) {
     }
 }
 
-if (! function_exists('auth')) {
-    function auth()
+if (! function_exists('token')) {
+    /**
+     * 获取TokenService
+     * @return ITokenService
+     */
+    function token(): ITokenService
     {
-        return app('auth');
+        return app(ITokenService::class);
     }
 }
 
-if (! function_exists('token')) {
-    function token()
+if (! function_exists('customAuth')) {
+    /**
+     * @param  $type  string
+     * @return IAuthorizeService
+     */
+    function customAuth(string $type): IAuthorizeService
     {
-        return app(ITokenService::class);
+        if ($type == 'app') {
+            return app(IAuthorizeService::class)->app();
+        } else {
+            return app(IAuthorizeService::class)->admin();
+        }
     }
 }
 

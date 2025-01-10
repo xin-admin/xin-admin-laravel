@@ -21,10 +21,11 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/admin')]
 class AdminUserController extends BaseController
 {
+    protected array $noPermission = ['refreshToken', 'login'];
+
     public function __construct()
     {
         $this->service = new AdminUserService;
-        $this->noPermission = ['refreshToken', 'login'];
     }
 
     /** 会员登录 */

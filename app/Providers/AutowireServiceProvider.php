@@ -17,7 +17,6 @@ class AutowireServiceProvider extends ServiceProvider
             $this->injectDependencies($object);
         });
     }
-
     protected function injectDependencies($object): void
     {
         try {

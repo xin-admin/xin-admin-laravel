@@ -23,7 +23,8 @@ const errorHandler = async (data: API.ResponseStructure<any>) => {
   let {
     msg = '',
     showType = 0,
-    description = ''
+    description = '',
+    placement
   } = data;
   switch (showType) {
     case ErrorShowType.SILENT:
@@ -41,18 +42,21 @@ const errorHandler = async (data: API.ResponseStructure<any>) => {
       notification.success({
         description: description,
         message: msg,
+        placement
       });
       break;
     case ErrorShowType.WARN_NOTIFICATION:
       notification.warning({
         description: description,
         message: msg,
+        placement
       });
       break;
     case ErrorShowType.ERROR_NOTIFICATION:
       notification.error({
         description: description,
         message: msg,
+        placement
       });
       break;
     default:
