@@ -13,7 +13,7 @@ class AdminUserRuleService extends BaseService
     public function list(): JsonResponse
     {
         $model = new AdminRuleModel;
-        $data = $model->orderBy('sort', 'desc')->get()->toArray();
+        $data = $model->orderBy('sort', 'asc')->get()->toArray();
         $data = $this->getTreeData($data, 'rule_id');
 
         return $this->success(compact('data'));

@@ -1,5 +1,5 @@
 // CRUD 一键生成
-import XinTable from '@/components/XinTable'
+import XinTableV2 from '@/components/XinTableV2'
 import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
@@ -140,25 +140,20 @@ const User: React.FC = () => {
 
   return (
     <>
-      <XinTable<Data>
-        tableApi={api}
+      <XinTableV2<Data>
+        api={api}
         columns={columns}
-        headerTitle={'用户列表'}
-        addShow={false}
-        operateShow={true}
-        rowSelectionShow={true}
-        editShow={false}
-        operateRender={(data) => {
-          return [
-            <ButtonAccess auth={'user.list.recharge'} key={'recharge'}>
-              <RechargeModel data={data} />
-            </ButtonAccess>,
-            <ButtonAccess auth={'user.list.resetPassword'} key={'resetPassword'}>
-              <UpdatePassword key={'resetPassword'} record={data} />
-            </ButtonAccess>
-          ]
-        }}
         accessName={'user.list'}
+        rowKey={'user_id'}
+        deleteShow={false}
+        afterOperateRender={(data) => [
+          <ButtonAccess auth={'user.list.recharge'} key={'recharge'}>
+            <RechargeModel data={data} />
+          </ButtonAccess>,
+          <ButtonAccess auth={'user.list.resetPassword'} key={'resetPassword'}>
+            <UpdatePassword key={'resetPassword'} record={data} />
+          </ButtonAccess>
+        ]}
       />
     </>
   )

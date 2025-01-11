@@ -85,7 +85,7 @@ class AdminUserService extends BaseService
             ->where('status', '=', 1)
             ->whereIn('key', $access)
             ->whereIn('type', [0, 1])
-            ->orderBy('sort', 'desc')
+            ->orderBy('sort', 'asc')
             ->get()
             ->toArray();
         $menus = $this->getTreeData($menus, 'rule_id');

@@ -95,7 +95,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
-            {(typeof deleteShow === 'function' ? deleteShow(record) : editShow) !== false &&
+            {(typeof deleteShow === 'function' ? deleteShow(record) : deleteShow) !== false &&
               <ButtonAccess auth={props.accessName + '.delete'}  key={'delete '}>
                 <Popconfirm
                   okText="确认"

@@ -49,6 +49,18 @@ return new class extends Migration
         $this->insertRule(30, 27, 2, '角色管理新增', 'admin.role.add');
         $this->insertRule(31, 27, 3, '角色管理编辑', 'admin.role.edit');
         $this->insertRule(32, 27, 4, '角色管理删除', 'admin.role.delete');
+        /** 部门管理 */
+        $this->insertMenu(33, 20, 2, '部门管理', 'admin.dept', 'menu.admin.dept', 'ClusterOutlined', '/admin/dept');
+        $this->insertRule(34, 33, 0, '部门管理查询', 'admin.dept.list');
+        $this->insertRule(35, 33, 1, '部门管理新增', 'admin.dept.add');
+        $this->insertRule(36, 33, 2, '部门管理编辑', 'admin.dept.edit');
+        $this->insertRule(37, 33, 3, '部门管理删除', 'admin.dept.delete');
+        /** 权限管理 */
+        $this->insertMenu(38, 20, 3, '权限管理', 'admin.rule', 'menu.admin.rule', 'DeleteRowOutlined', '/admin/rule');
+        $this->insertRule(39, 38, 0, '权限管理查询', 'admin.rule.list');
+        $this->insertRule(40, 38, 1, '权限管理新增', 'admin.rule.add');
+        $this->insertRule(41, 38, 2, '权限管理编辑', 'admin.rule.edit');
+        $this->insertRule(42, 38, 3, '权限管理删除', 'admin.rule.delete');
     }
 
     private function insertFirst(

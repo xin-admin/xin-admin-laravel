@@ -16,6 +16,7 @@ import { DownOutlined } from '@ant-design/icons';
 const Table: React.FC = () => {
   const { dictEnum } = useModel('dictModel');
   const tableRef = useRef<XinTableRef>();
+  const [deptData, setDeptData] = useState()
   const columns: XinTableColumn<IAdminUserList>[] = [
     {
       title: '用户ID',
@@ -78,10 +79,7 @@ const Table: React.FC = () => {
       dataIndex: 'dept_id',
       valueType: 'treeSelect',
       render: (_, record) => <Tag color="processing">{record.dept_name}</Tag>,
-      request: async  () => {
-        let data = await listApi('/admin/dept');
-        return data.data.data
-      },
+      request: async  () => deptData ? deptData : [],
       fieldProps: { fieldNames: { label: 'name', value: 'dept_id' } }
     },
     {
@@ -199,8 +197,6 @@ const Table: React.FC = () => {
       });
     },
   }
-
-  const [deptData, setDeptData] = useState()
 
   useEffect(() => {
     listApi('/admin/dept').then((res) => {
