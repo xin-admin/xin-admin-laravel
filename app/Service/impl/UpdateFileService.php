@@ -39,7 +39,7 @@ class UpdateFileService
     public function upload($group_id): JsonResponse
     {
         $storage = new File;
-        $user_id = AdminUserService::getAdminUserId();
+        $user_id = customAuth('admin')->id();
         $fileInfo = $storage->upload(
             $this->fileType->value,
             $this->disk,

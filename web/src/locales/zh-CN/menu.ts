@@ -15,7 +15,7 @@ export default {
   'menu.user.list': '会员列表',
   'menu.user.group': '会员分组',
   'menu.user.rule': '权限管理',
-  'menu.user.moneyLog': '余额记录',
+  'menu.user.balance': '余额记录',
   'menu.admin': '管理员',
   'menu.admin.list': '用户管理',
   'menu.admin.role': '角色管理',

@@ -105,7 +105,7 @@ export default () => {
       title: '排序',
       dataIndex: 'sort',
       valueType: 'digit',
-      tooltip: '数字越大排序越靠前',
+      tooltip: '数字越小排序越靠前',
       align: 'center',
       colProps: { span: 6 }
     },

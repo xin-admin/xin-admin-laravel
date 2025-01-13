@@ -15,7 +15,7 @@ export default {
   'menu.user.list': 'Users List',
   'menu.user.group': 'Users Group',
   'menu.user.rule': 'Users Rule',
-  'menu.user.moneyLog': 'Money Log',
+  'menu.user.balance': 'Balance Record',
   'menu.admin': 'Admin',
   'menu.admin.list': 'Admin List',
   'menu.admin.role': 'Admin Group',

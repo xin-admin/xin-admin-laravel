@@ -63,15 +63,15 @@ class AuthorizeServiceProvider extends ServiceProvider
         }
     }
 
-    private function auth(string $type = 'admin', string $name = ''): void
+    private function auth(string $type = 'admin', string $auth = ''): void
     {
         if ($type === 'admin') {
             $rules = customAuth('admin')->permission();
-            if (empty($name)) {
+            if (empty($auth)) {
                 return;
             }
             $rules = array_map('strtolower', $rules);
-            if (! in_array($name, $rules)) {
+            if (! in_array(strtolower($auth), $rules)) {
                 throw new AuthorizeException('您没有权限操作！！');
             }
         } else {

@@ -26,15 +26,12 @@ class XinBalanceRecordModel extends Model
 {
     protected $table = 'xin_balance_record';
 
-    public $timestamps = false;
-
     protected $casts = [
         'user_id' => 'int',
         'scene' => 'int',
         'balance' => 'float',
         'before' => 'float',
         'after' => 'float',
-        'created_by' => 'int',
     ];
 
     protected $with = ['user', 'createUser'];

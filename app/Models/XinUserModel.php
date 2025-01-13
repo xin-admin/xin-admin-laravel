@@ -7,7 +7,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class XinUser
@@ -46,6 +48,7 @@ class XinUserModel extends Model
 
     protected $hidden = [
         'password',
+        'avatar',
     ];
 
     protected $fillable = [
@@ -63,4 +66,19 @@ class XinUserModel extends Model
         'motto',
         'status',
     ];
+
+    protected $appends = [
+        'avatar_url',
+    ];
+
+    public function avatar(): HasOne
+    {
+        return $this->hasOne(FileModel::class, 'file_id', 'avatar_id');
+    }
+
+    // 头像地址
+    protected function avatarUrl(): Attribute
+    {
+        return new Attribute(get: fn () => $this->avatar->preview_url ?? null);
+    }
 }

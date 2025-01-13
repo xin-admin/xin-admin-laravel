@@ -23,7 +23,6 @@ class UserBalanceRecordController extends BaseController
         $this->searchField = [
             'created_at' => 'date',
             'user_id' => '=',
-            'created_by' => '=',
         ];
     }
 

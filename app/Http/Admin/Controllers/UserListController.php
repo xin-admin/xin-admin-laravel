@@ -8,11 +8,13 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
+use App\Enum\FileType;
 use App\Http\Admin\Requests\UserRechargeRequest;
 use App\Http\Admin\Requests\UserRequest\UserRequest;
 use App\Http\Admin\Requests\UserResetPasswordRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
+use App\Service\impl\UpdateFileService;
 use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
 
@@ -28,7 +30,6 @@ class UserListController extends BaseController
         $this->model = new XinUserModel;
         $this->service = new XinUserListService;
         $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
-        $this->searchField = ['group_id' => '=', 'created_at' => 'date'];
     }
 
     /** 获取用户列表 */
@@ -46,7 +47,7 @@ class UserListController extends BaseController
     }
 
     /** 充值 */
-    #[Authorize('user.list.recharge')] #[PostMapping('/recharge')]
+    #[PostMapping('/recharge')] #[Authorize('user.list.recharge')]
     public function recharge(UserRechargeRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -56,7 +57,7 @@ class UserListController extends BaseController
     }
 
     /** 重置密码 */
-    #[Authorize('user.list.resetPassword')] #[PostMapping('/resetPassword')]
+    #[PutMapping('/resetPassword')] #[Authorize('user.list.resetPassword')]
     public function resetPassword(UserResetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -64,4 +65,15 @@ class UserListController extends BaseController
 
         return $this->success('ok');
     }
+
+    /** 上传头像 */
+    #[PostMapping('/avatar')]
+    public function avatar(): JsonResponse
+    {
+        // TODO 上传头像需要完善权限和上传头像目录
+        $service = new UpdateFileService;
+        $service->setFileType(FileType::IMAGE);
+        return $service->upload(0);
+    }
+
 }

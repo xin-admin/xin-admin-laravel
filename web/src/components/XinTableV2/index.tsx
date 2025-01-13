@@ -86,6 +86,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
         hideInForm: true,
         hideInSearch: true,
         key: 'operate',
+        align: 'center',
         hideInDescriptions: true,
         render: (_, record) => (
           <Space split={<Divider type="vertical" />} size={0}>

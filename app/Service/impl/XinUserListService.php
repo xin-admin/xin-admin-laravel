@@ -38,8 +38,7 @@ class XinUserListService
             'before' => $user->balance,
             'describe' => $remark,
             'scene' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'created_by' => auth()->id(),
+            'created_by' => customAuth('admin')->id(),
         ]);
         XinUserModel::where('user_id', $userId)->update([
             'balance' => $diffBalance,

@@ -9,8 +9,15 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'sometimes|required|integer|exists:users,id',
-            'username' => 'sometimes|required|string|max:30',
+            'user_id' => 'required|integer|exists:xin_user,user_id',
+            'avatar_id' => 'required|integer|exists:file,file_id',
+            'mobile' => 'required',
+            'username' => 'required',
+            'email' => 'required',
+            'nickname' => 'required',
+            'gender' => 'required',
+            'motto' => 'required',
+            'status' => 'required',
         ];
     }
 }
