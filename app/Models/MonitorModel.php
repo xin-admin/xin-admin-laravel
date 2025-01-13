@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $params
  * @property int $user_id
  * @property Carbon|null $created_at
+ *
  * @mixin IdeHelperModel
  */
 class MonitorModel extends Model
@@ -48,11 +49,13 @@ class MonitorModel extends Model
         'user_id',
     ];
 
+    protected $with = ['user'];
+
     /**
      * 关联会员记录表
      */
     public function user(): HasOne
     {
-        return $this->hasOne(AdminUserModel::class, 'id', 'user_id');
+        return $this->hasOne(AdminUserModel::class, 'user_id', 'user_id');
     }
 }

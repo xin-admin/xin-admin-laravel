@@ -3,7 +3,7 @@ import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import React from 'react';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import { IBalanceRecord } from '@/domain/IBalanceRecord';
+import { IBalanceRecord } from '@/domain/iBalanceRecord';
 
 /** 余额变动记录表 */
 export default () => {

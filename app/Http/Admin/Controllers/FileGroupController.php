@@ -4,6 +4,7 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
+use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -17,7 +18,7 @@ use Illuminate\Http\JsonResponse;
  * 文件分组控制器
  */
 #[AdminController]
-#[RequestMapping('/admin/file/group')]
+#[RequestMapping('/system/file/group')]
 class FileGroupController extends BaseController
 {
     public function __construct()
@@ -26,23 +27,30 @@ class FileGroupController extends BaseController
     }
 
     /** 文件分组列表 */
-    #[GetMapping] #[Authorize('admin.file.group.list')]
+    #[GetMapping] #[Authorize('system.file.group.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();
     }
 
     /** 添加文件分组 */
-    #[PostMapping] #[Authorize('admin.file.group.add')]
+    #[PostMapping] #[Authorize('system.file.group.add')]
     public function add(FormRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 修改文件分组 */
-    #[PutMapping] #[Authorize('admin.file.group.edit')]
+    #[PutMapping] #[Authorize('system.file.group.edit')]
     public function edit(FormRequest $request): JsonResponse
     {
         return $this->editResponse($request);
+    }
+
+    /** 删除文件分组 */
+    #[DeleteMapping] #[Authorize('system.file.group.delete')]
+    public function delete(): JsonResponse
+    {
+        return $this->deleteResponse();
     }
 }

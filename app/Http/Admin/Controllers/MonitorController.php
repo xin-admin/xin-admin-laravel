@@ -11,10 +11,10 @@ use App\Models\MonitorModel;
 use Illuminate\Http\JsonResponse;
 
 /**
- * 监控管理
+ * 系统监控
  */
 #[AdminController]
-#[RequestMapping('/monitor')]
+#[RequestMapping('/system/monitor')]
 class MonitorController extends BaseController
 {
     public function __construct()
@@ -29,7 +29,7 @@ class MonitorController extends BaseController
     }
 
     /** 获取监控数据列表 */
-    #[GetMapping] #[Authorize('admin.monitor.list')]
+    #[GetMapping] #[Authorize('system.monitor.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();

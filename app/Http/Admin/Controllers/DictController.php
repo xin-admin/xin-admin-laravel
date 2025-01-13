@@ -27,14 +27,7 @@ class DictController extends BaseController
     public function __construct()
     {
         $this->model = new DictModel;
-        $this->searchField = [
-            'id' => '=',
-            'name' => 'like',
-            'code' => '=',
-            'type' => '=',
-            'created_at' => 'date',
-            'updated_at' => 'date',
-        ];
+        $this->quickSearchField = ['id', 'name', 'code'];
     }
 
     /** 获取字典列表 */
@@ -62,7 +55,7 @@ class DictController extends BaseController
     #[DeleteMapping] #[Authorize('system.dict.delete')]
     public function delete(): JsonResponse
     {
-        // TODO 删除字典需判断是否有子项
+        // TODO 删除字典需判断是否有子项 （待完成）
         return $this->deleteResponse();
     }
 

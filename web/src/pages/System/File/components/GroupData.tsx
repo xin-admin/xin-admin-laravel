@@ -6,10 +6,11 @@ import IconFont from '@/components/IconFont';
 import EditGroup from './EditGroup';
 import AddGroup from './AddGroup';
 import { DeleteGroup, GroupList } from '@/services/file/group';
+import { listApi } from '@/services/common/table';
 type DirectoryTreeProps = GetProps<typeof Tree.DirectoryTree>;
 const { DirectoryTree } = Tree;
 
-const FileIcon = <IconFont type={'icon-wenjianjia'} className={'icon-wenjianjia'} />;
+const FileIcon = <IconFont name={'icon-wenjianjia'}/>;
 export default (props: {selectGroup: GroupDataType,setSelectGroup: React.Dispatch<React.SetStateAction<GroupDataType>>}) => {
   const {selectGroup,setSelectGroup} = props
 
@@ -21,7 +22,7 @@ export default (props: {selectGroup: GroupDataType,setSelectGroup: React.Dispatc
     },
   ]);
   const getGroupList = async () => {
-    let res = await GroupList();
+    let res = await listApi('/system/file/group');
     setGroupData([
       {
         name: 'root',

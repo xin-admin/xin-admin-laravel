@@ -16,7 +16,7 @@ use Illuminate\Http\JsonResponse;
  * 文件列表
  */
 #[AdminController]
-#[RequestMapping('/admin/file')]
+#[RequestMapping('/system/file')]
 class FileListController extends BaseController
 {
     public function __construct()
@@ -30,16 +30,18 @@ class FileListController extends BaseController
     }
 
     /** 获取文件列表 */
-    #[GetMapping] #[Authorize('admin.file.list')]
+    #[GetMapping] #[Authorize('system.file.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();
     }
 
     /** 修改文件信息 */
-    #[PutMapping] #[Authorize('admin.file.edit')]
+    #[PutMapping] #[Authorize('system.file.edit')]
     public function edit(FileUpdateInfoRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
+
+    // TODO 删除文件 （待完成）
 }

@@ -70,7 +70,7 @@ class UserListController extends BaseController
     #[PostMapping('/avatar')]
     public function avatar(): JsonResponse
     {
-        // TODO 上传头像需要完善权限和上传头像目录
+        // TODO 上传头像需要完善权限和上传头像目录 （待完成）
         $service = new UpdateFileService;
         $service->setFileType(FileType::IMAGE);
         return $service->upload(0);

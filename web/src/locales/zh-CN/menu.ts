@@ -38,7 +38,7 @@ export default {
   'menu.setPassword': '修改密码',
   'menu.log': '资产记录',
   'menu.log.moneyLog': '余额记录',
-  'menu.File': '文件管理',
   'menu.testTable': '测试表',
-  'menu.system.monitor': '系统监控'
+  'menu.system.monitor': '系统监控',
+  'menu.system.file': '文件管理',
 };

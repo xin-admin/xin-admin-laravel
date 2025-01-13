@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $group_id
  * @property string $name
- * @property int $parent_id
+ * @property string $describe
  * @property int $sort
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -27,7 +27,6 @@ class FileGroupModel extends Model
     protected $primaryKey = 'group_id';
 
     protected $casts = [
-        'parent_id' => 'int',
         'sort' => 'int',
     ];
 
@@ -35,5 +34,6 @@ class FileGroupModel extends Model
         'name',
         'parent_id',
         'sort',
+        'describe',
     ];
 }

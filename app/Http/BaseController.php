@@ -59,7 +59,7 @@ abstract class BaseController
     protected function listResponse(): JsonResponse
     {
         [$buildModel, $paginate] = $this->buildSearch();
-        // TODO 分页响应优化，去除不需要的参数
+        // TODO 分页响应优化，去除不需要的参数：page （待完成）
         $data = $buildModel->paginate(
             $paginate['prePage'],
             page: $paginate['page'] ?? 1

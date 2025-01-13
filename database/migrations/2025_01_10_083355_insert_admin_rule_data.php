@@ -73,6 +73,20 @@ return new class extends Migration
         $this->insertRule(50, 44, 5, '字典项新增', 'system.dict.item.add');
         $this->insertRule(51, 44, 6, '字典项编辑', 'system.dict.item.edit');
         $this->insertRule(52, 44, 7, '字典项删除', 'system.dict.item.delete');
+        /** 系统详情 */
+        $this->insertMenu(53, 43, 1, '系统详情', 'system.info', 'menu.system.info', 'InfoOutlined', '/system/info');
+        /** 文件管理 */
+        $this->insertMenu(54, 43, 2, '文件管理', 'system.file', 'menu.system.file', 'FileOutlined', '/system/file');
+        $this->insertRule(55, 54, 0, '文件列表查询', 'system.file.list');
+        $this->insertRule(56, 54, 1, '文件列表删除', 'system.file.delete');
+        $this->insertRule(57, 54, 2, '文件列表编辑', 'system.file.edit');
+        $this->insertRule(58, 54, 3, '文件分组查询', 'system.file.group.list');
+        $this->insertRule(59, 54, 4, '文件分组新增', 'system.file.group.add');
+        $this->insertRule(60, 54, 5, '文件分组编辑', 'system.file.group.edit');
+        $this->insertRule(61, 54, 6, '文件分组删除', 'system.file.group.delete');
+        /** 系统监控 */
+        $this->insertMenu(62, 43, 3, '系统监控', 'system.monitor', 'menu.system.monitor', 'MonitorOutlined', '/system/monitor');
+        $this->insertRule(63, 62, 0, '系统监控查询', 'system.monitor.list');
     }
 
     private function insertFirst(
