@@ -64,7 +64,10 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
   const onFinish = async (formData: T) => {
     if (props.onFinish) {
       let ba = await props.onFinish(formData, formInitValue);
-      if(ba) setFormOpen.setFalse()
+      if (ba) {
+        setFormOpen.setFalse();
+        actionRef.current?.reset?.();
+      }
       return;
     }
     if (formInitValue && formInitValue[rowKey]) {
@@ -91,13 +94,13 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
         render: (_, record) => (
           <Space split={<Divider type="vertical" />} size={0}>
             {beforeOperateRender?.(record)}
-            {(typeof editShow === 'function' ? editShow(record) : editShow)  &&
+            {(typeof editShow === 'function' ? editShow(record) : editShow) &&
               <ButtonAccess auth={props.accessName + '.edit'} key={'edit'}>
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
             {(typeof deleteShow === 'function' ? deleteShow(record) : deleteShow) !== false &&
-              <ButtonAccess auth={props.accessName + '.delete'}  key={'delete '}>
+              <ButtonAccess auth={props.accessName + '.delete'} key={'delete '}>
                 <Popconfirm
                   okText="确认"
                   cancelText="取消"

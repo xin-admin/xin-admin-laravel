@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Cache;
  * 字典管理
  */
 #[AdminController]
-#[RequestMapping('/admin/dict')]
+#[RequestMapping('/system/dict')]
 class DictController extends BaseController
 {
     protected array $noPermission = ['itemList'];
@@ -38,28 +38,28 @@ class DictController extends BaseController
     }
 
     /** 获取字典列表 */
-    #[GetMapping] #[Authorize('list')]
+    #[GetMapping] #[Authorize('system.dict.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();
     }
 
     /** 添加字典 */
-    #[PostMapping] #[Authorize('add')]
+    #[PostMapping] #[Authorize('system.dict.add')]
     public function add(DictRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 修改字典信息 */
-    #[PutMapping] #[Authorize('admin.dict.edit')]
+    #[PutMapping] #[Authorize('system.dict.edit')]
     public function edit(DictRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
 
     /** 删除字典 */
-    #[DeleteMapping] #[Authorize('admin.dict.delete')]
+    #[DeleteMapping] #[Authorize('system.dict.delete')]
     public function delete(): JsonResponse
     {
         // TODO 删除字典需判断是否有子项

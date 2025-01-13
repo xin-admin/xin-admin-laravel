@@ -18,7 +18,7 @@ use Illuminate\Http\JsonResponse;
  * 字典项控制器
  */
 #[AdminController]
-#[RequestMapping('/admin/dict/item')]
+#[RequestMapping('/system/dict/item')]
 class DictItemController extends BaseController
 {
     public function __construct()
@@ -31,28 +31,28 @@ class DictItemController extends BaseController
     }
 
     /** 获取字典项列表 */
-    #[GetMapping] #[Authorize('admin.dict.item.list')]
+    #[GetMapping] #[Authorize('system.dict.item.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();
     }
 
     /** 添加字典项 */
-    #[PostMapping] #[Authorize('admin.dict.item.add')]
+    #[PostMapping] #[Authorize('system.dict.item.add')]
     public function add(DictItemRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 编辑字典项 */
-    #[PutMapping] #[Authorize('admin.dict.item.edit')]
+    #[PutMapping] #[Authorize('system.dict.item.edit')]
     public function edit(DictItemRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
 
     /** 删除字典项 */
-    #[DeleteMapping] #[Authorize('admin.dict.item.delete')]
+    #[DeleteMapping] #[Authorize('system.dict.item.delete')]
     public function delete(): JsonResponse
     {
         return $this->deleteResponse();

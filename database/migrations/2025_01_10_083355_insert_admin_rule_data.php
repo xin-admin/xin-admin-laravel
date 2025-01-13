@@ -61,6 +61,18 @@ return new class extends Migration
         $this->insertRule(40, 38, 1, '权限管理新增', 'admin.rule.add');
         $this->insertRule(41, 38, 2, '权限管理编辑', 'admin.rule.edit');
         $this->insertRule(42, 38, 3, '权限管理删除', 'admin.rule.delete');
+        /** 系统管理 */
+        $this->insertFirst(43, 4, '系统管理', 'system', 'menu.system', 'ClusterOutlined', '/system');
+        /** 字典管理 */
+        $this->insertMenu(44, 43, 0, '字典管理', 'system.dict', 'menu.system.dict', 'DeleteRowOutlined', '/system/dict');
+        $this->insertRule(45, 44, 0, '字典管理查询', 'system.dict.list');
+        $this->insertRule(46, 44, 1, '字典管理新增', 'system.dict.add');
+        $this->insertRule(47, 44, 2, '字典管理编辑', 'system.dict.edit');
+        $this->insertRule(48, 44, 3, '字典管理删除', 'system.dict.delete');
+        $this->insertRule(49, 44, 4, '字典项查询', 'system.dict.item.list');
+        $this->insertRule(50, 44, 5, '字典项新增', 'system.dict.item.add');
+        $this->insertRule(51, 44, 6, '字典项编辑', 'system.dict.item.edit');
+        $this->insertRule(52, 44, 7, '字典项删除', 'system.dict.item.delete');
     }
 
     private function insertFirst(
