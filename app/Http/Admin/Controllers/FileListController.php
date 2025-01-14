@@ -4,6 +4,7 @@ namespace App\Http\Admin\Controllers;
 
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
+use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
@@ -43,5 +44,11 @@ class FileListController extends BaseController
         return $this->editResponse($request);
     }
 
-    // TODO 删除文件 （待完成）
+
+    #[DeleteMapping] #[Authorize('system.file.delete')]
+    public function delete(): JsonResponse
+    {
+        // TODO 删除文件 （待完成） 删除本地文件数据！
+        return $this->deleteResponse();
+    }
 }

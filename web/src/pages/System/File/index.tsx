@@ -1,52 +1,88 @@
-import { Button, Checkbox, Empty, Flex, Image, message, Pagination, Popconfirm, Space } from 'antd';
+import { Button, Checkbox, Empty, Flex, Image, Menu, MenuProps, message, Pagination, Popconfirm, Space } from 'antd';
 import { ProCard } from '@ant-design/pro-components';
 import React, { useEffect, useState } from 'react';
-import { DeleteFile } from '@/services/file/file';
 import './index.less';
-import UploadFile from './components/UploadFile';
 import IconFont from '@/components/IconFont';
 import { useBoolean } from 'ahooks';
-import { DeleteOutlined } from '@ant-design/icons';
-import { listApi } from '@/services/common/table';
+import { DeleteOutlined, FolderOutlined } from '@ant-design/icons';
+import { deleteApi, listApi } from '@/services/common/table';
+import { IFileGroup } from '@/domain/iFileGroup';
+import { IFile } from '@/domain/iFile';
+
+type MenuItem = Required<MenuProps>['items'][number];
 
 export default () => {
-
-  const [selectGroup, setSelectGroup] = useState<GroupDataType>({
-    name: 'root',
-    group_id: 0,
-    sort: 0,
-  });
-  const [fileList, setFileList] = useState<FileType[]>([]);
-  const [pageData, setPageData] = useState({
-    page: 1,
-    total: 0,
-  });
-  const [selectFile, setSelectFile] = useState<any[]>([]);
+  // 分组列表
+  const [fileGroup, setFileGroup] = useState<IFileGroup[]>([]);
+  // 分组菜单
+  const [groupMenu, setGroupMenu] = useState<MenuItem[]>([]);
+  // 选择分组
+  const [selectGroup, setSelectGroup] = useState<string[]>(['14']);
+  // 文件列表
+  const [fileList, setFileList] = useState<IFile[]>([]);
+  // 选择文件
+  const [selectFile, setSelectFile] = useState<number[]>([]);
+  // 分页
+  const [pageData, setPageData] = useState({ page: 1, total: 0 });
+  // 加载状态
+  const [loading, setLoading] = useState<boolean>(false);
+  // 选择状态
   const [selectShow, setSelectShow] = useBoolean();
-  const getFileList = async (group_id = 0, current = 1) => {
-    let res = await listApi('/system/file', { pageSize: 50, current, group_id });
+  // 获取文件列表
+  const getFileList = async (current = 1) => {
+    if (!selectGroup) {
+      message.warning('请选择文件分组！');
+      return;
+    }
+    let data = {
+      pageSize: 50,
+      current,
+      group_id: Number(selectGroup[0]),
+    };
+    let res = await listApi('/system/file', data);
     setFileList(res.data.data);
     setPageData({
       page: res.data.current_page,
       total: res.data.total,
     });
   };
-
+  // 删除文件
   const deleteConfirm = async () => {
+    if (!selectGroup) {
+      message.warning('请选择分组！');
+      return;
+    }
     if (selectFile.length === 0) {
       message.warning('请选择文件！');
       return;
     }
-    await DeleteFile({ ids: selectFile.join(',') });
-    await getFileList(selectGroup.group_id, pageData.page);
+    setLoading(true);
+    await deleteApi('/system/file', { file_id: selectFile.join(',') });
+    await getFileList(pageData.page);
     setSelectFile([]);
     message.success('删除成功！');
+    setLoading(false);
   };
-
+  // 选择分组
   useEffect(() => {
-    getFileList(selectGroup.group_id, 1).then(() => {
+    setLoading(true);
+    getFileList(1).finally(() => {
+      setLoading(false);
     });
   }, [selectGroup]);
+  // 获取菜单列表
+  useEffect(() => {
+    listApi('/system/file/group').then((res) => {
+      let menu: MenuItem[] = res.data.data.map((item: IFileGroup) => {
+        return {
+          label: item.name,
+          key: item.group_id,
+          icon: <FolderOutlined />,
+        };
+      });
+      setGroupMenu(menu);
+    });
+  }, []);
 
   const fileExtra = (
     <Space>
@@ -69,54 +105,53 @@ export default () => {
       >
         {selectShow ? '取消选择' : '批量选择'}
       </Button>
-      <UploadFile getFileList={getFileList} selectGroup={selectGroup}></UploadFile>
     </Space>
-  );
-
-  const FileInfo = (props: { item: FileType }) => (
-    <div className={'image-card'} key={props.item.file_id}>
-      {selectShow &&
-        <div className={'card'} onClick={() => {
-          if (selectFile?.includes(props.item.file_id)) {
-            setSelectFile(selectFile.filter((key) => key !== props.item.file_id));
-          } else {
-            setSelectFile([...selectFile, props.item.file_id]);
-          }
-        }}>
-          <Checkbox checked={selectFile.includes(props.item.file_id)}></Checkbox>
-        </div>
-      }
-      <div className="wrapper">
-        <Image height={60} preview={props.item.file_type === 10 ? {} : false} className="file-icon"
-               src={props.item.preview_url} />
-        <p className="gi-line-1 file-name">{props.item.file_name}</p>
-      </div>
-    </div>
   );
 
   return (
     <ProCard ghost gutter={20} wrap={false}>
-      <ProCard ghost colSpan={'260px'}>
-
+      <ProCard bordered headerBordered colSpan={'260px'} title={'文件分组'}>
+        <Menu
+          items={groupMenu}
+          style={{ border: 'none' }}
+          selectedKeys={selectGroup}
+          onSelect={(info) => setSelectGroup(info.selectedKeys)}
+        />
       </ProCard>
-      <ProCard bordered headerBordered colSpan={'auto'} title={'文件列表'} style={{ width: '100%' }} extra={fileExtra}>
+      <ProCard loading={loading} bordered headerBordered colSpan={'auto'} title={'文件列表'} style={{ width: '100%' }}
+               extra={fileExtra}>
         <div style={{ minHeight: '500px' }}>
           {fileList.length > 0 ?
             <Flex wrap="wrap" gap="middle">
-              {fileList.map((item) => <FileInfo item={item} />)}
-            </Flex>
-            :
-            <Empty />
+              {fileList.map((item) => (
+                <div className={'image-card'} key={item.file_id}>
+                  {selectShow &&
+                    <div className={'card'} onClick={() => {
+                      if (selectFile?.includes(item.file_id)) {
+                        setSelectFile(selectFile.filter((key) => key !== item.file_id));
+                      } else {
+                        setSelectFile([...selectFile, item.file_id]);
+                      }
+                    }}>
+                      <Checkbox checked={selectFile.includes(item.file_id)}></Checkbox>
+                    </div>
+                  }
+                  <div className="wrapper">
+                    <Image height={60} preview={item.file_type === 10 ? {} : false} className="file-icon"
+                           src={item.preview_url} />
+                    <p className="gi-line-1 file-name">{item.file_name}</p>
+                  </div>
+                </div>
+              ))}
+            </Flex> : <Empty />
           }
         </div>
         <Pagination
-          style={{ textAlign: 'right' }}
+          style={{ textAlign: 'left' }}
           current={pageData.page}
           total={pageData.total}
           pageSize={50}
-          onChange={async (page) => {
-            await getFileList(selectGroup.group_id, page);
-          }}
+          onChange={getFileList}
         />
       </ProCard>
     </ProCard>
