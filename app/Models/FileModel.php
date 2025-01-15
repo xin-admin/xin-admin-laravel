@@ -10,6 +10,7 @@ use App\Enum\FileType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class File
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FileModel extends Model
 {
+    use SoftDeletes;
     protected $table = 'file';
 
     protected $primaryKey = 'file_id';

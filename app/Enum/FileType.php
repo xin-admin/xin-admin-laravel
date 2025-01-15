@@ -23,72 +23,56 @@ enum FileType: int
     // 未知文件
     case ANNEX = 99;
 
-    public static function image(): int
+    /**
+     * 获取类型名称
+     */
+    public function name(): string
     {
-        return self::IMAGE->value;
-    }
-
-    public static function mp3(): int
-    {
-        return self::MP3->value;
-    }
-
-    public static function video(): int
-    {
-        return self::VIDEO->value;
-    }
-
-    public static function zip(): int
-    {
-        return self::ZIP->value;
-    }
-
-    public static function annex(): int
-    {
-        return self::ANNEX->value;
+        return match ($this) {
+            self::IMAGE => '图片',
+            self::MP3 => '音频',
+            self::VIDEO => '视频',
+            self::ZIP => '压缩包',
+            self::ANNEX => '附件',
+        };
     }
 
     /**
-     * 获取枚举类型值
+     * 获取预览地址
      */
-    public static function data(): array
+    public function previewPath(): string
     {
-        return [
-            self::IMAGE->value => [
-                'name' => '图片', // 类型名称
-                'value' => self::IMAGE, // 类型值
-                'preview_path' => '', // 预览地址
-                'max_size' => 2097152, // 上传最大大小
-                'file_ext' => ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'avif', 'webp'], // 文件扩展名
-            ],
-            self::MP3->value => [
-                'name' => '音频',
-                'value' => self::MP3,
-                'preview_path' => 'static/mp3.png',
-                'max_size' => 10485760,
-                'file_ext' => ['mp3', 'wma', 'wav', 'ape', 'flac', 'ogg', 'aac'],
-            ],
-            self::VIDEO->value => [
-                'name' => '视频',
-                'value' => self::VIDEO,
-                'preview_path' => 'static/video.png',
-                'max_size' => 10485760,
-                'file_ext' => ['mp4', 'mov', 'wmv', 'flv', 'avl', 'webm', 'mkv'],
-            ],
-            self::ZIP->value => [
-                'name' => '压缩包',
-                'value' => self::ZIP,
-                'preview_path' => 'static/zip.png',
-                'max_size' => 10485760,
-                'file_ext' => ['zip', 'rar'],
-            ],
-            self::ANNEX->value => [
-                'name' => '附件',
-                'value' => self::ANNEX,
-                'preview_path' => 'static/annex.png',
-                'max_size' => 10485760,
-                'file_ext' => '*',
-            ],
-        ];
+        return match ($this) {
+            self::IMAGE => 'static/image.png',
+            self::MP3 => 'static/mp3.png',
+            self::VIDEO => 'static/video.png',
+            self::ZIP => 'static/zip.png',
+            self::ANNEX => 'static/annex.png',
+        };
+    }
+
+    /**
+     * 获取最大大小
+     */
+    public function maxSize(): int
+    {
+        return match ($this) {
+            self::IMAGE => 2097152,
+            self::MP3, self::VIDEO, self::ZIP, self::ANNEX => 10485760,
+        };
+    }
+
+    /**
+     * 文件扩展名
+     */
+    public function fileExt(): array|string
+    {
+        return match ($this) {
+            self::IMAGE => ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'avif', 'webp'],
+            self::MP3 => ['mp3', 'wma', 'wav', 'ape', 'flac', 'ogg', 'aac'],
+            self::VIDEO => ['mp4', 'mov', 'wmv', 'flv', 'avl', 'webm', 'mkv'],
+            self::ZIP => ['zip', 'rar'],
+            self::ANNEX => '*',
+        };
     }
 }

@@ -83,8 +83,6 @@ class File
 
     /**
      * 验证上传的文件
-     *
-     * @throws HttpResponseException
      */
     protected function validate(int $fileType): void
     {
