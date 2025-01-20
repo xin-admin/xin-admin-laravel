@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class File
@@ -71,16 +72,11 @@ class FileModel extends Model
             get: function ($value, $data) {
                 // 图片的预览图直接使用外链
                 if ($data['file_type'] == FileType::IMAGE->value) {
-                    if ($data['storage'] == 'public') {
-                        $data['domain'] = rtrim(request()->schemeAndHttpHost().'/storage/', '/');
-                    }
-
-                    return "{$data['domain']}/{$data['file_path']}";
+                    return Storage::disk($data['disk'])->url($data['file_path']);
                 }
                 // 生成默认的预览图
-                $previewPath = FileType::data()[$data['file_type']]['preview_path'];
-
-                return request()->schemeAndHttpHost().$previewPath;
+                $previewPath = FileType::from($data['file_type'])->previewPath();
+                return env('APP_URL').$previewPath;
             }, set: fn () => null
         );
     }
