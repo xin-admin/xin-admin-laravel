@@ -18,7 +18,7 @@ use Illuminate\Http\JsonResponse;
  * 文件分组控制器
  */
 #[AdminController]
-#[RequestMapping('/system/file/group')]
+#[RequestMapping('/file/group')]
 class FileGroupController extends BaseController
 {
     public function __construct()
@@ -27,28 +27,28 @@ class FileGroupController extends BaseController
     }
 
     /** 文件分组列表 */
-    #[GetMapping] #[Authorize('system.file.group.list')]
+    #[GetMapping] #[Authorize('file.group.list')]
     public function list(): JsonResponse
     {
         return $this->listResponse();
     }
 
     /** 添加文件分组 */
-    #[PostMapping] #[Authorize('system.file.group.add')]
+    #[PostMapping] #[Authorize('file.group.add')]
     public function add(FormRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 修改文件分组 */
-    #[PutMapping] #[Authorize('system.file.group.edit')]
+    #[PutMapping] #[Authorize('file.group.edit')]
     public function edit(FormRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
 
     /** 删除文件分组 */
-    #[DeleteMapping] #[Authorize('system.file.group.delete')]
+    #[DeleteMapping] #[Authorize('file.group.delete')]
     public function delete(): JsonResponse
     {
         return $this->deleteResponse();

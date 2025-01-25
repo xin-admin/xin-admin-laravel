@@ -40,5 +40,7 @@ export default {
   'menu.log.moneyLog': 'Money Log',
   'menu.testTable': 'Test Table',
   'menu.system.monitor': 'System Monitor',
-  'menu.system.file': 'Files',
+  'menu.file': 'Files',
+  'menu.file.list': 'Files',
+  'menu.file.group': 'File Group',
 };

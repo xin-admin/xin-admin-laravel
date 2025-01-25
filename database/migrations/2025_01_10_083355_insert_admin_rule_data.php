@@ -75,18 +75,23 @@ return new class extends Migration
         $this->insertRule(52, 44, 7, '字典项删除', 'system.dict.item.delete');
         /** 系统详情 */
         $this->insertMenu(53, 43, 1, '系统详情', 'system.info', 'menu.system.info', 'InfoOutlined', '/system/info');
-        /** 文件管理 */
-        $this->insertMenu(54, 43, 2, '文件管理', 'system.file', 'menu.system.file', 'FileOutlined', '/system/file');
-        $this->insertRule(55, 54, 0, '文件列表查询', 'system.file.list');
-        $this->insertRule(56, 54, 1, '文件列表删除', 'system.file.delete');
-        $this->insertRule(57, 54, 2, '文件列表编辑', 'system.file.edit');
-        $this->insertRule(58, 54, 3, '文件分组查询', 'system.file.group.list');
-        $this->insertRule(59, 54, 4, '文件分组新增', 'system.file.group.add');
-        $this->insertRule(60, 54, 5, '文件分组编辑', 'system.file.group.edit');
-        $this->insertRule(61, 54, 6, '文件分组删除', 'system.file.group.delete');
         /** 系统监控 */
-        $this->insertMenu(62, 43, 3, '系统监控', 'system.monitor', 'menu.system.monitor', 'MonitorOutlined', '/system/monitor');
-        $this->insertRule(63, 62, 0, '系统监控查询', 'system.monitor.list');
+        $this->insertMenu(54, 43, 2, '系统监控', 'system.monitor', 'menu.system.monitor', 'MonitorOutlined', '/system/monitor');
+        $this->insertRule(55, 54, 0, '系统监控查询', 'system.monitor.list');
+        /** 文件管理 */
+        $this->insertFirst(56, 5, '文件管理', 'file', 'menu.file', 'FileOutlined', '/file');
+        /** 文件列表 */
+        $this->insertMenu(57, 56, 0, '文件管理', 'file.list', 'menu.file.list', 'FileOutlined', '/file/list');
+        $this->insertRule(58, 57, 0, '文件列表查询', 'file.list.list');
+        $this->insertRule(59, 57, 1, '文件列表删除', 'file.list.delete');
+        $this->insertRule(60, 57, 2, '文件列表编辑', 'file.list.edit');
+        $this->insertRule(61, 57, 3, '文件列表下载', 'file.list.download');
+        /** 文件分组 */
+        $this->insertMenu(62, 56, 1, '文件分组', 'file.group', 'menu.file.group', 'FileOutlined', '/file/group');
+        $this->insertRule(63, 62, 0, '文件分组查询', 'file.group.list');
+        $this->insertRule(64, 62, 1, '文件分组新增', 'file.group.add');
+        $this->insertRule(65, 62, 2, '文件分组编辑', 'file.group.edit');
+        $this->insertRule(66, 62, 3, '文件分组删除', 'file.group.delete');
     }
 
     private function insertFirst(

@@ -39,7 +39,7 @@ export default () => {
       current,
       group_id: Number(selectGroup[0]),
     };
-    let res = await listApi('/system/file', data);
+    let res = await listApi('/file/list', data);
     setFileList(res.data.data);
     setPageData({
       page: res.data.current_page,
@@ -72,7 +72,7 @@ export default () => {
   }, [selectGroup]);
   // 获取菜单列表
   useEffect(() => {
-    listApi('/system/file/group').then((res) => {
+    listApi('/file/group').then((res) => {
       let menu: MenuItem[] = res.data.data.map((item: IFileGroup) => {
         return {
           label: item.name,

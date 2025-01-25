@@ -88,7 +88,7 @@ class FileService implements IFileService
 
     public function download(int $fileId): StreamedResponse
     {
-        $file = FileModel::find($fileId);
-        return Storage::disk($file->value('disk'))->download($file->value('file_path'));
+        $file = FileModel::where('file_id', $fileId)->first();
+        return Storage::disk($file->value('disk'))->download($file->value('file_path'), $file->value('file_name'));
     }
 }

@@ -40,5 +40,7 @@ export default {
   'menu.log.moneyLog': '余额记录',
   'menu.testTable': '测试表',
   'menu.system.monitor': '系统监控',
-  'menu.system.file': '文件管理',
+  'menu.file': '文件管理',
+  'menu.file.list': '文件列表',
+  'menu.file.group': '文件分组',
 };
