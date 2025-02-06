@@ -9,9 +9,9 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
+use App\Http\Admin\Requests\FileGroupRequest;
 use App\Http\BaseController;
 use App\Models\FileGroupModel;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -24,6 +24,7 @@ class FileGroupController extends BaseController
     public function __construct()
     {
         $this->model = new FileGroupModel;
+        $this->searchField = ['name' => 'like'];
     }
 
     /** 文件分组列表 */
@@ -35,14 +36,14 @@ class FileGroupController extends BaseController
 
     /** 添加文件分组 */
     #[PostMapping] #[Authorize('file.group.add')]
-    public function add(FormRequest $request): JsonResponse
+    public function add(FileGroupRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 修改文件分组 */
     #[PutMapping] #[Authorize('file.group.edit')]
-    public function edit(FormRequest $request): JsonResponse
+    public function edit(FileGroupRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
