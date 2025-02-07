@@ -92,6 +92,16 @@ return new class extends Migration
         $this->insertRule(64, 62, 1, '文件分组新增', 'file.group.add');
         $this->insertRule(65, 62, 2, '文件分组编辑', 'file.group.edit');
         $this->insertRule(66, 62, 3, '文件分组删除', 'file.group.delete');
+        /** 系统设置 */
+        $this->insertMenu(67, 43, 3, '系统设置', 'system.setting', 'menu.system.setting', 'SettingOutlined', '/system/setting');
+        $this->insertRule(68, 67, 0, '系统设置查询', 'system.setting.list');
+        $this->insertRule(69, 67, 1, '系统设置新增', 'system.setting.add');
+        $this->insertRule(70, 67, 2, '系统设置编辑', 'system.setting.edit');
+        $this->insertRule(71, 67, 3, '系统设置删除', 'system.setting.delete');
+        $this->insertRule(72, 67, 4, '系统设置分组查询', 'system.setting.group.list');
+        $this->insertRule(73, 67, 5, '系统设置分组新增', 'system.setting.group.add');
+        $this->insertRule(74, 67, 6, '系统设置分组编辑', 'system.setting.group.edit');
+        $this->insertRule(75, 67, 7, '系统设置分组删除', 'system.setting.group.delete');
     }
 
     private function insertFirst(

@@ -24,7 +24,7 @@ import {
   TimePicker,
   Typography,
 } from 'antd';
-import { getSettingGroup, saveSetting } from '@/services/system';
+import { saveSetting } from '@/services/system';
 import { ProCard } from '@ant-design/pro-components';
 import { deleteApi, listApi } from '@/services/common/table';
 import AddSettingGroup from './components/AddSettingGroup';
@@ -47,7 +47,7 @@ export default () => {
   const token = theme.useToken();
 
   const getSetting = (group_id = 3) => {
-    listApi('/system/setting/list', { group_id }).then((res) => {
+    listApi('/system/setting/' + group_id).then((res) => {
       setDataSource(res.data);
       if (form) {
         let data: any = {};
@@ -60,9 +60,9 @@ export default () => {
   };
 
   useEffect(() => {
-    getSettingGroup().then((res) => {
-      setSettingGroup(res.data);
-    });
+    listApi('/system/setting/group').then((res) => {
+      setSettingGroup(res.data.data);
+    })
     getSetting();
   }, []);
 
