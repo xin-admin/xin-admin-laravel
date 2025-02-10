@@ -32,8 +32,8 @@ class SettingController extends BaseController
     }
 
     /** 通过ID获取设置列表 */
-    #[GetMapping('/{id}')] #[Authorize('system.setting.list')]
-    public function get(string $id): JsonResponse
+    #[GetMapping('/query/{id}')] #[Authorize('system.setting.list')]
+    public function get(int $id): JsonResponse
     {
         $data = $this->model->query()->where('group_id', $id)->get()->toArray();
 
@@ -55,10 +55,19 @@ class SettingController extends BaseController
     }
 
     /** 删除设置 */
-    #[DeleteMapping]
-    #[Authorize('system.setting.delete')]
+    #[DeleteMapping] #[Authorize('system.setting.delete')]
     public function delete(): JsonResponse
     {
         return $this->deleteResponse();
+    }
+
+    #[PutMapping('/save/{id}')] #[Authorize('system.setting.edit')]
+    public function save(int $id): JsonResponse
+    {
+        $value = request()->all();
+        foreach ($value as $k => $v) {
+            $this->model->where('key', $k)->where('group_id', $id)->update(['values' => $v]);
+        }
+        return $this->success('保存成功');
     }
 }

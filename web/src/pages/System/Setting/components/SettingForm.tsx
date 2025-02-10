@@ -130,10 +130,10 @@ export default (params: {
       grid
       onFinish={async (formData) => {
         if (id) {
-          await editApi('/system/setting/edit', { id, ...formData });
+          await editApi('/system/setting', { id, ...formData });
           message.success('编辑成功');
         } else {
-          await addApi('/system/setting/add', formData);
+          await addApi('/system/setting', formData);
           message.success('添加成功');
         }
         await getSetting(formData.group_id)

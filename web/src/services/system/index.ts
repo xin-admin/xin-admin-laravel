@@ -7,7 +7,7 @@ const api = {
   gitDictApi: '/admin/system/dictItem/dictList', // 获取系统字典
   getSettingGroupApi: '/admin/system/setting/querySettingGroup', // 获取设置分组
   addGroupApi: '/admin/system/setting/addGroup', // 添加设置分组
-  saveSettingApi: '/admin/system/setting/saveSetting', // 保存设置
+  saveSettingApi: '/system/setting/saveSetting', // 保存设置
 }
 
 

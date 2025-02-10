@@ -9,9 +9,10 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\SettingRequest;
+use App\Http\Admin\Requests\SettingGroupRequest;
 use App\Http\BaseController;
 use App\Models\SettingGroupModel;
+use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
 
 #[AdminController]
@@ -33,14 +34,14 @@ class SettingGroupController extends BaseController
 
     /** 新增设置 */
     #[PostMapping] #[Authorize('system.setting.group.add')]
-    public function add(SettingRequest $request): JsonResponse
+    public function add(SettingGroupRequest $request): JsonResponse
     {
         return $this->addResponse($request);
     }
 
     /** 修改设置 */
     #[PutMapping] #[Authorize('system.setting.group.edit')]
-    public function edit(SettingRequest $request): JsonResponse
+    public function edit(SettingGroupRequest $request): JsonResponse
     {
         return $this->editResponse($request);
     }
@@ -50,6 +51,14 @@ class SettingGroupController extends BaseController
     #[Authorize('system.setting.group.delete')]
     public function delete(): JsonResponse
     {
+        $settingModel = new SettingModel;
+        $data = request()->all();
+        $delArr = explode(',', $data['id']);
+        $setting = $settingModel->where('group_id', $delArr)->first();
+        if ($setting) {
+            return $this->error('请先删除该分组下的设置');
+        }
+
         return $this->deleteResponse();
     }
 }

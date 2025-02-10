@@ -1,53 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Button,
-  Card,
-  Checkbox,
-  ColorPicker,
-  ConfigProvider,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  List,
-  Menu,
-  message,
-  Popconfirm,
-  Radio,
-  Rate,
-  Select,
-  Slider,
-  Space,
-  Switch,
-  theme,
-  TimePicker,
-  Typography,
-} from 'antd';
+import { Button, Card, Col, Form, List, message, Popconfirm, Row, Space, theme, Typography } from 'antd';
 import { saveSetting } from '@/services/system';
-import { ProCard } from '@ant-design/pro-components';
-import { deleteApi, listApi } from '@/services/common/table';
-import AddSettingGroup from './components/AddSettingGroup';
+import { FormProps } from '@ant-design/pro-components';
+import { deleteApi, editApi, listApi } from '@/services/common/table';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import SettingForm from '@/pages/System/Setting/components/SettingForm';
 import ButtonAccess from '@/components/ButtonAccess';
+import SettingItemRender from '@/pages/System/Setting/components/SettingItemRender';
+import { CardProps } from 'antd/es/card';
+import XinTableV2 from '@/components/XinTableV2';
 
 const { Text } = Typography;
 
 export default () => {
+  // 表单
   const [form] = Form.useForm();
   // 设置分组
   const [settingGroup, setSettingGroup] = useState([]);
   // 查询 Params
   const [key, setKey] = useState<string>('web');
+  // 分组
   const [group, setGroup] = useState<number>(3);
   // 设置项
   const [dataSource, setDataSource] = useState();
-
+  // token
   const token = theme.useToken();
-
+  // 获取设置列表
   const getSetting = (group_id = 3) => {
-    listApi('/system/setting/' + group_id).then((res) => {
+    setLoading(true);
+    listApi('/system/setting/query/' + group_id).then((res) => {
       setDataSource(res.data);
       if (form) {
         let data: any = {};
@@ -56,124 +37,118 @@ export default () => {
         });
         form.setFieldsValue(data);
       }
+    }).finally(() => {
+      setLoading(false);
     });
   };
 
   useEffect(() => {
     listApi('/system/setting/group').then((res) => {
-      setSettingGroup(res.data.data);
-    })
+      if (res.data && res.data.data) {
+        setSettingGroup(res.data.data.map((item: any) => {
+          return {
+            label: item.title,
+            title: item.title,
+            key: item.key,
+            id: item.id,
+          };
+        }));
+      }
+    });
     getSetting();
   }, []);
 
-  return (
+  // 新增按钮
+  const cardExtra = (
+    <ButtonAccess auth={'system.setting.add'}>
+      <SettingForm settingGroup={settingGroup} getSetting={getSetting}>
+        <Button type={'primary'} icon={<PlusOutlined />} block>新增设置</Button>
+      </SettingForm>
+    </ButtonAccess>
+  );
+
+  // 菜单点击事件
+  const menuClick: CardProps['onTabChange'] = (key) => {
+    let data: any = settingGroup?.find((item: { key: string }) => {
+      return item.key === key;
+    });
+    setKey(data.key);
+    setGroup(data.id);
+    getSetting(data.id);
+  };
+
+  // 表单保存事件
+  const onFinish: FormProps['onFinish'] = async (values) => {
+    await editApi('/system/setting/save/' + group, values);
+    message.success('保存成功！');
+  };
+
+  // 删除设置
+  const deleteSetting = async (item: any) => {
+    await deleteApi('/system/setting/delete', { ids: item.id });
+    message.success('删除成功');
+    getSetting(item.group_id);
+  };
+
+  const settingItemRender = (item: any) => (
     <>
-      <Alert message='系统设置可以方便快速的实现对后台可变参数的配置，php代码中直接粘贴用法即可获取到当前配置'
-             type='success' style={{ marginBottom: 10 }} />
-      <Card
-        title={'系统设置'}
-        styles={{
-          body: { padding: 0, paddingTop: 1 },
-        }}
-        extra={
-          <Space>
-            <ButtonAccess auth={'admin.group.rule'}>
-              <AddSettingGroup />
-            </ButtonAccess>
-            <SettingForm settingGroup={settingGroup} getSetting={getSetting}>
-              <Button type={'primary'} icon={<PlusOutlined />} block>新增设置</Button>
-            </SettingForm>
-          </Space>
-        }
-      >
-        <ProCard split='vertical'>
-          <ProCard colSpan="160px" bodyStyle={{ padding: 0 }}>
-            <ConfigProvider
-              theme={{
-                components: {
-                  Menu: {
-                    activeBarBorderWidth: 0,
-                    itemBorderRadius: 0,
-                    itemMarginInline: 0,
-                  },
-                },
-              }}
-            >
-              <Menu
-                onClick={(menu) => {
-                  let data: { key: string, id: number }[] = settingGroup?.filter((item: { key: string }) => {
-                    return item.key === menu.key;
-                  });
-                  setKey(data[0].key);
-                  setGroup(data[0].id);
-                  getSetting(data[0].id);
-                }}
-                defaultSelectedKeys={['web']}
-                mode='inline'
-                items={settingGroup}
-              />
-            </ConfigProvider>
-          </ProCard>
-          <ProCard style={{ minHeight: 500 }}>
-            <Form form={form} onFinish={(values: any) => {
-              saveSetting({group_id: group,...values}).then(() => {
-                message.success('保存成功！');
-              })
-            }}>
-              <List
-                pagination={false}
-                key={'key'}
-                dataSource={dataSource}
-                renderItem={(item: any) => (
-                  <>
-                    <Space style={{ marginBottom: 10 }}>
-                      {item.title}
-                      <SettingForm getSetting={getSetting} settingGroup={settingGroup} id={item.id}
-                                   defaultData={item.defaultData}>
-                        <EditOutlined style={{ color: token.token.colorPrimary }}></EditOutlined>
-                      </SettingForm>
-                      <Popconfirm
-                        title='Delete the task'
-                        description='Are you sure to delete this task?'
-                        onConfirm={() => {
-                          deleteApi('/system/setting/delete', { ids: item.id }).then(() => {
-                            message.success('删除成功');
-                            getSetting(item.group_id);
-                          });
-                        }}
-                        okText='Yes'
-                        cancelText='No'
-                      >
-                        <DeleteOutlined style={{ color: token.token.colorError }} />
-                      </Popconfirm>
-                    </Space>
-                    <Form.Item name={item.key} style={{ maxWidth: 680, marginBottom: 0 }}>
-                      {item.type === 'input' && <Input {...item.props} />}
-                      {item.type === 'password' && <Input.Password {...item.props} />}
-                      {item.type === 'textarea' && <Input.TextArea {...item.props} />}
-                      {item.type === 'checkout' && <Checkbox.Group {...item.props} options={item.options} />}
-                      {item.type === 'color' && <ColorPicker {...item.props} defaultValue='#1677ff' showText />}
-                      {item.type === 'date' && <DatePicker {...item.props} />}
-                      {item.type === 'number' && <InputNumber {...item.props} min={1} max={10} defaultValue={3} />}
-                      {item.type === 'radio' && <Radio.Group {...item.props} options={item.options} />}
-                      {item.type === 'rate' && <Rate {...item.props} allowHalf defaultValue={2.5} />}
-                      {item.type === 'select' && <Select {...item.props} options={item.options} />}
-                      {item.type === 'slider' && <Slider {...item.props} />}
-                      {item.type === 'switch' && <Switch {...item.props} />}
-                      {item.type === 'time' && <TimePicker {...item.props} />}
-                    </Form.Item>
-                    <div style={{ marginBottom: 20 }}>
-                      <Text type='secondary' style={{ fontSize: 12 }}>{item.describe}，用法：</Text>
-                      <Text type='secondary' copyable>{'get_setting(\'' + key + '.' + item.key + '\')'}</Text>
-                    </div>
-                  </>
-                )}
-              />
-              <Button type={'primary'} htmlType='submit'>保存设置</Button>
-            </Form>
-          </ProCard>
-        </ProCard>
-      </Card>
+      <Space style={{ marginBottom: 5 }}>
+        {item.title}
+        <SettingForm getSetting={getSetting} settingGroup={settingGroup} id={item.id} defaultData={item.defaultData}>
+          <EditOutlined style={{ color: token.token.colorPrimary }}></EditOutlined>
+        </SettingForm>
+        <Popconfirm okText="Yes" cancelText="No" title="Delete the task" description="Are you sure to delete this task?"
+                    onConfirm={() => deleteSetting(item)}>
+          <DeleteOutlined style={{ color: token.token.colorError }} />
+        </Popconfirm>
+      </Space>
+      <SettingItemRender item={item} />
+      <div style={{ marginBottom: 20 }}>
+        <Text type="secondary" style={{ fontSize: 12 }}>{item.describe}，用法：</Text>
+        <Text type="secondary" copyable>{'get_setting(\'' + key + '.' + item.key + '\')'}</Text>
+      </div>
     </>
-  )
+  );
+
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <Row gutter={20}>
+      <Col span={14}>
+        <Card
+          tabBarExtraContent={cardExtra}
+          tabList={settingGroup}
+          onTabChange={menuClick}
+          loading={loading}
+          styles={{ body: { minHeight: 500 } }}
+        >
+          <Form form={form} onFinish={onFinish}>
+            <List
+              pagination={false}
+              key={'key'}
+              dataSource={dataSource}
+              renderItem={settingItemRender}
+            />
+            <Button type={'primary'} htmlType="submit">保存设置</Button>
+          </Form>
+        </Card>
+      </Col>
+      <Col span={10}>
+        <XinTableV2
+          api={'/system/setting/group'}
+          rowKey={'id'}
+          accessName={'system.setting.group'}
+          columns={[
+            { title: '分组ID', dataIndex: 'id', hideInForm: true, sorter: true, align: 'center', },
+            { title: 'KEY', dataIndex: 'key', valueType: 'text' },
+            { title: '分组标题', dataIndex: 'title', valueType: 'text' },
+            { title: '分组描述', dataIndex: 'remark', hideInTable: true, valueType: 'textarea' },
+            { title: '创建时间', dataIndex: 'created_at', hideInForm: true, valueType: 'fromNow', },
+            { title: '更新时间', dataIndex: 'updated_at', hideInForm: true, valueType: 'fromNow', }
+          ]}
+          tableProps={{ search: false, headerTitle: '设置分组', cardProps: { bordered: true } }}
+        />
+      </Col>
+    </Row>
+  );
 }
