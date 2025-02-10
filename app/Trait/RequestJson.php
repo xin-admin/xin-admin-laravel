@@ -2,7 +2,7 @@
 namespace App\Trait;
 
 use App\Enum\ShowType as ShopTypeEnum;
-use App\Exception\HttpResponseException;
+use App\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -110,7 +110,7 @@ trait RequestJson
         string $msg,
         string $description,
         ShopTypeEnum $showTypeEnum = ShopTypeEnum::SUCCESS_NOTIFICATION,
-        string $placement = 'topLeft'
+        string $placement = 'topRight'
     ): JsonResponse {
         $showType = $showTypeEnum->value;
         $success = false;

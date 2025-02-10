@@ -6,9 +6,9 @@ export default (lazyLoad: (moduleName: string) => JSX.Element) => {
   return [
     {
       name: '登录',
-      path: 'admin/login',
+      path: '/login',
       id: 'adminLogin',
-      element: lazyLoad('backend/Login'),
+      element: lazyLoad('Admin/components/Login'),
       layout: false,
     },
   ];

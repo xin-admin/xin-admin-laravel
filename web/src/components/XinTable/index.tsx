@@ -10,8 +10,7 @@ import { ProFormColumnsAndProColumns, TableProps } from './typings';
 import UpdateForm from './components/UpdateForm';
 import CreateForm from './components/CreateForm';
 import { ProTableProps } from "@ant-design/pro-components";
-import {Access, useAccess} from "@umijs/max";
-
+import ButtonAccess from '@/components/ButtonAccess';
 
 function XinTable<TableData extends Record<string, any>>(props: TableProps<TableData>) {
   const {
@@ -52,10 +51,6 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    * 表格所有节点的Key
    */
   const [allKeys, setAllKeys] = useState([]);
-  /**
-   * 权限
-   */
-  const access = useAccess();
 
   useImperativeHandle(props.actionRef,()=> actionRef.current)
 
@@ -71,7 +66,6 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
         keys = keys.concat(collectKeys(item.children));
       }
     });
-    console.log(keys);
     return keys;
   };
 
@@ -86,7 +80,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       return
     }
     let ids = selectedRows.map(x => x.id)
-    deleteApi(tableApi+'/delete', { ids: ids.join() || '' }).then( res => {
+    deleteApi(tableApi, { ids: ids.join() || '' }).then( res => {
       if (res.success) {
         message.success(res.msg);
         actionRef.current?.reloadAndRest?.();
@@ -102,7 +96,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const deleteButton = (record: TableData) => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.delete'):true }>
+      <ButtonAccess auth={ accessName + '.delete' }>
         <Popconfirm
           title="Delete the task"
           description="你确定要删除这条数据吗？"
@@ -112,7 +106,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
         >
           <a>删除</a>
         </Popconfirm>
-      </Access>
+      </ButtonAccess>
     )
   }
 
@@ -122,16 +116,16 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const editButton = (record: TableData) => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.edit'):true }>
+      <ButtonAccess auth={ accessName + '.edit' }>
         <UpdateForm<TableData>
           values={record}
           columns={columns}
           id={record.id}
-          api={tableApi+'/edit'}
+          api={tableApi}
           tableRef={actionRef}
           handleUpdate={handleUpdate}
         />
-      </Access>
+      </ButtonAccess>
     )
   }
 
@@ -140,15 +134,15 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
    */
   const addButton = () => {
     return (
-      <Access accessible={ accessName?access.buttonAccess(accessName+'.add'):true}>
+      <ButtonAccess auth={ accessName + '.add' }>
         <CreateForm<TableData>
           columns = { columns }
-          api={tableApi+'/add'}
+          api={tableApi}
           tableRef={actionRef}
           handleAdd={handleAdd}
           addBefore={addBefore}
         />
-      </Access>
+      </ButtonAccess>
     )
   }
 
@@ -209,7 +203,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
           </div>
         }
       >
-        <Access accessible={ accessName?access.buttonAccess(accessName+'.delete'):true }>
+        <ButtonAccess auth={ accessName + '.delete' }>
           <Button
             danger
             onClick={async () => {
@@ -221,7 +215,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
             批量删除
           </Button>
           {footerBarButton}
-        </Access>
+        </ButtonAccess>
       </FooterToolbar>
     )
   }
@@ -240,7 +234,7 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       }
     },
     request: async (params, sorter, filter) => {
-      const { data, success } = await listApi(tableApi+'/list', {
+      const { data, success } = await listApi(tableApi, {
         ...params,
         sorter,
         filter,
@@ -248,14 +242,13 @@ function XinTable<TableData extends Record<string, any>>(props: TableProps<Table
       setDataSource(data.data);
       setAllKeys(collectKeys(data.data));
       return {
-        data: data?.data || [],
+        ...data,
         success,
-        total: data?.total
       };
     },
     rowSelection: rowSelectionShow !== false ? { onChange: (_, selectedRows) => setSelectedRows(selectedRows) } : undefined,
     tableStyle: {minHeight: 500},
-
+    pagination: { showSizeChanger: true }
   }
 
   return (

@@ -1,151 +1,123 @@
-/**
- * 图标选择
- */
-import {FormInstance} from 'antd';
-import * as AntdIcons from "@ant-design/icons";
-import {Col, Input, Modal, Radio, Row, Tabs, TabsProps} from "antd";
-import React, {useState} from "react";
-import {categories} from './fields';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { FormInstance, Input, Modal, Tabs, TabsProps, theme } from 'antd';
+import React, { CSSProperties, useEffect, useState } from 'react';
+import { categories, CategoriesKeys } from './fields';
+import IconFont from '@/components/IconFont';
+const { useToken } = theme;
 
-const allIcons: { [key: string]: any } = AntdIcons;
-
-const icons = (theme: 'suggestion' | 'direction' | 'editor' | 'data' | 'logo') => {
-  let iconFilledList = categories[theme]
-    .map((iconName) => iconName + 'Filled')
-    .filter((iconName) => allIcons[iconName])
-  let iconOutlinedList = categories[theme]
-    .map((iconName) => iconName + 'Outlined')
-    .filter((iconName) => allIcons[iconName])
-  return [...iconFilledList,...iconOutlinedList]
+export interface IconsItemProps {
+  value?: any,
+  form: FormInstance,
+  dataIndex?: string | number | bigint
 }
 
-let IconFont = createFromIconfontCN({
-  // 以下是默认值，也可以按需要指定
-  scriptUrl: '//at.alicdn.com/t/c/font_4413039_4ep4ccllu9b.js',
-});
+export default (props: IconsItemProps) => {
+  const { value, form, dataIndex } = props;
+  // 当前选中图标
+  const [selected, setSelected] = useState<string>('');
+  // 选择菜单显示
+  const [iconShow, setIconShow] = useState<boolean>(false);
+  const { token } = useToken();
 
-const getIcon = (
-  icon?: string | React.ReactNode,
-  iconPrefixes: string = 'icon-',
-): React.ReactNode => {
-  if (typeof icon === 'string' && icon !== '') {
-    // 可加入多种图标类型的兼容写法，此处省略
-    if (icon.startsWith(iconPrefixes)) {
-      return <IconFont type={icon} className={icon} />;
-    }
-  }
-  return icon;
-};
+  useEffect(() => {
+    setSelected(form.getFieldValue(dataIndex));
+  }, [form]);
 
-const items: TabsProps['items'] = [
-  {
-    key: 'use',
-    label: '自定义图标',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {categories['use'].map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{getIcon(item)}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    )
-  },
-  {
-    key: 'suggestion',
-    label: '网站通用图标',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {icons('suggestion').map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{React.createElement(allIcons[item])}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    ),
-  },
-  {
-    key: 'direction',
-    label: '方向性图标',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {icons('direction').map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{React.createElement(allIcons[item])}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    ),
-  },
-  {
-    key: 'editor',
-    label: '编辑类图标',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {icons('editor').map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{React.createElement(allIcons[item])}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    ),
-  },
-  {
-    key: 'data',
-    label: '数据类图标',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {icons('data').map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{React.createElement(allIcons[item])}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    ),
-  },
-  {
-    key: 'logo',
-    label: '品牌和标识',
-    children: (
-      <Row gutter={[10,10]} style={{maxHeight: 400,overflow:'auto'}}>
-        {icons('logo').map((item,key)=> (
-          <Col key={key}>
-            <Radio.Button value={item}>{React.createElement(allIcons[item])}</Radio.Button>
-          </Col>
-        ))}
-      </Row>
-    ),
-  },
-];
+  // 打开选择窗口
+  const openModel = () => { setIconShow(true) }
 
+  const IconListCss: CSSProperties = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    maxHeight: 300,
+    overflow: 'auto',
+  };
 
-export default (props: {value?: any, form: FormInstance, dataIndex?: string | number | bigint}) => {
-  const {value,form, dataIndex} = props
-  const [iconShow,setIconShow] = useState<boolean>(false);
-  const [formIcon,setFormIcon] = useState('');
-  const addonAfter = (value: string) => {
-    if(allIcons[value]) {
-      return React.createElement(allIcons[value],{onClick:()=>setIconShow(true)})
-    }else if(categories['use'].includes(value)) {
-      return <span onClick={()=>setIconShow(true)}>{getIcon(value)}</span>
-    }else {
-      return <span onClick={()=>setIconShow(true)}>请选择</span>
-    }
-  }
+  const IconsList = (props: { type: CategoriesKeys }) => {
+    return (
+      <div style={IconListCss}>
+        {categories[props.type].map((item) => (
+          <div
+            style={{
+              padding: '5px 10px',
+              marginRight: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 8,
+              borderWidth: 1,
+              borderStyle: 'solid',
+              borderColor: selected === item ? token.colorPrimary : token.colorBorder,
+            }}
+            key={item}
+            onClick={() => setSelected(item)}
+          >
+            <IconFont name={item} />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const items: TabsProps['items'] = [
+    {
+      key: 'use',
+      label: '自定义图标',
+      children: <IconsList type={'useIcons'} />,
+    },
+    {
+      key: 'suggestion',
+      label: '网站通用图标',
+      children: <IconsList type={'suggestionIcons'} />,
+    },
+    {
+      key: 'direction',
+      label: '方向性图标',
+      children: <IconsList type={'directionIcons'} />,
+    },
+    {
+      key: 'editor',
+      label: '编辑类图标',
+      children: <IconsList type={'editorIcons'} />,
+    },
+    {
+      key: 'data',
+      label: '数据类图标',
+      children: <IconsList type={'dataIcons'} />,
+    },
+    {
+      key: 'logo',
+      label: '品牌和标识',
+      children: <IconsList type={'logoIcons'} />,
+    },
+    {
+      key: 'other',
+      label: '其它图标',
+      children: <IconsList type={'otherIcons'} />,
+    },
+  ];
+
+  const onChange = () => {
+    form.setFieldValue(dataIndex, selected);
+    setIconShow(false);
+  };
+
   return (
     <>
-      <Input addonAfter={addonAfter(value)} value={value} />
-      <Modal open={iconShow} onCancel={()=>setIconShow(false)} width={680} onOk={()=>{
-        form.setFieldValue(dataIndex, formIcon)
-        setIconShow(false)
-      }}>
-        <Radio.Group optionType="button" buttonStyle="solid"  onChange={({target}) => {
-          setFormIcon(target.value)
-        }}>
-          <Tabs defaultActiveKey="use" items={items} />
-        </Radio.Group>
+      <Input
+        value={value}
+        addonAfter={
+          <>
+            { categories.allIcons.includes(value) ?
+              <span onClick={openModel}><IconFont name={value} /></span>
+              :
+              <span onClick={openModel}>请选择</span>
+            }
+          </>
+        }
+      />
+      <Modal open={iconShow} onCancel={() => setIconShow(false)} width={800} onOk={onChange}>
+        <Tabs defaultActiveKey="all" items={items} />
       </Modal>
     </>
-  )
+  );
 }

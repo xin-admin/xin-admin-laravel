@@ -62,15 +62,7 @@ const XinTabs = (props: {children: ReactNode}) => {
   }
 
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Tabs: {
-            cardGutter: 100
-          },
-        },
-      }}
-    >
+    <ConfigProvider theme={{ components: { Tabs: { cardGutter: 100 }}}}>
       <Tabs {...tabProps}/>
       {props.children}
     </ConfigProvider>

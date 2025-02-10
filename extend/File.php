@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Xin;
 
 use App\Enum\FileType;
 use App\Enum\ShowType as ShopTypeEnum;
-use App\Exception\HttpResponseException;
-use App\Models\File\FileModel;
+use App\Exceptions\HttpResponseException;
+use App\Models\FileModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 
@@ -21,8 +20,6 @@ class File
      * 储存空间
      */
     protected string $store = '';
-
-
 
     /**
      * 上传文件对象
@@ -65,6 +62,7 @@ class File
                 'uploader_id' => $user_id, // 上传用户ID
             ];
             $fileData = FileModel::query()->create($data);
+
             return $fileData->toArray();
         } catch (\Exception $e) {
             self::throwError($e->getMessage());
@@ -78,15 +76,13 @@ class File
     {
         $fileRootPath = Config::get("filesystem.disks.{$fileInfo['domain']}.root");
         // 文件所在目录
-        $realPath = realpath($fileRootPath . '/' . $fileInfo['file_path']);
+        $realPath = realpath($fileRootPath.'/'.$fileInfo['file_path']);
 
         return $realPath === false || unlink($realPath);
     }
 
     /**
      * 验证上传的文件
-     *
-     * @throws HttpResponseException
      */
     protected function validate(int $fileType): void
     {
@@ -116,8 +112,6 @@ class File
 
     /**
      * 抛出错误
-     *
-     * @throws HttpResponseException
      */
     private function throwError($error): void
     {

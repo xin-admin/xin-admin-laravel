@@ -1,9 +1,8 @@
-import { Avatar, type AvatarProps, Button, Dropdown, DropdownProps, Space } from 'antd';
+import { Avatar, type AvatarProps, Dropdown, DropdownProps } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Logout as UserLogout } from '@/services/api/user';
-import { Logout as AdminLogout } from '@/services/admin';
 import { useModel, useNavigate } from '@umijs/max';
 import React from 'react';
+import {logout as logoutApi } from '@/services';
 
 type AvatarRenderType = (props: AvatarProps, defaultDom: React.ReactNode) => React.ReactNode
 
@@ -12,61 +11,46 @@ type AvatarRenderType = (props: AvatarProps, defaultDom: React.ReactNode) => Rea
  * @constructor
  */
 const AvatarRender: AvatarRenderType = () => {
-  const {initialState} = useModel('@@initialState');
+  const {isLogin, userInfo} = useModel('userModel', ({isLogin, userInfo}) => {
+    return {isLogin, userInfo}
+  });
   let navigate = useNavigate();
   const logout =  async () => {
-    if(initialState?.app === 'admin' && localStorage.getItem('x-token')) {
-      await AdminLogout();
-      localStorage.clear();
-      window.location.href = '/';
-    }else if(initialState?.app === 'api' && localStorage.getItem('x-user-token')){
-      await UserLogout();
-      localStorage.clear();
-      window.location.href = '/';
-    }else {
-      localStorage.clear();
-      window.location.href = '/';
-    }
+    await logoutApi();
+    localStorage.clear();
+    window.location.href = '/login';
   }
 
-  const dropItem = (): DropdownProps['menu']  => {
-    let data: DropdownProps['menu'] = {
-      items: [
-        {
-          key: 'logout',
-          icon: <LogoutOutlined />,
-          label: '退出登录',
-          onClick: logout,
-        },
-      ],
-    }
-    if(initialState!.app === 'admin') {
-      data.items!.unshift({
+  const dropItem: DropdownProps['menu']  =  {
+    items: [
+      {
         key: 'user',
-        icon: <UserOutlined/>,
+        icon: <UserOutlined />,
         label: '用户设置',
         onClick: () => navigate('/admin/setting')
-      })
-    }
-    return data
+      },
+      {
+        key: 'logout',
+        icon: <LogoutOutlined />,
+        label: '退出登录',
+        onClick: logout,
+      },
+    ]
   }
 
   return (
-    <div>
-      { initialState?.isLogin ?
-        <Dropdown menu={dropItem()}>
+    <>
+      { isLogin ?
+        <Dropdown menu={dropItem}>
           <div style={{display: 'flex', alignItems: 'center'}}>
-            <Avatar src={initialState.currentUser?.avatar_url} style={{marginRight: '10px'}} />
-            { initialState.currentUser?.nickname || initialState.currentUser?.username || "" }
+            <Avatar src={userInfo?.avatar_url} style={{marginRight: '10px'}} />
+            { userInfo?.nickname || userInfo?.username || "" }
           </div>
         </Dropdown>
         :
-        <>
-          <Button type={'link'} onClick={() => navigate('/client/login')}>登录</Button>
-          <Button type={'link'} onClick={() => navigate('/client/reg')}>注册</Button>
-        </>
+        null
       }
-    </div>
+    </>
   )
 }
 

@@ -24,7 +24,7 @@ declare namespace USER {
     icon: string;
     children: MenuType[];
     key: string;
-    locale: string;
+    local: string;
   }
 
 
@@ -47,13 +47,13 @@ declare namespace USER {
   type AdminInfoResult = API.ResponseStructure<{
     menus: MenuType[],
     access: string[],
-    info: AdminInfo
+    info: UserInfo
   }>
 
   interface UserInfo {
     id?: string
     name?: string
-    money?: string
+    balance?: string
     nickname?: string
     username?: string
     email?: string

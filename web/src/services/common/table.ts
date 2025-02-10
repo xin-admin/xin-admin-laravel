@@ -2,20 +2,24 @@
  * Xin Table 公共接口
  */
 import { request } from '@umijs/max';
-interface XinApi {
-   (
-      url: string,
-      params?: {
-        keyword?: string;
-        current?: number;
-        pageSize?: number;
-      } | { [key: string]: any },
-      data?: { [key: string]: any },
-      options?: { [key: string]: any }
-    ): Promise<API.ResponseStructure<any>>
-}
+type IListParams = {
+  keyword?: string;
+  current?: number;
+  pageSize?: number;
+} | { [key: string]: any }
 
-let app = '/admin'
+/**
+ * 查询详情接口
+ * @param url
+ * @param id
+ * @param options
+ */
+export const getApi = (url: string, id?: number, options?: { [key: string]: any }) => {
+  return request<API.ResponseStructure<any>>(url + '/' + id, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
 
 /**
  * 公共查询接口
@@ -23,8 +27,8 @@ let app = '/admin'
  * @param params
  * @param options
  */
-export const listApi: XinApi = (url,params,options) =>  {
-  return request<API.ResponseStructure<any>>(app+ url, {
+export const listApi = (url: string, params?: IListParams, options?: { [key: string]: any }) =>  {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'GET',
     params: {
       ...params,
@@ -39,8 +43,8 @@ export const listApi: XinApi = (url,params,options) =>  {
  * @param data
  * @param options
  */
-export const addApi: XinApi = (url,data,options) => {
-  return request<API.ResponseStructure<any>>(app+ url, {
+export const addApi = (url: string, data?: { [key: string]: any }, options?: { [key: string]: any }) => {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -56,8 +60,8 @@ export const addApi: XinApi = (url,data,options) => {
  * @param data
  * @param options
  */
-export const editApi: XinApi = (url,data,options) =>  {
-  return request<API.ResponseStructure<any>>(app+ url, {
+export const editApi = (url: string, data?: { [key: string]: any }, options?: { [key: string]: any }) =>  {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'PUT',
     data: { ...data },
     ...(options || {}),
@@ -70,8 +74,8 @@ export const editApi: XinApi = (url,data,options) =>  {
  * @param params
  * @param options
  */
-export const deleteApi: XinApi = (url,params,options) => {
-  return request<API.ResponseStructure<any>>(app+ url, {
+export const deleteApi = (url: string, params?: { [key: string]: any }, options?: { [key: string]: any }) => {
+  return request<API.ResponseStructure<any>>(url, {
     method: 'DELETE',
     params: { ...params },
     ...(options || {}),

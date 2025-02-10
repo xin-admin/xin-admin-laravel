@@ -1,6 +1,5 @@
-import { refreshAdminToken } from '@/services/admin';
-import { refreshUserToken } from '@/services/api/user';
-import type { AxiosResponse, RequestConfig } from '@umijs/max';
+import { refreshToken } from '@/services';
+import type { RequestConfig } from '@umijs/max';
 import { request, history } from '@umijs/max';
 import { message, notification } from 'antd';
 
@@ -18,31 +17,53 @@ enum ErrorShowType {
 }
 
 /**
- * 刷新Token
- * @param response
+ * 错误处理
  */
-const refreshToken = async (response: AxiosResponse) => {
-  try {
-    // 登录状态过期，刷新令牌并重新发起请求
-    let app = localStorage.getItem('app');
-    if( !app || app === 'api'){
-      let res = await refreshUserToken()
-      localStorage.setItem('x-user-token', res.data.token);
-      response.headers!.xUserToken = res.data.token;
-      // 重新发送请求
-      return await request(response.config.url!, response.config);
-    }else {
-      let res = await refreshAdminToken()
-      localStorage.setItem('x-token', res.data.token);
-      response.headers!.xToken = res.data.token;
-      // 重新发送请求
-      let data = await request(response.config.url!,response.config);
-      return Promise.resolve(data);
-    }
-  }catch (e) {
-    return Promise.reject(e);
+const errorHandler = async (data: API.ResponseStructure<any>) => {
+  let {
+    msg = '',
+    showType = 0,
+    description = '',
+    placement
+  } = data;
+  switch (showType) {
+    case ErrorShowType.SILENT:
+      break;
+    case ErrorShowType.SUCCESS_MESSAGE:
+      message.success(msg);
+      break;
+    case ErrorShowType.WARN_MESSAGE:
+      message.warning(msg);
+      break;
+    case ErrorShowType.ERROR_MESSAGE:
+      message.error(msg);
+      break;
+    case ErrorShowType.SUCCESS_NOTIFICATION:
+      notification.success({
+        description: description,
+        message: msg,
+        placement
+      });
+      break;
+    case ErrorShowType.WARN_NOTIFICATION:
+      notification.warning({
+        description: description,
+        message: msg,
+        placement
+      });
+      break;
+    case ErrorShowType.ERROR_NOTIFICATION:
+      notification.error({
+        description: description,
+        message: msg,
+        placement
+      });
+      break;
+    default:
+      message.error(msg);
   }
 }
+
 
 /**
  * 响应拦截
@@ -52,62 +73,42 @@ const responseInterceptors: RequestConfig['responseInterceptors'] = [
     async (response) => {
       const { data = {} as any } = response;
       if(response.status === 202) {
-        return await refreshToken(response);
+        try {
+          let res = await refreshToken()
+          localStorage.setItem('x-token', res.data.token);
+          response.headers!.xToken = res.data.token;
+          // 重新发送请求
+          return request(response.config.url!,response.config);
+        }catch (e) {
+          return Promise.reject(e);
+        }
       }
-      let {
-        success,
-        msg = '',
-        showType = 0,
-        description = ''
-      } = data as API.ResponseStructure<any>;
-      if(success) return Promise.resolve(response);
-      switch (showType) {
-        case ErrorShowType.SILENT:
-          break;
-        case ErrorShowType.SUCCESS_MESSAGE:
-          message.success(msg);
-          break;
-        case ErrorShowType.WARN_MESSAGE:
-          message.warning(msg);
-          break;
-        case ErrorShowType.ERROR_MESSAGE:
-          message.error(msg);
-          break;
-        case ErrorShowType.SUCCESS_NOTIFICATION:
-          notification.success({
-            description: description,
-            message: msg,
-          });
-          break;
-        case ErrorShowType.WARN_NOTIFICATION:
-          notification.warning({
-            description: description,
-            message: msg,
-          });
-          break;
-        case ErrorShowType.ERROR_NOTIFICATION:
-          notification.error({
-            description: description,
-            message: msg,
-          });
-          break;
-        default:
-          message.error(msg);
-      }
+      if(data.success) return Promise.resolve(response);
+      await errorHandler(data);
       return Promise.reject(response);
     },
     async (error: any) => {
-      if(error.response?.status === 401) {
-        message.error(`请先登录！`);
-        if(localStorage.getItem('app') === 'admin') {
-          history.push('/admin/login');
-        }else {
-          history.push('/client/login');
-        }
-        return Promise.reject(error);
+      console.log(error);
+      console.log(location.pathname);
+      const {response} = error;
+      if(!response) {
+        message.error('网路请求错误！');
+        return Promise.reject(response);
       }
-      message.error(`Response status:${error.response.status}`);
-      return Promise.reject(error);
+      if(response.status === 401 && location.pathname != '/login') {
+        message.error(`请先登录！`);
+        localStorage.clear();
+        setTimeout(() => {
+          history.push('/login');
+        }, 100);
+        return Promise.reject(response);
+      }
+      if(response.data) {
+        await errorHandler(response.data);
+      }else {
+        message.error(error.message);
+      }
+      return Promise.reject(response);
     }
   ]
 ]

@@ -1,8 +1,44 @@
 import * as AntdIcons from '@ant-design/icons';
 
-const all = Object.keys(AntdIcons)
-  .map((n) => n.replace(/(Outlined|Filled|TwoTone)$/, ''))
-  .filter((n, i, arr) => arr.indexOf(n) === i);
+const antdIcons = Object.keys(AntdIcons).filter((icon) => {
+  return !['default', 'getTwoToneColor', 'setTwoToneColor', 'createFromIconfontCN', 'IconProvider'].includes(icon) && !icon.includes('TwoTone');
+})
+
+const useIcons = [
+  'icon-guanzhu',
+  'icon-hulve',
+  'icon-fuwuqi',
+  'icon-daishenhe',
+  'icon-zhongduan',
+  'icon-hexinzichan',
+  'icon-yishenhe',
+  'icon-wangluoshebei',
+  'icon-quanbuzichan',
+  'icon-gongjizhe',
+  'icon-shouhaizhe',
+  'icon-zhongwei',
+  'icon-gaowei',
+  'icon-diwei',
+  'icon-daichuzhishijianzongshu',
+  'icon-wakuang',
+  'icon-shijianzongshu',
+  'icon-shixianzhujigeshu',
+  'icon-APTshijian',
+  'icon-yichangliuliang',
+  'icon-jiangshizhuji',
+  'icon-weixieqingbao',
+  'icon-eyichengxu',
+  'icon-siyoudizhi',
+  'icon-WEBweihu',
+  'icon-zhenchagenzong',
+  'icon-wuqigoujian',
+  'icon-zaihetoudi',
+  'icon-loudongliyong',
+  'icon-anzhuangzhiru',
+  'icon-minglingyukongzhi',
+  'icon-mubiaodacheng',
+  'icon-henjiqingli'
+]
 
 const direction = [
   'StepBackward',
@@ -204,53 +240,26 @@ const logo = [
   'Sketch',
 ];
 
-const use = [
-  'icon-guanzhu',
-  'icon-hulve',
-  'icon-fuwuqi',
-  'icon-daishenhe',
-  'icon-zhongduan',
-  'icon-hexinzichan',
-  'icon-yishenhe',
-  'icon-wangluoshebei',
-  'icon-quanbuzichan',
-  'icon-gongjizhe',
-  'icon-shouhaizhe',
-  'icon-zhongwei',
-  'icon-gaowei',
-  'icon-diwei',
-  'icon-daichuzhishijianzongshu',
-  'icon-wakuang',
-  'icon-shijianzongshu',
-  'icon-shixianzhujigeshu',
-  'icon-APTshijian',
-  'icon-yichangliuliang',
-  'icon-jiangshizhuji',
-  'icon-weixieqingbao',
-  'icon-eyichengxu',
-  'icon-siyoudizhi',
-  'icon-WEBweihu',
-  'icon-zhenchagenzong',
-  'icon-wuqigoujian',
-  'icon-zaihetoudi',
-  'icon-loudongliyong',
-  'icon-anzhuangzhiru',
-  'icon-minglingyukongzhi',
-  'icon-mubiaodacheng',
-  'icon-henjiqingli'
-]
+const other = [...direction, ...suggestion, ...editor,...data, ...logo, ...useIcons]
+
+const allIcons = [...antdIcons, ...useIcons];
+const directionIcons = allIcons.filter(icon => direction.includes(icon.replace(/(Outlined|Filled)$/, '')));
+const suggestionIcons = allIcons.filter(icon => suggestion.includes(icon.replace(/(Outlined|Filled)$/, '')));
+const editorIcons = allIcons.filter(icon => editor.includes(icon.replace(/(Outlined|Filled)$/, '')));
+const dataIcons = allIcons.filter(icon => data.includes(icon.replace(/(Outlined|Filled)$/, '')));
+const logoIcons = allIcons.filter(icon => logo.includes(icon.replace(/(Outlined|Filled)$/, '')));
+const otherIcons = allIcons.filter(icon => !other.includes(icon.replace(/(Outlined|Filled)$/, '')));
 
 export const categories = {
-  direction,
-  suggestion,
-  editor,
-  data,
-  logo,
-  use,
-  all
+  allIcons,
+  useIcons,
+  directionIcons,
+  suggestionIcons,
+  editorIcons,
+  dataIcons,
+  logoIcons,
+  otherIcons,
 };
-
-export default categories;
 
 export type Categories = typeof categories;
 export type CategoriesKeys = keyof Categories;

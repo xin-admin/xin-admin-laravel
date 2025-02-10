@@ -29,7 +29,7 @@ const XinDict = (props: { value: any, dict: string }) => {
     return await getDictionaryData(dict);
   });
 
-  const dictItem = dictData?.filter(d => d.value === value)[0];
+  const dictItem = dictData?.filter(d => String(d.value) === String(value))[0];
   return (
     <>
       {dictItem && dictItem.type && dictItem.label ? showDom(dictItem.type, dictItem.status, dictItem.label) : value}

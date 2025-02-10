@@ -1,3 +1,6 @@
+/**
+ * APP 列表
+ */
 export default [
   {
     icon: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
