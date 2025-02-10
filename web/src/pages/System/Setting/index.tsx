@@ -85,7 +85,7 @@ export default () => {
 
   // 删除设置
   const deleteSetting = async (item: any) => {
-    await deleteApi('/system/setting/delete', { ids: item.id });
+    await deleteApi('/system/setting', { id: item.id });
     message.success('删除成功');
     getSetting(item.group_id);
   };
