@@ -58,13 +58,13 @@ class TokenService implements ITokenService
     {
         $data = $this->handler->where('token', $this->getEncryptedToken($token))->first();
         if (! $data) {
-            throw new HttpResponseException(['msg' => 'Invalid Token', 'success' => false], 401);
+            throw new HttpResponseException(['msg' => __('user.invalid_token'), 'success' => false], 401);
         }
         // token过期-触发前端刷新token
         if ($data->expire_time && $data->expire_time <= time() && $expirationException) {
             if ($data->type == 'user-refresh' || $data->type == 'admin-refresh') {
                 // 刷新 Token 过期重新登录
-                throw new HttpResponseException(['msg' => 'Logout', 'success' => false], 401);
+                throw new HttpResponseException(['msg' => __('user.refresh_token_expired'), 'success' => false], 401);
             }
             throw new HttpResponseException(['msg' => 'Refresh Token', 'success' => false], 202);
         }

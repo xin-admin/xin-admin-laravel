@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
         if ($e instanceof AuthorizeException) {
             return $this->notification(
                 'No Permission',
-                $e->getMessage(),
+                __('system.error.no_permission'),
                 ShowType::WARN_NOTIFICATION
             );
         }
@@ -45,8 +45,8 @@ class Handler extends ExceptionHandler
         // NotFoundHttpException 地址不存在
         if ($e instanceof NotFoundHttpException) {
             return $this->notification(
-                'Route does not exist',
-                $e->getMessage(),
+                'Route Not Exist',
+                __('system.error.route_not_exist'),
                 ShowType::WARN_NOTIFICATION
             );
         }

@@ -14,14 +14,4 @@ class UserResetPasswordRequest extends FormRequest
             'rePassword' => 'required|same:password',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'user_id.required' => '请选择用户ID',
-            'user_id.exists' => '用户不存在',
-            'password.required' => '请输入密码',
-            'password.min' => '密码最少为6位',
-        ];
-    }
 }

@@ -18,23 +18,23 @@ class FileService implements IFileService
         $file_size = $file->getSize();
         // 验证文件大小
         if ($file_size > $fileType->maxSize()) {
-            throw new HttpResponseException(['success' => false, 'msg' => '上传文件大小超限制！']);
+            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.size_limit')]);
         }
         $vel_ext = $fileType->fileExt();
         // 验证扩展名
         if ($vel_ext != '*') {
             if (is_array($vel_ext)) {
                 if (! in_array($file_ext, $vel_ext)) {
-                    throw new HttpResponseException(['success' => false, 'msg' => "不支持的{$fileType->name()}类型"]);
+                    throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
                 }
             }
             if ($vel_ext !== $file_ext) {
-                throw new HttpResponseException(['success' => false, 'msg' => "不支持的{$fileType->name()}类型"]);
+                throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
             }
         }
         $path = $file->store('file', $disk);
         if (! $path) {
-            throw new HttpResponseException(['success' => false, 'msg' => '上传失败！']);
+            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.upload_failed')]);
         }
         if ($type === 'admin') {
             $user_id = customAuth('admin')->id();

@@ -56,10 +56,10 @@ class UpdateFileController extends BaseController
     }
 
     /** 上传音频文件 */
-    #[PostMapping('/mp3/{id}')] #[Authorize('admin.update.mp3')]
-    public function mp3(int $id): JsonResponse
+    #[PostMapping('/audio/{id}')] #[Authorize('admin.update.mp3')]
+    public function audio(int $id): JsonResponse
     {
-        $this->service->setFileType(FileType::MP3);
+        $this->service->setFileType(FileType::AUDIO);
         return $this->service->upload($id);
     }
 

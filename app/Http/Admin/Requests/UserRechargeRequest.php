@@ -16,9 +16,4 @@ class UserRechargeRequest extends FormRequest
             'remark' => 'nullable|string',
         ];
     }
-
-    public function messages(): array
-    {
-        return [];
-    }
 }

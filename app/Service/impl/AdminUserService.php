@@ -26,7 +26,7 @@ class AdminUserService extends BaseService
 
             return $this->success(compact('token'));
         } else {
-            return $this->error('请先登录！');
+            return $this->error(__('user.not_login'));
         }
     }
 
@@ -40,13 +40,13 @@ class AdminUserService extends BaseService
         $password = $data['password'];
         $adminUser = AdminUserModel::where('username', '=', $username)->first();
         if (! $adminUser) {
-            return $this->error('用户不存在');
+            return $this->error(__('user.user_not_exist'));
         }
         // 验证密码
         if (! password_verify($password, $adminUser->password)) {
-            return $this->error('密码错误');
+            return $this->error(__('user.password_error'));
         }
-        new Monitor('管理员登录', false, $adminUser->user_id);
+        new Monitor(__('user.admin_login'), false, $adminUser->user_id);
         $data = [];
         $data['refresh_token'] = token()->set($adminUser->user_id, TokenEnum::REFRESH_ADMIN);
         $data['token'] = token()->set($adminUser->user_id, TokenEnum::ADMIN);
@@ -61,15 +61,15 @@ class AdminUserService extends BaseService
     public function logout(): JsonResponse
     {
         $user_id = customAuth('admin')->id();
-        new Monitor('管理员退出登录', false, $user_id);
+        new Monitor(__('user.admin_logout'), false, $user_id);
         $user = AdminUserModel::find($user_id);
         if (! $user) {
-            throw new HttpResponseException(['success' => false, 'msg' => '管理员用户不存在'], 401);
+            throw new HttpResponseException(['success' => false, 'msg' => __('user.user_not_exist')], 401);
         }
         token()->clear('admin', $user['user_id']);
         token()->clear('admin-refresh', $user['user_id']);
 
-        return $this->success('退出登录成功');
+        return $this->success(__('user.logout_success'));
     }
 
     /**
@@ -104,7 +104,7 @@ class AdminUserService extends BaseService
             return $this->error();
         }
         if (! password_verify($data['oldPassword'], $model->password)) {
-            return $this->error('旧密码不正确');
+            return $this->error(__('user.old_password_error'));
         }
         AdminUserModel::where('id', '=', $user_id)->update([
             'password' => password_hash($data['newPassword'], PASSWORD_DEFAULT),

@@ -21,18 +21,4 @@ class AdminUserRequest extends FormRequest
             'status' => 'required|in:1,0',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'username.required' => '用户名不能为空',
-            'mobile.required' => '手机号不能为空',
-            'email.required' => '邮箱不能为空',
-            'email.email' => '邮箱格式不正确',
-            'avatar_id.required' => '头像不能为空',
-            'avatar_id.exists' => '头像不存在',
-            'role_id.required' => '用户组不能为空',
-            'group_id.exists' => '用户组不存在',
-        ];
-    }
 }

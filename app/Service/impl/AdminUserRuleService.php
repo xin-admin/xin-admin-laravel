@@ -27,7 +27,7 @@ class AdminUserRuleService extends BaseService
         $model = new AdminRuleModel;
         $data = $model->where('rule_id', $ruleID)->first();
         if (! $data) {
-            return $this->error('数据不存在');
+            return $this->error(__('system.data_not_exist'));
         }
         $model->where('rule_id', $ruleID)->update([
             'show' => $data->show ? 0 : 1,
@@ -44,7 +44,7 @@ class AdminUserRuleService extends BaseService
         $model = new AdminRuleModel;
         $data = $model->where('rule_id', $ruleID)->first();
         if (! $data) {
-            return $this->error('数据不存在');
+            return $this->error(__('system.data_not_exist'));
         }
         $model->where('rule_id', $ruleID)->update([
             'status' => $data->status ? 0 : 1,

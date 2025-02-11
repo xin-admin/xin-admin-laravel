@@ -1,6 +1,6 @@
 <?php
 
-use App\Modelss\Setting\SettingGroupModel;
+use App\Models\SettingGroupModel;
 use App\Service\IAuthorizeService;
 use App\Service\ITokenService;
 use Illuminate\Support\Facades\Log;

@@ -44,7 +44,7 @@ class XinUserListService
             'balance' => $diffBalance,
         ]);
 
-        return $this->success('充值成功');
+        return $this->success(__('user.recharge_success'));
     }
 
     /**
@@ -59,6 +59,6 @@ class XinUserListService
             'password' => password_hash($password, PASSWORD_DEFAULT),
         ]);
 
-        return $this->success('修改成功');
+        return $this->success(__('user.reset_password'));
     }
 }

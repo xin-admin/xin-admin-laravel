@@ -16,18 +16,4 @@ class UserRegisterRequest extends FormRequest
             'mobile' => 'required',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'username.required' => '请填写用户名。',
-            'username.min' => '账号至少需要 :min 个字符。',
-            'password.required' => '密码不能为空。',
-            'password.min' => '密码至少需要 :min 个字符。',
-            'rePassword.required' => '请重复输入密码',
-            'email.required' => '请输入邮箱',
-            'email.email' => '邮箱格式不正确',
-            'mobile.required' => '请输入手机号',
-        ];
-    }
 }
