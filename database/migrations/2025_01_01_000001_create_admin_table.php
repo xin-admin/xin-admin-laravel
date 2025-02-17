@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('username', 20)->unique()->comment('用户名');
                 $table->string('password', 100)->comment('密码');
                 $table->string('nickname', 20)->default('')->comment('昵称');
-                $table->integer('avatar_id')->comment('头像');
+                $table->integer('avatar_id')->default(1)->comment('头像');
                 $table->integer('sex')->default(0)->comment('性别（男、女）');
                 $table->string('mobile', 20)->default('')->comment('手机号');
                 $table->string('email', 50)->default('')->comment('邮箱');
@@ -26,9 +26,10 @@ return new class extends Migration
                 $table->integer('role_id')->default(0)->comment('角色ID');
                 $table->string('login_ip', 60)->default('')->comment('最后登录IP');
                 $table->timestamp('login_time')->nullable()->comment('最后登录时间');
-                $table->integer('status')->default(0)->comment('状态（0正常 1停用）');
+                $table->integer('status')->default(1)->comment('状态（1正常 0停用）');
                 $table->timestamps();
                 $table->softDeletes();
+                $table->comment('管理员表');
             });
         }
 
@@ -38,10 +39,11 @@ return new class extends Migration
                 $table->increments('role_id')->comment('角色ID');
                 $table->string('name', 20)->default('')->comment('角色名称');
                 $table->integer('sort')->default(0)->comment('排序');
-                $table->text('rule')->comment('角色权限');
+                $table->text('rules')->comment('角色权限');
                 $table->string('description', 100)->default('')->comment('角色描述');
                 $table->integer('status')->default(0)->comment('状态（0正常 1停用）');
                 $table->timestamps();
+                $table->comment('管理员角色表');
             });
         }
 
@@ -57,6 +59,7 @@ return new class extends Migration
                 $table->string('email', '50')->default('')->comment('邮箱');
                 $table->integer('status')->default(0)->comment('部门状态（0正常 1停用）');
                 $table->timestamps();
+                $table->comment('管理员部门表');
             });
         }
         // 管理员权限表
@@ -74,6 +77,7 @@ return new class extends Migration
                 $table->integer('status')->default(1)->comment('状态：1、正常，0、禁用');
                 $table->integer('show')->default(1)->comment('显示：1、显示，0、隐藏');
                 $table->timestamps();
+                $table->comment('管理员权限表');
             });
         }
     }
@@ -83,6 +87,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('admin_user');
         Schema::dropIfExists('admin_rule');
+        Schema::dropIfExists('admin_dept');
+        Schema::dropIfExists('admin_role');
     }
 };

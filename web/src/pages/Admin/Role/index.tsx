@@ -11,40 +11,12 @@ import { request } from '@umijs/max';
 
 export default () => {
   const columns: ProFormColumnsAndProColumns<IRole>[] = [
-    {
-      title: '编号',
-      dataIndex: 'role_id',
-      hideInForm: true,
-    },
-    {
-      title: '角色名',
-      dataIndex: 'name',
-      colProps: { span: 12 },
-    },
-    {
-      title: '排序',
-      dataIndex: 'sort',
-      valueType: 'digit',
-      colProps: { span: 12 },
-    },
-    {
-      title: '描述',
-      dataIndex: 'description',
-      valueType: 'textarea',
-      colProps: { span: 24 },
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'created_at',
-      valueType: 'fromNow',
-      hideInForm: true,
-    },
-    {
-      title: '编辑时间',
-      dataIndex: 'updated_at',
-      valueType: 'fromNow',
-      hideInForm: true,
-    },
+    { title: '编号', dataIndex: 'role_id', hideInForm: true, },
+    { title: '角色名', dataIndex: 'name', colProps: { span: 12 }, },
+    { title: '排序', dataIndex: 'sort', valueType: 'digit', colProps: { span: 12 }, },
+    { title: '描述', dataIndex: 'description', valueType: 'textarea', colProps: { span: 24 }, },
+    { title: '创建时间', dataIndex: 'created_at', valueType: 'fromNow', hideInForm: true, },
+    { title: '编辑时间', dataIndex: 'updated_at', valueType: 'fromNow', hideInForm: true, },
   ];
 
   const [treeData, setTreeData] = useState();

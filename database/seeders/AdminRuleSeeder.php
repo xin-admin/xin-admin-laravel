@@ -1,13 +1,17 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace Database\Seeders;
 
-return new class extends Migration
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class AdminRuleSeeder extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
      */
-    public function up(): void
+    public function run(): void
     {
         /** 仪表盘 */
         $this->insertFirst(1, 0, '仪表盘', 'dashboard', 'menu.dashboard', 'PieChartOutlined', '/dashboard');
@@ -178,11 +182,4 @@ return new class extends Migration
         ]);
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
-    }
-};
+}

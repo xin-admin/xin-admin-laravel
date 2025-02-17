@@ -18,45 +18,19 @@ const Table: React.FC = () => {
   const tableRef = useRef<XinTableRef>();
   const [deptData, setDeptData] = useState()
   const columns: XinTableColumn<IAdminUserList>[] = [
-    {
-      title: '用户ID',
-      dataIndex: 'user_id',
-      hideInForm: true,
-      hideInSearch: true,
-      sorter: true,
-      align: 'center',
-    },
-    {
-      title: '用户名',
-      dataIndex: 'username',
-      valueType: 'text',
-      hideInSearch: true,
+    { title: '用户ID', dataIndex: 'user_id', hideInForm: true, hideInSearch: true, sorter: true, align: 'center', },
+    { title: '用户名', dataIndex: 'username', valueType: 'text', hideInSearch: true,
       formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
     },
-    {
-      title: '昵称',
-      dataIndex: 'nickname',
-      valueType: 'text',
-      hideInSearch: true,
+    { title: '昵称', dataIndex: 'nickname', valueType: 'text', hideInSearch: true, colProps: { md: 7 },
       formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
-      colProps: { md: 7 },
     },
-    {
-      title: '性别',
-      dataIndex: 'sex',
-      valueType: 'radio',
+    { title: '性别', dataIndex: 'sex', valueType: 'radio', filters: true, hideInSearch: true,
       valueEnum: dictEnum.get('sex'),
       render: (_, date) => <XinDict value={date.sex} dict={'sex'} />,
-      filters: true,
-      hideInSearch: true,
     },
-    {
-      title: '邮箱',
-      dataIndex: 'email',
-      valueType: 'text',
-      hideInSearch: true,
+    { title: '邮箱', dataIndex: 'email', valueType: 'text', hideInSearch: true, colProps: { md: 6 },
       formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
-      colProps: { md: 6 },
     },
     {
       title: '管理员角色',
@@ -155,18 +129,8 @@ const Table: React.FC = () => {
         return [];
       },
     },
-    {
-      valueType: 'fromNow',
-      title: '创建时间',
-      hideInForm: true,
-      dataIndex: 'created_at',
-    },
-    {
-      valueType: 'fromNow',
-      title: '更新时间',
-      hideInForm: true,
-      dataIndex: 'updated_at',
-    },
+    { valueType: 'fromNow', title: '创建时间', hideInForm: true, dataIndex: 'created_at', },
+    { valueType: 'fromNow', title: '更新时间', hideInForm: true, dataIndex: 'updated_at', },
   ];
 
   const [tableParams, setParams] = useState<{
