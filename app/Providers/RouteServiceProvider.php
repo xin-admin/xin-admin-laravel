@@ -29,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
                     continue;
                 }
                 $filePath = str_replace(app_path('Http'), '', $controller->getPath());
+                $filePath = str_replace('\\', '/', $filePath); // 统一使用正斜杠
                 if (! str_contains($controller->getFilename(), 'Controller')) {
                     continue;
                 }
