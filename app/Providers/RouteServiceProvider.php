@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
                     continue;
                 }
                 $filePath = str_replace(app_path('Http'), '', $controller->getPath());
-                $filePath = str_replace('\\', '/', $filePath); // 统一使用正斜杠
+                $filePath = str_replace('/', '\\', $filePath);
                 if (! str_contains($controller->getFilename(), 'Controller')) {
                     continue;
                 }
@@ -43,39 +43,37 @@ class RouteServiceProvider extends ServiceProvider
                     if ($attribute->getName() === 'App\Attribute\route\RequestMapping') {
                         $route = $attribute->newInstance();
                         $routeBasePath = $route->getRoute();
+                        break;
                     }
                 }
                 foreach ($reflection->getMethods() as $method) {
-                    $attributes = $method->getAttributes();
-                    foreach ($attributes as $attribute) {
-                        // 检查是否是 Route 属性
-                        if ($attribute->getName() === 'App\Attribute\route\GetMapping') {
-                            $route = $attribute->newInstance();
-                            $routePath = $route->getRoute();
-                            // 注册路由
-                            Route::get($routeBasePath.$routePath, [$className, $method->getName()]);
-                        }
-                        if ($attribute->getName() === 'App\Attribute\route\PostMapping') {
-                            $route = $attribute->newInstance();
-                            $routePath = $route->getRoute();
-                            // 注册路由
-                            Route::post($routeBasePath.$routePath, [$className, $method->getName()]);
-                        }
-                        if ($attribute->getName() === 'App\Attribute\route\PutMapping') {
-                            $route = $attribute->newInstance();
-                            $routePath = $route->getRoute();
-                            // 注册路由
-                            Route::put($routeBasePath.$routePath, [$className, $method->getName()]);
-                        }
-                        if ($attribute->getName() === 'App\Attribute\route\DeleteMapping') {
-                            $route = $attribute->newInstance();
-                            $routePath = $route->getRoute();
-                            // 注册路由
-                            Route::delete($routeBasePath.$routePath, [$className, $method->getName()]);
+                    foreach ($method->getAttributes() as $attribute) {
+                        switch ($attribute->getName()) {
+                            case 'App\Attribute\route\GetMapping':
+                                $route = $attribute->newInstance();
+                                $routePath = $route->getRoute();
+                                Route::get($routeBasePath.$routePath, [$className, $method->getName()]);
+                                break;
+                            case 'App\Attribute\route\PostMapping':
+                                $route = $attribute->newInstance();
+                                $routePath = $route->getRoute();
+                                Route::post($routeBasePath.$routePath, [$className, $method->getName()]);
+                                break;
+                            case 'App\Attribute\route\PutMapping':
+                                $route = $attribute->newInstance();
+                                $routePath = $route->getRoute();
+                                Route::put($routeBasePath.$routePath, [$className, $method->getName()]);
+                                break;
+                            case 'App\Attribute\route\DeleteMapping':
+                                $route = $attribute->newInstance();
+                                $routePath = $route->getRoute();
+                                Route::delete($routeBasePath.$routePath, [$className, $method->getName()]);
+                                break;
                         }
                     }
                 }
             } catch (\ReflectionException $e) {
+                echo $e->getMessage().PHP_EOL;
             }
 
         }
