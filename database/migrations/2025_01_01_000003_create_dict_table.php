@@ -8,12 +8,13 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 字典数据表
      */
     public function up(): void
     {
         if (! Schema::hasTable('dict')) {
             Schema::create('dict', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->increments('id');
                 $table->string('name', 50)->comment('字典名称');
                 $table->string('code', 50)->comment('字典编码');
                 $table->string('describe', 255)->nullable()->comment('字典描述');
@@ -23,7 +24,7 @@ return new class extends Migration
         }
         if (! Schema::hasTable('dict_item')) {
             Schema::create('dict_item', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->increments('id');
                 $table->unsignedBigInteger('dict_id')->comment('字典ID');
                 $table->string('label', 50)->comment('字典项名称');
                 $table->string('value', 50)->comment('字典项值');

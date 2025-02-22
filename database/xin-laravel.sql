@@ -1,17 +1,5 @@
 /*
- Navicat Premium Data Transfer
-
- Source Server         : 本地
- Source Server Type    : MySQL
- Source Server Version : 80031
- Source Host           : localhost:3306
- Source Schema         : xin-laravel
-
- Target Server Type    : MySQL
- Target Server Version : 80031
- File Encoding         : 65001
-
- Date: 04/01/2025 18:01:49
+ Date: 14/02/2025 14:35:29
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +21,7 @@ CREATE TABLE `admin_dept`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_dept
@@ -57,130 +45,117 @@ CREATE TABLE `admin_role`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
 INSERT INTO `admin_role` VALUES (1, '超级管理员', 0, '*', '超级管理', '2024-12-14 10:07:33', '2024-12-14 10:07:36');
-INSERT INTO `admin_role` VALUES (2, '管理员', 1, '92,135,21,23,22,20,24,25,7,17,19,18,16,121,87,8,9,27,29,28,26,118,88,89,90,91,2,36,3,86,94,35,93,108,107,104,106,105,103,113,109,112,110,111,43,44,84,60,56,55,59,54,58,57,10,11,12,13,14,31,33,32,30,15,102,49,119,120,50,62,52,64,63,61,51,53,39,40,73,74,72,71,122,81,83,85,82,48', '系统管理员', '2024-12-14 10:08:08', '2025-01-04 07:40:03');
-INSERT INTO `admin_role` VALUES (3, '财务', 2, '88,89,91', '负责管理账单', '2025-01-03 07:58:07', '2025-01-04 05:58:38');
-INSERT INTO `admin_role` VALUES (6, '电商总监', 4, NULL, '负责电商模块任务', '2025-01-04 06:25:14', '2025-01-04 06:32:02');
-INSERT INTO `admin_role` VALUES (7, '市场运营', 5, NULL, '负责市场推广业务', '2025-01-04 06:32:27', '2025-01-04 06:32:27');
+INSERT INTO `admin_role` VALUES (2, '管理员', 1, '20,33,35,37,36,34,21,23,25,24,22,26,27,30,32,31,29,28,38,40,42,41,39,1,2,3,4,5,6,7,8,9,10,11,12,18,19,13,15,14,16,17', '系统管理员', '2024-12-14 10:08:08', '2025-01-13 02:32:55');
+INSERT INTO `admin_role` VALUES (3, '财务', 2, '1,2,3,4', '负责管理账单', '2025-01-03 07:58:07', '2025-01-11 00:52:19');
+INSERT INTO `admin_role` VALUES (6, '电商总监', 4, '1,2,3,4', '负责电商模块任务', '2025-01-04 06:25:14', '2025-01-11 00:52:25');
+INSERT INTO `admin_role` VALUES (7, '市场运营', 5, '5,6,7,8,9,10,11', '负责市场推广业务', '2025-01-04 06:32:27', '2025-01-13 08:07:29');
 
 -- ----------------------------
 -- Table structure for admin_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `admin_rule`;
 CREATE TABLE `admin_rule`  (
-  `rule_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `parent_id` int NOT NULL DEFAULT 0 COMMENT '父ID',
-  `type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '类型 字典：ruleType',
+  `rule_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+  `parent_id` int NOT NULL DEFAULT 0 COMMENT '父级ID',
+  `type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '类型：1、一级菜单，2、子菜单，3、操作',
   `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标题',
-  `path` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '路由地址',
-  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '图标',
-  `key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限标识',
-  `local` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '国际化标识',
-  `status` int NOT NULL DEFAULT 1 COMMENT '启用状态',
-  `show` int NOT NULL DEFAULT 1 COMMENT '显示状态',
-  `created_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `updated_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '名称',
+  `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '路径',
+  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图标',
+  `key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '唯一标识',
+  `local` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '语言包',
+  `status` int NOT NULL DEFAULT 1 COMMENT '状态：1、正常，0、禁用',
+  `show` int NOT NULL DEFAULT 1 COMMENT '显示：1、显示，0、隐藏',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`rule_id`) USING BTREE,
-  UNIQUE INDEX `key`(`key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 136 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '权限规则表' ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `admin_rule_key_unique`(`key`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admin_rule
 -- ----------------------------
-INSERT INTO `admin_rule` VALUES (2, 0, '0', 998, '示例组件', '/data', 'GoldOutlined', 'data', 'menu.components', 1, 1, '2024-12-13 01:19:11', '2024-12-26 00:59:35');
-INSERT INTO `admin_rule` VALUES (3, 2, '1', 0, '定义列表', '/data/descriptions', 'BarsOutlined', 'data.descriptions', 'menu.components.descriptions', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:36:02');
-INSERT INTO `admin_rule` VALUES (7, 92, '1', 8, '用户管理', '/admin/list', 'RobotOutlined', 'admin.list', 'menu.admin.list', 1, 1, '2024-12-13 01:19:11', '2025-01-04 06:16:47');
-INSERT INTO `admin_rule` VALUES (8, 92, '1', 1, '管理员角色', '/admin/role', 'DeploymentUnitOutlined', 'admin.role', 'menu.admin.role', 1, 1, '2024-12-13 01:19:11', '2024-12-31 07:37:30');
-INSERT INTO `admin_rule` VALUES (9, 92, '1', 2, '权限菜单管理', '/admin/rule', 'DeleteRowOutlined', 'admin.rule', 'menu.admin.rule', 1, 1, '2024-12-13 01:19:11', '2024-12-31 07:34:38');
-INSERT INTO `admin_rule` VALUES (10, 0, '0', 995, '系统管理', '/system', 'ClusterOutlined', 'system', 'menu.system', 1, 1, '2024-12-13 01:19:11', '2024-12-13 05:58:19');
-INSERT INTO `admin_rule` VALUES (11, 10, '1', 3, '字典管理', '/system/dict', '', 'system.dict', 'menu.system.dict', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (12, 11, '2', 0, '字典新建', NULL, '', 'system.dict.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (13, 11, '2', 0, '字典删除', NULL, '', 'system.dict.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (14, 11, '2', 0, '字典编辑', NULL, '', 'system.dict.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (15, 11, '2', 0, '字典查看', NULL, '', 'system.dict.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (16, 7, '2', 0, '查看管理员列表', NULL, '', 'admin.list.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (17, 7, '2', 0, '新增管理员', NULL, '', 'admin.list.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (18, 7, '2', 0, '编辑管理员', NULL, '', 'admin.list.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (19, 7, '2', 0, '删除管理员', NULL, '', 'admin.list.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (20, 8, '2', 0, '管理员分组查看', NULL, '', 'admin.group.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (21, 8, '2', 0, '管理员分组新增', NULL, '', 'admin.group.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (22, 8, '2', 0, '管理员分组编辑', NULL, '', 'admin.group.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (23, 8, '2', 0, '管理员分组删除', NULL, '', 'admin.group.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (24, 8, '2', 0, '分组权限查看', NULL, '', 'admin.group.rule', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (25, 8, '2', 0, '管理员权限修改', NULL, '', 'admin.group.ruleEdit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (26, 9, '2', 0, '权限管理查看', NULL, '', 'admin.rule.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (27, 9, '2', 0, '权限管理新增', NULL, '', 'admin.rule.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (28, 9, '2', 0, '权限管理编辑', NULL, '', 'admin.rule.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (29, 9, '2', 0, '权限管理删除', NULL, '', 'admin.rule.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (30, 11, '2', 0, '字典配置', NULL, '', 'system.dict.item.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (31, 11, '2', 0, '字典配置新增', NULL, '', 'system.dict.item.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (32, 11, '2', 0, '字典配置编辑', NULL, '', 'system.dict.item.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (33, 11, '2', 0, '字典配置删除', NULL, '', 'system.dict.item.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (35, 2, '1', 0, '高级列表', '/data/list', 'ProfileOutlined', 'data.list', 'menu.components.list', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:36:54');
-INSERT INTO `admin_rule` VALUES (36, 2, '1', 0, '单选卡片', '/data/checkcard', 'CreditCardOutlined', 'data.checkcard', 'menu.components.checkcard', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:36:41');
-INSERT INTO `admin_rule` VALUES (39, 0, '0', 997, '会员管理', '/user', 'UserOutlined', 'user', 'menu.user', 1, 1, '2024-12-13 01:19:11', '2024-12-13 05:57:34');
-INSERT INTO `admin_rule` VALUES (40, 39, '1', 0, '会员列表', '/user/list', '', 'user.list', 'menu.user.list', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (43, 0, '0', 994, '在线开发', '/online', 'CodeOutlined', 'online', 'menu.online', 1, 1, '2024-12-13 01:19:11', '2024-12-13 05:58:46');
-INSERT INTO `admin_rule` VALUES (44, 43, '1', 0, '表格设计', '/online/table', '', 'online.table', 'menu.online.table', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (48, 0, '0', 99, 'Xin Admin', 'https://xinadmin.cn/', 'ItalicOutlined', 'xinadmin', 'menu.xinadmin', 1, 1, '2024-12-13 01:19:11', '2024-12-13 05:59:16');
-INSERT INTO `admin_rule` VALUES (49, 10, '1', 5, '系统信息', '/system/info', '', 'system.info', 'menu.system.info', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (50, 10, '1', 4, '系统设置', '/system/setting', '', 'system.setting', 'menu.system.setting', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (51, 50, '2', 0, '设置分组查看', NULL, '', 'system.setting.querySettingGroup', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (52, 50, '2', 1, '设置分组新增', NULL, '', 'system.setting.addGroup', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (53, 50, '2', 3, '查询设置父 ID', NULL, '', 'system.setting.querySettingPid', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (54, 44, '2', 0, '表格设计查询', NULL, '', 'online.table.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (55, 44, '2', 1, '表格设计编辑', NULL, '', 'online.table.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (56, 44, '2', 2, '表格设计删除', NULL, '', 'online.table.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (57, 44, '2', 3, '表格设计', NULL, '', 'online.tableDevise', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (58, 44, '2', 4, 'CRUD 保存', NULL, '', 'online.table.saveData', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (59, 44, '2', 5, '获取 CRUD 数据', NULL, '', 'online.table.getData', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (60, 44, '2', 6, 'CRUD 保存并生成', NULL, '', 'online.table.crud', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (61, 50, '2', 3, '获取设置列表', NULL, '', 'system.setting.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (62, 50, '2', 4, '新增设置', NULL, '', 'system.setting.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (63, 50, '2', 5, '编辑设置', NULL, '', 'system.setting.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (64, 50, '2', 6, '删除设置', NULL, '', 'system.setting.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (71, 40, '2', 1, '会员列表查询', NULL, '', 'user.list.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (72, 40, '2', 2, '会员列表编辑', NULL, '', 'user.list.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (73, 40, '2', 3, '会员列表新增', NULL, '', 'user.list.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (74, 40, '2', 4, '会员列表删除', NULL, '', 'user.list.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (81, 39, '1', 4, '会员余额记录', '/user/balance', NULL, 'user.balance', 'menu.user.moneyLog', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:58:54');
-INSERT INTO `admin_rule` VALUES (82, 81, '2', 0, '会员余额记录查询', NULL, '', 'user.moneyLog.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (83, 81, '2', 2, '修改用户余额', NULL, '', 'user.moneyLog.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (84, 44, '2', 0, '表格设计新增', NULL, '', 'online.table.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (85, 81, '2', 3, '会员余额记录删除', NULL, '', 'user.moneyLog.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (86, 2, '1', 0, '表单示例', '/data/form', 'BarsOutlined', 'data.form', 'menu.components.form', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:37:07');
-INSERT INTO `admin_rule` VALUES (87, 7, '2', 1, '修改管理员密码', NULL, '', 'admin.list.updatePassword', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (88, 0, '0', 999, '仪表盘', '/dashboard', 'PieChartOutlined', 'dashboard', 'menu.dashboard', 1, 1, '2024-12-13 01:19:11', '2024-12-31 01:02:11');
-INSERT INTO `admin_rule` VALUES (89, 88, '1', 10, '分析页', '/dashboard/analysis', 'StockOutlined', 'dashboard.analysis', 'menu.dashboard.analysis', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:33:40');
-INSERT INTO `admin_rule` VALUES (90, 88, '1', 1, '监控页', '/dashboard/monitor', 'BarChartOutlined', 'dashboard.monitor', 'menu.dashboard.monitor', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:34:05');
-INSERT INTO `admin_rule` VALUES (91, 88, '1', 2, '工作台', '/dashboard/workplace', 'RadarChartOutlined', 'dashboard.workplace', 'menu.dashboard.workplace', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:34:14');
-INSERT INTO `admin_rule` VALUES (92, 0, '0', 996, '管理员', '/admin', 'BankOutlined', 'admin', 'menu.admin', 1, 1, '2024-12-13 01:19:11', '2024-12-13 05:58:10');
-INSERT INTO `admin_rule` VALUES (93, 2, '1', 5, '高级表格', '/data/table', 'InsertRowBelowOutlined', 'data.table', 'menu.components.table', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:35:51');
-INSERT INTO `admin_rule` VALUES (94, 2, '1', 6, '图标选择', '/data/icon', 'SmileOutlined', 'data.icon', 'menu.components.iconForm', 1, 1, '2024-12-13 01:19:11', '2025-01-04 07:35:35');
-INSERT INTO `admin_rule` VALUES (102, 10, '1', 4, '文件管理', '/system/file', '', 'system.file', 'menu.File', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (103, 102, '2', 0, '文件分组列表', NULL, '', 'file.group.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (104, 102, '2', 1, '新增文件分组', NULL, '', 'file.group.add', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (105, 102, '2', 2, '编辑文件分组', NULL, '', 'file.group.edit', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (106, 102, '2', 3, '删除文件分组', NULL, '', 'file.group.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (107, 102, '2', 4, '获取文件列表', NULL, '', 'file.file.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (108, 102, '2', 5, '删除文件', NULL, '', 'file.file.delete', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (109, 102, '2', 6, '上传图片文件', NULL, '', 'file.upload.image', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (110, 102, '2', 7, '上传视频文件', NULL, '', 'file.upload.video', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (111, 102, '2', 8, '上传压缩文件', NULL, '', 'file.upload.zip', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (112, 102, '2', 9, '上传音频文件', NULL, '', 'file.upload.mp3', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (113, 102, '2', 10, '上传其它文件', NULL, '', 'file.upload.annex', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (118, 0, '0', 100, '用户设置', '/admin/setting', '', 'admin.setting', NULL, 1, 0, '2024-12-13 01:19:11', '2024-12-23 09:09:30');
-INSERT INTO `admin_rule` VALUES (119, 10, '1', 5, '系统监控', '/system/monitor', '', 'system.monitor', 'menu.system.monitor', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (120, 119, '2', 5, '监控列表', NULL, '', 'system.monitor.list', NULL, 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (121, 7, '2', 0, '重置密码', '', '', 'admin.list.resetPassword', '', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (122, 40, '2', 0, '用户充值', '', '', 'user.list.recharge', '', 1, 1, '2024-12-13 01:19:11', '2024-12-13 01:19:11');
-INSERT INTO `admin_rule` VALUES (135, 92, '1', 5, '部门管理', '/admin/dept', 'ClusterOutlined', 'admin.dept', 'menu.admin.dept', 1, 1, '2024-12-31 06:53:35', '2024-12-31 07:35:57');
+INSERT INTO `admin_rule` VALUES (1, 0, '0', 0, '仪表盘', '/dashboard', 'PieChartOutlined', 'dashboard', 'menu.dashboard', 1, 1, '2025-02-07 09:13:05', '2025-02-07 09:13:05');
+INSERT INTO `admin_rule` VALUES (2, 1, '1', 0, '分析页', '/dashboard/analysis', 'StockOutlined', 'dashboard.analysis', 'menu.dashboard.analysis', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (3, 1, '1', 1, '监控页', '/dashboard/monitor', 'BarChartOutlined', 'dashboard.monitor', 'menu.dashboard.monitor', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (4, 1, '1', 2, '工作台', '/dashboard/workplace', 'RadarChartOutlined', 'dashboard.workplace', 'menu.dashboard.workplace', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (5, 0, '0', 1, '示例组件', '/data', 'GoldOutlined', 'data', 'menu.components', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (6, 5, '1', 0, '单选卡片', '/data/checkcard', 'CreditCardOutlined', 'data.checkcard', 'menu.components.checkcard', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (7, 5, '1', 1, '定义列表', '/data/descriptions', 'BarsOutlined', 'data.descriptions', 'menu.components.descriptions', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (8, 5, '1', 2, '高级表单', '/data/form', 'BarsOutlined', 'data.form', 'menu.components.form', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (9, 5, '1', 3, '图标选择', '/data/icon', 'SmileOutlined', 'data.icon', 'menu.components.iconForm', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (10, 5, '1', 4, '高级列表', '/data/list', 'ProfileOutlined', 'data.list', 'menu.components.list', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (11, 5, '1', 5, '高级表格', '/data/table', 'ProfileOutlined', 'data.table', 'menu.components.table', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (12, 0, '0', 2, '会员管理', '/user', 'UserOutlined', 'user', 'menu.user', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (13, 12, '1', 0, '会员列表', '/user/list', 'TeamOutlined', 'user.list', 'menu.user.list', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (14, 13, '2', 1, '会员列表查询', '', '', 'user.list.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (15, 13, '2', 2, '会员列表编辑', '', '', 'user.list.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (16, 13, '2', 3, '会员列表充值', '', '', 'user.list.recharge', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (17, 13, '2', 4, '会员重置密码', '', '', 'user.list.resetPassword', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (18, 12, '1', 1, '余额记录', '/user/balance', 'CreditCardOutlined', 'user.balance', 'menu.user.balance', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (19, 18, '2', 0, '余额记录查询', '', '', 'user.balance.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (20, 0, '0', 3, '管理员', '/admin', 'BankOutlined', 'admin', 'menu.admin', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (21, 20, '1', 0, '用户列表', '/admin/list', 'UserOutlined', 'admin.list', 'menu.admin.list', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (22, 21, '2', 0, '用户列表查询', '', '', 'admin.list.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (23, 21, '2', 1, '用户列表新增', '', '', 'admin.list.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (24, 21, '2', 2, '用户列表编辑', '', '', 'admin.list.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (25, 21, '2', 3, '用户列表删除', '', '', 'admin.list.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (26, 21, '2', 4, '重置用户密码', '', '', 'admin.list.resetPassword', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (27, 20, '1', 1, '角色管理', '/admin/role', 'DeploymentUnitOutlined', 'admin.role', 'menu.admin.role', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (28, 27, '2', 0, '角色管理查询', '', '', 'admin.role.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (29, 27, '2', 1, '角色管理详情', '', '', 'admin.role.get', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (30, 27, '2', 2, '角色管理新增', '', '', 'admin.role.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (31, 27, '2', 3, '角色管理编辑', '', '', 'admin.role.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (32, 27, '2', 4, '角色管理删除', '', '', 'admin.role.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (33, 20, '1', 2, '部门管理', '/admin/dept', 'ClusterOutlined', 'admin.dept', 'menu.admin.dept', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (34, 33, '2', 0, '部门管理查询', '', '', 'admin.dept.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (35, 33, '2', 1, '部门管理新增', '', '', 'admin.dept.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (36, 33, '2', 2, '部门管理编辑', '', '', 'admin.dept.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (37, 33, '2', 3, '部门管理删除', '', '', 'admin.dept.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (38, 20, '1', 3, '权限管理', '/admin/rule', 'DeleteRowOutlined', 'admin.rule', 'menu.admin.rule', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (39, 38, '2', 0, '权限管理查询', '', '', 'admin.rule.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (40, 38, '2', 1, '权限管理新增', '', '', 'admin.rule.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (41, 38, '2', 2, '权限管理编辑', '', '', 'admin.rule.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (42, 38, '2', 3, '权限管理删除', '', '', 'admin.rule.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (43, 0, '0', 4, '系统管理', '/system', 'ClusterOutlined', 'system', 'menu.system', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (44, 43, '1', 0, '字典管理', '/system/dict', 'DeleteRowOutlined', 'system.dict', 'menu.system.dict', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (45, 44, '2', 0, '字典管理查询', '', '', 'system.dict.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (46, 44, '2', 1, '字典管理新增', '', '', 'system.dict.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (47, 44, '2', 2, '字典管理编辑', '', '', 'system.dict.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (48, 44, '2', 3, '字典管理删除', '', '', 'system.dict.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (49, 44, '2', 4, '字典项查询', '', '', 'system.dict.item.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (50, 44, '2', 5, '字典项新增', '', '', 'system.dict.item.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (51, 44, '2', 6, '字典项编辑', '', '', 'system.dict.item.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (52, 44, '2', 7, '字典项删除', '', '', 'system.dict.item.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (53, 43, '1', 1, '系统详情', '/system/info', 'InfoOutlined', 'system.info', 'menu.system.info', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (54, 43, '1', 2, '系统监控', '/system/monitor', 'MonitorOutlined', 'system.monitor', 'menu.system.monitor', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (55, 54, '2', 0, '系统监控查询', '', '', 'system.monitor.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (56, 0, '0', 5, '文件管理', '/file', 'FileOutlined', 'file', 'menu.file', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (57, 56, '1', 0, '文件管理', '/file/list', 'FileOutlined', 'file.list', 'menu.file.list', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (58, 57, '2', 0, '文件列表查询', '', '', 'file.list.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (59, 57, '2', 1, '文件列表删除', '', '', 'file.list.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (60, 57, '2', 2, '文件列表编辑', '', '', 'file.list.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (61, 57, '2', 3, '文件列表下载', '', '', 'file.list.download', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (62, 56, '1', 1, '文件分组', '/file/group', 'FileOutlined', 'file.group', 'menu.file.group', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (63, 62, '2', 0, '文件分组查询', '', '', 'file.group.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (64, 62, '2', 1, '文件分组新增', '', '', 'file.group.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (65, 62, '2', 2, '文件分组编辑', '', '', 'file.group.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (66, 62, '2', 3, '文件分组删除', '', '', 'file.group.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (67, 43, '1', 3, '系统设置', '/system/setting', 'SettingOutlined', 'system.setting', 'menu.system.setting', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (68, 67, '2', 0, '系统设置查询', '', '', 'system.setting.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (69, 67, '2', 1, '系统设置新增', '', '', 'system.setting.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (70, 67, '2', 2, '系统设置编辑', '', '', 'system.setting.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (71, 67, '2', 3, '系统设置删除', '', '', 'system.setting.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (72, 67, '2', 4, '系统设置分组查询', '', '', 'system.setting.group.list', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (73, 67, '2', 5, '系统设置分组新增', '', '', 'system.setting.group.add', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (74, 67, '2', 6, '系统设置分组编辑', '', '', 'system.setting.group.edit', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
+INSERT INTO `admin_rule` VALUES (75, 67, '2', 7, '系统设置分组删除', '', '', 'system.setting.group.delete', '', 1, 1, '2025-02-07 09:13:06', '2025-02-07 09:13:06');
 
 -- ----------------------------
 -- Table structure for admin_user
@@ -205,7 +180,7 @@ CREATE TABLE `admin_user`  (
   `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_user
@@ -308,7 +283,7 @@ CREATE TABLE `dict_item`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典项列表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典项列表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dict_item
@@ -317,7 +292,6 @@ INSERT INTO `dict_item` VALUES (1, 14, '男', '0', '1', 'default', NULL, NULL);
 INSERT INTO `dict_item` VALUES (2, 14, '女', '1', '1', 'default', NULL, NULL);
 INSERT INTO `dict_item` VALUES (3, 12, '男', '0', '1', 'success', NULL, NULL);
 INSERT INTO `dict_item` VALUES (5, 12, '女', '1', '1', 'error', NULL, NULL);
-INSERT INTO `dict_item` VALUES (6, 14, '变态', '3', '1', 'default', NULL, NULL);
 INSERT INTO `dict_item` VALUES (7, 16, '一级菜单', '0', '1', 'processing', NULL, NULL);
 INSERT INTO `dict_item` VALUES (8, 16, '子菜单', '1', '1', 'success', NULL, NULL);
 INSERT INTO `dict_item` VALUES (9, 16, '按钮/API', '2', '1', 'default', NULL, NULL);
@@ -392,7 +366,7 @@ CREATE TABLE `file`  (
   `file_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '文件ID',
   `group_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件分组ID',
   `channel` int UNSIGNED NOT NULL DEFAULT 10 COMMENT '上传来源(10商户后台 20用户端)',
-  `storage` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '存储方式',
+  `disk` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '存储方式',
   `domain` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '存储域名',
   `file_type` int UNSIGNED NOT NULL DEFAULT 10 COMMENT '文件类型(10图片 20附件 30视频)',
   `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件名称(仅显示)',
@@ -401,30 +375,24 @@ CREATE TABLE `file`  (
   `file_ext` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件扩展名',
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件封面',
   `uploader_id` int NOT NULL DEFAULT 0 COMMENT '上传者用户ID',
-  `is_recycle` int NOT NULL DEFAULT 0 COMMENT '是否在回收站',
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '是否在回收站',
   `created_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`file_id`) USING BTREE,
   INDEX `group_id`(`group_id`) USING BTREE,
-  INDEX `is_recycle`(`is_recycle`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '文件库记录表' ROW_FORMAT = DYNAMIC;
+  INDEX `is_recycle`(`deleted_at`) USING BTREE,
+  CONSTRAINT `group` FOREIGN KEY (`group_id`) REFERENCES `file_group` (`group_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '文件库记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file
 -- ----------------------------
-INSERT INTO `file` VALUES (34, 1, 20, 'public', '', 10, '2.jpg', 'file/zNaz7W566h4gOP5upJ9AH45A9vt0n40WTFx7mlcH.jpg', 34921, 'jpg', '', 1, 0, '2024-09-27 07:59:29', '2024-09-27 07:59:29');
-INSERT INTO `file` VALUES (35, 1, 20, 'public', '', 10, '5.jpg', 'file/2KrduT29eeFN8SemJtYrzT1qFprgzb6N1gcMmCzo.jpg', 38563, 'jpg', '', 1, 0, '2024-09-27 08:09:59', '2024-09-27 08:09:59');
-INSERT INTO `file` VALUES (36, 1, 20, 'public', '', 10, '五红花胶.jpg', 'file/Ktd7TR34dVKr8DmrML0b0DQ74eO1ABNnnkrQbkH4.jpg', 30076, 'jpg', '', 1, 0, '2024-09-27 08:14:51', '2024-09-27 08:14:51');
-INSERT INTO `file` VALUES (37, 1, 20, 'public', '', 10, '2.jpg', 'file/3DI1pRI8kmqMUvbyerIN3QeBlQKfXDmexHDkPWnr.jpg', 34921, 'jpg', '', 1, 0, '2024-09-27 08:15:40', '2024-09-27 08:15:40');
-INSERT INTO `file` VALUES (38, 1, 20, 'public', '', 10, '新建项目 (1).png', 'file/zdM76ewpH3DpS2uZD0e5dUMuP4loQrsdjkNdhRsD.png', 827328, 'png', '', 1, 0, '2024-09-28 11:52:47', '2024-09-28 11:52:47');
-INSERT INTO `file` VALUES (39, 1, 20, 'public', '', 10, '新建项目.png', 'file/9pkKavyTtiaXyAvvj6VVqh3DE5AzReKNy6A4uaFE.png', 795778, 'png', '', 1, 0, '2024-09-28 11:53:04', '2024-09-28 11:53:04');
-INSERT INTO `file` VALUES (40, 1, 20, 'public', '', 10, '新建项目 (1).png', 'file/gaQc9mqy36Nlx3FmsVQujHlaB1tWnPdYoLGn7RL0.png', 827328, 'png', '', 1, 0, '2024-09-28 11:54:28', '2024-09-28 11:54:28');
-INSERT INTO `file` VALUES (41, 1, 20, 'public', '', 10, 'abc-123.jpg', 'file/JPWbyTi01c0VsL5tphotwaNjRAMi5vav2vnAj4Mq.jpg', 263901, 'jpg', '', 1, 0, '2024-10-10 06:11:57', '2024-10-10 06:11:57');
-INSERT INTO `file` VALUES (42, 0, 20, 'public', '', 10, '回答.png', 'file/5XEZnuOQqqmxAo3bT1WCqM5PQC2sZrNf20Z543Q9.png', 4601, 'png', '', 1, 0, '2024-10-22 05:31:23', '2024-10-22 05:31:23');
-INSERT INTO `file` VALUES (43, 0, 20, 'public', '', 10, '屏幕截图 2024-12-30 101735.png', 'file/HlR3EEv3Qvv6hQeNtn6gHOyTI3Er0TIwClRgJPKv.png', 345677, 'png', '', 1, 0, '2024-12-31 03:15:12', '2024-12-31 03:15:12');
-INSERT INTO `file` VALUES (44, 0, 20, 'public', '', 10, '屏幕截图 2024-12-18 135532.png', 'file/B2lF1hdJfkQTJiX95swkSqegIZLYlz0UL4zWH1cQ.png', 596321, 'png', '', 1, 0, '2024-12-31 03:18:04', '2024-12-31 03:18:04');
-INSERT INTO `file` VALUES (45, 0, 20, 'public', '', 10, '屏幕截图 2024-12-30 101735.png', 'file/R9hVdqe4HQSgrkCEFvB01Lc6VeLSLY8EmfE0yGXQ.png', 120469, 'png', '', 1, 0, '2024-12-31 07:25:18', '2024-12-31 07:25:18');
-INSERT INTO `file` VALUES (46, 0, 20, 'public', '', 10, '孟诜.png', 'file/e3MKzMICN20EreouO0abjEpEh5VnrwyGDdlyCeVs.png', 157142, 'png', '', 1, 0, '2025-01-04 06:24:08', '2025-01-04 06:24:08');
+INSERT INTO `file` VALUES (42, 14, 20, 'public', '', 10, '回答.png', 'file/5XEZnuOQqqmxAo3bT1WCqM5PQC2sZrNf20Z543Q9.png', 4601, 'png', '', 1, NULL, '2024-10-22 05:31:23', '2024-10-22 05:31:23');
+INSERT INTO `file` VALUES (43, 14, 20, 'public', '', 10, '屏幕截图 2024-12-30 101735.png', 'file/HlR3EEv3Qvv6hQeNtn6gHOyTI3Er0TIwClRgJPKv.png', 345677, 'png', '', 1, NULL, '2024-12-31 03:15:12', '2024-12-31 03:15:12');
+INSERT INTO `file` VALUES (44, 14, 20, 'public', '', 10, '屏幕截图 2024-12-18 135532.png', 'file/B2lF1hdJfkQTJiX95swkSqegIZLYlz0UL4zWH1cQ.png', 596321, 'png', '', 1, NULL, '2024-12-31 03:18:04', '2024-12-31 03:18:04');
+INSERT INTO `file` VALUES (45, 14, 20, 'public', '', 10, '屏幕截图 2024-12-30 101735.png', 'file/R9hVdqe4HQSgrkCEFvB01Lc6VeLSLY8EmfE0yGXQ.png', 120469, 'png', '', 1, NULL, '2024-12-31 07:25:18', '2024-12-31 07:25:18');
+INSERT INTO `file` VALUES (46, 14, 20, 'public', '', 10, '孟诜.png', 'file/e3MKzMICN20EreouO0abjEpEh5VnrwyGDdlyCeVs.png', 157142, 'png', '', 1, NULL, '2025-01-04 06:24:08', '2025-01-04 06:24:08');
+INSERT INTO `file` VALUES (47, 14, 20, 'public', '', 10, '孟诜.png', 'file/fDNackU5kQ9HEGgNcbx6z810j77GcUgw3oJeGSgO.png', 157142, 'png', '', 1, NULL, '2025-01-13 01:05:18', '2025-01-13 01:05:18');
 
 -- ----------------------------
 -- Table structure for file_group
@@ -433,19 +401,21 @@ DROP TABLE IF EXISTS `file_group`;
 CREATE TABLE `file_group`  (
   `group_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分组ID',
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分组名称',
-  `parent_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '上级分组ID',
   `sort` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序(数字越小越靠前)',
+  `describe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
   `created_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '文件库分组记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '文件库分组记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file_group
 -- ----------------------------
-INSERT INTO `file_group` VALUES (14, '头像文件夹', 0, 0, NULL, NULL);
-INSERT INTO `file_group` VALUES (15, '附件文件夹', 0, 0, NULL, NULL);
-INSERT INTO `file_group` VALUES (16, '视频文件夹', 0, 0, NULL, NULL);
+INSERT INTO `file_group` VALUES (0, '默认文件夹', 0, '系统默认文件夹', '2025-02-06 16:42:31', '2025-02-06 16:42:34');
+INSERT INTO `file_group` VALUES (14, '头像文件夹', 0, '用户头像文件夹', '2025-02-06 16:33:38', '2025-02-06 16:33:46');
+INSERT INTO `file_group` VALUES (15, '附件文件夹', 0, '附件文件夹', '2025-02-06 16:33:41', '2025-02-06 16:33:49');
+INSERT INTO `file_group` VALUES (16, '视频文件夹', 0, '视频文件夹', '2025-02-06 16:33:44', '2025-02-06 16:33:50');
+INSERT INTO `file_group` VALUES (18, '测试分组', 3, '2131231', '2025-02-06 08:39:38', '2025-02-06 08:39:47');
 
 -- ----------------------------
 -- Table structure for migrations
@@ -456,12 +426,13 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of migrations
 -- ----------------------------
-INSERT INTO `migrations` VALUES (1, '0001_01_01_000001_create_cache_table', 1);
+INSERT INTO `migrations` VALUES (1, '2025_01_10_074839_create_admin_rule_table', 1);
+INSERT INTO `migrations` VALUES (3, '2025_01_10_083355_insert_admin_rule_data', 2);
 
 -- ----------------------------
 -- Table structure for monitor
@@ -480,36 +451,30 @@ CREATE TABLE `monitor`  (
   `user_id` int NOT NULL COMMENT '管理员ID',
   `created_at` datetime NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据监控表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据监控表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of monitor
 -- ----------------------------
-INSERT INTO `monitor` VALUES (1, '管理员登录', 'App\\Http\\Controllers\\Admin\\IndexController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/index/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-10-08 13:09:43');
-INSERT INTO `monitor` VALUES (36, '管理员登录', 'App\\Http\\Controllers\\Admin\\IndexController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/index/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-10-09 06:31:29');
-INSERT INTO `monitor` VALUES (37, '修改管理员信息', 'App\\Http\\Controllers\\Admin\\AdminController@updateAdmin', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/admin/updateAdmin', '{\"username\":\"admin\",\"nickname\":\"Admin\",\"email\":\"admin@xinadmin.cn\",\"mobile\":\"1888888888\",\"avatar_id\":41}', '[]', 1, '2024-10-10 06:11:59');
-INSERT INTO `monitor` VALUES (38, '管理员登录', 'App\\Http\\Controllers\\Admin\\IndexController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/index/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-10-10 12:02:31');
-INSERT INTO `monitor` VALUES (39, '管理员登录', 'App\\Http\\Controllers\\Admin\\IndexController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/index/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-10-14 00:50:13');
-INSERT INTO `monitor` VALUES (40, '管理员登录', 'App\\Http\\Controllers\\Admin\\IndexController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/index/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-11-18 05:28:10');
-INSERT INTO `monitor` VALUES (41, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-11-28 07:42:28');
-INSERT INTO `monitor` VALUES (42, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-05 00:47:52');
-INSERT INTO `monitor` VALUES (43, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-11 08:12:48');
-INSERT INTO `monitor` VALUES (44, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-11 08:14:50');
-INSERT INTO `monitor` VALUES (45, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-11 08:16:08');
-INSERT INTO `monitor` VALUES (46, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-11 08:16:43');
-INSERT INTO `monitor` VALUES (47, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-11 08:19:25');
-INSERT INTO `monitor` VALUES (48, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 02:16:33');
-INSERT INTO `monitor` VALUES (49, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 02:17:06');
-INSERT INTO `monitor` VALUES (50, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 02:17:26');
-INSERT INTO `monitor` VALUES (51, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 07:48:27');
-INSERT INTO `monitor` VALUES (52, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 07:53:01');
-INSERT INTO `monitor` VALUES (53, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '本机地址 本机地址  ', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-12 07:54:07');
-INSERT INTO `monitor` VALUES (54, '管理员登录', 'App\\Http\\Admin\\Controllers\\SysUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-13 06:53:46');
-INSERT INTO `monitor` VALUES (55, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-19 08:13:32');
-INSERT INTO `monitor` VALUES (56, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-19 08:16:07');
-INSERT INTO `monitor` VALUES (57, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2024-12-19 08:16:49');
-INSERT INTO `monitor` VALUES (58, '管理员退出登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@logout', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/logout', '[]', '[]', 1, '2025-01-04 07:31:15');
-INSERT INTO `monitor` VALUES (59, '管理员退出登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@logout', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/logout', '[]', '[]', 1, '2025-01-04 07:31:17');
+INSERT INTO `monitor` VALUES (1, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-14 01:40:16');
+INSERT INTO `monitor` VALUES (2, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-14 02:47:27');
+INSERT INTO `monitor` VALUES (3, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-15 01:09:16');
+INSERT INTO `monitor` VALUES (4, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-15 07:08:54');
+INSERT INTO `monitor` VALUES (5, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-20 06:37:36');
+INSERT INTO `monitor` VALUES (6, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-20 08:58:51');
+INSERT INTO `monitor` VALUES (7, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-21 01:16:01');
+INSERT INTO `monitor` VALUES (8, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-01-25 02:30:15');
+INSERT INTO `monitor` VALUES (9, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-06 08:23:14');
+INSERT INTO `monitor` VALUES (10, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-07 08:35:10');
+INSERT INTO `monitor` VALUES (11, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-08 06:00:55');
+INSERT INTO `monitor` VALUES (12, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-10 01:05:29');
+INSERT INTO `monitor` VALUES (13, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-10 02:05:44');
+INSERT INTO `monitor` VALUES (14, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-10 03:15:13');
+INSERT INTO `monitor` VALUES (15, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-10 05:35:19');
+INSERT INTO `monitor` VALUES (16, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-10 06:47:11');
+INSERT INTO `monitor` VALUES (17, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-11 00:47:51');
+INSERT INTO `monitor` VALUES (18, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-11 01:52:06');
+INSERT INTO `monitor` VALUES (19, '管理员登录', 'App\\Http\\Admin\\Controllers\\AdminUserController@login', '127.0.0.1', 'localhost', '未知', 'http://localhost:8000/admin/login', '{\"username\":\"admin\",\"password\":\"123456\",\"loginType\":\"account\"}', '[]', 1, '2025-02-14 03:14:59');
 
 -- ----------------------------
 -- Table structure for online_table
@@ -558,9 +523,9 @@ CREATE TABLE `setting`  (
 -- ----------------------------
 -- Records of setting
 -- ----------------------------
-INSERT INTO `setting` VALUES (1, 'title', '网站标题', '网站标题，用于展示在网站logo旁边和登录页面以及网页title中', 'Xin Admin', 'input', '', '', 3, 0, NULL, NULL);
-INSERT INTO `setting` VALUES (4, 'logo', '网站 LOGO', '网站的LOGO，用于标识网站', 'https://file.xinadmin.cn/file/favicons.ico', 'input', '', '', 3, 0, NULL, NULL);
-INSERT INTO `setting` VALUES (5, 'subtitle', '网站副标题', '网站副标题，展示在登录页面标题的下面', 'Xin Admin 快速开发框架', 'input', '', '', 3, 0, NULL, NULL);
+INSERT INTO `setting` VALUES (1, 'title', '网站标题', '网站标题，用于展示在网站logo旁边和登录页面以及网页title中', 'Xin Admin', 'input', '', '', 3, 0, NULL, '2025-02-10 03:36:40');
+INSERT INTO `setting` VALUES (4, 'logo', '网站 LOGO', '网站的LOGO，用于标识网站', 'https://file.xinadmin.cn/file/favicons.ico', 'input', '', '', 3, 0, NULL, '2025-02-10 03:36:40');
+INSERT INTO `setting` VALUES (5, 'subtitle', '网站副标题', '网站副标题，展示在登录页面标题的下面', 'Xin Admin 快速开发框架', 'input', '', '', 3, 0, NULL, '2025-02-10 03:36:40');
 INSERT INTO `setting` VALUES (6, 'login', '邮箱登录', '是否开启邮箱登录', '0', 'switch', '', '', 4, 99, NULL, NULL);
 INSERT INTO `setting` VALUES (7, 'Port', '服务器端口', '邮箱服务器端口', '465', 'input', '', '', 4, 80, NULL, NULL);
 INSERT INTO `setting` VALUES (8, 'SMTPSecure', '邮箱协议', '邮箱协议 TLS 或者ssl协议', 'ssl', 'input', '', '', 4, 70, NULL, NULL);
@@ -575,10 +540,9 @@ INSERT INTO `setting` VALUES (12, 'char', '邮件编码', '邮件编码，UTF-8'
 DROP TABLE IF EXISTS `setting_group`;
 CREATE TABLE `setting_group`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '设置分组ID',
-  `pid` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '父ID',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分组标题',
   `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分组KEY',
-  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1' COMMENT '分组类型1：设置菜单 2：设置组 ',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注描述',
   `created_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -588,8 +552,8 @@ CREATE TABLE `setting_group`  (
 -- ----------------------------
 -- Records of setting_group
 -- ----------------------------
-INSERT INTO `setting_group` VALUES (3, 0, '网站设置', 'web', '2', NULL, NULL);
-INSERT INTO `setting_group` VALUES (4, 0, '邮箱设置', 'mail', '1', NULL, NULL);
+INSERT INTO `setting_group` VALUES (3, '网站设置', 'web', '网站基础设置', NULL, '2025-02-10 03:21:51');
+INSERT INTO `setting_group` VALUES (4, '邮箱设置', 'mail', '网站邮箱设置', NULL, '2025-02-10 03:21:59');
 
 -- ----------------------------
 -- Table structure for token
@@ -607,10 +571,8 @@ CREATE TABLE `token`  (
 -- ----------------------------
 -- Records of token
 -- ----------------------------
-INSERT INTO `token` VALUES ('3892b3c46dca8f25aab64d488f9d3e58ad6b8863', 'admin-refresh', 1, 1737188012, 1734596012);
-INSERT INTO `token` VALUES ('83a5832596cb46e5b57bc7e46ef84b08de397e8c', 'admin-refresh', 1, 1737188167, 1734596167);
-INSERT INTO `token` VALUES ('3efd238f1bbe7d5c958b6b2b085964c6ae42f46d', 'admin-refresh', 1, 1737188209, 1734596209);
-INSERT INTO `token` VALUES ('2a89cef482d629aac686cd2e2ecafb2510e3af9d', 'admin', 1, 1735980891, 1735980291);
+INSERT INTO `token` VALUES ('a4c06ee1aa99cc224de611d4cfc2c3e0e3e7065c', 'admin-refresh', 1, 1739506499, 1739502899);
+INSERT INTO `token` VALUES ('51a1a5fdca568021e5720cf5020d304e52f77bd0', 'admin', 1, 1739503499, 1739502899);
 
 -- ----------------------------
 -- Table structure for xin_balance_record
@@ -624,20 +586,16 @@ CREATE TABLE `xin_balance_record`  (
   `before` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '变动前',
   `after` decimal(10, 2) NOT NULL COMMENT '变动后',
   `describe` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '描述/说明',
-  `created_by` int NULL DEFAULT 0 COMMENT '操作人',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '操作人',
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户余额变动明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户余额变动明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of xin_balance_record
 -- ----------------------------
-INSERT INTO `xin_balance_record` VALUES (3, 1, '0', -56877.00, 57000.00, 123.00, '12', 0, NULL);
-INSERT INTO `xin_balance_record` VALUES (4, 1, '0', -56877.00, 57000.00, 123.00, '12', 0, NULL);
-INSERT INTO `xin_balance_record` VALUES (5, 1, '0', -56877.00, 57000.00, 123.00, '12', 0, NULL);
-INSERT INTO `xin_balance_record` VALUES (6, 1, '0', -56877.00, 57000.00, 123.00, '12', 0, NULL);
-INSERT INTO `xin_balance_record` VALUES (7, 1, '0', 1231.00, 123.00, 1354.00, '11', 0, NULL);
+INSERT INTO `xin_balance_record` VALUES (1, 1, '0', 123.00, 246.00, 369.00, '123', '2025-01-13 02:01:39', '2025-01-13 02:01:39');
 
 -- ----------------------------
 -- Table structure for xin_user
@@ -668,6 +626,6 @@ CREATE TABLE `xin_user`  (
 -- ----------------------------
 -- Records of xin_user
 -- ----------------------------
-INSERT INTO `xin_user` VALUES (1, '15999999999', 'user', 'liu@xinadmin.cn', '$2y$10$uT69rqj3E65JG4K.eYpFduGtw.zfJUNVvatouqlgmx2BDdlexkaeu', '小刘同学', 33, '0', NULL, 1, 1354.00, 0, '', '1', NULL, '2025-01-04 08:46:09');
+INSERT INTO `xin_user` VALUES (1, '15999999999', 'user', 'liu@xinadmin.cn', '$2y$10$UnYcdOkscv.98UDyQ91Bwezj70acn9g5HGFMxsWYfnegBQvRE8W6y', '小刘同学', 47, '0', '2025-01-13', 1, 369.00, 0, '131231', '1', '2025-01-13 08:50:28', '2025-01-13 02:01:39');
 
 SET FOREIGN_KEY_CHECKS = 1;
