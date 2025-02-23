@@ -51,7 +51,7 @@ class UserListController extends BaseController
     public function recharge(UserRechargeRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $this->service->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark']);
+        $this->service->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark'] ?? '');
 
         return $this->success('ok');
     }
