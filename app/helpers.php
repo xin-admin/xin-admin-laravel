@@ -4,6 +4,7 @@ use App\Models\SettingGroupModel;
 use App\Service\IAuthorizeService;
 use App\Service\ITokenService;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 if (! function_exists('get_setting')) {
     /**
@@ -52,7 +53,6 @@ if (! function_exists('trace')) {
 if (! function_exists('token')) {
     /**
      * 获取TokenService
-     * @return ITokenService
      */
     function token(): ITokenService
     {
@@ -63,7 +63,6 @@ if (! function_exists('token')) {
 if (! function_exists('customAuth')) {
     /**
      * @param  $type  string
-     * @return IAuthorizeService
      */
     function customAuth(string $type): IAuthorizeService
     {
@@ -89,5 +88,18 @@ if (! function_exists('getTreeData')) {
         }
 
         return $data;
+    }
+}
+
+if (! function_exists('addHeaders')) {
+    function addHeaders(Response $response): Response
+    {
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $response->headers->set('Access-Control-Max-Age', 1800);
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Token, X-User-Token, X-Refresh-Token, X-User-Refresh-Token, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-CSRF-TOKEN, X-Requested-With');
+
+        return $response;
     }
 }
