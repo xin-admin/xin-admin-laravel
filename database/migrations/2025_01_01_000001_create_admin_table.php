@@ -53,11 +53,11 @@ return new class extends Migration
             Schema::create('admin_dept', function (Blueprint $table) {
                 $table->increments('dept_id')->comment('部门ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
-                $table->string('name', 100)->default('')->comment('名称');
+                $table->string('name', 100)->default('')->comment('部门名称');
                 $table->integer('sort')->default(0)->comment('排序');
-                $table->string('leader', '20')->default('')->comment('负责人');
-                $table->string('phone', '20')->default('')->comment('电话');
-                $table->string('email', '50')->default('')->comment('邮箱');
+                $table->string('leader', '20')->default('')->comment('部门负责人');
+                $table->string('phone', '20')->default('')->comment('部门电话');
+                $table->string('email', '50')->default('')->comment('部门邮箱');
                 $table->integer('status')->default(0)->comment('部门状态（0正常 1停用）');
                 $table->timestamps();
                 $table->comment('管理员部门表');
