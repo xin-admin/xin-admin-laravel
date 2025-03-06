@@ -9,7 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\SettingRequest;
+use App\Http\Admin\Requests\SystemRequest\SettingRequest;
 use App\Http\BaseController;
 use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;

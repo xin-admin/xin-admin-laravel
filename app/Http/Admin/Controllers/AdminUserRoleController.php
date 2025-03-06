@@ -9,8 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserRoleRequest;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserSetRoleRuleRequest;
+use App\Http\Admin\Requests\AdminRequest\AdminUserRoleRequest;
 use App\Http\BaseController;
 use App\Models\AdminRoleModel;
 use App\Models\AdminRuleModel;
@@ -66,16 +65,21 @@ class AdminUserRoleController extends BaseController
         if (! $user) {
             return $this->error('该角色下存在用户，无法删除');
         }
+
         return $this->deleteResponse();
     }
 
     /** 设置角色权限 */
     #[PostMapping('/rule')] #[Authorize('admin.role.edit')]
-    public function setRoleRule(AdminUserSetRoleRuleRequest $request): JsonResponse
+    public function setRoleRule(Request $request): JsonResponse
     {
-        $rule_ids = AdminRuleModel::whereIn('key', $request->validated('rule_keys'))->pluck('rule_id')->toArray();
+        $validated = $request->validate([
+            'role_id' => 'required|exists:admin_role,role_id',
+            'rule_keys' => 'required|array|exists:admin_rule,key',
+        ]);
+        $rule_ids = AdminRuleModel::whereIn('key', $validated)->pluck('rule_id')->toArray();
         $this->model
-            ->where('role_id', $request->validated('role_id'))
+            ->where('role_id', $validated('role_id'))
             ->update([
                 'rules' => implode(',', $rule_ids),
             ]);

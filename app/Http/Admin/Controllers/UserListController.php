@@ -9,14 +9,13 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Enum\FileType;
-use App\Http\Admin\Requests\UserRechargeRequest;
-use App\Http\Admin\Requests\UserRequest\UserRequest;
-use App\Http\Admin\Requests\UserResetPasswordRequest;
+use App\Http\Admin\Requests\UserRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use App\Service\impl\UpdateFileService;
 use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Request;
 
 /**
  * 前台用户列表
@@ -46,21 +45,15 @@ class UserListController extends BaseController
         return $this->editResponse($request);
     }
 
-    /** 充值 */
-    #[PostMapping('/recharge')] #[Authorize('user.list.recharge')]
-    public function recharge(UserRechargeRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        $this->service->recharge($data['user_id'], $data['amount'], $data['mode'], $data['remark'] ?? '');
-
-        return $this->success('ok');
-    }
-
     /** 重置密码 */
     #[PutMapping('/resetPassword')] #[Authorize('user.list.resetPassword')]
-    public function resetPassword(UserResetPasswordRequest $request): JsonResponse
+    public function resetPassword(Request $request): JsonResponse
     {
-        $data = $request->validated();
+        $data = $request->validate([
+            'user_id' => 'required|exists:xin_user,user_id',
+            'password' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:password',
+        ]);
         $this->service->resetPassword($data['user_id'], $data['password']);
 
         return $this->success('ok');
@@ -73,7 +66,7 @@ class UserListController extends BaseController
         // TODO 上传头像需要完善权限和上传头像目录 （待完成）
         $service = new UpdateFileService;
         $service->setFileType(FileType::IMAGE);
+
         return $service->upload(0);
     }
-
 }

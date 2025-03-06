@@ -9,7 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserDeptRequest;
+use App\Http\Admin\Requests\AdminRequest\AdminUserDeptRequest;
 use App\Http\BaseController;
 use App\Models\AdminDeptModel;
 use App\Service\impl\AdminUserDeptService;

@@ -9,12 +9,12 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserRequest;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserResetPasswordRequest;
+use App\Http\Admin\Requests\AdminRequest\AdminUserRequest;
 use App\Http\BaseController;
 use App\Models\AdminUserModel;
 use App\Service\impl\AdminUserListService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Request;
 
 /**
  * 管理员列表控制器
@@ -61,8 +61,14 @@ class AdminUserListController extends BaseController
 
     /** 重置管理员密码 */
     #[PostMapping('/resetPassword')] #[Authorize('admin.list.resetPassword')]
-    public function resetPassword(AdminUserResetPasswordRequest $request): JsonResponse
+    public function resetPassword(Request $request): JsonResponse
     {
-        return $this->service->resetPassword($request->validated());
+        $data = $request->validate([
+            'id' => 'required|exists:admin,id',
+            'password' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:password',
+        ]);
+
+        return $this->service->resetPassword($data);
     }
 }

@@ -7,15 +7,13 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Enum\FileType;
 use App\Enum\TokenEnum;
-use App\Http\App\Requests\UserSetPasswordRequest;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\XinBalanceRecordModel;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
-use Xin\File;
+use Illuminate\Support\Facades\Request;
 
 #[RequestMapping('/api/user')]
 #[AppController]
@@ -59,21 +57,6 @@ class UserController extends BaseController
         }
     }
 
-    #[PostMapping('/upAvatar')]
-    public function upAvatar(): JsonResponse
-    {
-        $storage = new File;
-        $fileData = $storage->upload(
-            FileType::IMAGE->value,
-            'public',
-            0,
-            customAuth('app')->id(),
-            10
-        );
-
-        return $this->success(['fileInfo' => $fileData], '图片上传成功');
-    }
-
     #[PutMapping]
     public function setUserInfo(UserUpdateInfoRequest $request): JsonResponse
     {
@@ -83,9 +66,13 @@ class UserController extends BaseController
     }
 
     #[PostMapping('/setPwd')]
-    public function setPassword(UserSetPasswordRequest $request): JsonResponse
+    public function setPassword(Request $request): JsonResponse
     {
-        $data = $request->validated();
+        $data = $request->validate([
+            'oldPassword' => 'required|string|max:20',
+            'newPassword' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:newPassword',
+        ]);
         $user_id = customAuth('app')->id();
         $user = XinUserModel::query()->find($user_id);
         if (! password_verify($data['oldPassword'], $user['password'])) {

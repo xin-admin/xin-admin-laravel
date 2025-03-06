@@ -5,7 +5,6 @@ namespace App\Service\impl;
 use App\Attribute\Monitor;
 use App\Enum\TokenEnum;
 use App\Exceptions\HttpResponseException;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
@@ -33,9 +32,8 @@ class AdminUserService extends BaseService
     /**
      * 登录
      */
-    public function login(AdminUserLoginRequest $request): JsonResponse
+    public function login(array $data): JsonResponse
     {
-        $data = $request->validated();
         $username = $data['username'];
         $password = $data['password'];
         $adminUser = AdminUserModel::where('username', '=', $username)->first();

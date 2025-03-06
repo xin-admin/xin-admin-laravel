@@ -6,11 +6,11 @@ use App\Attribute\AppController;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\App\Requests\UserLoginRequest;
 use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Request;
 use OpenApi\Attributes as OA;
 
 #[AppController]
@@ -36,9 +36,12 @@ class IndexController extends BaseController
      * 用户登录
      */
     #[PostMapping('/login')]
-    public function login(UserLoginRequest $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
-        $data = $request->validated();
+        $data = $request->validate([
+            'username' => 'required|min:4|alphaDash',
+            'password' => 'required|min:4|alphaDash',
+        ]);
         $model = new XinUserModel;
         $data = $model->login($data['username'], $data['password']);
         if ($data) {

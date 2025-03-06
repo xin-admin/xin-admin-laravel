@@ -9,7 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\SettingGroupRequest;
+use App\Http\Admin\Requests\SystemRequest\SettingGroupRequest;
 use App\Http\BaseController;
 use App\Models\SettingGroupModel;
 use App\Models\SettingModel;

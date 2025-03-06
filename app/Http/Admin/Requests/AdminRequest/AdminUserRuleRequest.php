@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Admin\Requests\AdminUserRequest;
+namespace App\Http\Admin\Requests\AdminRequest;
 
 use App\Models\AdminRuleModel;
 use Illuminate\Foundation\Http\FormRequest;

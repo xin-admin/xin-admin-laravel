@@ -7,12 +7,11 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserLoginRequest;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserUpdateInfoRequest;
-use App\Http\Admin\Requests\AdminUserRequest\AdminUserUpdatePasswordRequest;
+use App\Http\Admin\Requests\AdminRequest\AdminUserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Service\impl\AdminUserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Request;
 
 /**
  * 管理员用户控制器
@@ -30,9 +29,14 @@ class AdminUserController extends BaseController
 
     /** 会员登录 */
     #[PostMapping('/login')]
-    public function login(AdminUserLoginRequest $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
-        return $this->service->login($request);
+        $validated = $request->validate([
+            'username' => 'required|min:4|alphaDash',
+            'password' => 'required|min:4|alphaDash',
+        ]);
+
+        return $this->service->login($validated);
     }
 
     /** 刷新 Token */
@@ -65,8 +69,14 @@ class AdminUserController extends BaseController
 
     /** 修改密码 */
     #[PostMapping('/updatePassword')]
-    public function updatePassword(AdminUserUpdatePasswordRequest $request): JsonResponse
+    public function updatePassword(Request $request): JsonResponse
     {
-        return $this->service->updatePassword($request->validated());
+        $validated = $request->validate([
+            'oldPassword' => 'required|string|min:6|max:20',
+            'newPassword' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:newPassword',
+        ]);
+
+        return $this->service->updatePassword($validated);
     }
 }

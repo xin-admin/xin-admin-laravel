@@ -9,7 +9,7 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Http\Admin\Requests\FileGroupRequest;
+use App\Http\Admin\Requests\SystemRequest\FileGroupRequest;
 use App\Http\BaseController;
 use App\Models\FileGroupModel;
 use Illuminate\Http\JsonResponse;
