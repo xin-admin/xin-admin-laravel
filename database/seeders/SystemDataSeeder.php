@@ -2,11 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\DictItemModel;
-use App\Models\DictModel;
-use App\Models\FileGroupModel;
-use App\Models\SettingGroupModel;
-use App\Models\SettingModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
