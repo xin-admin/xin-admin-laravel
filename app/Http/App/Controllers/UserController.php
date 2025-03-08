@@ -85,21 +85,4 @@ class UserController extends BaseController
 
         return $this->error('更新失败');
     }
-
-    #[GetMapping('/getMoneyLog')]
-    public function getMoneyLog(): JsonResponse
-    {
-        $user_id = customAuth('app')->id();
-        $params = request()->query();
-        $paginate = [
-            'list_rows' => $params['pageSize'] ?? 10,
-            'page' => $params['current'] ?? 1,
-        ];
-        $list = XinBalanceRecordModel::query()
-            ->where('user_id', $user_id)
-            ->paginate($paginate)
-            ->toArray();
-
-        return $this->success($list);
-    }
 }
