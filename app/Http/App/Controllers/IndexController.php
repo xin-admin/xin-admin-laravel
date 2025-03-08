@@ -10,7 +10,7 @@ use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
 #[AppController]

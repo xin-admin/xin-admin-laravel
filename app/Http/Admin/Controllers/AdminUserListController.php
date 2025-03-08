@@ -14,7 +14,7 @@ use App\Http\BaseController;
 use App\Models\AdminUserModel;
 use App\Service\impl\AdminUserListService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * 管理员列表控制器

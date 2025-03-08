@@ -15,8 +15,7 @@ use App\Models\XinUserModel;
 use App\Service\impl\UpdateFileService;
 use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
-
+use Illuminate\Http\Request;
 /**
  * 前台用户列表
  */

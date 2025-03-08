@@ -11,7 +11,7 @@ use App\Http\Admin\Requests\AdminRequest\AdminUserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Service\impl\AdminUserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * 管理员用户控制器

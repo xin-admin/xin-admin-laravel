@@ -13,7 +13,7 @@ use App\Http\BaseController;
 use App\Models\XinBalanceRecordModel;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 #[RequestMapping('/api/user')]
 #[AppController]
