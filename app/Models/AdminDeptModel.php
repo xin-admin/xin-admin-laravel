@@ -11,20 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class AdminDept
- *
- * @property int $dept_id
- * @property int|null $parent_id
- * @property string $name
- * @property int $sort
- * @property string|null $leader
- * @property string|null $phone
- * @property string|null $email
- * @property string|null $status
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- *
- * @mixin IdeHelperModel
+ * Class AdminDeptModel
  */
 class AdminDeptModel extends Model
 {

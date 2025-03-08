@@ -14,21 +14,20 @@ class FileService implements IFileService
     public function upload(FileType $fileType, int $group_id, string $disk, string $type = 'admin'): array
     {
         $file = request()->file('file');
-        $file_ext = $file->extension();
-        $file_size = $file->getSize();
         // 验证文件大小
+        $file_size = $file->getSize();
         if ($file_size > $fileType->maxSize()) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.size_limit')]);
         }
-        $vel_ext = $fileType->fileExt();
         // 验证扩展名
-        if ($vel_ext != '*') {
-            if (is_array($vel_ext)) {
-                if (! in_array($file_ext, $vel_ext)) {
-                    throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
-                }
+        $file_ext = $file->extension();
+        $vel_ext = $fileType->fileExt();
+        if (is_array($vel_ext)) {
+            if (! in_array($file_ext, $vel_ext)) {
+                throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
             }
-            if ($vel_ext !== $file_ext) {
+        }else {
+            if ($vel_ext !== '*' && $vel_ext !== $file_ext) {
                 throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
             }
         }

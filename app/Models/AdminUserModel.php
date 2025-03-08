@@ -1,9 +1,4 @@
 <?php
-
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -15,25 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class AdminUser
- *
- * @property int $user_id
- * @property string $username
- * @property string $nickname
- * @property int $avatar_id
- * @property string $sex
- * @property string $email
- * @property string $mobile
- * @property string $status
- * @property int $role_id
- * @property int $dept_id
- * @property string $password
- * @property string|null $login_ip
- * @property Carbon|null $login_date
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property string|null $deleted_at
- *
- * @mixin IdeHelperModel
  */
 class AdminUserModel extends Model
 {

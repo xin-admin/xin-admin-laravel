@@ -1,9 +1,4 @@
 <?php
-
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -13,16 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class AdminRole
- *
- * @property int $role_id
- * @property string $name
- * @property int $sort
- * @property string|null $rules
- * @property string $status
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- *
- * @mixin IdeHelperModel
  */
 class AdminRoleModel extends Model
 {

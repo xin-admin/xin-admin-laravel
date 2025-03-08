@@ -14,7 +14,7 @@ return [
         'zip' => '压缩包',
         'annex' => '附件',
         'size_limit' => '文件大小超出限制',
-        'ext_limit' => '文件扩展名不允许',
+        'ext_limit' => '文件扩展名不允许 :ext',
         'upload_failed' => '上传失败',
     ],
     'error' => [

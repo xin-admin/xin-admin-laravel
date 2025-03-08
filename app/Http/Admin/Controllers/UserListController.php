@@ -5,14 +5,11 @@ namespace App\Http\Admin\Controllers;
 use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
-use App\Enum\FileType;
 use App\Http\Admin\Requests\UserRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
-use App\Service\impl\UpdateFileService;
 use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,16 +53,5 @@ class UserListController extends BaseController
         $this->service->resetPassword($data['user_id'], $data['password']);
 
         return $this->success('ok');
-    }
-
-    /** 上传头像 */
-    #[PostMapping('/avatar')]
-    public function avatar(): JsonResponse
-    {
-        // TODO 上传头像需要完善权限和上传头像目录 （待完成）
-        $service = new UpdateFileService;
-        $service->setFileType(FileType::IMAGE);
-
-        return $service->upload(0);
     }
 }

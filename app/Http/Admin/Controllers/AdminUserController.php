@@ -7,9 +7,11 @@ use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
+use App\Enum\FileType;
 use App\Http\Admin\Requests\AdminRequest\AdminUserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Service\impl\AdminUserService;
+use App\Service\impl\FileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -78,5 +80,14 @@ class AdminUserController extends BaseController
         ]);
 
         return $this->service->updatePassword($validated);
+    }
+
+    /** 上传头像 */
+    #[PostMapping('/uploadAvatar')]
+    public function uploadAvatar(): JsonResponse
+    {
+        $service = new FileService();
+        $data = $service->upload(FileType::IMAGE, 1, 'public');
+        return $this->success($data);
     }
 }

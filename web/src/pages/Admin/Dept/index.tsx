@@ -13,8 +13,8 @@ export default () => {
     { title: '排序', dataIndex: 'sort', valueType: 'digit', },
     { title: '状态', dataIndex: 'status', valueType: 'radio',
       valueEnum: {
-        0: { text: '禁用', status: 'Error' },
-        1: { text: '启用', status: 'Success' },
+        1: { text: '禁用', status: 'Error' },
+        0: { text: '启用', status: 'Success' },
       },
     },
     {

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('token')) {
+        if (! Schema::hasTable('xin_user')) {
             Schema::create('xin_user', function (Blueprint $table) {
                 $table->increments('user_id')->comment('用户ID');
                 $table->string('username', 20)->unique()->comment('用户名');

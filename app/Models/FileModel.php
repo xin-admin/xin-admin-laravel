@@ -1,9 +1,4 @@
 <?php
-
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use App\Enum\FileType;
@@ -15,23 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * Class File
- *
- * @property int $file_id
- * @property int $group_id
- * @property int $channel
- * @property string $storage
- * @property string $domain
- * @property int $file_type
- * @property string $file_name
- * @property string $file_path
- * @property int $file_size
- * @property string $file_ext
- * @property string $cover
- * @property int $uploader_id
- * @property int $is_recycle
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @mixin IdeHelperModel
  */
 class FileModel extends Model
 {
@@ -51,6 +29,7 @@ class FileModel extends Model
 
     protected $fillable = [
         'group_id',
+        'disk',
         'channel',
         'storage',
         'domain',
@@ -69,7 +48,7 @@ class FileModel extends Model
     protected function previewUrl(): Attribute
     {
         return new Attribute(
-            get: function ($value, $data) {
+            get: function ($value, array $data) {
                 // 图片的预览图直接使用外链
                 if ($data['file_type'] == FileType::IMAGE->value) {
                     return Storage::disk($data['disk'])->url($data['file_path']);

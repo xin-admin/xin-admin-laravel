@@ -17,7 +17,7 @@ export default () => {
   // 分组菜单
   const [groupMenu, setGroupMenu] = useState<MenuItem[]>([]);
   // 选择分组
-  const [selectGroup, setSelectGroup] = useState<string[]>(['14']);
+  const [selectGroup, setSelectGroup] = useState<string[]>(['1']);
   // 文件列表
   const [fileList, setFileList] = useState<IFile[]>([]);
   // 选择文件

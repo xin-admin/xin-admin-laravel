@@ -1,9 +1,4 @@
 <?php
-
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -12,16 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Dict
- *
- * @property int $id
- * @property string $name
- * @property string $type
- * @property string $describe
- * @property string $code
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- *
- * @mixin IdeHelperModel
  */
 class DictModel extends Model
 {

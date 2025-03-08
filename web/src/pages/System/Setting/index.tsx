@@ -26,7 +26,7 @@ export default () => {
   // token
   const token = theme.useToken();
   // 获取设置列表
-  const getSetting = (group_id = 3) => {
+  const getSetting = (group_id = 1) => {
     setLoading(true);
     listApi('/system/setting/query/' + group_id).then((res) => {
       setDataSource(res.data);

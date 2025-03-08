@@ -50,7 +50,7 @@ const UploadImgItem: React.FC<PropsType> = (props) => {
     }
     if (newFileList[0].status === 'done') {
       if(newFileList[0].response.success) {
-        form.setFieldValue(dataIndex, newFileList[0].response.data.fileInfo.file_id)
+        form.setFieldValue(dataIndex, newFileList[0].response.data.file_id)
       }else {
         message.warning(newFileList[0].response.msg)
         setFileList([])

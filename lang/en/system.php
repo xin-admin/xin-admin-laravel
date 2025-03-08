@@ -14,7 +14,7 @@ return [
         'zip' => 'zip',
         'annex' => 'annex',
         'size_limit' => 'The file size exceeds the limit',
-        'ext_limit' => 'The file extension is not allowed',
+        'ext_limit' => 'The file extension is not allowed :ext',
         'upload_failed' => 'Upload failed',
     ],
     'error' => [

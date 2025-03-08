@@ -2,7 +2,6 @@
 
 namespace App\Service\impl;
 
-use App\Attribute\Monitor;
 use App\Enum\TokenEnum;
 use App\Exceptions\HttpResponseException;
 use App\Models\AdminRuleModel;
@@ -44,7 +43,6 @@ class AdminUserService extends BaseService
         if (! password_verify($password, $adminUser->password)) {
             return $this->error(__('user.password_error'));
         }
-        new Monitor(__('user.admin_login'), false, $adminUser->user_id);
         $data = [];
         $data['refresh_token'] = token()->set($adminUser->user_id, TokenEnum::REFRESH_ADMIN);
         $data['token'] = token()->set($adminUser->user_id, TokenEnum::ADMIN);
@@ -59,7 +57,6 @@ class AdminUserService extends BaseService
     public function logout(): JsonResponse
     {
         $user_id = customAuth('admin')->id();
-        new Monitor(__('user.admin_logout'), false, $user_id);
         $user = AdminUserModel::find($user_id);
         if (! $user) {
             throw new HttpResponseException(['success' => false, 'msg' => __('user.user_not_exist')], 401);
