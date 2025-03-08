@@ -34,9 +34,6 @@ class AdminRuleSeeder extends Seeder
         $this->insertRule(15, 13, 2, '会员列表编辑', 'user.list.edit');
         $this->insertRule(16, 13, 3, '会员列表充值', 'user.list.recharge');
         $this->insertRule(17, 13, 4, '会员重置密码', 'user.list.resetPassword');
-        /** 余额记录 */
-        $this->insertMenu(18, 12, 1, '余额记录', 'user.balance', 'menu.user.balance', 'CreditCardOutlined', '/user/balance');
-        $this->insertRule(19, 18, 0, '余额记录查询', 'user.balance.list');
         /** 管理员 */
         $this->insertFirst(20, 3, '管理员', 'admin', 'menu.admin', 'BankOutlined', '/admin');
         /** 用户列表 */
@@ -79,9 +76,6 @@ class AdminRuleSeeder extends Seeder
         $this->insertRule(52, 44, 7, '字典项删除', 'system.dict.item.delete');
         /** 系统详情 */
         $this->insertMenu(53, 43, 1, '系统详情', 'system.info', 'menu.system.info', 'InfoOutlined', '/system/info');
-        /** 系统监控 */
-        $this->insertMenu(54, 43, 2, '系统监控', 'system.monitor', 'menu.system.monitor', 'MonitorOutlined', '/system/monitor');
-        $this->insertRule(55, 54, 0, '系统监控查询', 'system.monitor.list');
         /** 文件管理 */
         $this->insertFirst(56, 5, '文件管理', 'file', 'menu.file', 'FileOutlined', '/file');
         /** 文件列表 */
