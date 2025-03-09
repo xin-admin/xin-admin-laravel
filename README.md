@@ -28,7 +28,7 @@
 </p>
 
 
-基于 PHP8.2 + Laravel11 + Mysql + React + TypeScript + UmiJs + Ant Design + Taro 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、可视化CRUD、系统配置、文件管理系统等便捷开发，
+基于 PHP8.2 + Laravel12 + Mysql + React + TypeScript + UmiJs + Ant Design + Taro 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、可视化CRUD、系统配置、文件管理系统等便捷开发，
 拥有 Web管理端、Web客户端 和 Taro多端小程序。遵循 Apache License 无需授权即可免费商用.
 
 <img src="https://file.xinadmin.cn/file/demo.png" alt=""/>
