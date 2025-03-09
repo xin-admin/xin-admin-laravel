@@ -1,5 +1,5 @@
-import XinTableV2 from '@/components/XinTableV2';
-import { XinTableColumn, XinTableRef } from '@/components/XinTableV2/typings';
+import XinTable from 'src/components/XinTable';
+import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
 import ResetPsdModel from './components/ResetPsdModel';
 import { IUserList } from '@/domain/iUserList';
 import React, { useRef, useState } from 'react';
@@ -37,7 +37,7 @@ export default () => {
 
   return (
     <>
-      <XinTableV2<IUserList>
+      <XinTable<IUserList>
         api={'/user/list'}
         columns={columns}
         accessName={'user.list'}

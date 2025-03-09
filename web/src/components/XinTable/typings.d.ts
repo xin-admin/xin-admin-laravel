@@ -1,124 +1,79 @@
 import {
   ActionType,
-  BaseQueryFilterProps,
-  ProColumns, ProFormColumnsType, ProTableProps,
+  FormProps,
+  ProColumns,
+  ProFormColumnsType,
+  ProFormInstance,
+  ProTableProps,
 } from '@ant-design/pro-components';
-import React from 'react';
+import React, { Ref } from 'react';
+import { ColProps, RowProps } from 'antd';
 
-type ProFormColumnsAndProColumns<T> = ProFormColumnsType<T> &
-  ProColumns<T>;
+export type XinTableColumn<T> = ProFormColumnsType<T> & ProColumns<T>;
 
-export type TableProps<TableData> = {
-  /**
-   * Api 配置
-   */
-  tableApi: string;
-  /**
-   * 表头配置
-   */
-  columns: ProFormColumnsAndProColumns<TableData>[];
-  /**
-   * 是否显示新建
-   */
-  addShow?: boolean;
-  /**
-   * 是否显示搜索
-   */
-  rowSelectionShow?: boolean;
-  /**
-   * 是否显示操作栏
-   */
-  operateShow?: boolean;
-  /**
-   * 是否显示编辑按钮
-   */
-  editShow?: boolean;
-  /**
-   * 是否显示删除按钮
-   */
-  deleteShow?: boolean;
-  optionsShow?: boolean;
-  /**
-   * 自定义操作栏
-   * @param record
-   */
-  operateRender?: (record: TableData) => JSX.Element | JSX.Element[];
-  /**
-   * 查询表单配置 参考 ProTable 配置
-   */
-  searchConfig?: BaseQueryFilterProps & {
-    filterType?: 'query' | 'light';
-  };
-  /**
-   * 自定义更新提交事件
-   */
-  handleUpdate?: (formData:TableData) => Promise<boolean>
-  /**
-   * 自定义新建提交事件
-   */
-  handleAdd?: (formData:TableData) => Promise<boolean>
-  /**
-   * 添加成功事件，重写 handleAdd 此功能失效
-   */
-  addBefore?: () => void
-  /**
-   * access 权限前缀
-   */
-  accessName?: string
-  optionProps?: ProFormColumnsAndProColumns<TableData>
-  /**
-   * 底部按钮
-   */
-  footerBarButton?: React.ReactNode
-  actionRef?:  React.MutableRefObject<ActionType | undefined>
-} & ProTableProps<TableData, any>;
-
-/**
- * 创建表单参数
- */
-export interface CreateFormProps<T> {
-  columns: ProFormColumnsAndProColumns<T>[];
-  api: string;
-  /**
-   * 表格实例
-   */
-  tableRef: react.Ref<any>;
-  /**
-   * 自定义新建提交事件
-   */
-  handleAdd?: (formData:T) => Promise<boolean>
-  /**
-   * 添加成功事件，重写 handleAdd 此功能失效
-   */
-  addBefore?: () => void
+export interface BooleanActions {
+  setTrue: () => void;
+  setFalse: () => void;
+  set: (value: boolean) => void;
+  toggle: () => void;
 }
 
-/**
- * 编辑表单参数
- */
-export interface UpdateFromProps<T> {
-  /**
-   * 编辑表头
-   */
-  columns: ProFormColumnsAndProColumns<T>[];  // 表头
-  /**
-   * 编辑数据
-   */
-  values: Partial<T>; // 数据
-  /**
-   * 编辑行ID
-   */
-  id: number;
-  /**
-   * 编辑接口
-   */
+export interface XinTableRef {
+  formRef?: React.MutableRefObject<ProFormInstance | undefined>;
+  tableRef?: React.MutableRefObject<ActionType | undefined>;
+}
+
+// CRUD 表格
+export type XinTableProps<T> = {
+  /** 表单 columns */
+  columns: XinTableColumn<T>[];
+  /** 主键 */
   api: string;
+  /** 主键 */
+  rowKey: string;
+  /** 权限 */
+  accessName: string;
+  /** 表格操作列显示 */
+  operateShow?: boolean;
+  /** 编辑按钮显示 */
+  addShow?: boolean;
+  /** 编辑按钮显示 */
+  editShow?: ((record: T) => boolean) | boolean;
+  /** 操作栏之后渲染 */
+  deleteShow?: ((record: T) => boolean) | boolean;
+  /** 操作栏之后渲染 */
+  beforeOperateRender?: (record: T) => React.ReactNode;
+  /** 操作栏之后渲染 */
+  afterOperateRender?: (record: T) => React.ReactNode;
+  /**  */
+  tableRef?: Ref<XinTableRef | undefined>;
+  /** 工具栏渲染 */
+  toolBarRender?: React.ReactNode[];
   /**
-   * 表格实例
+   * 表单提交
+   * @param formData 表单数据
+   * @param initValue 编辑时的初始数据，如果是新增则为 false
    */
-  tableRef: react.Ref<any>;
-  /**
-   * 自定义编辑事件
-   */
-  handleUpdate?: (formData:T) => Promise<boolean>
+  onFinish?: (formData: T, initValue: T | false) => Promise<boolean>
+  /** 表单扩展配置 */
+  formProps?: {
+    // 表单 layout
+    layout?: FormProps['layout'];
+    // 表单项 label Align
+    labelAlign?: FormProps['labelAlign'];
+    // 表单项 Label Warp
+    labelWrap?: FormProps['labelWrap'];
+    // 表单项 Label Col
+    labelCol?: FormProps['labelCol'];
+    // 表单项 Wrapper Col
+    wrapperCol?: FormProps['wrapperCol'];
+    // Grid 布局
+    grid?: boolean;
+    // Row Props
+    rowProps?: RowProps;
+    // Col Props
+    colProps?: ColProps;
+  };
+  /** 表格扩展配置 */
+  tableProps?: ProTableProps<T, any>;
 }

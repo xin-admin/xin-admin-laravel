@@ -1,8 +1,8 @@
-import XinTableV2 from '@/components/XinTableV2';
+import XinTable from 'src/components/XinTable';
 import { Button, Col, Empty, message, Row } from 'antd';
 import { useModel } from '@umijs/max';
 import { IDict } from '@/domain/iDict';
-import { XinTableColumn, XinTableProps } from '@/components/XinTableV2/typings';
+import { XinTableColumn, XinTableProps } from '@/components/XinTable/typings';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';
 import { useState } from 'react';
 import { IDictItem } from '@/domain/iDictItem';
@@ -104,7 +104,7 @@ export default () => {
   return (
     <Row gutter={20}>
       <Col span={16}>
-        <XinTableV2<IDict>
+        <XinTable<IDict>
           api={'/system/dict'}
           columns={columns}
           rowKey={'id'}
@@ -119,22 +119,20 @@ export default () => {
       <Col span={8}>
         <ProCard title={'字典项'} bordered>
           {selectedRows ? (
-            <>
-              <XinTableV2<IDictItem>
-                api={'/system/dict/item'}
-                columns={itemColumns}
-                rowKey={'id'}
-                onFinish={handleAddItem}
-                tableProps={{
-                  search: false,
-                  params: { dict_id: selectedRows.id },
-                  toolbar: { settings: [] },
-                  pagination: { pageSize: 10 }
-                }}
-                accessName={'system.dict.item'}
-                formProps={{ grid: true, colProps: { span: 12 } }}
-              />
-            </>
+            <XinTable<IDictItem>
+              api={'/system/dict/item'}
+              columns={itemColumns}
+              rowKey={'id'}
+              onFinish={handleAddItem}
+              tableProps={{
+                search: false,
+                params: { dict_id: selectedRows.id },
+                toolbar: { settings: [] },
+                pagination: { pageSize: 10 }
+              }}
+              accessName={'system.dict.item'}
+              formProps={{ grid: true, colProps: { span: 12 } }}
+            />
           ) : (
             <Empty description={'请选择字典'} />
           )}

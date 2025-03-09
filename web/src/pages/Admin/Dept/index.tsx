@@ -1,6 +1,6 @@
-import { XinTableColumn } from '@/components/XinTableV2/typings';
+import { XinTableColumn } from '@/components/XinTable/typings';
 import { IDept } from '@/domain/iDept';
-import XinTableV2 from '@/components/XinTableV2';
+import XinTable from '@/components/XinTable';
 import { listApi } from '@/services/common/table';
 import React, { useState } from 'react';
 import { Button } from 'antd';
@@ -51,7 +51,7 @@ export default () => {
 
 
   return (
-    <XinTableV2<IDept>
+    <XinTable<IDept>
       api={'/admin/dept'}
       rowKey={'dept_id'}
       columns={columns}

@@ -1,5 +1,5 @@
-import XinTableV2 from '@/components/XinTableV2';
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
+import XinTable from 'src/components/XinTable';
+import { XinTableColumn } from '@/components/XinTable/typings';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, message, Row, Space, Tree } from 'antd';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';
@@ -10,7 +10,7 @@ import { useBoolean } from 'ahooks';
 import { request } from '@umijs/max';
 
 export default () => {
-  const columns: ProFormColumnsAndProColumns<IRole>[] = [
+  const columns: XinTableColumn<IRole>[] = [
     { title: '编号', dataIndex: 'role_id', hideInForm: true, },
     { title: '角色名', dataIndex: 'name', colProps: { span: 12 }, },
     { title: '排序', dataIndex: 'sort', valueType: 'digit', colProps: { span: 12 }, },
@@ -112,7 +112,7 @@ export default () => {
   return (
     <Row gutter={[20, 20]}>
       <Col flex={'1 1 200px'}>
-        <XinTableV2<IRole>
+        <XinTable<IRole>
           accessName={'admin.role'}
           api={'/admin/role'}
           columns={columns}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, List, message, Popconfirm, Row, Space, theme, Typography } from 'antd';
-import { saveSetting } from '@/services/system';
 import { FormProps } from '@ant-design/pro-components';
 import { deleteApi, editApi, listApi } from '@/services/common/table';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
@@ -8,7 +7,7 @@ import SettingForm from '@/pages/System/Setting/components/SettingForm';
 import ButtonAccess from '@/components/ButtonAccess';
 import SettingItemRender from '@/pages/System/Setting/components/SettingItemRender';
 import { CardProps } from 'antd/es/card';
-import XinTableV2 from '@/components/XinTableV2';
+import XinTable from 'src/components/XinTable';
 
 const { Text } = Typography;
 
@@ -134,7 +133,7 @@ export default () => {
         </Card>
       </Col>
       <Col span={10}>
-        <XinTableV2
+        <XinTable
           api={'/system/setting/group'}
           rowKey={'id'}
           accessName={'system.setting.group'}

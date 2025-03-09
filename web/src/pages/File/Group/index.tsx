@@ -1,5 +1,5 @@
-import XinTableV2 from '@/components/XinTableV2';
-import { XinTableColumn } from '@/components/XinTableV2/typings';
+import XinTable from 'src/components/XinTable';
+import { XinTableColumn } from '@/components/XinTable/typings';
 import { IFileGroup } from '@/domain/iFileGroup';
 
 export default () => {
@@ -14,7 +14,7 @@ export default () => {
   ]
 
   return (
-    <XinTableV2<IFileGroup>
+    <XinTable<IFileGroup>
       api={'/file/group'}
       columns={columns}
       accessName={'file.group'}

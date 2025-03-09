@@ -1,12 +1,12 @@
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
-import { Avatar, Card, Col, Row, Tag, Tree } from 'antd';
+import { Avatar,  Col, Row, Tag, Tree } from 'antd';
 import UploadImgItem from '@/components/XinForm/UploadImgItem';
 import React, { useEffect, useRef, useState } from 'react';
 import UpdatePassword from './components/UpdatePassword';
 import ButtonAccess from '@/components/ButtonAccess';
-import XinTableV2 from '@/components/XinTableV2';
-import { XinTableColumn, XinTableRef } from '@/components/XinTableV2/typings';
+import XinTable from '@/components/XinTable';
+import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
 import { IAdminUserList } from '@/domain/iAdminList';
 import { listApi } from '@/services/common/table';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';
@@ -185,7 +185,7 @@ const Table: React.FC = () => {
         </ProCard>
       </Col>
       <Col flex="auto">
-        <XinTableV2<IAdminUserList>
+        <XinTable<IAdminUserList>
           api={'/admin/list'}
           columns={columns}
           rowKey={'user_id'}

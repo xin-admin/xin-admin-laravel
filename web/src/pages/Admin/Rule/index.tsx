@@ -1,5 +1,5 @@
-import XinTableV2 from '@/components/XinTableV2';
-import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTableV2/typings';
+import XinTable from 'src/components/XinTable';
+import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';
 import React, { useRef, useState } from 'react';
@@ -240,7 +240,7 @@ export default () => {
   }
 
   return (
-    <XinTableV2<IRule>
+    <XinTable<IRule>
       columns={columns}
       api={'/admin/rule'}
       accessName={'admin.rule'}
