@@ -56,7 +56,7 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 15, 'parent_id' => 13, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员列表编辑', 'path' => '', 'icon' => '', 'key' => 'user.list.edit', 'local' => ''],
             ['rule_id' => 16, 'parent_id' => 13, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员重置密码', 'path' => '', 'icon' => '', 'key' => 'user.list.resetPassword', 'local' => ''],
             ['rule_id' => 17, 'parent_id' => 0 , 'type' => '0', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '管理员', 'path' => '/admin', 'icon' => 'SafetyCertificateOutlined', 'key' => 'admin', 'local' => 'menu.admin'],
-            ['rule_id' => 18, 'parent_id' => 17, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表', 'path' => '/admin/list', 'icon' => 'UserOutlined', 'key' => 'admin.list', 'local' => 'menu.admin.list'],
+            ['rule_id' => 18, 'parent_id' => 17, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表', 'path' => '/admin/list', 'icon' => 'TeamOutlined', 'key' => 'admin.list', 'local' => 'menu.admin.list'],
             ['rule_id' => 19, 'parent_id' => 18, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表查询', 'path' => '', 'icon' => '', 'key' => 'admin.list.list', 'local' => ''],
             ['rule_id' => 20, 'parent_id' => 18, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表新增', 'path' => '', 'icon' => '', 'key' => 'admin.list.add', 'local' => ''],
             ['rule_id' => 21, 'parent_id' => 18, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表编辑', 'path' => '', 'icon' => '', 'key' => 'admin.list.edit', 'local' => ''],
@@ -109,7 +109,7 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 68, 'parent_id' => 66, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组新增', 'path' => '', 'icon' => '', 'key' => 'file.group.add', 'local' => ''],
             ['rule_id' => 69, 'parent_id' => 66, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组编辑', 'path' => '', 'icon' => '', 'key' => 'file.group.edit', 'local' => ''],
             ['rule_id' => 70, 'parent_id' => 66, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组删除', 'path' => '', 'icon' => '', 'key' => 'file.group.delete', 'local' => ''],
-            ['rule_id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => '', 'key' => 'admin.setting', 'local' => 'menu.personal'],
+            ['rule_id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => 'UserOutlined', 'key' => 'admin.setting', 'local' => 'menu.personal'],
         ]);
     }
 }
