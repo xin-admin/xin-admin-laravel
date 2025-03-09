@@ -1,4 +1,4 @@
-import XinTable from 'src/components/XinTable';
+import XinTable from '@/components/XinTable';
 import { Button, Col, Empty, message, Row } from 'antd';
 import { useModel } from '@umijs/max';
 import { IDict } from '@/domain/iDict';

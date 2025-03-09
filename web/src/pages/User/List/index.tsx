@@ -1,4 +1,4 @@
-import XinTable from 'src/components/XinTable';
+import XinTable from '@/components/XinTable';
 import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
 import ResetPsdModel from './components/ResetPsdModel';
 import { IUserList } from '@/domain/iUserList';

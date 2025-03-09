@@ -1,4 +1,4 @@
-import XinTable from 'src/components/XinTable';
+import XinTable from '@/components/XinTable';
 import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTable/typings';
 import XinDict from '@/components/XinDict';
 import { useModel } from '@umijs/max';

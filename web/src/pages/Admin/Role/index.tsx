@@ -1,4 +1,4 @@
-import XinTable from 'src/components/XinTable';
+import XinTable from '@/components/XinTable';
 import { XinTableColumn } from '@/components/XinTable/typings';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, message, Row, Space, Tree } from 'antd';

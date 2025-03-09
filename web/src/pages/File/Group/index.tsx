@@ -1,4 +1,4 @@
-import XinTable from 'src/components/XinTable';
+import XinTable from '@/components/XinTable';
 import { XinTableColumn } from '@/components/XinTable/typings';
 import { IFileGroup } from '@/domain/iFileGroup';
 
