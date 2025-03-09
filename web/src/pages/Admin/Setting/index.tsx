@@ -1,6 +1,5 @@
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
 import React, { useEffect } from 'react';
-import { BetaSchemaForm, ProCard, ProFormInstance } from '@ant-design/pro-components';
+import { BetaSchemaForm, ProCard, ProFormColumnsType, ProFormInstance } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { useRef } from 'react';
 import { updateAdmin } from '@/services/admin';
@@ -43,7 +42,7 @@ const Table: React.FC = () => {
     }
   },[])
 
-  const columns: ProFormColumnsAndProColumns<ResponseAdminList>[] = [
+  const columns: ProFormColumnsType<ResponseAdminList>[] = [
     {
       title: '用户名',
       dataIndex: 'username',
@@ -75,17 +74,9 @@ const Table: React.FC = () => {
     },
     {
       title: '头像',
-      dataIndex: 'avatar_url',
-      hideInSearch: true,
-      valueType: 'avatar',
-      hideInForm: true,
-    },
-    {
-      title: '头像',
       dataIndex: 'avatar_id',
-      hideInSearch: true,
       valueType: 'avatar',
-      hideInTable: true,
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
       renderFormItem: (schema, config, form) => {
         return <UploadImgItem
           form={form}
@@ -103,7 +94,7 @@ const Table: React.FC = () => {
     message.success('更新成功')
   }
 
-  const columnsPws: ProFormColumnsAndProColumns<any>[] = [
+  const columnsPws: ProFormColumnsType<any>[] = [
     {
       title: '旧密码',
       dataIndex: 'oldPassword',

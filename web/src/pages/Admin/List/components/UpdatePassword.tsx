@@ -3,7 +3,7 @@ import {
 } from '@ant-design/pro-components';
 import { Avatar, message, Space, Tag } from 'antd';
 import { editApi } from "@/services/common/table";
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/XinTable/typings';
 import { UserOutlined } from '@ant-design/icons';
 
 interface UpDatePasswordForm {
@@ -15,7 +15,7 @@ interface UpDatePasswordForm {
 }
 
 interface ResponseAdminList {
-  id?: number
+  user_id?: number
   username?: string
   nickname?: string
   avatar?: string
@@ -29,7 +29,7 @@ interface ResponseAdminList {
 
 const UpdateForm = (props: { record: ResponseAdminList }) => {
   const { record } = props;
-  const columns: ProFormColumnsAndProColumns<UpDatePasswordForm>[] = [
+  const columns: XinTableColumn<UpDatePasswordForm>[] = [
     {
       title: '管理员',
       dataIndex: 'id',
@@ -37,7 +37,7 @@ const UpdateForm = (props: { record: ResponseAdminList }) => {
       renderFormItem: () => (
         <Space>
           <Avatar src={record.avatar} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={24} />
-          <Tag icon={<UserOutlined />} color="geekblue">ID：{record.id}</Tag>
+          <Tag icon={<UserOutlined />} color="geekblue">ID：{record.user_id}</Tag>
           {record.username ? <Tag color="purple">Name：{record.username}</Tag> : ''}
           {record.mobile ? <Tag color="magenta">Mobile：{record.mobile}</Tag> : ''}
         </Space>
@@ -75,7 +75,7 @@ const UpdateForm = (props: { record: ResponseAdminList }) => {
    */
   const defaultUpdate = async (fields: UpDatePasswordForm) => {
     const hide = message.loading('正在更新');
-    return editApi('/admin/resetPassword', Object.assign({ id: record.id }, fields)).then(res => {
+    return editApi('/admin/list/resetPassword', Object.assign({ id: record.user_id }, fields)).then(res => {
       if (res.success) {
         message.success('更新成功！');
         return true

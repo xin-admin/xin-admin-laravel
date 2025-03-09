@@ -92,11 +92,12 @@ const Table: React.FC = () => {
       hideInSearch: true,
       valueType: 'avatar',
       hideInTable: true,
+      formItemProps: { rules: [{ required: true, message: '该项为必填' }] },
       renderFormItem: () => {
         return <UploadImgItem
           form={tableRef.current?.formRef?.current!}
           dataIndex={'avatar_id'}
-          api={'admin/upload/avatar'}
+          api={'admin/uploadAvatar'}
           defaultFile={tableRef.current?.formRef?.current?.getFieldValue('avatar_url')}
           crop={true}
         />;

@@ -64,22 +64,16 @@ class AdminUserController extends BaseController
 
     /** 更新管理员信息 */
     #[PutMapping]
-    public function updateAdmin(AdminUserUpdateInfoRequest $request): JsonResponse
+    public function updateAdmin(Request $request): JsonResponse
     {
-        return $this->service->updateAdmin($request->validated());
+        return $this->service->updateAdmin($request);
     }
 
     /** 修改密码 */
-    #[PostMapping('/updatePassword')]
+    #[PutMapping('/updatePassword')]
     public function updatePassword(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'oldPassword' => 'required|string|min:6|max:20',
-            'newPassword' => 'required|string|min:6|max:20',
-            'rePassword' => 'required|same:newPassword',
-        ]);
-
-        return $this->service->updatePassword($validated);
+        return $this->service->updatePassword($request);
     }
 
     /** 上传头像 */

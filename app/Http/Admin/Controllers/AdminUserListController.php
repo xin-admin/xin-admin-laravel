@@ -12,7 +12,6 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\AdminRequest\AdminUserRequest;
 use App\Http\BaseController;
 use App\Models\AdminUserModel;
-use App\Service\impl\AdminUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,6 @@ class AdminUserListController extends BaseController
     public function __construct()
     {
         $this->model = new AdminUserModel;
-        $this->service = new AdminUserListService;
         $this->searchField = ['dept_id' => '='];
         $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
     }
@@ -60,15 +58,17 @@ class AdminUserListController extends BaseController
     }
 
     /** 重置管理员密码 */
-    #[PostMapping('/resetPassword')] #[Authorize('admin.list.resetPassword')]
+    #[PutMapping('/resetPassword')] #[Authorize('admin.list.resetPassword')]
     public function resetPassword(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'id' => 'required|exists:admin,id',
+            'id' => 'required|exists:App\Models\AdminUserModel,user_id',
             'password' => 'required|string|min:6|max:20',
             'rePassword' => 'required|same:password',
         ]);
-
-        return $this->service->resetPassword($data);
+        $user = AdminUserModel::find($data['id']);
+        $user->password = $data['password'];
+        $user->save();
+        return $this->success('ok');
     }
 }

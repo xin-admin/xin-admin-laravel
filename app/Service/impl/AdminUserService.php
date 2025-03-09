@@ -7,6 +7,7 @@ use App\Exceptions\HttpResponseException;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AdminUserService extends BaseService
 {
@@ -91,30 +92,37 @@ class AdminUserService extends BaseService
     /**
      * 修改密码
      */
-    public function updatePassword(array $data): JsonResponse
+    public function updatePassword(Request $request): JsonResponse
     {
-        $user_id = customAuth('admin')->id();
-        $model = AdminUserModel::where('user_id', $user_id)->first();
-        if (! $model) {
-            return $this->error();
-        }
-        if (! password_verify($data['oldPassword'], $model->password)) {
-            return $this->error(__('user.old_password_error'));
-        }
-        AdminUserModel::where('id', '=', $user_id)->update([
-            'password' => password_hash($data['newPassword'], PASSWORD_DEFAULT),
+        $validated = $request->validate([
+            'oldPassword' => 'required|string|min:6|max:20',
+            'newPassword' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:newPassword',
         ]);
 
+        $user_id = customAuth('admin')->id();
+        $user = AdminUserModel::find($user_id);
+        if (! password_verify($validated['oldPassword'], $user->password)) {
+            return $this->error(__('user.old_password_error'));
+        }
+        $user->password = $validated['newPassword'];
+        $user->save();
         return $this->success('ok');
     }
 
     /**
      * 修改管理员信息
      */
-    public function updateAdmin(array $data): JsonResponse
+    public function updateAdmin(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'nickname' => 'required',
+            'mobile' => 'required',
+            'email' => 'required|email',
+            'avatar_id' => 'required|exists:file,file_id',
+        ]);
         $user_id = customAuth('admin')->id();
-        AdminUserModel::where('user_id', $user_id)->update($data);
+        AdminUserModel::where('user_id', $user_id)->update($validated);
 
         return $this->success();
     }
