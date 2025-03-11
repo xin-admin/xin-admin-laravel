@@ -18,7 +18,6 @@ return new class extends Migration
                 $table->integer('group_id')->comment('文件分组ID');
                 $table->integer('channel')->comment('上传来源(10商户后台 20用户端)');
                 $table->string('disk', 10)->comment('存储方式');
-                $table->string('domain', 255)->comment('存储域名');
                 $table->integer('file_type')->comment('文件类型');
                 $table->string('file_name', 255)->comment('文件名称');
                 $table->string('file_path', 255)->comment('文件路径');
