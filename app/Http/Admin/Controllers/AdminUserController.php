@@ -8,7 +8,6 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
 use App\Attribute\route\RequestMapping;
 use App\Enum\FileType;
-use App\Http\Admin\Requests\AdminRequest\AdminUserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Service\impl\AdminUserService;
 use App\Service\impl\FileService;
