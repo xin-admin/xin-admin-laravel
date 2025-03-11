@@ -34,7 +34,7 @@ class SystemDataSeeder extends Seeder
         DB::table('dict')->insert([
             ['id' => 1, 'name' => '性别', 'type' => 'default', 'describe' => '性别字典', 'code' => 'sex', 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 2, 'name' => '状态', 'type' => 'default', 'describe' => '状态字典', 'code' => 'status', 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 3, 'name' => '权限类型', 'type' => 'default', 'describe' => '系统权限类型字典', 'code' => 'ruleType', 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 3, 'name' => '权限类型', 'type' => 'tag', 'describe' => '系统权限类型字典', 'code' => 'ruleType', 'created_at' => $date, 'updated_at' => $date,],
         ]);
         DB::table('dict_item')->insert([
             ['id' => 1, 'dict_id' => 1, 'label' => '男', 'value' => '0', 'switch' => '1', 'status' => 'default', 'created_at' => $date, 'updated_at' => $date],
