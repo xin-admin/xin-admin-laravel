@@ -11,6 +11,7 @@
         "ext-redis": "*",
         "laravel/framework": "^v12.0",
         "laravel/tinker": "^2.10.1",
+        "openai-php/laravel": "^0.11.0",
         "predis/predis": "2.0"
     },
     "require-dev": {

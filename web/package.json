@@ -15,10 +15,12 @@
     "@ant-design/charts": "^1.4.3",
     "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.2",
+    "@ant-design/x": "^1.0.5",
     "@umijs/max": "^4.4.2",
     "ahooks": "^3.8.4",
     "antd": "^5.22.4",
     "antd-img-crop": "^4.23.0",
+    "antd-style": "^3.7.1",
     "dayjs": "^1.11.13"
   },
   "devDependencies": {
