@@ -14,7 +14,7 @@ type IListParams = {
  * @param id
  * @param options
  */
-export const getApi = (url: string, id?: number, options?: { [key: string]: any }) => {
+export const getApi = (url: string, id?: number | string, options?: { [key: string]: any }) => {
   return request<API.ResponseStructure<any>>(url + '/' + id, {
     method: 'GET',
     ...(options || {}),
