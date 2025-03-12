@@ -43,4 +43,5 @@ export default {
   'menu.file': '文件管理',
   'menu.file.list': '文件列表',
   'menu.file.group': '文件分组',
+  'menu.ai': 'AI 助理',
 };

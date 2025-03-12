@@ -7,10 +7,11 @@ import {
   Welcome,
   useXAgent,
   useXChat, XStream,
+  type ConversationsProps
 } from '@ant-design/x';
 import { createStyles } from 'antd-style';
 import React, { useEffect } from 'react';
-
+import {addApi,listApi,getApi} from '@/services/common/table';
 import {
   CloudUploadOutlined,
   CommentOutlined,
@@ -25,20 +26,10 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Badge, Button, type GetProp, Space } from 'antd';
 import { useModel } from '@umijs/max';
-
-const renderTitle = (icon: React.ReactElement, title: string) => (
-  <Space align="start">
-    {icon}
-    <span>{title}</span>
-  </Space>
-);
-
-const defaultConversationsItems = [
-  {
-    key: '0',
-    label: 'What is Ant Design X?',
-  },
-];
+import { FormattedMessage } from '@@/exports';
+import { IAiConversationGroup } from '@/domain/iAiConversationGroup';
+import { IAiConversation } from '@/domain/iAiConversation';
+import { XAgentConfig } from '@ant-design/x/es/use-x-agent';
 
 const useStyle = createStyles(({ token, css }) => {
   return {
@@ -51,7 +42,7 @@ const useStyle = createStyles(({ token, css }) => {
         display: flex;
         background: ${token.colorBgContainer};
         font-family: AlibabaPuHuiTi, ${token.fontFamily}, sans-serif;
-        
+
         .ant-prompts {
             color: ${token.colorText};
         }
@@ -60,6 +51,7 @@ const useStyle = createStyles(({ token, css }) => {
         background: ${token.colorBgLayout}80;
         width: 280px;
         height: 100%;
+        padding-top: 20px;
         display: flex;
         flex-direction: column;
     `,
@@ -80,6 +72,7 @@ const useStyle = createStyles(({ token, css }) => {
     `,
     messages: css`
         flex: 1;
+        padding-right: 20px;
     `,
     placeholder: css`
         padding-top: 32px;
@@ -121,27 +114,37 @@ const useStyle = createStyles(({ token, css }) => {
 const placeholderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   {
     key: '1',
-    label: renderTitle(<FireOutlined style={{ color: '#FF4D4F' }} />, 'Hot Topics'),
-    description: 'What are you interested in?',
+    label: (
+      <Space align="start">
+        <FireOutlined style={{ color: '#FF4D4F' }} />
+        <FormattedMessage id="ai.hot_topics" />
+      </Space>
+    ),
+    description: <FormattedMessage id="ai.hot_topics.desc" />,
     children: [
       {
         key: '1-1',
-        description: `What's new in X?`,
+        description: `什么是XinAdmin？`,
       },
       {
         key: '1-2',
-        description: `What's AGI?`,
+        description: `请简单说一下秦始皇！`,
       },
       {
         key: '1-3',
-        description: `Where is the doc?`,
+        description: `从郑州到北京的距离是多远？`,
       },
     ],
   },
   {
     key: '2',
-    label: renderTitle(<ReadOutlined style={{ color: '#1890FF' }} />, 'Design Guide'),
-    description: 'How to design a good product?',
+    label: (
+      <Space align="start">
+        <ReadOutlined style={{ color: '#1890FF' }} />
+        <FormattedMessage id="ai.design_guide" />
+      </Space>
+    ),
+    description: <FormattedMessage id="ai.design_guide.desc" />,
     children: [
       {
         key: '2-1',
@@ -165,102 +168,122 @@ const placeholderPromptsItems: GetProp<typeof Prompts, 'items'> = [
 const senderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   {
     key: '1',
-    description: 'Hot Topics',
+    description: <FormattedMessage id="ai.hot_topics" />,
     icon: <FireOutlined style={{ color: '#FF4D4F' }} />,
   },
   {
     key: '2',
-    description: 'Design Guide',
+    description: <FormattedMessage id="ai.design_guide" />,
     icon: <ReadOutlined style={{ color: '#1890FF' }} />,
   },
 ];
 
-
 const Independent: React.FC = () => {
   // ==================== Style ====================
   const { styles } = useStyle();
-  const userInfo = useModel('userModel', ({userInfo}) => userInfo);
+  const userInfo = useModel('userModel', ({ userInfo }) => userInfo);
 
   const roles: GetProp<typeof Bubble.List, 'roles'> = {
     ai: {
       placement: 'start',
       typing: { step: 5, interval: 20 },
-      avatar: { icon: <UserOutlined />, style: {color: '#f56a00', backgroundColor: '#fde3cf',} },
+      avatar: { icon: <UserOutlined />, style: { color: '#f56a00', backgroundColor: '#fde3cf' } },
       styles: {
         content: {
           borderRadius: 16,
         },
       },
-      header: "DeepSeek"
+      header: 'DeepSeek',
     },
     local: {
-      avatar: { icon: <Avatar src={userInfo?.avatar_url} style={{marginRight: '10px'}} /> },
+      avatar: { icon: <Avatar src={userInfo?.avatar_url} style={{ marginRight: '10px' }} /> },
       placement: 'end',
       variant: 'shadow',
-      header: userInfo?.nickname
+      header: userInfo?.nickname,
     },
   };
-
 
   // ==================== State ====================
   const [headerOpen, setHeaderOpen] = React.useState(false);
 
   const [content, setContent] = React.useState('');
 
-  const [conversationsItems, setConversationsItems] = React.useState(defaultConversationsItems);
+  const [conversationsItems, setConversationsItems] = React.useState<ConversationsProps['items']>();
 
-  const [activeKey, setActiveKey] = React.useState(defaultConversationsItems[0].key);
+  const [activeKeys, setActiveKey] = React.useState<string>();
 
-  const [attachedFiles, setAttachedFiles] = React.useState<GetProp<typeof Attachments, 'items'>>(
-    [],
-  );
+  const [attachedFiles, setAttachedFiles] = React.useState<GetProp<typeof Attachments, 'items'>>([]);
+
+  useEffect(() => {
+    if(userInfo) {
+      listApi('/system/ai/group/byUser').then((res) => {
+        setConversationsItems(res.data.map((item: IAiConversationGroup) => ({
+          key: item.uuid,
+          label: item.name,
+        })))
+      })
+    }
+  },[])
+
+  const request: XAgentConfig<string>['request'] = async ({ message }, { onSuccess, onUpdate }) => {
+    let uuid = localStorage.getItem('x-ai-group-uuid');
+    if(!message || !uuid) return;
+    let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : ''
+    const response = await fetch(process.env.DOMAIN + 'system/ai', {
+      'headers': {
+        'accept': '*/*',
+        'content-type': 'text/plain;charset=UTF-8',
+        'x-token': token,
+      },
+      'body': JSON.stringify({ message, uuid }),
+      'method': 'POST',
+    });
+    if (!response.body) return;
+    let currentContent = '';
+    for await (const chunk of XStream({
+      readableStream: response.body,
+    })) {
+      if (!chunk || !chunk.data || typeof chunk.data !== 'string') continue;
+      let currentMessage = chunk.data.replace(/\s*/g, '');
+      if (currentMessage == 'end') {
+        onSuccess(currentContent);
+      } else {
+        try{
+          let data = JSON.parse(currentMessage);
+          if (data && data.delta && data.delta.content) {
+            currentContent = currentContent + data.delta.content;
+            onUpdate(currentContent);
+          }
+        }catch (e){}
+      }
+    }
+  }
 
   // ==================== Runtime ====================
-  const [agent] = useXAgent({
-    request: async ({ message }, { onSuccess, onUpdate }) => {
-      const response = await fetch(process.env.DOMAIN + "admin/test", {
-        "headers": {
-          "accept": "*/*",
-          "content-type": "text/plain;charset=UTF-8",
-        },
-        "body": JSON.stringify({message}),
-        "method": "POST",
-      });
-      if(!response.body) return;
-      let currentContent  = '';
-      for await (const chunk of XStream({
-        readableStream: response.body,
-      })) {
-        if(!chunk || !chunk.data || typeof chunk.data !== 'string') continue;
-        let currentMessage = chunk.data.replace(/\s*/g, "");
-        if (currentMessage == 'end') {
-          onSuccess(currentContent)
-        } else {
-          let data = JSON.parse(currentMessage);
-          if(data && data.delta && data.delta.content) {
-            currentContent = currentContent + data.delta.content;
-            onUpdate(currentContent)
-          }
-        }
-      }
-    },
-  });
+  const [agent] = useXAgent({ request });
 
   const { onRequest, messages, setMessages } = useXChat({
     agent,
   });
 
-  useEffect(() => {
-    if (activeKey !== undefined) {
-      setMessages([]);
-    }
-  }, [activeKey]);
-
   // ==================== Event ====================
   const onSubmit = (nextContent: string) => {
     if (!nextContent) return;
-    onRequest(nextContent);
-    setContent('');
+    console.log(activeKeys);
+    console.log(content);
+    if(!activeKeys) {
+      addApi('/system/ai/group', {
+        name: nextContent.slice(0, 20),
+      }).then(({ data }) => {
+        setActiveKey(data.uuid);
+        localStorage.setItem('x-ai-group-uuid', data.uuid);
+        onRequest(nextContent);
+        setContent('');
+      })
+    }else {
+      onRequest(nextContent);
+      setContent('');
+    }
   };
 
   const onPromptsItemClick: GetProp<typeof Prompts, 'onItemClick'> = (info) => {
@@ -268,22 +291,30 @@ const Independent: React.FC = () => {
   };
 
   const onAddConversation = () => {
-    setConversationsItems([
-      ...conversationsItems,
-      {
-        key: `${conversationsItems.length}`,
-        label: `New Conversation ${conversationsItems.length}`,
-      },
-    ]);
-    setActiveKey(`${conversationsItems.length}`);
+    console.log('onAddConversation');
+    setActiveKey(undefined);
+    setMessages([]);
   };
 
   const onConversationClick: GetProp<typeof Conversations, 'onActiveChange'> = (key) => {
+    console.log('onConversationClick');
     setActiveKey(key);
+    localStorage.setItem('x-ai-group-uuid', key);
+    getApi('/system/ai', key).then((res) => {
+      setMessages(res.data.map((item: IAiConversation) => {
+        if (item.role === 'system') return;
+        return {
+          id: item.id,
+          role: item.role === 'assistant' ? 'ai' : 'local',
+          content: item.message,
+          key: item.id,
+          loading: false
+        }
+      }))
+    })
   };
 
-  const handleFileChange: GetProp<typeof Attachments, 'onChange'> = (info) =>
-    setAttachedFiles(info.fileList);
+  const handleFileChange: GetProp<typeof Attachments, 'onChange'> = (info) => setAttachedFiles(info.fileList);
 
   // ==================== Nodes ====================
   const placeholderNode = (
@@ -291,8 +322,8 @@ const Independent: React.FC = () => {
       <Welcome
         variant="borderless"
         icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
-        title="你好, 我是 Ant Design X"
-        description="基于 Ant Design，AGI 产品接口解决方案，打造更好的智能视觉~"
+        title={<FormattedMessage id={'ai.hello'} />}
+        description={<FormattedMessage id={'ai.desc'} />}
         extra={
           <Space>
             <Button icon={<ShareAltOutlined />} />
@@ -301,27 +332,13 @@ const Independent: React.FC = () => {
         }
       />
       <Prompts
-        title="Do you want?"
+        title={<FormattedMessage id={'ai.want'} />}
         items={placeholderPromptsItems}
-        styles={{
-          list: {
-            width: '100%',
-          },
-          item: {
-            flex: 1,
-          },
-        }}
+        styles={{ list: { width: '100%' }, item: { flex: 1 } }}
         onItemClick={onPromptsItemClick}
       />
     </Space>
   );
-
-  const items: GetProp<typeof Bubble.List, 'items'> = messages.map(({ id, message, status }) => ({
-    key: id,
-    loading: status === 'loading',
-    role: status === 'local' ? 'local' : 'ai',
-    content: message,
-  }));
 
   const attachmentsNode = (
     <Badge dot={attachedFiles.length > 0 && !headerOpen}>
@@ -357,23 +374,10 @@ const Independent: React.FC = () => {
     </Sender.Header>
   );
 
-  const logoNode = (
-    <div className={styles.logo}>
-      <img
-        src="https://file.xinadmin.cn/file/favicons.ico"
-        draggable={false}
-        alt="logo"
-      />
-      <span>Xin Admin AI</span>
-    </div>
-  );
-
   // ==================== Render =================
   return (
     <div className={styles.layout}>
       <div className={styles.menu}>
-        {/* 🌟 Logo */}
-        {logoNode}
         {/* 🌟 添加会话 */}
         <Button
           onClick={onAddConversation}
@@ -381,20 +385,20 @@ const Independent: React.FC = () => {
           className={styles.addBtn}
           icon={<PlusOutlined />}
         >
-          New Conversation
+          <FormattedMessage id={'ai.new_conversation'} />
         </Button>
         {/* 🌟 会话管理 */}
         <Conversations
           items={conversationsItems}
           className={styles.conversations}
-          activeKey={activeKey}
+          activeKey={activeKeys}
           onActiveChange={onConversationClick}
         />
       </div>
       <div className={styles.chat}>
         {/* 🌟 消息列表 */}
         <Bubble.List
-          items={items.length > 0 ? items : [{ content: placeholderNode, variant: 'borderless' }]}
+          items={messages.length > 0 ? messages : [{ content: placeholderNode, variant: 'borderless' }]}
           roles={roles}
           className={styles.messages}
         />

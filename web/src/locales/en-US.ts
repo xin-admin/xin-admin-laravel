@@ -1,6 +1,7 @@
 import menu from './en-US/menu';
 import settingDrawer from './en-US/settingDrawer';
-import dashboard from "@/locales/en-US/dashboard";
+import dashboard from "./en-US/dashboard";
+import ai from "./en-US/ai";
 
 export default {
   'navBar.lang': 'Languages',
@@ -14,5 +15,6 @@ export default {
   'app.welcome': 'Welcome to XinAdmin',
   ...menu,
   ...settingDrawer,
-  ...dashboard
+  ...dashboard,
+  ...ai
 };

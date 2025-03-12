@@ -110,6 +110,7 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 69, 'parent_id' => 66, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组编辑', 'path' => '', 'icon' => '', 'key' => 'file.group.edit', 'local' => ''],
             ['rule_id' => 70, 'parent_id' => 66, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组删除', 'path' => '', 'icon' => '', 'key' => 'file.group.delete', 'local' => ''],
             ['rule_id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => 'UserOutlined', 'key' => 'admin.setting', 'local' => 'menu.personal'],
+            ['rule_id' => 72, 'parent_id' => 0 , 'type' => '0', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 助理', 'path' => '/ai', 'icon' => 'OpenAIFilled', 'key' => 'ai', 'local' => 'menu.ai'],
         ]);
     }
 }

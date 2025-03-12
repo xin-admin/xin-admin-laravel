@@ -1,6 +1,7 @@
 import menu from './zh-CN/menu';
 import settingDrawer from './zh-CN/settingDrawer';
 import dashboard from "@/locales/zh-CN/dashboard";
+import ai from '@/locales/zh-CN/ai';
 export default {
   'navBar.lang': '语言',
   'layout.user.link.help': '帮助',
@@ -13,5 +14,6 @@ export default {
   'app.welcome': '欢迎进入 XinAdmin 企业级管理系统',
   ...menu,
   ...settingDrawer,
-  ...dashboard
+  ...dashboard,
+  ...ai,
 };
