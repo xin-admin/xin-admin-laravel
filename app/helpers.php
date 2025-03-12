@@ -64,7 +64,7 @@ if (! function_exists('customAuth')) {
     /**
      * @param  $type  string
      */
-    function customAuth(string $type): IAuthorizeService
+    function customAuth(string $type = 'admin'): IAuthorizeService
     {
         if ($type == 'app') {
             return app(IAuthorizeService::class)->app();
