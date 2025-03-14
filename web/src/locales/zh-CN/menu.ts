@@ -44,4 +44,5 @@ export default {
   'menu.file.list': '文件列表',
   'menu.file.group': '文件分组',
   'menu.ai': 'AI 助理',
+  'menu.system.conversation': 'AI会话记录',
 };

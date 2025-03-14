@@ -216,7 +216,7 @@ const Independent: React.FC = () => {
 
   useEffect(() => {
     if(userInfo) {
-      listApi('/system/ai/group/byUser').then((res) => {
+      listApi('/ai').then((res) => {
         setConversationsItems(res.data.map((item: IAiConversationGroup) => ({
           key: item.uuid,
           label: item.name,
@@ -229,7 +229,7 @@ const Independent: React.FC = () => {
     let uuid = localStorage.getItem('x-ai-group-uuid');
     if(!message || !uuid) return;
     let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : ''
-    const response = await fetch(process.env.DOMAIN + 'system/ai', {
+    const response = await fetch(process.env.DOMAIN + 'ai/send', {
       'headers': {
         'accept': '*/*',
         'content-type': 'text/plain;charset=UTF-8',
@@ -269,10 +269,8 @@ const Independent: React.FC = () => {
   // ==================== Event ====================
   const onSubmit = (nextContent: string) => {
     if (!nextContent) return;
-    console.log(activeKeys);
-    console.log(content);
     if(!activeKeys) {
-      addApi('/system/ai/group', {
+      addApi('/ai', {
         name: nextContent.slice(0, 20),
       }).then(({ data }) => {
         setActiveKey(data.uuid);
@@ -300,7 +298,7 @@ const Independent: React.FC = () => {
     console.log('onConversationClick');
     setActiveKey(key);
     localStorage.setItem('x-ai-group-uuid', key);
-    getApi('/system/ai', key).then((res) => {
+    getApi('/ai', key).then((res) => {
       setMessages(res.data.map((item: IAiConversation) => {
         if (item.role === 'system') return;
         return {
@@ -400,6 +398,7 @@ const Independent: React.FC = () => {
         <Bubble.List
           items={messages.length > 0 ? messages : [{ content: placeholderNode, variant: 'borderless' }]}
           roles={roles}
+          typing={false}
           className={styles.messages}
         />
         {/* 🌟 提示词 */}
