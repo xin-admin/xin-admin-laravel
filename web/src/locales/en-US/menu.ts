@@ -43,4 +43,6 @@ export default {
   'menu.file': 'Files',
   'menu.file.list': 'Files',
   'menu.file.group': 'File Group',
+  'menu.ai': 'AI Assistant',
+  'menu.system.conversation': 'AI Conversation',
 };

@@ -10,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 #[RequestMapping('/admin')]
 class IndexController extends BaseController
 {
+    protected array $noPermission = ['index', 'openai'];
+
     /** 测试接口 */
     #[GetMapping]
     public function index(): JsonResponse
