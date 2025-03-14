@@ -10,7 +10,6 @@ use App\Attribute\route\RequestMapping;
 use App\Enum\TokenEnum;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
-use App\Models\XinBalanceRecordModel;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
