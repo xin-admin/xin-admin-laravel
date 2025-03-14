@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ai_conversation', function (Blueprint $table) {
-            $table->uuid()->unique()->primary();
+            $table->increments('id');
             $table->integer('group_id')->comment('会话ID');
             $table->string('role')->comment('角色');
             $table->text('message')->comment('消息');

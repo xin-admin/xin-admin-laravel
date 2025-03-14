@@ -111,6 +111,15 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 70, 'parent_id' => 66, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组删除', 'path' => '', 'icon' => '', 'key' => 'file.group.delete', 'local' => ''],
             ['rule_id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => 'UserOutlined', 'key' => 'admin.setting', 'local' => 'menu.personal'],
             ['rule_id' => 72, 'parent_id' => 0 , 'type' => '0', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 助理', 'path' => '/ai', 'icon' => 'OpenAIFilled', 'key' => 'ai', 'local' => 'menu.ai'],
+            ['rule_id' => 73, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '添加用户会话', 'path' => '', 'icon' => '', 'key' => 'ai.add', 'local' => ''],
+            ['rule_id' => 74, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取会话列表', 'path' => '', 'icon' => '', 'key' => 'ai.list', 'local' => ''],
+            ['rule_id' => 75, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取对话详情', 'path' => '', 'icon' => '', 'key' => 'ai.list.uuid', 'local' => ''],
+            ['rule_id' => 76, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '发送AI消息', 'path' => '', 'icon' => '', 'key' => 'ai.send', 'local' => ''],
+            ['rule_id' => 77, 'parent_id' => 40, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 会话记录', 'path' => '/system/conversation', 'icon' => 'OpenAIFilled', 'key' => 'system.conversation', 'local' => 'menu.system.conversation'],
+            ['rule_id' => 78, 'parent_id' => 77, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '会话记录查询', 'path' => '', 'icon' => '', 'key' => 'system.conversation.group.list', 'local' => ''],
+            ['rule_id' => 79, 'parent_id' => 77, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '会话记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.group.delete', 'local' => ''],
+            ['rule_id' => 80, 'parent_id' => 77, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录查询', 'path' => '', 'icon' => '', 'key' => 'system.conversation.list', 'local' => ''],
+            ['rule_id' => 81, 'parent_id' => 77, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.delete', 'local' => ''],
         ]);
     }
 }
