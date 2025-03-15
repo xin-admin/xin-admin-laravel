@@ -97,7 +97,7 @@ const Table: React.FC = () => {
         return <UploadImgItem
           form={tableRef.current?.formRef?.current!}
           dataIndex={'avatar_id'}
-          api={'admin/uploadAvatar'}
+          api={'/admin/uploadAvatar'}
           defaultFile={tableRef.current?.formRef?.current?.getFieldValue('avatar_url')}
           crop={true}
         />;

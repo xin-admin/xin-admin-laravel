@@ -229,7 +229,7 @@ const Independent: React.FC = () => {
     let uuid = localStorage.getItem('x-ai-group-uuid');
     if(!message || !uuid) return;
     let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : ''
-    const response = await fetch(process.env.DOMAIN + 'ai/send', {
+    const response = await fetch(process.env.DOMAIN + '/ai/send', {
       'headers': {
         'accept': '*/*',
         'content-type': 'text/plain;charset=UTF-8',
