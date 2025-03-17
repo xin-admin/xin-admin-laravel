@@ -23,19 +23,6 @@ export async function getAdminInfo() {
 }
 
 /**
- * 刷新 Token
- * @constructor
- */
-export async function refreshToken() {
-  return request<USER.ReToken>('/admin/refreshToken', {
-    method: 'post',
-    headers: {
-      'x-refresh-token': localStorage.getItem('x-refresh-token') || ''
-    }
-  });
-}
-
-/**
  * 退出登录
  * @constructor
  */
