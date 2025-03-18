@@ -4,7 +4,7 @@ import { Avatar,  Col, Row, Tag, Tree } from 'antd';
 import UploadImgItem from '@/components/XinForm/UploadImgItem';
 import React, { useEffect, useRef, useState } from 'react';
 import UpdatePassword from './components/UpdatePassword';
-import ButtonAccess from '@/components/access/ButtonAccess';
+import ButtonAccess from '@/components/Access/ButtonAccess';
 import XinTable from '@/components/XinTable';
 import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
 import { IAdminUserList } from '@/domain/iAdminList';

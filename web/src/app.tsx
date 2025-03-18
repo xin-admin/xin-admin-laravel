@@ -11,7 +11,7 @@ import AvatarRender from '@/components/Layout/AvatarRender';
 import headerTitleRender from '@/components/Layout/HeaderTitleRender';
 import headerContentRender from '@/components/Layout/HeaderContentRender';
 import menuRender from '@/components/Layout/MenuRender';
-import PageAccess from '@/components/access/PageAccess';
+import PageAccess from '@/components/Access/PageAccess';
 import './app.less';
 
 // 全局初始化状态
