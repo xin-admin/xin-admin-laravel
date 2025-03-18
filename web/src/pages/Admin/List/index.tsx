@@ -1,12 +1,12 @@
-import XinDict from '@/components/XinDict';
+import XinDict from '@/components/Xin/XinDict';
 import { useModel } from '@umijs/max';
 import { Avatar,  Col, Row, Tag, Tree } from 'antd';
-import UploadImgItem from '@/components/XinForm/UploadImgItem';
+import UploadImgItem from '@/components/Xin/XinForm/UploadImgItem';
 import React, { useEffect, useRef, useState } from 'react';
 import UpdatePassword from './components/UpdatePassword';
 import ButtonAccess from '@/components/Access/ButtonAccess';
-import XinTable from '@/components/XinTable';
-import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn, XinTableRef } from '@/components/Xin/XinTable/typings';
 import { IAdminUserList } from '@/domain/iAdminList';
 import { listApi } from '@/services/common/table';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';

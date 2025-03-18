@@ -1,8 +1,8 @@
-import XinTable from '@/components/XinTable';
+import XinTable from '@/components/Xin/XinTable';
 import { Button, Col, Empty, message, Row } from 'antd';
 import { useModel } from '@umijs/max';
 import { IDict } from '@/domain/iDict';
-import { XinTableColumn, XinTableProps } from '@/components/XinTable/typings';
+import { XinTableColumn, XinTableProps } from '@/components/Xin/XinTable/typings';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';
 import { useState } from 'react';
 import { IDictItem } from '@/domain/iDictItem';

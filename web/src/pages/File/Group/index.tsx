@@ -1,5 +1,5 @@
-import XinTable from '@/components/XinTable';
-import { XinTableColumn } from '@/components/XinTable/typings';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import { IFileGroup } from '@/domain/iFileGroup';
 
 export default () => {

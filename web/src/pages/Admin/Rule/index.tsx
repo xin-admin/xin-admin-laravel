@@ -1,9 +1,9 @@
-import XinTable from '@/components/XinTable';
-import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/XinTable/typings';
-import XinDict from '@/components/XinDict';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/Xin/XinTable/typings';
+import XinDict from '@/components/Xin/XinDict';
 import { useModel } from '@umijs/max';
 import React, { useRef, useState } from 'react';
-import IconsItem from '@/components/XinForm/IconsItem';
+import IconsItem from '@/components/Xin/XinForm/IconsItem';
 import { Button, message, Switch } from 'antd';
 import IconFont from '@/components/IconFont';
 import {addApi, editApi} from '@/services/common/table';

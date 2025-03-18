@@ -9,7 +9,6 @@ interface DictItem {
   status?: 'success' | 'error' | 'default' | 'processing' | 'warning';
 }
 
-
 const showDom = (type: DictItem['type'], status: DictItem['status'], label: DictItem['label']) => {
   if(type === 'badge'){
     return <Badge status={status} text={label} />
@@ -19,7 +18,6 @@ const showDom = (type: DictItem['type'], status: DictItem['status'], label: Dict
     return <>{label}</>
   }
 }
-
 
 const XinDict = (props: { value: any, dict: string }) => {
   const { value, dict } = props;

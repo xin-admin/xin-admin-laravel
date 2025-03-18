@@ -1,5 +1,5 @@
-import XinTable from '@/components/XinTable';
-import { XinTableColumn } from '@/components/XinTable/typings';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, message, Row, Space, Tree } from 'antd';
 import { ProCard, ProTableProps } from '@ant-design/pro-components';

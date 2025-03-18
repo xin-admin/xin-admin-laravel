@@ -3,7 +3,7 @@ import {
 } from '@ant-design/pro-components';
 import { Avatar, message, Space, Tag } from 'antd';
 import { editApi } from "@/services/common/table";
-import { XinTableColumn } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import { UserOutlined } from '@ant-design/icons';
 
 interface UpDatePasswordForm {

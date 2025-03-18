@@ -1,4 +1,4 @@
-import IconsItem from '@/components/XinForm/IconsItem';
+import IconsItem from '@/components/Xin/XinForm/IconsItem';
 import { Card, Form } from 'antd';
 import { useState } from 'react';
 

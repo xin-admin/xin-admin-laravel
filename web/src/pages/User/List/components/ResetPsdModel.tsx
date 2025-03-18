@@ -1,6 +1,6 @@
 import { BetaSchemaForm } from '@ant-design/pro-components';
 import { editApi } from "@/services/common/table";
-import { XinTableColumn } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import { IUserList } from '@/domain/iUserList';
 import ButtonAccess from '@/components/Access/ButtonAccess';
 import { message } from 'antd';

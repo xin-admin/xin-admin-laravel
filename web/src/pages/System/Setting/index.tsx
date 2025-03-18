@@ -7,7 +7,7 @@ import SettingForm from '@/pages/System/Setting/components/SettingForm';
 import ButtonAccess from '@/components/Access/ButtonAccess';
 import SettingItemRender from '@/pages/System/Setting/components/SettingItemRender';
 import { CardProps } from 'antd/es/card';
-import XinTable from '@/components/XinTable';
+import XinTable from '@/components/Xin/XinTable';
 
 const { Text } = Typography;
 

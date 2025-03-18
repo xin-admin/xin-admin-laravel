@@ -1,4 +1,4 @@
-import XinTable from '@/components/XinTable';
+import XinTable from '@/components/Xin/XinTable';
 import { Avatar, Col, Row, Space, Tag } from 'antd';
 import { IAiConversationGroup } from '@/domain/iAiConversationGroup';
 

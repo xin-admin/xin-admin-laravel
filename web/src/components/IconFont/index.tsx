@@ -1,7 +1,7 @@
 import { createFromIconfontCN, ExclamationOutlined } from '@ant-design/icons';
 import * as AntdIcons from '@ant-design/icons';
 import React from 'react';
-import { categories } from '../XinForm/IconsItem/fields'
+import { categories } from '@/components/Xin/XinForm/IconsItem/fields'
 
 const allIcons: { [key: string]: any } = AntdIcons;
 

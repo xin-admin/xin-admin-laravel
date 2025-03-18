@@ -1,6 +1,6 @@
-import { XinTableColumn } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import { IDept } from '@/domain/iDept';
-import XinTable from '@/components/XinTable';
+import XinTable from '@/components/Xin/XinTable';
 import { listApi } from '@/services/common/table';
 import React, { useState } from 'react';
 import { Button } from 'antd';

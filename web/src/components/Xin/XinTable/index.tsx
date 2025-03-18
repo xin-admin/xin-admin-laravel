@@ -11,7 +11,7 @@ import {
 import { addApi, deleteApi, editApi, listApi } from '@/services/common/table';
 import { Button, Divider, message, Popconfirm, Space } from 'antd';
 import ButtonAccess from '@/components/Access/ButtonAccess';
-import { XinTableProps } from '@/components/XinTable/typings';
+import { XinTableProps } from '@/components/Xin/XinTable/typings';
 
 export default function XinTable<T extends Record<string, any>>(props: XinTableProps<T>) {
   /** 表格参数 */

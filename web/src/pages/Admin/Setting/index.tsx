@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { updateAdmin } from '@/services/admin';
 import { message } from 'antd';
 import {editApi} from "@/services/common/table";
-import UploadImgItem from '@/components/XinForm/UploadImgItem';
+import UploadImgItem from '@/components/Xin/XinForm/UploadImgItem';
 interface ResponseAdminList {
   id?: number;
   username?: string;

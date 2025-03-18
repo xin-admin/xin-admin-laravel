@@ -1,5 +1,5 @@
-import XinTable from '@/components/XinTable';
-import { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn, XinTableRef } from '@/components/Xin/XinTable/typings';
 import ResetPsdModel from './components/ResetPsdModel';
 import { IUserList } from '@/domain/iUserList';
 import React, { useRef, useState } from 'react';

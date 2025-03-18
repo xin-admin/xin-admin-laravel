@@ -2,7 +2,7 @@ import { FormInstance, message } from 'antd';
 import { addApi, editApi } from '@/services/common/table';
 import { BetaSchemaForm } from '@ant-design/pro-components';
 import React, { ReactElement, useRef } from 'react';
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 
 export default (params: {
   settingGroup: any;
@@ -17,7 +17,7 @@ export default (params: {
   /**
    * 设置行
    */
-  const columns: ProFormColumnsAndProColumns<any>[] = [
+  const columns: XinTableColumn<any>[] = [
     {
       title: '设置标题',
       dataIndex: 'title',
