@@ -1,11 +1,13 @@
 import { request } from '@umijs/max';
 
+/**
+ * 获取父级规则
+ */
 export async function getRuleParent() {
   return request<API.ResponseStructure<any>>(`/admin/rule/parent`, {
     method: 'get'
   });
 }
-
 
 /**
  * 切换显示状态

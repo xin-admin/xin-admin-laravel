@@ -12,8 +12,6 @@ import { IFile } from '@/domain/iFile';
 type MenuItem = Required<MenuProps>['items'][number];
 
 export default () => {
-  // 分组列表
-  const [fileGroup, setFileGroup] = useState<IFileGroup[]>([]);
   // 分组菜单
   const [groupMenu, setGroupMenu] = useState<MenuItem[]>([]);
   // 选择分组

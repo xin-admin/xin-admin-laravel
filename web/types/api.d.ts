@@ -1,13 +1,4 @@
 declare namespace API {
-  interface Params {
-    /** keyword */
-    keyword?: string;
-    /** current */
-    current?: number;
-    /** pageSize */
-    pageSize?: number;
-  }
-
   interface ListResponse<T> {
     data: T[]
     page: number
@@ -27,8 +18,6 @@ declare namespace API {
     description?: string
     placement?: 'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight',
   }
-
-  type TableData<T> = ResponseStructure<ListResponse<T>>
 
 }
 
