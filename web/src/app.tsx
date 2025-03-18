@@ -11,7 +11,7 @@ import AvatarRender from '@/components/Layout/AvatarRender';
 import headerTitleRender from '@/components/Layout/HeaderTitleRender';
 import headerContentRender from '@/components/Layout/HeaderContentRender';
 import menuRender from '@/components/Layout/MenuRender';
-import Access from '@/components/Access';
+import PageAccess from '@/components/access/PageAccess';
 import './app.less';
 
 // 全局初始化状态
@@ -40,7 +40,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     menuRender, // 菜单
     collapsedButtonRender: false, // 隐藏默认侧栏
     collapsed: initialState?.collapsed, // 侧栏展开状态
-    childrenRender: (children: any) => <Access>{children}</Access>, // 页面内容
+    childrenRender: (children: any) => <PageAccess>{children}</PageAccess>, // 页面内容
     ...initialState?.settings,
   }
 }

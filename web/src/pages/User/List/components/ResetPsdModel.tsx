@@ -1,8 +1,8 @@
 import { BetaSchemaForm } from '@ant-design/pro-components';
 import { editApi } from "@/services/common/table";
-import { ProFormColumnsAndProColumns } from '@/components/XinTable/typings';
+import { XinTableColumn } from '@/components/XinTable/typings';
 import { IUserList } from '@/domain/iUserList';
-import ButtonAccess from '@/components/ButtonAccess';
+import ButtonAccess from '@/components/access/ButtonAccess';
 import { message } from 'antd';
 
 interface UpDatePasswordForm {
@@ -19,7 +19,7 @@ interface ResetPasswordProps {
 
 export default (props: ResetPasswordProps) => {
   const { user } = props;
-  const columns: ProFormColumnsAndProColumns<UpDatePasswordForm>[] = [
+  const columns: XinTableColumn<UpDatePasswordForm>[] = [
     { title: '用户ID', dataIndex: 'id', valueType: 'text', initialValue: user.user_id, readonly: true },
     { title: '密码', dataIndex: 'password', valueType: 'password',
       formItemProps: { rules: [{ required: true, message: '该项为必填' }] }
