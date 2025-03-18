@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 import { Navigate, RuntimeConfig, RunTimeLayoutConfig } from '@umijs/max';
-import defaultRoutes from '@/default/routes';
 import settings from '@/default/settings';
 import defaultConfig from '@/utils/request';
 import appList from '@/default/appList';
@@ -59,7 +58,15 @@ export const patchClientRoutes: RuntimeConfig['patchClientRoutes'] = ({ routes }
     path: '/',
     element: <Navigate to="/dashboard/analysis" replace />,
   });
-  routes.push(...defaultRoutes(lazyLoad));
+  routes.push([
+    {
+      name: '登录',
+      path: '/login',
+      id: 'adminLogin',
+      element: lazyLoad('Admin/components/Login'),
+      layout: false,
+    },
+  ]);
 };
 
 // request 配置

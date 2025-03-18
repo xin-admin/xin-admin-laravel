@@ -6,9 +6,4 @@ export default [
   'login',
   'index',
   '/',
-  '/s/modules',
-  '/public/reg',
-  '/client/reg',
-  '/client/login',
-  '/user',
 ];
