@@ -13,7 +13,7 @@ import { ProTableProps } from '@ant-design/pro-components';
 
 export default () => {
   // 字典
-  const dictEnum = useModel('dictModel', ({dictEnum}) => dictEnum)
+  const dictEnum = useModel('dictModel', ({dictEnum}) => dictEnum);
   const tableRef = useRef<XinTableRef>();
   // 菜单项
   const parentItem: XinTableColumn<IRule> = {
@@ -131,7 +131,8 @@ export default () => {
             checkedChildren='显示'
             unCheckedChildren='隐藏'
             defaultValue={data.show === 1}
-            onChange={ async () => {
+            onChange={ async (_, event) => {
+              event.stopPropagation();
               await showApi(data.rule_id)
               message.success('修改成功')
             }}
@@ -152,7 +153,8 @@ export default () => {
             checkedChildren='启用'
             unCheckedChildren='禁用'
             defaultChecked={data.status === 1}
-            onChange={async () => {
+            onChange={async (_, event) => {
+              event.stopPropagation();
               await statusApi(data.rule_id)
               message.success('修改成功')
             }}
