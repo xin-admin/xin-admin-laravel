@@ -5,8 +5,7 @@ import {
   Prompts,
   Sender,
   Welcome,
-  useXAgent,
-  useXChat, XStream,
+  XStream,
   type ConversationsProps
 } from '@ant-design/x';
 import { createStyles } from 'antd-style';
@@ -29,7 +28,6 @@ import { useModel } from '@umijs/max';
 import { FormattedMessage } from '@@/exports';
 import { IAiConversationGroup } from '@/domain/iAiConversationGroup';
 import { IAiConversation } from '@/domain/iAiConversation';
-import { XAgentConfig } from '@ant-design/x/es/use-x-agent';
 
 const useStyle = createStyles(({ token, css }) => {
   return {
@@ -42,10 +40,6 @@ const useStyle = createStyles(({ token, css }) => {
         display: flex;
         background: ${token.colorBgContainer};
         font-family: AlibabaPuHuiTi, ${token.fontFamily}, sans-serif;
-
-        .ant-prompts {
-            color: ${token.colorText};
-        }
     `,
     menu: css`
         background: ${token.colorBgLayout}80;
@@ -178,32 +172,32 @@ const senderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   },
 ];
 
-const Independent: React.FC = () => {
-  // ==================== Style ====================
-  const { styles } = useStyle();
-  const userInfo = useModel('userModel', ({ userInfo }) => userInfo);
+interface IAIMessage {
+  key?: string | number;
+  role?: string;
+  content?: string;
+  loading?: boolean;
+}
 
+const Independent: React.FC = () => {
+  const userInfo = useModel('userModel', ({ userInfo }) => userInfo);
   const roles: GetProp<typeof Bubble.List, 'roles'> = {
     ai: {
       placement: 'start',
-      typing: { step: 5, interval: 20 },
       avatar: { icon: <UserOutlined />, style: { color: '#f56a00', backgroundColor: '#fde3cf' } },
-      styles: {
-        content: {
-          borderRadius: 16,
-        },
-      },
-      header: 'DeepSeek',
     },
     local: {
       avatar: { icon: <Avatar src={userInfo?.avatar_url} style={{ marginRight: '10px' }} /> },
       placement: 'end',
-      variant: 'shadow',
       header: userInfo?.nickname,
     },
   };
 
+  const { styles } = useStyle();
+
   // ==================== State ====================
+  const [loading, setLoading] = React.useState(false);
+
   const [headerOpen, setHeaderOpen] = React.useState(false);
 
   const [content, setContent] = React.useState('');
@@ -225,17 +219,38 @@ const Independent: React.FC = () => {
     }
   },[])
 
-  const request: XAgentConfig<string>['request'] = async ({ message }, { onSuccess, onUpdate }) => {
-    let uuid = localStorage.getItem('x-ai-group-uuid');
-    if(!message || !uuid) return;
-    let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : ''
+  // ==================== Runtime ====================
+  const [messages, setMessages] = React.useState<IAIMessage[]>([]);
+
+  // ==================== Event ====================
+  const onSubmit = async (nextContent: string) => {
+    if (!nextContent) return;
+    let uuid;
+    if(!activeKeys) {
+      // 创建新会话
+      let addGroupRes = await addApi('/ai', { name: nextContent.slice(0, 20), })
+      setActiveKey(addGroupRes.data.uuid);
+      uuid = addGroupRes.data.uuid;
+    }else {
+      uuid = activeKeys;
+    }
+    let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : '';
+    let key = Date.now();
+    setLoading(true);
+    let startMessage = [...messages];
+    let thisMessage = [
+      { key: key - 1, role: 'local', content: nextContent, loading: false },
+      { key: key, role: 'ai', content: '', loading: true }
+    ]
+    setMessages([...startMessage, ...thisMessage])
+    setContent('');
     const response = await fetch(process.env.DOMAIN + '/ai/send', {
       'headers': {
         'accept': '*/*',
         'content-type': 'text/plain;charset=UTF-8',
         'x-token': token,
       },
-      'body': JSON.stringify({ message, uuid }),
+      'body': JSON.stringify({ message: nextContent, uuid }),
       'method': 'POST',
     });
     if (!response.body) return;
@@ -246,50 +261,28 @@ const Independent: React.FC = () => {
       if (!chunk || !chunk.data || typeof chunk.data !== 'string') continue;
       let currentMessage = chunk.data.replace(/\s*/g, '');
       if (currentMessage == 'end') {
-        onSuccess(currentContent);
+        setLoading(false);
       } else {
         try{
           let data = JSON.parse(currentMessage);
           if (data && data.delta && data.delta.content) {
-            currentContent = currentContent + data.delta.content;
-            onUpdate(currentContent);
+            currentContent = currentContent + data.delta.content
+            thisMessage[1].content = currentContent;
+            thisMessage[1].loading = false;
+            setMessages([...messages, ...thisMessage]);
           }
         }catch (e){}
       }
     }
-  }
-
-  // ==================== Runtime ====================
-  const [agent] = useXAgent({ request });
-
-  const { onRequest, messages, setMessages } = useXChat({
-    agent,
-  });
-
-  // ==================== Event ====================
-  const onSubmit = (nextContent: string) => {
-    if (!nextContent) return;
-    if(!activeKeys) {
-      addApi('/ai', {
-        name: nextContent.slice(0, 20),
-      }).then(({ data }) => {
-        setActiveKey(data.uuid);
-        localStorage.setItem('x-ai-group-uuid', data.uuid);
-        onRequest(nextContent);
-        setContent('');
-      })
-    }else {
-      onRequest(nextContent);
-      setContent('');
-    }
   };
 
   const onPromptsItemClick: GetProp<typeof Prompts, 'onItemClick'> = (info) => {
-    onRequest(info.data.description as string);
+    console.log('onPromptsItemClick', info);
   };
 
   const onAddConversation = () => {
     console.log('onAddConversation');
+    localStorage.removeItem('x-ai-group-uuid');
     setActiveKey(undefined);
     setMessages([]);
   };
@@ -302,7 +295,6 @@ const Independent: React.FC = () => {
       setMessages(res.data.map((item: IAiConversation) => {
         if (item.role === 'system') return;
         return {
-          id: item.id,
           role: item.role === 'assistant' ? 'ai' : 'local',
           content: item.message,
           key: item.id,
@@ -345,16 +337,7 @@ const Independent: React.FC = () => {
   );
 
   const senderHeader = (
-    <Sender.Header
-      title="Attachments"
-      open={headerOpen}
-      onOpenChange={setHeaderOpen}
-      styles={{
-        content: {
-          padding: 0,
-        },
-      }}
-    >
+    <Sender.Header title="上传附件" open={headerOpen} onOpenChange={setHeaderOpen}>
       <Attachments
         beforeUpload={() => false}
         items={attachedFiles}
@@ -398,7 +381,6 @@ const Independent: React.FC = () => {
         <Bubble.List
           items={messages.length > 0 ? messages : [{ content: placeholderNode, variant: 'borderless' }]}
           roles={roles}
-          typing={false}
           className={styles.messages}
         />
         {/* 🌟 提示词 */}
@@ -410,7 +392,7 @@ const Independent: React.FC = () => {
           onSubmit={onSubmit}
           onChange={setContent}
           prefix={attachmentsNode}
-          loading={agent.isRequesting()}
+          loading={loading}
           className={styles.sender}
         />
       </div>
