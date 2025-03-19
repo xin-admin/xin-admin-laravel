@@ -282,7 +282,6 @@ const Independent: React.FC = () => {
 
   const onAddConversation = () => {
     console.log('onAddConversation');
-    localStorage.removeItem('x-ai-group-uuid');
     setActiveKey(undefined);
     setMessages([]);
   };
@@ -290,7 +289,6 @@ const Independent: React.FC = () => {
   const onConversationClick: GetProp<typeof Conversations, 'onActiveChange'> = (key) => {
     console.log('onConversationClick');
     setActiveKey(key);
-    localStorage.setItem('x-ai-group-uuid', key);
     getApi('/ai', key).then((res) => {
       setMessages(res.data.map((item: IAiConversation) => {
         if (item.role === 'system') return;
