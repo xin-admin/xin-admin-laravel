@@ -7,7 +7,7 @@ use App\Models\AiConversationModel;
 use Illuminate\Http\StreamedEvent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use OpenAI\Laravel\Facades\OpenAI;
+use App\Facades\OpenAI;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AiConversationService
