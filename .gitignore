@@ -21,7 +21,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
-
+/composer.lock
 
 /web/node_modules
 /web/.env.local
