@@ -11,7 +11,7 @@
         <img src="https://img.shields.io/badge/PHP->=8.2-brightgreen" alt="php">
     </a>
     <a href="https://laravel.com/" target="_blank">
-        <img src="https://img.shields.io/badge/Laravel->=11-brightgreen" alt="laravel">
+        <img src="https://img.shields.io/badge/Laravel->=12-brightgreen" alt="laravel">
     </a>
     <a href="https://react.dev/" target="_blank">
         <img src="https://img.shields.io/badge/React->=18.1-brightgreen" alt="React">
@@ -28,8 +28,8 @@
 </p>
 
 
-基于 PHP8.2 + Laravel12 + Mysql + React + TypeScript + UmiJs + Ant Design + Taro 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、可视化CRUD、系统配置、文件管理系统等便捷开发，
-拥有 Web管理端、Web客户端 和 Taro多端小程序。遵循 Apache License 无需授权即可免费商用.
+基于 PHP8.2 + Laravel12 + Mysql + React + TypeScript + UmiJs + Ant Design 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、系统配置、文件管理系统、AI模块等便捷开发，
+遵循 Apache License 无需授权即可免费商用.
 
 <img src="https://file.xinadmin.cn/file/demo.png" alt=""/>
 
@@ -50,9 +50,6 @@
 ### 🎁 文件管理系统
 XinAdmin 拥有强大的文件系统，可拓展 AliOss 存储 支持多选、文件分组等，支持图片、视频、音频、压缩文件和其它文件上传
 
-### 🚀 Online 在线开发
-在线开发表格表单，支持一键生成CRUD代码，预览生成代码，提供多种表单组件，详细查看具体介绍。
-
 ## 内置功能
 
 - 仪表盘：提供基于 antv 开箱即用的仪表盘方案，以及演示页面
@@ -62,28 +59,3 @@ XinAdmin 拥有强大的文件系统，可拓展 AliOss 存储 支持多选、�
 - 系统设置：系统设置是对服务器可变参数快速设置的表单，可以自定义分组以及表单类型
 - 文件管理：文件上传解决方案，可拓展 AliOss 存储，后台文件管理文件夹，支持多选、文件分组等，支持图片、视频、音频、压缩文件和其它文件上传
 - 字典管理：对系统中经常使用的一些较为固定的数据进行维护
-- 代码生成：可视化生成对应的增删改查相对应业务
-
-## 项目截图
-#### 在线开发 CRUD 代码一键生成 和 预览
-![img.png](img.png)
-
-#### 多模板门户页面，可直接当作公司官网或者项目首页，还有更多插件模板
-<img src="https://file.xinadmin.cn/file/index.png"/>
-
-#### 字典配置，支持多中种状态
-<img src="https://file.xinadmin.cn/file/dict.png"/>
-
-#### 文件系统
-<img src="https://file.xinadmin.cn/file/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-03-01%20162443.png">
-
-### 理念
-技术无止境，在我享受他人技术成果的时候，也想要为技术做出一份贡献。对于设计理念，我们始终站在巨人的肩膀之上，探索属于我们的全新篇章！
-
-### 支持项目
-如果觉得项目不错，或者已经在使用了，希望你可以去 Github 或者 Gitee 帮我们点个 ⭐ Star，或者[赞助我们](https://xinadmin.cn/introduce/sponsor)，这将是对我们极大的鼓励与支持。
-
-### 鸣谢巨人
-1. [Ant Design](https://ant-design.antgroup.com/index-cn)
-2. [Umi Js](https://umijs.com)
-3. [Laravel](https://laravel.com/)
