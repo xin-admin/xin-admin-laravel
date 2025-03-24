@@ -24,7 +24,6 @@ class LoginLogMiddleware
         $response = $next($request);
         try {
             // 获取响应状态和消息
-            $status = $response->getStatusCode(); // HTTP 状态码
             $content = json_decode($response->getContent(), true); // 响应内容
             $message = $content['msg'] ?? 'No message'; // 从响应中提取消息
             AdminLoginLogModel::create([
@@ -33,7 +32,7 @@ class LoginLogMiddleware
                 'os' => $this->getOs($userAgent),
                 'username' => $username,
                 'login_location' => $this->getLocation($request->ip()),
-                'status' => $status === 200 ? '0' : '1',
+                'status' => $content['success'] ? '0' : '1',
                 'msg' => $message,
                 'login_time' => date('Y-m-d H:i:s'),
             ]);
