@@ -7,16 +7,14 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 class RequestMapping
 {
-    public mixed $route;
-
-    public function __construct($route = '')
+    /**
+     * @param string $route 路由
+     * @param string $middleware 中间件
+     */
+    public function __construct(
+        public string $route = '',
+        public string $middleware = '',
+    )
     {
-        $this->route = $route;
     }
-
-    public function getRoute(): string
-    {
-        return $this->route;
-    }
-
 }
