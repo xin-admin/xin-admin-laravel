@@ -28,8 +28,8 @@ class AdminUserController extends BaseController
         $this->service = new AdminUserService;
     }
 
-    /** 会员登录 */
-    #[PostMapping('/login')]
+    /** 用户登录 */
+    #[PostMapping('/login', 'login_log')]
     public function login(Request $request): JsonResponse
     {
         $validated = $request->validate([

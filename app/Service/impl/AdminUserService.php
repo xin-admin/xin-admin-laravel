@@ -49,7 +49,7 @@ class AdminUserService extends BaseService
         $data['token'] = token()->set($adminUser->user_id, TokenEnum::ADMIN);
         $data['id'] = $adminUser->user_id;
 
-        return $this->success($data);
+        return $this->success($data, __('user.login_success'));
     }
 
     /**

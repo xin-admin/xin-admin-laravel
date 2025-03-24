@@ -17,6 +17,7 @@ return [
     'password_error' => '密码错误',
     'admin_login' => '管理员登录',
     'admin_logout' => '管理员退出',
+    'login_success' => '登录成功',
     'logout_success' => '退出成功',
     'old_password_error' => '旧密码错误',
     'user_is_disabled' => '用户已被禁用',
