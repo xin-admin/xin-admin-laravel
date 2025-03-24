@@ -81,6 +81,20 @@ return new class extends Migration
                 $table->comment('管理员权限表');
             });
         }
+        // 登录日志表
+        if (! Schema::hasTable('admin_login_log')) {
+            Schema::create('admin_login_log', function (Blueprint $table) {
+                $table->increments('log_id')->comment('记录ID');
+                $table->string('username', 20)->default('')->comment('用户名');
+                $table->string('ipaddr', 60)->default('')->comment('登录IP');
+                $table->string('login_location', 255)->default('')->comment('登录地点');
+                $table->string('browser', 255)->default('')->comment('浏览器');
+                $table->string('os', 255)->default('')->comment('操作系统');
+                $table->string('status', 1)->default('0')->comment('登录状态（0成功 1失败）');
+                $table->string('msg', 255)->default('')->comment('提示消息');
+                $table->timestamp('login_time')->comment('登录时间');
+            });
+        }
     }
 
     /**
@@ -92,5 +106,6 @@ return new class extends Migration
         Schema::dropIfExists('admin_rule');
         Schema::dropIfExists('admin_dept');
         Schema::dropIfExists('admin_role');
+        Schema::dropIfExists('admin_login_log');
     }
 };
