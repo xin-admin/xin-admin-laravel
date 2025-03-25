@@ -39,7 +39,7 @@ class AdminLoginLogController extends BaseController
         $username = customAuth()->userInfo()['username'];
         $data = $this->model
             ->where('username', $username)
-            ->limit(10)
+            ->limit(20)
             ->orderBy('log_id', 'desc')
             ->get()
             ->toArray();

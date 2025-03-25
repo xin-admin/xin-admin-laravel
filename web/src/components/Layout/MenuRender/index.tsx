@@ -4,16 +4,18 @@ import { Menu } from 'antd';
 import { useModel, history, FormattedMessage } from '@umijs/max';
 import IconFont from '@/components/IconFont';
 import * as AntdIcons from '@ant-design/icons';
+import { IRule } from '@/domain/iRule';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const allIcons: { [key: string]: any } = AntdIcons;
 
-const menuItemRender = (menus: USER.MenuType[]): MenuItem[] => {
+const menuItemRender = (menus: IRule[]): MenuItem[] => {
   let menuItems: MenuItem[] = [];
   menus.forEach((item) => {
     let menuItem: MenuItem = {
-      key: item.path,
+      key: item.path!,
       label: item.local ? <FormattedMessage id={item.local} /> : item.name,
+      type: 'item',
     }
     if(item.children) {
       // @ts-ignore

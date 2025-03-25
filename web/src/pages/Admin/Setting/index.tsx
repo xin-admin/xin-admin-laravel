@@ -2,28 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BetaSchemaForm, ProCard, ProFormColumnsType, ProFormInstance } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { updateAdmin } from '@/services/admin';
-import { Descriptions, message, Timeline } from 'antd';
+import { Descriptions, message, Space, Tag, Timeline } from 'antd';
 import UploadImgItem from '@/components/Xin/XinForm/UploadImgItem';
 import { IAdminUserList } from '@/domain/iAdminList';
 import UpdatePassword from './components/UpdatePassword';
 import { listApi } from '@/services/common/table';
 import { IAdminLoginLog } from '@/domain/iAdminLoginLog';
+import UserInfoCard from './components/UserInfoCard';
 
 const Table: React.FC = () => {
-  let userInfo = useModel('userModel', (model) => model.userInfo);
+  const userInfo = useModel('userModel', (model) => model.userInfo);
   const formRef = useRef<ProFormInstance>();
   const [loginLogList, setLoginLogList] = useState<IAdminLoginLog[]>([]);
   useEffect(() => {
-    if (userInfo) {
-      formRef.current?.setFieldsValue({
-        username: userInfo.username,
-        nickname: userInfo.nickname,
-        email: userInfo.email,
-        mobile: userInfo.mobile,
-        avatar_url: userInfo.avatar_url,
-        avatar_id: userInfo.avatar_id,
-      });
-    }
     listApi('admin/loginlog/my').then((res) => {
       setLoginLogList(res.data);
     });
@@ -84,11 +75,24 @@ const Table: React.FC = () => {
   const tabsItem = [
     {
       label: '基本信息',
+      key: 'tab0',
+      children: <UserInfoCard userInfo={userInfo}/>
+    },
+    {
+      label: '编辑资料',
       key: 'tab1',
       children: (
         <BetaSchemaForm<IAdminUserList>
           columns={columns}
           layoutType={'Form'}
+          initialValues={{
+            username: userInfo?.username,
+            nickname: userInfo?.nickname,
+            email: userInfo?.email,
+            mobile: userInfo?.mobile,
+            avatar_url: userInfo?.avatar_url,
+            avatar_id: userInfo?.avatar_id,
+          }}
           formRef={formRef}
           onFinish={submit}
           style={{ maxWidth: 400 }}
@@ -103,52 +107,31 @@ const Table: React.FC = () => {
   ];
 
   return (
-    <ProCard gutter={20} ghost>
+    <ProCard gutter={[20, 20]} ghost wrap>
       <ProCard
+        bordered
+        colSpan={{ md: 24, lg: 12, xl: 12, xxl: 8 }}
         headerBordered
         style={{ marginBottom: 10 }}
+        bodyStyle={{ minHeight: 600 }}
         tabs={{ items: tabsItem }}
       />
-      <ProCard title={'登录日志'} headerBordered>
+      <ProCard colSpan={{ md: 24, lg: 12, xl: 12, xxl: 8 }} title={'登录日志'} bordered headerBordered>
         <Timeline
           items={loginLogList.map((item) => {
             return {
               color: item.status === '0' ? 'green' : 'red',
               children: (
-                <Descriptions
-                  style={{ marginBottom: 10, paddingBottom: 10, borderBottom: "1px solid #eee" }}
-                  items={[
-                    {
-                      key: 'ipaddr',
-                      label: 'IP地址',
-                      children: item.ipaddr,
-                    },
-                    {
-                      key: 'msg',
-                      label: '登录消息',
-                      children: item.msg,
-                    },
-                    {
-                      key: 'browser',
-                      label: '浏览器',
-                      children: item.browser,
-                    },
-                    {
-                      key: 'os',
-                      label: '操作系统',
-                      children: item.os,
-                    },
-                    {
-                      key: 'login_time',
-                      label: '登录时间',
-                      children: item.login_time,
-                    },
-                  ]}
-                />
+                <Space>{item.login_time}{item.login_location}{item.msg}</Space>
               ),
             };
           })}
         />
+      </ProCard>
+      <ProCard colSpan={{ md: 24, lg: 24, xl: 24, xxl: 8}} title={'权限字段'} bordered headerBordered>
+        <Space wrap>
+          { userInfo?.rules?.map((item, index) => <Tag>{item}</Tag>) }
+        </Space>
       </ProCard>
     </ProCard>
   );

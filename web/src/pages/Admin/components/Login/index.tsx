@@ -31,6 +31,15 @@ const iconDivStyle: CSSProperties = {
   borderRadius: '50%',
 };
 
+interface UserLoginFrom {
+  username?: string
+  password?: string
+  autoLogin?: boolean
+  mobile?: string
+  captcha?: number
+  loginType?: 'phone' | 'account' | 'email'
+}
+
 const Login: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   if(localStorage.getItem('x-token')) {
@@ -38,7 +47,7 @@ const Login: React.FC = () => {
   }
   const refreshUserInfo = useModel('userModel', ({ refreshUserInfoAsync }) => refreshUserInfoAsync);
   const refreshDict = useModel('dictModel', ({ refreshDict }) => refreshDict);
-  const handleSubmit = async (values: USER.UserLoginFrom) => {
+  const handleSubmit = async (values: UserLoginFrom) => {
     // 登录
     const msg = await adminLogin({ ...values });
     localStorage.setItem('x-token', msg.data.token);

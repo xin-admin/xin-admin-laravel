@@ -1,3 +1,5 @@
+import { IRule } from './iRule';
+
 /**
  * 管理员列表
  */
@@ -5,7 +7,7 @@ export interface IAdminUserList {
   user_id?: number;
   username?: string;
   nickname?: string;
-  avatar?: string;
+  avatar_id?: number;
   avatar_url?: string;
   email?: string;
   mobile?: string;
@@ -19,4 +21,10 @@ export interface IAdminUserList {
   rules?: string[];
   create_time?: string;
   update_time?: string;
+}
+
+export interface AdminInfoResult {
+  menus: IRule[],
+  access: string[],
+  info: IAdminUserList
 }

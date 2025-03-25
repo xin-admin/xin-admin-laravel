@@ -1,12 +1,13 @@
 import { request } from '@umijs/max';
+import { AdminInfoResult } from '@/domain/iAdminList';
 
 /**
  * 管理端用户登录
  * @param data
  * @constructor
  */
-export async function adminLogin(data: USER.UserLoginFrom) {
-  return request<USER.LoginResult>('/admin/login', {
+export async function adminLogin(data: any) {
+  return request<API.ResponseStructure<{ token: string; refresh_token: string }>>('/admin/login', {
     method: 'post',
     data
   });
@@ -17,7 +18,7 @@ export async function adminLogin(data: USER.UserLoginFrom) {
  * @constructor
  */
 export async function getAdminInfo() {
-  return request<USER.AdminInfoResult>('/admin/info', {
+  return request<API.ResponseStructure<AdminInfoResult>>('/admin/info', {
     method: 'get'
   });
 }

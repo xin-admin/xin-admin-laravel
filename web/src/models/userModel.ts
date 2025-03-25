@@ -1,16 +1,18 @@
 import { useBoolean } from 'ahooks';
 import { useEffect, useState } from 'react';
 import { getAdminInfo } from '@/services';
+import { IAdminUserList } from '@/domain/iAdminList';
+import { IRule } from '@/domain/iRule';
 const useUser = () => {
 
   // 登录状态
   const [isLogin, setLoginStatus] = useBoolean();
   // 用户信息
-  const [userInfo, setUserInfo] = useState<USER.UserInfo>();
+  const [userInfo, setUserInfo] = useState<IAdminUserList>();
   // 用户权限
   const [userAccess, setUserAccess] = useState<string[]>([]);
   // 菜单
-  const [menus, setMenus] = useState<USER.MenuType[]>([]);
+  const [menus, setMenus] = useState<IRule[]>([]);
 
   // 获取用户信息
   const getUser = async () => {
