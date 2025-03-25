@@ -38,6 +38,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     avatarProps: { render: () => <AvatarRender/>, }, // 头像
     appList, // 应用列表
     menuRender, // 菜单
+    disableMobile: true, // 关闭移动端页面
     collapsedButtonRender: false, // 隐藏默认侧栏
     collapsed: initialState?.collapsed, // 侧栏展开状态
     childrenRender: (children: any) => <PageAccess>{children}</PageAccess>, // 页面内容

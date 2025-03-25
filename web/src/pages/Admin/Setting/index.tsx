@@ -116,7 +116,7 @@ const Table: React.FC = () => {
         bodyStyle={{ minHeight: 600 }}
         tabs={{ items: tabsItem }}
       />
-      <ProCard colSpan={{ md: 24, lg: 12, xl: 12, xxl: 8 }} title={'登录日志'} bordered headerBordered>
+      <ProCard colSpan={{ md: 24, lg: 12, xl: 12, xxl: 8 }} title={'登录日志'} bordered>
         <Timeline
           items={loginLogList.map((item) => {
             return {
@@ -128,9 +128,9 @@ const Table: React.FC = () => {
           })}
         />
       </ProCard>
-      <ProCard colSpan={{ md: 24, lg: 24, xl: 24, xxl: 8}} title={'权限字段'} bordered headerBordered>
+      <ProCard colSpan={{ md: 24, lg: 24, xl: 24, xxl: 8}} title={'权限字段'} bordered>
         <Space wrap>
-          { userInfo?.rules?.map((item, index) => <Tag>{item}</Tag>) }
+          { userInfo?.rules?.map((item) => <Tag>{item}</Tag>) }
         </Space>
       </ProCard>
     </ProCard>
