@@ -51,4 +51,5 @@ export default {
   'menu.example.three': 'Three Level',
   'menu.example.child': 'Second Child',
   'menu.example.child2': 'Three Child',
+  'menu.system.loginlog': 'Login Log',
 };

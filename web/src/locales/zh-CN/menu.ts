@@ -51,4 +51,5 @@ export default {
   'menu.example.three': '四级子路由',
   'menu.example.child': '二级子路由',
   'menu.example.child2': '三级子路由',
+  'menu.system.loginlog': '登录日志',
 };

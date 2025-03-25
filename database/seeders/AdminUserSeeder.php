@@ -126,6 +126,8 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 85, 'parent_id' => 84, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '四级子路由', 'path' => '/menu/three', 'icon' => 'BarsOutlined', 'key' => 'menu.three', 'local' => 'menu.example.three'],
             ['rule_id' => 86, 'parent_id' => 82, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '二级子路由', 'path' => '/menu/child', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child', 'local' => 'menu.example.child'],
             ['rule_id' => 87, 'parent_id' => 83, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子路由', 'path' => '/menu/child2', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child2', 'local' => 'menu.example.child2'],
+            ['rule_id' => 88, 'parent_id' => 40, 'type' => '1', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志', 'path' => '/system/loginlog', 'icon' => 'FieldTimeOutlined', 'key' => 'system.loginlog', 'local' => 'menu.system.loginlog'],
+            ['rule_id' => 89, 'parent_id' => 88, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志查询', 'path' => '', 'icon' => '', 'key' => 'admin.loginlog.list', 'local' => ''],
         ]);
     }
 }
