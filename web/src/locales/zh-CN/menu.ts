@@ -45,4 +45,10 @@ export default {
   'menu.file.group': '文件分组',
   'menu.ai': 'AI 助理',
   'menu.system.conversation': 'AI会话记录',
+  'menu.example': '示例菜单',
+  'menu.example.one': '二级子菜单',
+  'menu.example.two': '三级子菜单',
+  'menu.example.three': '四级子路由',
+  'menu.example.child': '二级子路由',
+  'menu.example.child2': '三级子路由',
 };

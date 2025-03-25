@@ -120,6 +120,12 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 79, 'parent_id' => 77, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '会话记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.group.delete', 'local' => ''],
             ['rule_id' => 80, 'parent_id' => 77, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录查询', 'path' => '', 'icon' => '', 'key' => 'system.conversation.list', 'local' => ''],
             ['rule_id' => 81, 'parent_id' => 77, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.delete', 'local' => ''],
+            ['rule_id' => 82, 'parent_id' => 0 , 'type' => '0', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '示例菜单', 'path' => '/menu', 'icon' => 'BarsOutlined', 'key' => 'menu', 'local' => 'menu.example'],
+            ['rule_id' => 83, 'parent_id' => 82, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '二级子菜单', 'path' => '/menu/one', 'icon' => 'BarsOutlined', 'key' => 'menu.one', 'local' => 'menu.example.one'],
+            ['rule_id' => 84, 'parent_id' => 83, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子菜单', 'path' => '/menu/two', 'icon' => 'BarsOutlined', 'key' => 'menu.two', 'local' => 'menu.example.two'],
+            ['rule_id' => 85, 'parent_id' => 84, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '四级子路由', 'path' => '/menu/three', 'icon' => 'BarsOutlined', 'key' => 'menu.three', 'local' => 'menu.example.three'],
+            ['rule_id' => 86, 'parent_id' => 82, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '二级子路由', 'path' => '/menu/child', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child', 'local' => 'menu.example.child'],
+            ['rule_id' => 87, 'parent_id' => 83, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子路由', 'path' => '/menu/child2', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child2', 'local' => 'menu.example.child2'],
         ]);
     }
 }

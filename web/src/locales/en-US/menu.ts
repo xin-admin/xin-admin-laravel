@@ -45,4 +45,10 @@ export default {
   'menu.file.group': 'File Group',
   'menu.ai': 'AI Assistant',
   'menu.system.conversation': 'AI Conversation',
+  'menu.example': 'Menu Example',
+  'menu.example.one': 'First Level',
+  'menu.example.two': 'Second Level',
+  'menu.example.three': 'Three Level',
+  'menu.example.child': 'Second Child',
+  'menu.example.child2': 'Three Child',
 };
