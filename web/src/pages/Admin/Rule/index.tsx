@@ -190,7 +190,7 @@ export default () => {
     } else if (formData.type === '1') {
       data = Object.assign(formData, { type: 1 })
     } else if (formData.type === '2') {
-      data = Object.assign(formData, { type: 2, path: '', local: '', icon: '' })
+      data = Object.assign(formData, { type: 2 })
     } else {
       message.warning('类型错误！');
       return false;
