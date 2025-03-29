@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -18,7 +17,6 @@ use Illuminate\Http\JsonResponse;
 /**
  * 部门管理控制器
  */
-#[AdminController]
 #[RequestMapping('/admin/dept')]
 class AdminUserDeptController extends BaseController
 {

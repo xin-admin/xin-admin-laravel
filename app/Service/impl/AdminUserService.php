@@ -8,56 +8,16 @@ use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserService extends BaseService
 {
-    /**
-     * 刷新Token
-     */
-    public function refreshToken(): JsonResponse
-    {
-        $token = request()->header('x-token');
-        $reToken = request()->header('x-refresh-token');
-        if ($reToken) {
-            token()->delete($token);
-            $user_id = token()->get($reToken)['user_id'];
-            $token = token()->set($user_id, TokenEnum::ADMIN);
-
-            return $this->success(compact('token'));
-        } else {
-            return $this->error(__('user.not_login'));
-        }
-    }
-
-    /**
-     * 登录
-     */
-    public function login(array $data): JsonResponse
-    {
-        $username = $data['username'];
-        $password = $data['password'];
-        $adminUser = AdminUserModel::where('username', '=', $username)->first();
-        if (! $adminUser) {
-            return $this->error(__('user.user_not_exist'));
-        }
-        // 验证密码
-        if (! password_verify($password, $adminUser->password)) {
-            return $this->error(__('user.password_error'));
-        }
-        $data = [];
-        $data['refresh_token'] = token()->set($adminUser->user_id, TokenEnum::REFRESH_ADMIN);
-        $data['token'] = token()->set($adminUser->user_id, TokenEnum::ADMIN);
-        $data['id'] = $adminUser->user_id;
-
-        return $this->success($data, __('user.login_success'));
-    }
-
     /**
      * 退出登录
      */
     public function logout(): JsonResponse
     {
-        $user_id = customAuth('admin')->id();
+        $user_id = auth()->id();
         $user = AdminUserModel::find($user_id);
         if (! $user) {
             throw new HttpResponseException(['success' => false, 'msg' => __('user.user_not_exist')], 401);
@@ -73,9 +33,9 @@ class AdminUserService extends BaseService
      */
     public function getAdminInfo(): JsonResponse
     {
-        $info = customAuth('admin')->userInfo();
+        $info = auth()->user();
         // 权限
-        $access = customAuth('admin')->permission();
+        $access = $info['rules'];
         // 菜单
         $menus = AdminRuleModel::where('show', '=', 1)
             ->where('status', '=', 1)
@@ -86,7 +46,7 @@ class AdminUserService extends BaseService
             ->toArray();
         $menus = $this->getTreeData($menus, 'rule_id');
 
-        return $this->success(compact('menus', 'access', 'info'));
+        return $this->success(compact('info', 'menus', 'access'));
     }
 
     /**
@@ -100,7 +60,7 @@ class AdminUserService extends BaseService
             'rePassword' => 'required|same:newPassword',
         ]);
 
-        $user_id = customAuth('admin')->id();
+        $user_id = auth()->id();
         $user = AdminUserModel::find($user_id);
         if (! password_verify($validated['oldPassword'], $user->password)) {
             return $this->error(__('user.old_password_error'));
@@ -121,7 +81,7 @@ class AdminUserService extends BaseService
             'email' => 'required|email',
             'avatar_id' => 'required|exists:file,file_id',
         ]);
-        $user_id = customAuth('admin')->id();
+        $user_id = auth()->id();
         AdminUserModel::where('user_id', $user_id)->update($validated);
 
         return $this->success();

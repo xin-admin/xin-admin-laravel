@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -14,7 +13,9 @@ use App\Http\BaseController;
 use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
 
-#[AdminController]
+/**
+ * 系统设置
+ */
 #[RequestMapping('/system/setting')]
 class SettingController extends BaseController
 {

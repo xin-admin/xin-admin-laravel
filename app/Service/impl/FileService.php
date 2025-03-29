@@ -36,10 +36,10 @@ class FileService implements IFileService
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.upload_failed')]);
         }
         if ($type === 'admin') {
-            $user_id = customAuth('admin')->id();
+            $user_id = auth()->id();
             $channel = 10;
         } else {
-            $user_id = customAuth('user')->id();
+            $user_id = auth('user')->id();
             $channel = 20;
         }
         $data = [

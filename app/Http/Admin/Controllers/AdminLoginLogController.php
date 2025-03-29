@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\RequestMapping;
@@ -13,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 /**
  * 管理员登录日志
  */
-#[AdminController]
 #[RequestMapping('/admin/loginlog')]
 class AdminLoginLogController extends BaseController
 {
@@ -36,7 +34,7 @@ class AdminLoginLogController extends BaseController
     #[GetMapping('/my')]
     public function get(): JsonResponse
     {
-        $username = customAuth()->userInfo()['username'];
+        $username = auth()->user()['username'];
         $data = $this->model
             ->where('username', $username)
             ->limit(20)

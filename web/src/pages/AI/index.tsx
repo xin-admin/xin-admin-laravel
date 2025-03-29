@@ -234,7 +234,7 @@ const Independent: React.FC = () => {
     }else {
       uuid = activeKeys;
     }
-    let token = localStorage.getItem('x-token') ? localStorage.getItem('x-token')! : '';
+    let token = localStorage.getItem('token') ? localStorage.getItem('token')! : '';
     let key = Date.now();
     setLoading(true);
     let startMessage = [...messages];
@@ -248,7 +248,7 @@ const Independent: React.FC = () => {
       'headers': {
         'accept': '*/*',
         'content-type': 'text/plain;charset=UTF-8',
-        'x-token': token,
+        'Authorization': `Bearer ${token}`,
       },
       'body': JSON.stringify({ message: nextContent, uuid }),
       'method': 'POST',

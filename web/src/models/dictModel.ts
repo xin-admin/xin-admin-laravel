@@ -48,7 +48,7 @@ const useDict = () => {
   }
 
   const { data: dictData, refresh, refreshAsync: refreshDictAsync } = useRequest(async () => {
-    let token = localStorage.getItem('x-token');
+    let token = localStorage.getItem('token');
     let data: DictDate[] = [];
     if (token) {
       if (localStorage.getItem('dictMap')) {

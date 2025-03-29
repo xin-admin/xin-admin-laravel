@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
@@ -16,7 +15,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-#[AdminController]
+/**
+ * AI对话控制器
+ */
 #[RequestMapping('/ai')]
 class AiController extends BaseController
 {
@@ -36,8 +37,7 @@ class AiController extends BaseController
     #[GetMapping] #[Authorize('ai.list')]
     public function list(): JsonResponse
     {
-        $user_id = customAuth()->id();
-        $data = AiConversationGroupModel::where('user_id', $user_id)
+        $data = AiConversationGroupModel::where('user_id', auth()->id())
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
@@ -52,7 +52,7 @@ class AiController extends BaseController
         if (! $model) {
             return $this->error('会话组不存在');
         }
-        if ($model->user_id !== customAuth()->id()) {
+        if ($model->user_id !== auth()->id()) {
             return $this->error('您没有权限操作该会话组!');
         }
         $data = $model->conversation()->where('role', '<>', 'system')->orderBy('id', 'asc')->get()->toArray();

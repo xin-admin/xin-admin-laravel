@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\PutMapping;
@@ -13,11 +12,11 @@ use App\Service\impl\AdminUserService;
 use App\Service\impl\FileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * 管理员用户控制器
  */
-#[AdminController]
 #[RequestMapping('/admin')]
 class AdminUserController extends BaseController
 {
@@ -32,31 +31,33 @@ class AdminUserController extends BaseController
     #[PostMapping('/login', 'login_log')]
     public function login(Request $request): JsonResponse
     {
-        $validated = $request->validate([
+        $credentials = $request->validate([
             'username' => 'required|min:4|alphaDash',
             'password' => 'required|min:4|alphaDash',
         ]);
 
-        return $this->service->login($validated);
-    }
-
-    /** 刷新 Token */
-    #[PostMapping('/refreshToken')]
-    public function refreshToken(): JsonResponse
-    {
-        return $this->service->refreshToken();
+        if (Auth::attempt($credentials)) {
+            $access = auth()->user()['rules'];
+            $data = $request->user()
+                ->createToken($credentials['username'], $access)
+                ->toArray();
+            return $this->success($data, __('user.login_success'));
+        }
+        return $this->error(__('user.login_error'));
     }
 
     /** 退出登录 */
     #[PostMapping('/logout')]
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        return $this->service->logout();
+        Auth::user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
+        return $this->success(__('user.logout_success'));
     }
 
     /** 获取管理员信息 */
     #[GetMapping('/info')]
-    public function getAdminInfo(): JsonResponse
+    public function info(): JsonResponse
     {
         return $this->service->getAdminInfo();
     }

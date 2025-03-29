@@ -1,15 +1,13 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class XinUser
  */
-class XinUserModel extends Model
+class XinUserModel extends Authenticatable
 {
     protected $table = 'xin_user';
 

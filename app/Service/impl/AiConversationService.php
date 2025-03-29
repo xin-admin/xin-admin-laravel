@@ -28,7 +28,7 @@ class AiConversationService
         $model->name = $name;
         $model->uuid = $uuid;
         $model->model = 'deepseek-chat';
-        $model->user_id = customAuth()->id();
+        $model->user_id = auth()->id();
         $model->temperature = $temperature;
         $model->save();
         $aiMessageModel = new AiConversationModel();

@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PutMapping;
@@ -13,10 +12,10 @@ use App\Models\XinUserModel;
 use App\Service\impl\XinUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+
 /**
  * 前台用户列表
  */
-#[AdminController]
 #[RequestMapping('/user/list')]
 class UserListController extends BaseController
 {

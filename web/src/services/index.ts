@@ -7,7 +7,7 @@ import { AdminInfoResult } from '@/domain/iAdminList';
  * @constructor
  */
 export async function adminLogin(data: any) {
-  return request<API.ResponseStructure<{ token: string; refresh_token: string }>>('/admin/login', {
+  return request<API.ResponseStructure<{ plainTextToken: string; refresh_token: string }>>('/admin/login', {
     method: 'post',
     data
   });

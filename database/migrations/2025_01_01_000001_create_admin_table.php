@@ -22,15 +22,26 @@ return new class extends Migration
                 $table->integer('avatar_id')->default(1)->comment('头像');
                 $table->integer('sex')->default(0)->comment('性别（男、女）');
                 $table->string('mobile', 20)->default('')->comment('手机号');
-                $table->string('email', 50)->default('')->comment('邮箱');
+                $table->string('email', 50)->unique()->comment('邮箱');
+                $table->timestamp('email_verified_at')->nullable();
                 $table->integer('dept_id')->default(0)->comment('部门ID');
                 $table->integer('role_id')->default(0)->comment('角色ID');
                 $table->string('login_ip', 60)->default('')->comment('最后登录IP');
                 $table->timestamp('login_time')->nullable()->comment('最后登录时间');
                 $table->integer('status')->default(1)->comment('状态（1正常 0停用）');
+                $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();
                 $table->comment('管理员表');
+            });
+        }
+
+        // 管理员重置密码表
+        if (! Schema::hasTable('password_reset_tokens')) {
+            Schema::create('password_reset_tokens', function (Blueprint $table) {
+                $table->string('email')->primary();
+                $table->string('token');
+                $table->timestamp('created_at')->nullable();
             });
         }
 
@@ -107,5 +118,6 @@ return new class extends Migration
         Schema::dropIfExists('admin_dept');
         Schema::dropIfExists('admin_role');
         Schema::dropIfExists('admin_login_log');
+        Schema::dropIfExists('password_reset_tokens');
     }
 };

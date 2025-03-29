@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -18,7 +17,6 @@ use Illuminate\Http\JsonResponse;
 /**
  * 管理员权限控制器
  */
-#[AdminController]
 #[RequestMapping('/admin/rule')]
 class AdminUserRuleController extends BaseController
 {

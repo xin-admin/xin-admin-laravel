@@ -19,6 +19,7 @@ return [
     'admin_login' => 'Admin Login',
     'admin_logout' => 'Admin Logout',
     'login_success' => 'Login Success',
+    'login_error' => 'Login Error, Please check your username and password',
     'logout_success' => 'Logout Success',
     'old_password_error' => 'Old password error',
     'user_is_disabled' => 'User is disabled',

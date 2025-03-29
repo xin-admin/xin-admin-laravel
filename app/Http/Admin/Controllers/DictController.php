@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Cache;
 /**
  * 字典管理
  */
-#[AdminController]
 #[RequestMapping('/system/dict')]
 class DictController extends BaseController
 {
