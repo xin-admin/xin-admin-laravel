@@ -7,16 +7,26 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
+use App\Mail\VerificationCodeMail;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use OpenApi\Attributes as OA;
 
 #[RequestMapping('/api')]
 class IndexController extends BaseController
 {
     // 权限验证白名单
-    protected array $noPermission = ['index', 'login', 'register'];
+    protected array $noPermission = ['index', 'login', 'register', 'mail'];
+
+    #[GetMapping('/mail')]
+    public function mail(): JsonResponse
+    {
+        Mail::to('hello@example.com')->send(new VerificationCodeMail(1234));
+        return $this->success();
+    }
+
 
     /**
      * index
