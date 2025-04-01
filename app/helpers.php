@@ -60,20 +60,6 @@ if (! function_exists('token')) {
     }
 }
 
-if (! function_exists('customAuth')) {
-    /**
-     * @param  $type  string
-     */
-    function customAuth(string $type = 'admin'): IAuthorizeService
-    {
-        if ($type == 'app') {
-            return app(IAuthorizeService::class)->app();
-        } else {
-            return app(IAuthorizeService::class)->admin();
-        }
-    }
-}
-
 if (! function_exists('getTreeData')) {
     function getTreeData(&$list, int $parentId = 0): array
     {

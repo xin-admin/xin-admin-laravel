@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -15,7 +14,9 @@ use App\Models\SettingGroupModel;
 use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
 
-#[AdminController]
+/**
+ * 设置分组控制器
+ */
 #[RequestMapping('/system/setting/group')]
 class SettingGroupController extends BaseController
 {

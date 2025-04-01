@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
@@ -50,28 +51,55 @@ class RouteServiceProvider extends ServiceProvider
                         break;
                     }
                 }
+                // 权限验证白名单
+                $noPermission = $reflection->getProperty('noPermission')->getDefaultValue();
+                // 循环所有的方法
                 foreach ($reflection->getMethods() as $method) {
-                    foreach ($method->getAttributes() as $attribute) {
-                        $routeType = $attribute->getName();
-                        $routeClass = $attribute->newInstance();
-                        if($routeType == GetMapping::class) {
+                    // 当前注册的路由
+                    $route = null;
+                    // $routeClass
+                    $routeClass = null;
+                    // 注解
+                    $attributes = $method->getAttributes();
+                    // 方法名称
+                    $methodName = $method->getName();
+                    foreach ($attributes as $attribute) {
+                        // 注解类名称
+                        $attributeType = $attribute->getName();
+                        if($attributeType == GetMapping::class) {
+                            $routeClass = $attribute->newInstance();
                             $routePath = $routeClass->route;
-                            $route = Route::get($routeBasePath.$routePath, [$className, $method->getName()]);
+                            $route = Route::get($routeBasePath.$routePath, [$className, $methodName]);
                         }
-                        if($routeType == PostMapping::class) {
+                        if($attributeType == PostMapping::class) {
+                            $routeClass = $attribute->newInstance();
                             $routePath = $routeClass->route;
-                            $route = Route::post($routeBasePath.$routePath, [$className, $method->getName()]);
+                            $route = Route::post($routeBasePath.$routePath, [$className, $methodName]);
                         }
-                        if($routeType == PutMapping::class) {
+                        if($attributeType == PutMapping::class) {
+                            $routeClass = $attribute->newInstance();
                             $routePath = $routeClass->route;
-                            $route = Route::put($routeBasePath.$routePath, [$className, $method->getName()]);
+                            $route = Route::put($routeBasePath.$routePath, [$className, $methodName]);
                         }
-                        if($routeType == DeleteMapping::class) {
+                        if($attributeType == DeleteMapping::class) {
+                            $routeClass = $attribute->newInstance();
                             $routePath = $routeClass->route;
-                            $route = Route::delete($routeBasePath.$routePath, [$className, $method->getName()]);
+                            $route = Route::delete($routeBasePath.$routePath, [$className, $methodName]);
                         }
-                        if (isset($route) && !empty($routeClass->middleware)) {
-                            $route->middleware($routeClass->middleware);
+                        if(!empty($route)) {
+                            $middleware = [];
+                            if (empty($noPermission) || !is_array($noPermission) || !in_array($methodName, $noPermission)) {
+                                $middleware[] = 'auth:sanctum';
+                            }
+                            if($attributeType == Authorize::class ) {
+                                $authClass = $attribute->newInstance();
+                                $permission = $authClass->name;
+                                $middleware[] = 'abilities:' . $permission;
+                            }
+                            if (!empty($routeClass->middleware)) {
+                                $middleware[] = $routeClass->middleware;
+                            }
+                            $route->middleware($middleware);
                         }
                     }
                 }

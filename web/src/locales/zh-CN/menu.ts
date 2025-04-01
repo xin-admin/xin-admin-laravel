@@ -44,7 +44,7 @@ export default {
   'menu.file.list': '文件列表',
   'menu.file.group': '文件分组',
   'menu.ai': 'AI 助理',
-  'menu.system.conversation': 'AI会话记录',
+  'menu.system.conversation': '会话记录',
   'menu.example': '示例菜单',
   'menu.example.one': '二级子菜单',
   'menu.example.two': '三级子菜单',

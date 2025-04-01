@@ -68,9 +68,9 @@ const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: any) => {
-      let XToken = localStorage.getItem('x-token');
-      if (XToken) {
-        config.headers['x-token'] = XToken;
+      let token = localStorage.getItem('token');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
       }
       return { ...config };
     },
@@ -79,48 +79,6 @@ const requestConfig: RequestConfig = {
     [
       async (response) => {
         const { data = {} as any } = response;
-        if(response.status === 202) {
-          try {
-            let refreshToken =  localStorage.getItem('x-refresh-token');
-            let token =  localStorage.getItem('x-token');
-            if(!refreshToken || !token) {
-              message.error(`请先登录！`);
-              localStorage.clear();
-              history.push('/login');
-              return Promise.reject(response);
-            }
-            let refreshResponse = await fetch(process.env.DOMAIN + '/admin/refreshToken', {
-              'method': 'POST',
-              'headers': {
-                'x-refresh-token': refreshToken,
-                'x-token': token
-              },
-            })
-            if (!refreshResponse.ok) {
-              message.error(`刷新Token失败，请重新登录！`);
-              localStorage.clear();
-              history.push('/login');
-              return Promise.reject(response);
-            }
-            let data = await refreshResponse.json(); // 返回的数据是 JSON 格式
-            let newAccessToken = data.data.token; // 新的 accessToken 在 data.token 中
-            // 将新的 accessToken 存入 localStorage
-            localStorage.setItem('x-token', newAccessToken);
-            // 更新请求头中的 token
-            response.config.headers!['x-token'] = newAccessToken;
-            // 重新发送请求
-            response.data = await request(response.config.url!, {
-              ...response.config,
-              headers: {
-                ...response.config.headers,
-                'x-token': newAccessToken
-              }
-            });
-            return Promise.resolve(response);
-          }catch (e) {
-            return Promise.reject(e);
-          }
-        }
         if(data.success) return Promise.resolve(response);
         await errorHandler(data);
         return Promise.reject(response);

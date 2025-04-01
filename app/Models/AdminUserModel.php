@@ -1,19 +1,21 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class AdminUser
  */
-class AdminUserModel extends Model
+class AdminUserModel extends Authenticatable
 {
-    use SoftDeletes;
+    use SoftDeletes, HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'admin_user';
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\AppController;
 use App\Attribute\route\GetMapping;
 use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
@@ -13,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
-#[AppController]
 #[RequestMapping('/api')]
 class IndexController extends BaseController
 {

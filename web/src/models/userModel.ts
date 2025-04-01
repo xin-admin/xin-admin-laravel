@@ -16,7 +16,7 @@ const useUser = () => {
 
   // 获取用户信息
   const getUser = async () => {
-    let token = localStorage.getItem('x-token');
+    let token = localStorage.getItem('token');
     if(!token) {
       return Promise.reject();
     }

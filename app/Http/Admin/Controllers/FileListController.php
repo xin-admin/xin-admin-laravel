@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -18,7 +17,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件列表
  */
-#[AdminController]
 #[RequestMapping('/file/list')]
 class FileListController extends BaseController
 {

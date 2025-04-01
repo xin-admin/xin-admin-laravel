@@ -10,6 +10,7 @@
         "ext-curl": "*",
         "ext-redis": "*",
         "laravel/framework": "^v12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "openai-php/client": "^0.10.0",
         "predis/predis": "2.0"

@@ -47,7 +47,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 }
 
 export const onRouteChange: RuntimeConfig['onRouteChange'] = ({location}) => {
-  if(location.pathname != '/login' && !localStorage.getItem('x-token')) window.location.href = '/login';
+  if(location.pathname != '/login' && !localStorage.getItem('token')) window.location.href = '/login';
 }
 
 // 修改被 react-router 渲染前的树状路由表，接收内容同 useRoutes

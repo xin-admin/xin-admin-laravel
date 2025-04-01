@@ -7,6 +7,7 @@ use App\Trait\RequestJson;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\Exceptions\MissingAbilityException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -32,7 +33,7 @@ class Handler extends ExceptionHandler
         if ($e instanceof HttpResponseException) {
             // HTTP Response Exception HTTP 错误响应
             $response = response()->json($e->getResData(), $e->getCode());
-        } elseif ($e instanceof AuthorizeException) {
+        } elseif ($e instanceof MissingAbilityException) {
             // Authorize Exception 权限验证异常
             $response = $this->notification(
                 'No Permission',
@@ -52,18 +53,21 @@ class Handler extends ExceptionHandler
                 'msg' => $e->validator->errors()->first(),
                 'showType' => ShowType::WARN_MESSAGE->value,
                 'success' => false,
-                'errors' => $e->validator->errors(),
             ]);
         } else {
-            $response = response()->json([
+            $debug = config('app.debug');
+            $data = [
                 'msg' => $e->getMessage(),
                 'showType' => ShowType::ERROR_MESSAGE->value,
                 'success' => false,
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTrace(),
-                'code' => $e->getCode(),
-            ]);
+            ];
+            if($debug) {
+                $data['file'] = $e->getFile();
+                $data['line'] = $e->getLine();
+                $data['trace'] = $e->getTrace();
+                $data['code'] = $e->getCode();
+            }
+            $response = response()->json($data);
         }
         return addHeaders($response);
     }

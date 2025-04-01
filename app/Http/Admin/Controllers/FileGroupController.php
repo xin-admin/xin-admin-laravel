@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -17,7 +16,6 @@ use Illuminate\Http\JsonResponse;
 /**
  * 文件分组控制器
  */
-#[AdminController]
 #[RequestMapping('/file/group')]
 class FileGroupController extends BaseController
 {

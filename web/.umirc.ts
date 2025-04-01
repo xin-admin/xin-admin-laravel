@@ -15,6 +15,8 @@ export default defineConfig({
   mfsu: {
     strategy: 'normal',
   },
+  // 如果前端文件放在后端public 下面可开启
+  // publicPath: '/assets/',
   conventionRoutes: {
     exclude: [/\/components\//, /\/models\//],
   },

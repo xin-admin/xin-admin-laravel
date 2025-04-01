@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -20,7 +19,6 @@ use Illuminate\Http\Request;
 /**
  * 角色管理控制器
  */
-#[AdminController]
 #[RequestMapping('/admin/role')]
 class AdminUserRoleController extends BaseController
 {

@@ -7,5 +7,7 @@ use Attribute;
 #[Attribute]
 class Authorize
 {
-    public function __construct(string $name = '') {}
+    public function __construct(
+        public string $name = ''
+    ) {}
 }

@@ -42,7 +42,7 @@ interface UserLoginFrom {
 
 const Login: React.FC = () => {
   const { initialState } = useModel('@@initialState');
-  if(localStorage.getItem('x-token')) {
+  if(localStorage.getItem('token')) {
     history.push('/');
   }
   const refreshUserInfo = useModel('userModel', ({ refreshUserInfoAsync }) => refreshUserInfoAsync);
@@ -50,8 +50,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: UserLoginFrom) => {
     // 登录
     const msg = await adminLogin({ ...values });
-    localStorage.setItem('x-token', msg.data.token);
-    localStorage.setItem('x-refresh-token', msg.data.refresh_token);
+    localStorage.setItem('token', msg.data.plainTextToken);
     await refreshUserInfo();
     refreshDict();
     message.success('登录成功！');

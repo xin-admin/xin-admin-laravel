@@ -2,7 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\AdminController;
 use App\Attribute\Authorize;
 use App\Attribute\route\DeleteMapping;
 use App\Attribute\route\GetMapping;
@@ -12,7 +11,9 @@ use App\Models\AiConversationGroupModel;
 use App\Models\AiConversationModel;
 use Illuminate\Http\JsonResponse;
 
-#[AdminController]
+/**
+ * 对话管理控制器
+ */
 #[RequestMapping('/system/conversation')]
 class ConversationController extends BaseController
 {
