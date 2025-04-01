@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Service\impl\LengthAwarePaginatorService;
+use App\Service\LengthAwarePaginatorService;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
 

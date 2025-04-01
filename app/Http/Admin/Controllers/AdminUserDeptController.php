@@ -11,7 +11,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\AdminRequest\AdminUserDeptRequest;
 use App\Http\BaseController;
 use App\Models\AdminDeptModel;
-use App\Service\impl\AdminUserDeptService;
+use App\Service\AdminUserDeptService;
 use Illuminate\Http\JsonResponse;
 
 /**

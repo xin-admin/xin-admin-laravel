@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\impl;
+namespace App\Service;
 
 use App\Models\AdminRuleModel;
 use Illuminate\Http\JsonResponse;

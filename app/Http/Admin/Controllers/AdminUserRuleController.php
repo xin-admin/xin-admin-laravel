@@ -11,7 +11,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\AdminRequest\AdminUserRuleRequest;
 use App\Http\BaseController;
 use App\Models\AdminRuleModel;
-use App\Service\impl\AdminUserRuleService;
+use App\Service\AdminUserRuleService;
 use Illuminate\Http\JsonResponse;
 
 /**

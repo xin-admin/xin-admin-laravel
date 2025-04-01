@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\impl;
+namespace App\Service;
 
+use App\Facades\OpenAI;
 use App\Models\AiConversationGroupModel;
 use App\Models\AiConversationModel;
 use Illuminate\Http\StreamedEvent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use App\Facades\OpenAI;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AiConversationService

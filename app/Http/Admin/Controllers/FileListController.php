@@ -10,7 +10,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SystemRequest\FileUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\FileModel;
-use App\Service\impl\FileService;
+use App\Service\FileService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

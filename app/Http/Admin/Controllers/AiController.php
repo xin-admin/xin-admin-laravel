@@ -8,7 +8,7 @@ use App\Attribute\route\PostMapping;
 use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
 use App\Models\AiConversationGroupModel;
-use App\Service\impl\AiConversationService;
+use App\Service\AiConversationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

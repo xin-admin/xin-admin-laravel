@@ -9,7 +9,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\UserRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
-use App\Service\impl\XinUserListService;
+use App\Service\XinUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

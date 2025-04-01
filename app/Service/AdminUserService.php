@@ -1,33 +1,14 @@
 <?php
 
-namespace App\Service\impl;
+namespace App\Service;
 
-use App\Enum\TokenEnum;
-use App\Exceptions\HttpResponseException;
 use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdminUserService extends BaseService
 {
-    /**
-     * 退出登录
-     */
-    public function logout(): JsonResponse
-    {
-        $user_id = auth()->id();
-        $user = AdminUserModel::find($user_id);
-        if (! $user) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('user.user_not_exist')], 401);
-        }
-        token()->clear('admin', $user['user_id']);
-        token()->clear('admin-refresh', $user['user_id']);
-
-        return $this->success(__('user.logout_success'));
-    }
-
     /**
      * 获取管理员信息
      */

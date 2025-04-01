@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\SettingGroupModel;
-use App\Service\IAuthorizeService;
-use App\Service\ITokenService;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,16 +45,6 @@ if (! function_exists('trace')) {
     function trace(string|array $message): void
     {
         Log::channel('log')->info($message);
-    }
-}
-
-if (! function_exists('token')) {
-    /**
-     * 获取TokenService
-     */
-    function token(): ITokenService
-    {
-        return app(ITokenService::class);
     }
 }
 

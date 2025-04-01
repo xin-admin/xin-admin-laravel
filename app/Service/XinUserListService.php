@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\impl;
+namespace App\Service;
 
 use App\Models\XinUserModel;
 use App\Trait\RequestJson;

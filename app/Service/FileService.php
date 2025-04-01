@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Service\impl;
+namespace App\Service;
 
 use App\Enum\FileType;
 use App\Exceptions\HttpResponseException;
 use App\Models\FileModel;
-use App\Service\IFileService;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class FileService implements IFileService
+class FileService
 {
     public function upload(FileType $fileType, int $group_id, string $disk, string $type = 'admin'): array
     {
