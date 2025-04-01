@@ -50,7 +50,6 @@ class AdminUserController extends BaseController
     #[PostMapping('/logout')]
     public function logout(Request $request): JsonResponse
     {
-        Auth::user()->tokens()->delete();
         $request->user()->currentAccessToken()->delete();
         return $this->success(__('user.logout_success'));
     }
