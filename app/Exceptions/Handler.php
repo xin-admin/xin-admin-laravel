@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Enum\ShowType;
 use App\Trait\RequestJson;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -34,12 +35,17 @@ class Handler extends ExceptionHandler
             // HTTP Response Exception HTTP 错误响应
             $response = response()->json($e->getResData(), $e->getCode());
         } elseif ($e instanceof MissingAbilityException) {
-            // Authorize Exception 权限验证异常
+            // 没有权限
             $response = $this->notification(
                 'No Permission',
                 __('system.error.no_permission'),
                 ShowType::WARN_NOTIFICATION
             );
+        } elseif ($e instanceof AuthenticationException) {
+            $response = response()->json([
+                'msg' => __('user.refresh_token_expired'),
+                'success' => false
+            ], 401);
         } elseif ($e instanceof NotFoundHttpException) {
             // NotFoundHttpException 地址不存在
             $response = $this->notification(
