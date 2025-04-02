@@ -12,9 +12,10 @@ export default defineConfig({
     // 解决首次加载时白屏的问题
     { src: '/scripts/loading.js', async: true },
   ],
-  mfsu: {
-    strategy: 'normal',
-  },
+  // mfsu: {
+  //   strategy: 'normal',
+  // },
+  mako: {},
   // 如果前端文件放在后端public 下面可开启
   // publicPath: '/assets/',
   conventionRoutes: {
