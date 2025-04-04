@@ -49,8 +49,8 @@ export default function UpdatePassword() {
   return (
     <BetaSchemaForm
       title={'修改管理员密码'}
-      layoutType={'Form'}
-      style={{maxWidth: 400}}
+      trigger={<a>修改密码</a>}
+      layoutType={'ModalForm'}
       grid={ true }
       onFinish={ defaultUpdate }
       columns= { columnsPws }

@@ -10,7 +10,6 @@ const useStyle = createStyles(({ token, css }) => {
         flex-direction: column;
         align-items: center;
         padding: 20px 0;
-        border-bottom: 1px solid ${token.colorBorder}
     `,
     avatar: css`
         margin-bottom: 10px;
@@ -22,7 +21,7 @@ const useStyle = createStyles(({ token, css }) => {
         display: flex;
         justify-content: space-between;
         border-bottom: 1px solid ${token.colorBorderSecondary};
-        padding: 10px;
+        padding: 15px 10px;
     `,
     title: css`
         color: ${token.colorTextDescription};
