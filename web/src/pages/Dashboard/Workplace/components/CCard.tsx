@@ -31,9 +31,8 @@ export default () => {
 
 
   return (
-    <ProCard split={'horizontal'}>
+    <ProCard split={'horizontal'} bordered>
       <StatisticCard
-        colSpan={6}
         title="财年业绩目标"
         statistic={{
           value: 82.6,
@@ -103,27 +102,6 @@ export default () => {
           layout="vertical"
           description={
             <Statistic title="日同比" value="6.47%" trend="up" />
-          }
-        />
-      </StatisticCard>
-      <StatisticCard
-        statistic={{
-          title: '财年业绩收入排名',
-          value: 2,
-          description: (
-            <Statistic title="日同比" value="6.47%" trend="up" />
-          ),
-        }}
-        chart={
-          <TinyArea {...config} />
-        }
-      >
-        <Statistic
-          title="月付费个数"
-          value={601}
-          layout="vertical"
-          description={
-            <Statistic title="日同比" value="6.47%" trend="down" />
           }
         />
       </StatisticCard>

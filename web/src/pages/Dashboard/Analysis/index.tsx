@@ -12,10 +12,9 @@ import { FormattedMessage } from '@@/exports';
 const { Statistic } = StatisticCard;
 export default () => {
   return (
-    <Row gutter={[24, 24]}>
+    <Row gutter={[20, 20]}>
       <Col xs={20} sm={16} md={12} lg={8} xl={6}>
         <ChartCard
-
           title={<FormattedMessage id={'analysis.title1'} />}
           actionText={'Tips'}
             loading={false}
@@ -31,7 +30,6 @@ export default () => {
         </Col>
         <Col xs={20} sm={16} md={12} lg={8} xl={6}>
           <ChartCard
-
             title={<FormattedMessage id={'analysis.title2'}/>}
             actionText={'总访问量'}
             loading={false}

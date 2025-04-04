@@ -9,8 +9,7 @@ const imgStyle = {
 export default () => {
 
   return (
-
-    <StatisticCard.Group direction={'row'} >
+    <StatisticCard.Group direction={'row'} bodyStyle={{padding: 20}} bordered>
       <StatisticCard
         statistic={{
           title: '支付金额',
