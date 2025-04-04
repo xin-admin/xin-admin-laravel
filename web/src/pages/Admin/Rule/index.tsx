@@ -1,7 +1,7 @@
 import XinTable from '@/components/Xin/XinTable';
 import { XinTableColumn, XinTableProps, XinTableRef } from '@/components/Xin/XinTable/typings';
 import XinDict from '@/components/Xin/XinDict';
-import { useModel } from '@umijs/max';
+import { useModel, FormattedMessage } from '@umijs/max';
 import React, { useRef, useState } from 'react';
 import IconsItem from '@/components/Xin/XinForm/IconsItem';
 import { Button, message, Switch } from 'antd';
@@ -61,6 +61,7 @@ export default () => {
       dataIndex: 'name',
       valueType: 'text',
       formItemProps: { rules: [{ required: true, message: '此项为必填项' }]},
+      render: (_, data) => data.local ? <FormattedMessage id={data.local} /> : data.name,
       tooltip: '菜单的标题，可当作菜单栏标题，如果有多语言标识，该项会被覆盖！',
     },
     {
