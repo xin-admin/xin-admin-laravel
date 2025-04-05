@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class SettingGroup
@@ -16,4 +16,14 @@ class SettingGroupModel extends Model
         'key',
         'remark',
     ];
+
+    /**
+     * 关联设置项目
+     * @return HasMany
+     */
+    public function settings(): HasMany
+    {
+        return $this->hasMany(SettingModel::class ,'group_id', 'id');
+    }
+
 }

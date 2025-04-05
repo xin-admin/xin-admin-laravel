@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Setting
@@ -27,4 +27,13 @@ class SettingModel extends Model
         'group_id',
         'sort',
     ];
+
+    /**
+     * 关联设置
+     * @return BelongsTo
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(SettingGroupModel::class, 'id', 'group_id');
+    }
 }

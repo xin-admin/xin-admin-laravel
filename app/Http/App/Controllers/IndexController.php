@@ -35,7 +35,7 @@ class IndexController extends BaseController
     #[OA\Get(path: '/api/index', description: '首页', tags: ['首页'], responses: [new OA\Response(response: 200, description: 'successful operation')])]
     public function index(): JsonResponse
     {
-        $web_setting = get_setting('web');
+        $web_setting = setting('web');
 
         return $this->success(compact('web_setting'));
     }

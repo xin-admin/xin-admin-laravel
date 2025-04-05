@@ -16,7 +16,7 @@ class IndexController extends BaseController
     #[GetMapping]
     public function index(): JsonResponse
     {
-        $webSetting = get_setting('web');
+        $webSetting = setting('web');
         return $this->success(compact('webSetting'), '恭喜你已经成功安装 Xin Admin');
     }
 }
