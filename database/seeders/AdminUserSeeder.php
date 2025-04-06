@@ -131,6 +131,8 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 87, 'parent_id' => 83, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子路由', 'path' => '/menu/child2', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child2', 'local' => 'menu.example.child2'],
             ['rule_id' => 88, 'parent_id' => 40, 'type' => '1', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志', 'path' => '/system/loginlog', 'icon' => 'FieldTimeOutlined', 'key' => 'system.loginlog', 'local' => 'menu.system.loginlog'],
             ['rule_id' => 89, 'parent_id' => 88, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志查询', 'path' => '', 'icon' => '', 'key' => 'admin.loginlog.list', 'local' => ''],
+            ['rule_id' => 90, 'parent_id' => 51, 'type' => '2', 'sort' => 8, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置刷新缓存', 'path' => '', 'icon' => '', 'key' => 'system.setting.refresh', 'local' => ''],
+            ['rule_id' => 91, 'parent_id' => 51, 'type' => '2', 'sort' => 9, 'created_at' => $date, 'updated_at' => $date, 'name' => '保存设置', 'path' => '', 'icon' => '', 'key' => 'system.setting.save', 'local' => ''],
         ]);
     }
 }

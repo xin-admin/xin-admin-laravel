@@ -16,7 +16,7 @@ import {
 export default (props: { item: any }) => {
   const { item } = props;
   return (
-    <Form.Item name={item.key} style={{ maxWidth: 680, marginBottom: 0 }}>
+    <Form.Item name={item.key} style={{ marginBottom: 0 }}>
       {item.type === 'input' && <Input {...item.props} />}
       {item.type === 'password' && <Input.Password {...item.props} />}
       {item.type === 'textarea' && <Input.TextArea {...item.props} />}

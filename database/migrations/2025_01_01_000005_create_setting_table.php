@@ -16,8 +16,8 @@ return new class extends Migration
                 $table->bigIncrements('id');
                 $table->string('key', 50)->comment('设置项标示');
                 $table->string('title', 50)->comment('设置标题');
-                $table->string('describe', 500)->comment('设置项描述');
-                $table->string('values', 255)->comment('设置值');
+                $table->string('describe', 500)->default('')->comment('设置项描述');
+                $table->string('values', 255)->default('')->comment('设置值');
                 $table->string('type', 50)->comment('设置类型');
                 $table->string('options', 500)->nullable()->comment('options配置');
                 $table->string('props', 500)->nullable()->comment('props配置');

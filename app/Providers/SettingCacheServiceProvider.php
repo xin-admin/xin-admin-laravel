@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Service\SettingService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class SettingCacheServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,10 @@ class SettingCacheServiceProvider extends ServiceProvider
 
     public function boot(SettingService $settingService): void
     {
-        // 应用启动时刷新缓存
-        $settingService->refreshSettings();
+        // 表存在时的逻辑
+        if (Schema::hasTable('setting_group') && Schema::hasTable('setting')) {
+            // 应用启动时刷新缓存
+            $settingService->refreshSettings();
+        }
     }
 }

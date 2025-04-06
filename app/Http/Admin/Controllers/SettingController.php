@@ -11,6 +11,7 @@ use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SystemRequest\SettingRequest;
 use App\Http\BaseController;
 use App\Models\SettingModel;
+use App\Service\SettingService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -62,13 +63,24 @@ class SettingController extends BaseController
         return $this->deleteResponse();
     }
 
-    #[PutMapping('/save/{id}')] #[Authorize('system.setting.edit')]
+    #[PutMapping('/save/{id}')] #[Authorize('system.setting.save')]
     public function save(int $id): JsonResponse
     {
         $value = request()->all();
         foreach ($value as $k => $v) {
-            $this->model->where('key', $k)->where('group_id', $id)->update(['values' => $v]);
+            $model = $this->model->where('key', $k)->where('group_id', $id)->first();
+            if ($model) {
+                $model->values = $v;
+                $model->save();
+            }
         }
         return $this->success('保存成功');
+    }
+
+    #[PostMapping('/refreshCache')] #[Authorize('system.setting.refresh')]
+    public function refreshCache(): JsonResponse
+    {
+        (new SettingService)->refreshSettings();
+        return $this->success('重载成功');
     }
 }
