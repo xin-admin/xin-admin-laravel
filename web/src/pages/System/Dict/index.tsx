@@ -1,10 +1,10 @@
 import XinTable from '@/components/Xin/XinTable';
-import { Button, Col, Empty, message, Row } from 'antd';
+import { Alert, Button, Col, Empty, message, Row } from 'antd';
 import { useModel } from '@umijs/max';
 import { IDict } from '@/domain/iDict';
 import { XinTableColumn, XinTableProps } from '@/components/Xin/XinTable/typings';
-import { ProCard, ProTableProps } from '@ant-design/pro-components';
-import { useState } from 'react';
+import { ProTableProps } from '@ant-design/pro-components';
+import React, { useState } from 'react';
 import { IDictItem } from '@/domain/iDictItem';
 import { addApi, editApi } from '@/services/common/table';
 
@@ -48,7 +48,7 @@ export default () => {
     { title: '修改时间', dataIndex: 'update_time', valueType: 'date', hideInForm: true, hideInTable: true },
   ];
 
-  const [selectedRows, setSelectedRows] = useState<IDict>();
+  const [selectedRows, setSelectedRows] = useState<IDict>({id: 1, name: '性别'});
   const [tableParams, setParams] = useState<{ keywordSearch?: string; }>();
   const tableProps: ProTableProps<IDict, any> = {
     params: tableParams,
@@ -56,12 +56,13 @@ export default () => {
     rowSelection: {
       type: 'radio',
       alwaysShowAlert: true,
+      defaultSelectedRowKeys: [1],
       onSelect: (record) => {
         setSelectedRows(record);
       },
     },
     cardProps: { bordered: true },
-    tableAlertRender: ({ selectedRows }) => selectedRows.length ? selectedRows[0].name : '请选择',
+    tableAlertRender: () => '请选择字典项',
     tableAlertOptionRender: false,
     toolbar: {
       search: {
@@ -103,7 +104,7 @@ export default () => {
 
   return (
     <Row gutter={20}>
-      <Col span={16}>
+      <Col span={14}>
         <XinTable<IDict>
           api={'/system/dict'}
           columns={columns}
@@ -116,8 +117,14 @@ export default () => {
           }}
         />
       </Col>
-      <Col span={8}>
-        <ProCard title={'字典项'} bordered>
+      <Col span={10}>
+        <Alert
+          message="数据字典"
+          description={"XinAdmin 提供了强大的系统字典功能，数据字典是将单选或者多选的选项作为配置，不必写死在前端编码中，比如：商品类型字典中有字典项：食品、药物、衣物、化妆品等，你就可以用字典来进行动态的配置，以便后期修改和维护。\n"}
+          type="info"
+          closable
+          style={{marginBottom: 20}}
+        />
           {selectedRows ? (
             <XinTable<IDictItem>
               api={'/system/dict/item'}
@@ -128,7 +135,9 @@ export default () => {
                 search: false,
                 params: { dict_id: selectedRows.id },
                 toolbar: { settings: [] },
-                pagination: { pageSize: 10 }
+                pagination: { pageSize: 10 },
+                cardProps: { bordered: true },
+                headerTitle: `字典项管理（${selectedRows?.name}）`
               }}
               accessName={'system.dict.item'}
               formProps={{ grid: true, colProps: { span: 12 } }}
@@ -136,7 +145,6 @@ export default () => {
           ) : (
             <Empty description={'请选择字典'} />
           )}
-        </ProCard>
       </Col>
     </Row>
   );
