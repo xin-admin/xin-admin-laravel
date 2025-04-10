@@ -1,7 +1,7 @@
 import { Link, useLocation, useModel } from '@umijs/max';
 import { Result } from 'antd';
 import React from 'react';
-import noAuthRouter from '@/default/noPermission';
+import noAuthRouter from '@/utils/noPermission';
 
 export  default  (
   props: {children: React.ReactNode}

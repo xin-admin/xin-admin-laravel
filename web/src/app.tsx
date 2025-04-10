@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, RuntimeConfig, RunTimeLayoutConfig } from '@umijs/max';
-import settings from '@/default/settings';
+import settings from '@/utils/settings';
 import defaultConfig from '@/utils/request';
-import appList from '@/default/appList';
+import appList from '@/utils/appList';
 import footerRender from '@/components/Layout/FooterRender';
 import menuFooterRender from '@/components/Layout/MenuFooterRender';
 import actionsRender from '@/components/Layout/ActionsRender';
