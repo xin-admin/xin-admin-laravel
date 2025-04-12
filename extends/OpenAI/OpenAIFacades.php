@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Facades;
+namespace Xin\OpenAI;
 
 use Illuminate\Support\Facades\Facade;
 use OpenAI\Contracts\ResponseContract;
@@ -25,7 +25,7 @@ use OpenAI\Testing\ClientFake;
  * @method static \OpenAI\Resources\Threads threads()
  * @method static \OpenAI\Resources\VectorStores vectorStores()
  */
-final class OpenAI extends Facade
+final class OpenAIFacades extends Facade
 {
     /**
      * Get the registered name of the component.

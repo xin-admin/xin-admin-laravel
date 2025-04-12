@@ -2,13 +2,13 @@
 
 namespace App\Service;
 
-use App\Facades\OpenAI;
 use App\Models\AiConversationGroupModel;
 use App\Models\AiConversationModel;
 use Illuminate\Http\StreamedEvent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Xin\OpenAI\OpenAIFacades;
 
 class AiConversationService
 {
@@ -63,7 +63,7 @@ class AiConversationService
             $model->conversation()->save($aiMessageModel);
             // 记录日志
             Log::log('info', $messages);
-            $stream = OpenAI::chat()->createStreamed([
+            $stream = OpenAIFacades::chat()->createStreamed([
                 'model' => $model->model,
                 'messages' => $messages
             ]);

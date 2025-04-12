@@ -2,7 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
-    App\Providers\OpenAIClient::class,
+    Xin\AnnoRoute\RouteServiceProvider::class,
+    Xin\OpenAI\OpenAIClient::class,
     App\Providers\SettingCacheServiceProvider::class,
 ];

@@ -2,10 +2,6 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
-use App\Attribute\route\PutMapping;
-use App\Attribute\route\RequestMapping;
 use App\Enum\FileType;
 use App\Http\BaseController;
 use App\Service\AdminUserService;
@@ -13,6 +9,10 @@ use App\Service\FileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PostMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 管理员用户控制器

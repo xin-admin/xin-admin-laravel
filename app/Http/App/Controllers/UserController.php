@@ -2,16 +2,16 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
-use App\Attribute\route\PutMapping;
-use App\Attribute\route\RequestMapping;
 use App\Enum\TokenEnum;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PostMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 #[RequestMapping('/api/user')]
 class UserController extends BaseController
