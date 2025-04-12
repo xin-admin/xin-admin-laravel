@@ -10,6 +10,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileService
 {
+    /**
+     * 上传文件
+     * @param FileType $fileType
+     * @param int $group_id
+     * @param string $disk
+     * @param string $type
+     * @return array
+     */
     public function upload(FileType $fileType, int $group_id, string $disk, string $type = 'admin'): array
     {
         $file = request()->file('file');
@@ -56,6 +64,12 @@ class FileService
         return $fileData->toArray();
     }
 
+    /**
+     * 删除文件
+     * @param int $fileId
+     * @param bool $recycle
+     * @return void
+     */
     public function delete(int $fileId, bool $recycle = true): void
     {
         if ($recycle) {
@@ -67,6 +81,11 @@ class FileService
         Storage::disk($file->value('disk'))->delete($file->value('file_path'));
     }
 
+    /**
+     * 获取文件 Url
+     * @param int $fileId
+     * @return string
+     */
     public function url(int $fileId): string
     {
         $file = FileModel::find($fileId);
@@ -74,6 +93,12 @@ class FileService
         return Storage::disk($file->value('disk'))->url($file->value('file_path'));
     }
 
+    /**
+     * @param int $fileId
+     * @param int $expire
+     * @param array $options
+     * @return string
+     */
     public function temporaryUrl(int $fileId, int $expire = 5, array $options = []): string
     {
         $file = FileModel::find($fileId);
@@ -84,6 +109,11 @@ class FileService
         );
     }
 
+    /**
+     * 下载文件
+     * @param int $fileId
+     * @return StreamedResponse
+     */
     public function download(int $fileId): StreamedResponse
     {
         $file = FileModel::where('file_id', $fileId)->first();
