@@ -6,41 +6,33 @@ class EntryUpdate
 {
     /**
      * The entry's UUID.
-     *
-     * @var string
      */
-    public $uuid;
+    public string $uuid;
 
     /**
      * The entry's type.
-     *
-     * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * The properties that should be updated on the entry.
-     *
-     * @var array
      */
-    public $changes = [];
+    public array $changes = [];
 
     /**
      * The changes to be applied on the tags.
-     *
-     * @var array
      */
-    public $tagsChanges = ['removed' => [], 'added' => []];
+    public array $tagsChanges = ['removed' => [], 'added' => []];
 
     /**
      * Create a new incoming entry instance.
      *
-     * @param  string  $uuid
-     * @param  string  $type
+     * @param string $uuid
+     * @param string $type
      * @param  array  $changes
      * @return void
      */
-    public function __construct($uuid, $type, array $changes)
+    public function __construct(string $uuid, string $type, array $changes)
     {
         $this->uuid = $uuid;
         $this->type = $type;
@@ -53,7 +45,7 @@ class EntryUpdate
      * @param  mixed  ...$arguments
      * @return static
      */
-    public static function make(...$arguments)
+    public static function make(...$arguments): static
     {
         return new static(...$arguments);
     }
@@ -64,7 +56,7 @@ class EntryUpdate
      * @param  array  $changes
      * @return $this
      */
-    public function change(array $changes)
+    public function change(array $changes): static
     {
         $this->changes = array_merge($this->changes, $changes);
 
@@ -77,7 +69,7 @@ class EntryUpdate
      * @param  array  $tags
      * @return $this
      */
-    public function addTags(array $tags)
+    public function addTags(array $tags): static
     {
         $this->tagsChanges['added'] = array_unique(
             array_merge($this->tagsChanges['added'], $tags)
@@ -92,7 +84,7 @@ class EntryUpdate
      * @param  array  $tags
      * @return $this
      */
-    public function removeTags(array $tags)
+    public function removeTags(array $tags): static
     {
         $this->tagsChanges['removed'] = array_unique(
             array_merge($this->tagsChanges['removed'], $tags)

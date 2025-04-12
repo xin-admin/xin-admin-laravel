@@ -529,17 +529,6 @@ class Telescope
      * @param  IncomingEntry  $entry
      * @return void
      */
-    public static function recordView(IncomingEntry $entry)
-    {
-        static::record(EntryType::VIEW, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
-     */
     public static function recordClientRequest(IncomingEntry $entry)
     {
         static::record(EntryType::CLIENT_REQUEST, $entry);

@@ -12,7 +12,7 @@ trait ExtractsMailableTags
      *
      * @return void
      */
-    protected static function registerMailableTagExtractor()
+    protected static function registerMailableTagExtractor(): void
     {
         $existingCallback = Mailable::$viewDataCallback;
 

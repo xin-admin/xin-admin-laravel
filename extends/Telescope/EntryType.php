@@ -20,6 +20,5 @@ class EntryType
     public const REQUEST = 'request';
     public const SCHEDULED_TASK = 'schedule';
     public const GATE = 'gate';
-    public const VIEW = 'view';
     public const CLIENT_REQUEST = 'client_request';
 }

@@ -25,7 +25,7 @@ class BatchWatcher extends Watcher
      * @param  string  $connection
      * @param  string  $queue
      * @param  array  $payload
-     * @return \Laravel\Telescope\IncomingEntry|null
+     * @return IncomingEntry|null
      */
     public function recordBatch(BatchDispatched $event)
     {
