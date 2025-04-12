@@ -9,7 +9,7 @@ abstract class Watcher
      *
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * Create a new watcher instance.

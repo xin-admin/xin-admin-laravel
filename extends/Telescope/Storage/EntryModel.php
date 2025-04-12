@@ -2,9 +2,10 @@
 
 namespace Xin\Telescope\Storage;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Xin\Telescope\Database\Factories\EntryModelFactory;
 
 class EntryModel extends Model
 {
@@ -56,13 +57,9 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given query options.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $type
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithTelescopeOptions($query, $type, EntryQueryOptions $options)
+    #[Scope]
+    public function withTelescopeOptions(Builder $query, string $type, EntryQueryOptions $options): Builder
     {
         $this->whereType($query, $type)
                 ->whereBatchId($query, $options)
@@ -76,12 +73,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given type.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $type
-     * @return $this
      */
-    protected function whereType($query, $type)
+    protected function whereType(Builder $query, string $type): static
     {
         $query->when($type, function ($query, $type) {
             return $query->where('type', $type);
@@ -92,12 +85,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given batch ID.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return $this
      */
-    protected function whereBatchId($query, EntryQueryOptions $options)
+    protected function whereBatchId(Builder $query, EntryQueryOptions $options): static
     {
         $query->when($options->batchId, function ($query, $batchId) {
             return $query->where('batch_id', $batchId);
@@ -108,12 +97,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given type.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return $this
      */
-    protected function whereTag($query, EntryQueryOptions $options)
+    protected function whereTag(Builder $query, EntryQueryOptions $options): static
     {
         $query->when($options->tag, function ($query, $tag) {
             $tags = collect(explode(',', $tag))->map(fn ($tag) => trim($tag));
@@ -135,12 +120,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given type.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return $this
      */
-    protected function whereFamilyHash($query, EntryQueryOptions $options)
+    protected function whereFamilyHash(Builder $query, EntryQueryOptions $options): static
     {
         $query->when($options->familyHash, function ($query, $hash) {
             return $query->where('family_hash', $hash);
@@ -151,12 +132,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given pagination options.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return $this
      */
-    protected function whereBeforeSequence($query, EntryQueryOptions $options)
+    protected function whereBeforeSequence(Builder $query, EntryQueryOptions $options): static
     {
         $query->when($options->beforeSequence, function ($query, $beforeSequence) {
             return $query->where('sequence', '<', $beforeSequence);
@@ -167,12 +144,8 @@ class EntryModel extends Model
 
     /**
      * Scope the query for the given display options.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return $this
      */
-    protected function filter($query, EntryQueryOptions $options)
+    protected function filter(Builder $query, EntryQueryOptions $options): static
     {
         if ($options->familyHash || $options->tag || $options->batchId) {
             return $this;
@@ -185,21 +158,9 @@ class EntryModel extends Model
 
     /**
      * Get the current connection name for the model.
-     *
-     * @return string
      */
-    public function getConnectionName()
+    public function getConnectionName(): string
     {
         return config('telescope.storage.database.connection');
-    }
-
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public static function newFactory()
-    {
-        return EntryModelFactory::new();
     }
 }

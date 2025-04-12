@@ -3,79 +3,63 @@
 namespace Xin\Telescope\Contracts;
 
 use Illuminate\Support\Collection;
+use Laravel\Telescope\EntryUpdate;
 use Xin\Telescope\EntryResult;
+use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Storage\EntryQueryOptions;
 
 interface EntriesRepository
 {
     /**
      * Return an entry with the given ID.
-     *
-     * @param  mixed  $id
-     * @return \Laravel\Telescope\EntryResult
      */
-    public function find($id): EntryResult;
+    public function find(mixed $id): EntryResult;
 
     /**
      * Return all the entries of a given type.
      *
-     * @param  string|null  $type
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return \Illuminate\Support\Collection|\Laravel\Telescope\EntryResult[]
+     * @return Collection|EntryResult[]
      */
-    public function get($type, EntryQueryOptions $options);
+    public function get(?string $type, EntryQueryOptions $options): array|Collection;
 
     /**
      * Store the given entries.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\IncomingEntry[]  $entries
+     * @param Collection|IncomingEntry[]  $entries
      * @return void
      */
-    public function store(Collection $entries);
+    public function store(Collection $entries): void;
 
     /**
      * Store the given entry updates and return the failed updates.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\EntryUpdate[]  $updates
-     * @return \Illuminate\Support\Collection|null
+     * @param Collection|EntryUpdate[]  $updates
+     * @return Collection|null
      */
-    public function update(Collection $updates);
+    public function update(Collection $updates): ?Collection;
 
     /**
      * Load the monitored tags from storage.
-     *
-     * @return void
      */
-    public function loadMonitoredTags();
+    public function loadMonitoredTags(): void;
 
     /**
      * Determine if any of the given tags are currently being monitored.
-     *
-     * @param  array  $tags
-     * @return bool
      */
-    public function isMonitoring(array $tags);
+    public function isMonitoring(array $tags): bool;
 
     /**
      * Get the list of tags currently being monitored.
-     *
-     * @return array
      */
-    public function monitoring();
+    public function monitoring(): array;
 
     /**
      * Begin monitoring the given list of tags.
-     *
-     * @param  array  $tags
-     * @return void
      */
-    public function monitor(array $tags);
+    public function monitor(array $tags): void;
 
     /**
      * Stop monitoring the given list of tags.
-     *
-     * @param  array  $tags
-     * @return void
      */
-    public function stopMonitoring(array $tags);
+    public function stopMonitoring(array $tags): void;
 }
