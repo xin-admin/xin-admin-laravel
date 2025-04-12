@@ -2,7 +2,6 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Enum\TokenEnum;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
@@ -24,22 +23,6 @@ class UserController extends BaseController
         $info = auth('user')->userInfo();
 
         return $this->success(compact('info'));
-    }
-
-    #[PostMapping('/refreshToken')]
-    public function refreshToken(): JsonResponse
-    {
-        $token = request()->header('x-user-token');
-        $reToken = request()->header('x-user-refresh-token');
-        if (request()->method() == 'POST' && $reToken) {
-            token()->delete($token);
-            $user_id = token()->get($reToken)['user_id'];
-            $token = token()->set($user_id, TokenEnum::USER);
-
-            return $this->success(compact('token'));
-        } else {
-            return $this->error('请先登录！');
-        }
     }
 
     #[PostMapping('/logout')]
