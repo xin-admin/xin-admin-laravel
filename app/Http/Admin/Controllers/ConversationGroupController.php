@@ -2,13 +2,13 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\Authorize;
-use App\Attribute\route\DeleteMapping;
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
 use App\Models\AiConversationGroupModel;
 use Illuminate\Http\JsonResponse;
+use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\DeleteMapping;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 会话组管理控制器

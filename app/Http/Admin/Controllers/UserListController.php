@@ -2,16 +2,16 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\Authorize;
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PutMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\UserRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use App\Service\XinUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 前台用户列表

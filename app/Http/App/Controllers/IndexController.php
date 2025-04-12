@@ -2,9 +2,6 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\App\Requests\UserRegisterRequest;
 use App\Http\BaseController;
 use App\Mail\VerificationCodeMail;
@@ -13,6 +10,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use OpenApi\Attributes as OA;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PostMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 #[RequestMapping('/api')]
 class IndexController extends BaseController

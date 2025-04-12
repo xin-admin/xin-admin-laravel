@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Attribute\route;
+namespace Xin\AnnoRoute\Attribute;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class PostMapping
+class DeleteMapping
 {
     /**
      * @param string $route 路由

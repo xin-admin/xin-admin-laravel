@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Attribute\route;
+namespace Xin\AnnoRoute\Attribute;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS)]
-class RequestMapping
+#[Attribute(Attribute::TARGET_METHOD)]
+class GetMapping
 {
     /**
      * @param string $route 路由

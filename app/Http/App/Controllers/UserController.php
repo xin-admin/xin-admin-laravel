@@ -2,16 +2,15 @@
 
 namespace App\Http\App\Controllers;
 
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
-use App\Attribute\route\PutMapping;
-use App\Attribute\route\RequestMapping;
-use App\Enum\TokenEnum;
 use App\Http\App\Requests\UserUpdateInfoRequest;
 use App\Http\BaseController;
 use App\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PostMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 #[RequestMapping('/api/user')]
 class UserController extends BaseController
@@ -24,22 +23,6 @@ class UserController extends BaseController
         $info = auth('user')->userInfo();
 
         return $this->success(compact('info'));
-    }
-
-    #[PostMapping('/refreshToken')]
-    public function refreshToken(): JsonResponse
-    {
-        $token = request()->header('x-user-token');
-        $reToken = request()->header('x-user-refresh-token');
-        if (request()->method() == 'POST' && $reToken) {
-            token()->delete($token);
-            $user_id = token()->get($reToken)['user_id'];
-            $token = token()->set($user_id, TokenEnum::USER);
-
-            return $this->success(compact('token'));
-        } else {
-            return $this->error('请先登录！');
-        }
     }
 
     #[PostMapping('/logout')]

@@ -2,17 +2,17 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\Authorize;
-use App\Attribute\route\DeleteMapping;
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\PostMapping;
-use App\Attribute\route\PutMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\Admin\Requests\SystemRequest\SettingGroupRequest;
 use App\Http\BaseController;
 use App\Models\SettingGroupModel;
 use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
+use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\DeleteMapping;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\PostMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 设置分组控制器

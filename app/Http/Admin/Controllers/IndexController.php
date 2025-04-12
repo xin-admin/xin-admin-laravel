@@ -2,10 +2,10 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
 use Illuminate\Http\JsonResponse;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 #[RequestMapping('/admin')]
 class IndexController extends BaseController

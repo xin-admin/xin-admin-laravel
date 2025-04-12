@@ -2,12 +2,12 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Attribute\Authorize;
-use App\Attribute\route\GetMapping;
-use App\Attribute\route\RequestMapping;
 use App\Http\BaseController;
 use App\Models\AdminLoginLogModel;
 use Illuminate\Http\JsonResponse;
+use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 管理员登录日志
