@@ -39,7 +39,7 @@ trait FetchesStackTrace
     }
 
     /**
-     * Choose the frame outside of either Telescope / Laravel or all packages.
+     * Choose the frame outside of either Telescope / Laravel or all extends.
      *
      * @return string|null
      */
