@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use App\Enum\ShowType;
-use App\Trait\RequestJson;
+use App\RequestJson;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;

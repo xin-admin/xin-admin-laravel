@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Models\AdminDeptModel;
-use App\Trait\RequestJson;
+use App\RequestJson;
 use Illuminate\Http\JsonResponse;
 
 class AdminUserDeptService extends BaseService

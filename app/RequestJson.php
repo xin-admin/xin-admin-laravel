@@ -1,5 +1,5 @@
 <?php
-namespace App\Trait;
+namespace App;
 
 use App\Enum\ShowType as ShopTypeEnum;
 use App\Exceptions\HttpResponseException;
