@@ -80,7 +80,7 @@ class SettingController extends BaseController
     #[PostMapping('/refreshCache')] #[Authorize('system.setting.refresh')]
     public function refreshCache(): JsonResponse
     {
-        (new SettingService)->refreshSettings();
+        SettingService::refreshSettings();
         return $this->success('重载成功');
     }
 }

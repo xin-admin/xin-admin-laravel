@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace App;
 
 use App\Service\LengthAwarePaginatorService;
+use App\Service\SettingService;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(SettingService::class, SettingService::class);
         $this->app->bind('Illuminate\Pagination\LengthAwarePaginator', function ($app, $options) {
             return new LengthAwarePaginatorService($options['items'], $options['total'], $options['perPage'], $options['currentPage'], $options['options']);
         });
@@ -27,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        SettingService::refreshSettings();
     }
 }

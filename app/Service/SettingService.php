@@ -15,7 +15,7 @@ class SettingService
      * 刷新系统设置缓存
      * @return void
      */
-    public function refreshSettings(): void
+    public static function refreshSettings(): void
     {
         $groups = SettingGroupModel::with('settings')->get();
         $settings = [];
@@ -34,7 +34,7 @@ class SettingService
      * @param $default
      * @return mixed
      */
-    static public function getSetting(string $name, $default = null): mixed
+    public static function getSetting(string $name, $default = null): mixed
     {
         $name = explode('.', $name);
         $settings = Cache::get(self::getCacheKey());
@@ -49,7 +49,7 @@ class SettingService
      * 获取缓存KEY
      * @return string
      */
-    static private function getCacheKey(): string
+    private static function getCacheKey(): string
     {
         return env('SETTING_CACHE_KEY', 'app_settings');
     }
