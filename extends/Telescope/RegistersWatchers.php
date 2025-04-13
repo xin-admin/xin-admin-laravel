@@ -2,33 +2,27 @@
 
 namespace Xin\Telescope;
 
+use Illuminate\Foundation\Application;
+
 trait RegistersWatchers
 {
     /**
      * The class names of the registered watchers.
-     *
-     * @var array
      */
-    protected static $watchers = [];
+    protected static array $watchers = [];
 
     /**
      * Determine if a given watcher has been registered.
-     *
-     * @param  string  $class
-     * @return bool
      */
-    public static function hasWatcher($class)
+    public static function hasWatcher($class): bool
     {
         return in_array($class, static::$watchers);
     }
 
     /**
      * Register the configured Telescope watchers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
      */
-    protected static function registerWatchers($app)
+    protected static function registerWatchers(Application $app): void
     {
         foreach (config('telescope.watchers') as $key => $watcher) {
             if (is_string($key) && $watcher === false) {

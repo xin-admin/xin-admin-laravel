@@ -19,22 +19,16 @@ class RequestWatcher extends Watcher
 {
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         $app['events']->listen(RequestHandled::class, [$this, 'recordRequest']);
     }
 
     /**
      * Record an incoming HTTP request.
-     *
-     * @param  \Illuminate\Foundation\Http\Events\RequestHandled  $event
-     * @return void
      */
-    public function recordRequest(RequestHandled $event)
+    public function recordRequest(RequestHandled $event): void
     {
         if (! Telescope::isRecording() ||
             $this->shouldIgnoreHttpMethod($event) ||
@@ -63,11 +57,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Determine if the request should be ignored based on its method.
-     *
-     * @param  mixed  $event
-     * @return bool
      */
-    protected function shouldIgnoreHttpMethod($event)
+    protected function shouldIgnoreHttpMethod(mixed $event): bool
     {
         return in_array(
             strtolower($event->request->method()),
@@ -79,11 +70,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Determine if the request should be ignored based on its status code.
-     *
-     * @param  mixed  $event
-     * @return bool
      */
-    protected function shouldIgnoreStatusCode($event)
+    protected function shouldIgnoreStatusCode(mixed $event): bool
     {
         return in_array(
             $event->response->getStatusCode(),
@@ -93,11 +81,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Format the given headers.
-     *
-     * @param  array  $headers
-     * @return array
      */
-    protected function headers($headers)
+    protected function headers(array $headers): array
     {
         $headers = collect($headers)
             ->map(fn ($header) => implode(', ', $header))
@@ -110,11 +95,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Format the given payload.
-     *
-     * @param  array|string  $payload
-     * @return array|string
      */
-    protected function payload($payload)
+    protected function payload(array|string $payload): array|string
     {
         if (is_string($payload)) {
             return $payload;
@@ -127,12 +109,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Hide the given parameters.
-     *
-     * @param  array  $data
-     * @param  array  $hidden
-     * @return mixed
      */
-    protected function hideParameters($data, $hidden)
+    protected function hideParameters(array $data, array $hidden): array
     {
         foreach ($hidden as $parameter) {
             if (Arr::get($data, $parameter)) {
@@ -145,22 +123,16 @@ class RequestWatcher extends Watcher
 
     /**
      * Extract the session variables from the given request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    private function sessionVariables(Request $request)
+    private function sessionVariables(Request $request): array
     {
         return $request->hasSession() ? $request->session()->all() : [];
     }
 
     /**
      * Extract the input from the given request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|string
      */
-    private function input(Request $request)
+    private function input(Request $request): array|string
     {
         if (Str::startsWith(strtolower($request->headers->get('Content-Type') ?? ''), 'text/plain')) {
             return (string) $request->getContent();
@@ -180,11 +152,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Format the given response object.
-     *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @return array|string
      */
-    protected function response(Response $response)
+    protected function response(Response $response): array|string
     {
         $content = $response->getContent();
 
@@ -221,11 +190,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Determine if the content is within the set limits.
-     *
-     * @param  string  $content
-     * @return bool
      */
-    public function contentWithinLimits($content)
+    public function contentWithinLimits(string $content): bool
     {
         $limit = $this->options['size_limit'] ?? 64;
 
@@ -234,11 +200,8 @@ class RequestWatcher extends Watcher
 
     /**
      * Extract the data from the given view in array form.
-     *
-     * @param  \Illuminate\View\View  $view
-     * @return array
      */
-    protected function extractDataFromView($view)
+    protected function extractDataFromView($view): array
     {
         return collect($view->getData())->map(function ($value) {
             if ($value instanceof Model) {

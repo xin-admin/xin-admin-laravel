@@ -5,6 +5,8 @@ namespace Xin\Telescope;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -24,108 +26,81 @@ class Telescope
 
     /**
      * The callbacks that filter the entries that should be recorded.
-     *
-     * @var array
      */
-    public static $filterUsing = [];
+    public static array $filterUsing = [];
 
     /**
      * The callbacks that filter the batches that should be recorded.
-     *
-     * @var array
      */
-    public static $filterBatchUsing = [];
+    public static array $filterBatchUsing = [];
 
     /**
      * The callback executed after queuing a new entry.
-     *
-     * @var \Closure
      */
-    public static $afterRecordingHook;
+    public static Closure $afterRecordingHook;
 
     /**
      * The callbacks executed after storing the entries.
-     *
-     * @var \Closure
      */
-    public static $afterStoringHooks = [];
+    public static Closure|array $afterStoringHooks = [];
 
     /**
      * The callbacks that add tags to the record.
-     *
-     * @var \Closure[]
      */
-    public static $tagUsing = [];
+    public static array $tagUsing = [];
 
     /**
      * The list of queued entries to be stored.
-     *
-     * @var array
      */
-    public static $entriesQueue = [];
+    public static array $entriesQueue = [];
 
     /**
      * The list of queued entry updates.
-     *
-     * @var array
      */
-    public static $updatesQueue = [];
+    public static array $updatesQueue = [];
 
     /**
      * The list of hidden request headers.
-     *
-     * @var array
      */
-    public static $hiddenRequestHeaders = [
+    public static array $hiddenRequestHeaders = [
         'authorization',
         'php-auth-pw',
     ];
 
     /**
      * The list of hidden request parameters.
-     *
-     * @var array
      */
-    public static $hiddenRequestParameters = [
+    public static array $hiddenRequestParameters = [
         'password',
         'password_confirmation',
     ];
 
     /**
      * The list of hidden response parameters.
-     *
-     * @var array
      */
-    public static $hiddenResponseParameters = [];
+    public static array $hiddenResponseParameters = [];
 
     /**
      * Indicates if Telescope should ignore events fired by Laravel.
-     *
-     * @var bool
      */
-    public static $ignoreFrameworkEvents = true;
+    public static bool $ignoreFrameworkEvents = true;
 
     /**
      * Indicates if Telescope should use the dark theme.
-     *
-     * @var bool
      */
-    public static $useDarkTheme = false;
+    public static bool $useDarkTheme = false;
 
     /**
      * Indicates if Telescope should record entries.
-     *
-     * @var bool
      */
-    public static $shouldRecord = false;
+    public static bool $shouldRecord = false;
 
     /**
      * Register the Telescope watchers and start recording if necessary.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
+     * @param  Application  $app
      */
-    public static function start($app)
+    public static function start($app): void
     {
         if (! config('telescope.enabled')) {
             return;
@@ -146,10 +121,9 @@ class Telescope
     /**
      * Determine if Telescope is running within Octane.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return bool
+     * @param  Application  $app
      */
-    protected static function runningWithinOctane($app)
+    protected static function runningWithinOctane($app): bool
     {
         return isset($_SERVER['LARAVEL_OCTANE']);
     }
@@ -157,10 +131,9 @@ class Telescope
     /**
      * Determine if the application is running an approved command.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return bool
+     * @param  Application  $app
      */
-    protected static function runningApprovedArtisanCommand($app)
+    protected static function runningApprovedArtisanCommand($app): bool
     {
         return $app->runningInConsole() && ! in_array(
             $_SERVER['argv'][1] ?? null,
@@ -184,10 +157,9 @@ class Telescope
     /**
      * Determine if the application is handling an approved request.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return bool
+     * @param  Application  $app
      */
-    protected static function handlingApprovedRequest($app)
+    protected static function handlingApprovedRequest($app): bool
     {
         if ($app->runningInConsole()) {
             return false;
@@ -199,11 +171,8 @@ class Telescope
 
     /**
      * Determine if the request is to an approved domain.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
-    protected static function requestIsToApprovedDomain($request): bool
+    protected static function requestIsToApprovedDomain(Request $request): bool
     {
         return is_null(config('telescope.domain')) ||
             config('telescope.domain') !== $request->getHost();
@@ -211,11 +180,8 @@ class Telescope
 
     /**
      * Determine if the request is to an approved URI.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
-    protected static function requestIsToApprovedUri($request)
+    protected static function requestIsToApprovedUri(Request $request): bool
     {
         if (! empty($only = config('telescope.only_paths', []))) {
             return $request->is($only);
@@ -238,11 +204,8 @@ class Telescope
 
     /**
      * Start recording entries.
-     *
-     * @param  bool  $loadMonitoredTags
-     * @return void
      */
-    public static function startRecording($loadMonitoredTags = true)
+    public static function startRecording(bool $loadMonitoredTags = true): void
     {
         if ($loadMonitoredTags) {
             app(EntriesRepository::class)->loadMonitoredTags();
@@ -261,10 +224,8 @@ class Telescope
 
     /**
      * Stop recording entries.
-     *
-     * @return void
      */
-    public static function stopRecording()
+    public static function stopRecording(): void
     {
         static::$shouldRecord = false;
     }
@@ -273,9 +234,8 @@ class Telescope
      * Execute the given callback without recording Telescope entries.
      *
      * @param  callable  $callback
-     * @return mixed
      */
-    public static function withoutRecording($callback)
+    public static function withoutRecording($callback): mixed
     {
         $shouldRecord = static::$shouldRecord;
 
@@ -290,22 +250,16 @@ class Telescope
 
     /**
      * Determine if Telescope is recording.
-     *
-     * @return bool
      */
-    public static function isRecording()
+    public static function isRecording(): bool
     {
         return static::$shouldRecord && ! app('events') instanceof EventFake;
     }
 
     /**
      * Record the given entry.
-     *
-     * @param  string  $type
-     * @param IncomingEntry $entry
-     * @return void
      */
-    protected static function record(string $type, IncomingEntry $entry)
+    protected static function record(string $type, IncomingEntry $entry): void
     {
         if (! static::isRecording()) {
             return;
@@ -336,11 +290,8 @@ class Telescope
 
     /**
      * Record the given entry update.
-     *
-     * @param EntryUpdate $update
-     * @return void
      */
-    public static function recordUpdate(EntryUpdate $update)
+    public static function recordUpdate(EntryUpdate $update): void
     {
         if (static::$shouldRecord) {
             static::$updatesQueue[] = $update;
@@ -348,198 +299,145 @@ class Telescope
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Batch entry.
      */
-    public static function recordBatch($entry)
+    public static function recordBatch(IncomingEntry $entry): void
     {
         static::record(EntryType::BATCH, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Cache entry.
      */
-    public static function recordCache(IncomingEntry $entry)
+    public static function recordCache(IncomingEntry $entry): void
     {
         static::record(EntryType::CACHE, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Command entry.
      */
-    public static function recordCommand(IncomingEntry $entry)
+    public static function recordCommand(IncomingEntry $entry): void
     {
         static::record(EntryType::COMMAND, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Dump entry.
      */
-    public static function recordDump(IncomingEntry $entry)
+    public static function recordDump(IncomingEntry $entry): void
     {
         static::record(EntryType::DUMP, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Event entry.
      */
-    public static function recordEvent(IncomingEntry $entry)
+    public static function recordEvent(IncomingEntry $entry): void
     {
         static::record(EntryType::EVENT, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Exception entry.
      */
-    public static function recordException(IncomingEntry $entry)
+    public static function recordException(IncomingEntry $entry): void
     {
         static::record(EntryType::EXCEPTION, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Gate entry.
      */
-    public static function recordGate(IncomingEntry $entry)
+    public static function recordGate(IncomingEntry $entry): void
     {
         static::record(EntryType::GATE, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Job entry.
      */
-    public static function recordJob($entry)
+    public static function recordJob(IncomingEntry $entry): void
     {
         static::record(EntryType::JOB, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Log entry.
      */
-    public static function recordLog(IncomingEntry $entry)
+    public static function recordLog(IncomingEntry $entry): void
     {
         static::record(EntryType::LOG, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Mail entry.
      */
-    public static function recordMail(IncomingEntry $entry)
+    public static function recordMail(IncomingEntry $entry): void
     {
         static::record(EntryType::MAIL, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Notification entry.
      */
-    public static function recordNotification($entry)
+    public static function recordNotification(IncomingEntry $entry): void
     {
         static::record(EntryType::NOTIFICATION, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Query entry.
      */
-    public static function recordQuery(IncomingEntry $entry)
+    public static function recordQuery(IncomingEntry $entry): void
     {
         static::record(EntryType::QUERY, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the ModelEvent entry.
      */
-    public static function recordModelEvent(IncomingEntry $entry)
+    public static function recordModelEvent(IncomingEntry $entry): void
     {
         static::record(EntryType::MODEL, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Redis entry.
      */
-    public static function recordRedis(IncomingEntry $entry)
+    public static function recordRedis(IncomingEntry $entry): void
     {
         static::record(EntryType::REDIS, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the Request entry.
      */
-    public static function recordRequest(IncomingEntry $entry)
+    public static function recordRequest(IncomingEntry $entry): void
     {
         static::record(EntryType::REQUEST, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the ScheduledCommand entry.
      */
-    public static function recordScheduledCommand(IncomingEntry $entry)
+    public static function recordScheduledCommand(IncomingEntry $entry): void
     {
         static::record(EntryType::SCHEDULED_TASK, $entry);
     }
 
     /**
-     * Record the given entry.
-     *
-     * @param  IncomingEntry  $entry
-     * @return void
+     * Record the ClientRequest entry.
      */
-    public static function recordClientRequest(IncomingEntry $entry)
+    public static function recordClientRequest(IncomingEntry $entry): void
     {
         static::record(EntryType::CLIENT_REQUEST, $entry);
     }
 
     /**
      * Flush all entries in the queue.
-     *
-     * @return static
      */
-    public static function flushEntries()
+    public static function flushEntries(): static
     {
         static::$entriesQueue = [];
 
@@ -548,12 +446,8 @@ class Telescope
 
     /**
      * Record the given exception.
-     *
-     * @param  \Throwable|\Exception  $e
-     * @param  array  $tags
-     * @return void
      */
-    public static function catch($e, $tags = [])
+    public static function catch($e, array $tags = []): void
     {
         event(new MessageLogged('error', $e->getMessage(), [
             'exception' => $e,
@@ -563,11 +457,8 @@ class Telescope
 
     /**
      * Set the callback that filters the entries that should be recorded.
-     *
-     * @param  \Closure  $callback
-     * @return static
      */
-    public static function filter(Closure $callback)
+    public static function filter(Closure $callback): static
     {
         static::$filterUsing[] = $callback;
 
@@ -576,11 +467,8 @@ class Telescope
 
     /**
      * Set the callback that filters the batches that should be recorded.
-     *
-     * @param  \Closure  $callback
-     * @return static
      */
-    public static function filterBatch(Closure $callback)
+    public static function filterBatch(Closure $callback): static
     {
         static::$filterBatchUsing[] = $callback;
 
@@ -589,11 +477,8 @@ class Telescope
 
     /**
      * Set the callback that will be executed after an entry is recorded in the queue.
-     *
-     * @param  \Closure  $callback
-     * @return static
      */
-    public static function afterRecording(Closure $callback)
+    public static function afterRecording(Closure $callback): static
     {
         static::$afterRecordingHook = $callback;
 
@@ -602,11 +487,8 @@ class Telescope
 
     /**
      * Add a callback that will be executed after an entry is stored.
-     *
-     * @param  \Closure  $callback
-     * @return static
      */
-    public static function afterStoring(Closure $callback)
+    public static function afterStoring(Closure $callback): static
     {
         static::$afterStoringHooks[] = $callback;
 
@@ -615,11 +497,8 @@ class Telescope
 
     /**
      * Add a callback that adds tags to the record.
-     *
-     * @param  \Closure  $callback
-     * @return static
      */
-    public static function tag(Closure $callback)
+    public static function tag(Closure $callback): static
     {
         static::$tagUsing[] = $callback;
 
@@ -632,7 +511,7 @@ class Telescope
      * @param  Contracts\EntriesRepository  $storage
      * @return void
      */
-    public static function store(EntriesRepository $storage)
+    public static function store(EntriesRepository $storage): void
     {
         if (empty(static::$entriesQueue) && empty(static::$updatesQueue)) {
             return;
@@ -678,11 +557,8 @@ class Telescope
 
     /**
      * Collect the entries for storage.
-     *
-     * @param  string  $batchId
-     * @return \Illuminate\Support\Collection
      */
-    protected static function collectEntries($batchId)
+    protected static function collectEntries(string $batchId): Collection
     {
         return collect(static::$entriesQueue)
             ->each(function ($entry) use ($batchId) {
@@ -696,11 +572,8 @@ class Telescope
 
     /**
      * Collect the updated entries for storage.
-     *
-     * @param  string  $batchId
-     * @return \Illuminate\Support\Collection
      */
-    protected static function collectUpdates($batchId)
+    protected static function collectUpdates(string $batchId): Collection
     {
         return collect(static::$updatesQueue)
             ->each(function ($entry) use ($batchId) {
@@ -710,11 +583,8 @@ class Telescope
 
     /**
      * Hide the given request header.
-     *
-     * @param  array  $headers
-     * @return static
      */
-    public static function hideRequestHeaders(array $headers)
+    public static function hideRequestHeaders(array $headers): static
     {
         static::$hiddenRequestHeaders = array_values(array_unique(array_merge(
             static::$hiddenRequestHeaders,
@@ -726,11 +596,8 @@ class Telescope
 
     /**
      * Hide the given request parameters.
-     *
-     * @param  array  $attributes
-     * @return static
      */
-    public static function hideRequestParameters(array $attributes)
+    public static function hideRequestParameters(array $attributes): static
     {
         static::$hiddenRequestParameters = array_merge(
             static::$hiddenRequestParameters,
@@ -742,11 +609,8 @@ class Telescope
 
     /**
      * Hide the given response parameters.
-     *
-     * @param  array  $attributes
-     * @return static
      */
-    public static function hideResponseParameters(array $attributes)
+    public static function hideResponseParameters(array $attributes): static
     {
         static::$hiddenResponseParameters = array_values(array_unique(array_merge(
             static::$hiddenResponseParameters,
@@ -758,10 +622,8 @@ class Telescope
 
     /**
      * Specifies that Telescope should record events fired by Laravel.
-     *
-     * @return static
      */
-    public static function recordFrameworkEvents()
+    public static function recordFrameworkEvents(): static
     {
         static::$ignoreFrameworkEvents = false;
 
@@ -770,10 +632,8 @@ class Telescope
 
     /**
      * Specifies that Telescope should use the dark theme.
-     *
-     * @return static
      */
-    public static function night()
+    public static function night(): static
     {
         static::$useDarkTheme = true;
 
@@ -782,10 +642,8 @@ class Telescope
 
     /**
      * Get the default JavaScript variables for Telescope.
-     *
-     * @return array
      */
-    public static function scriptVariables()
+    public static function scriptVariables(): array
     {
         return [
             'path' => config('telescope.path'),
