@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Trait\RequestJson;
+use App\RequestJson;
 
 abstract class BaseService
 {

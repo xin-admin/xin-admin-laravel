@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Trait\RequestJson;
+use App\RequestJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;

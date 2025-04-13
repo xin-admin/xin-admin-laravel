@@ -1,9 +1,8 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
+    App\AppServiceProvider::class,
     Xin\AnnoRoute\RouteServiceProvider::class,
-    Xin\OpenAI\OpenAIClient::class,
-    App\Providers\SettingCacheServiceProvider::class,
+    Xin\OpenAI\OpenAIServiceProvider::class,
     Xin\Telescope\TelescopeServiceProvider::class,
 ];
