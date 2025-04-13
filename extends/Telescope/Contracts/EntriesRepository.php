@@ -3,7 +3,7 @@
 namespace Xin\Telescope\Contracts;
 
 use Illuminate\Support\Collection;
-use Laravel\Telescope\EntryUpdate;
+use Xin\Telescope\EntryUpdate;
 use Xin\Telescope\EntryResult;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Storage\EntryQueryOptions;
