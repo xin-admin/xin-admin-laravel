@@ -144,7 +144,7 @@ class IncomingEntry
         $this->content = array_merge($this->content, [
             'user' => [
                 'id' => $user->getAuthIdentifier(),
-                'name' => $user->name ?? null,
+                'name' => $user->username ?? null,
                 'email' => $user->email ?? null,
             ],
         ]);

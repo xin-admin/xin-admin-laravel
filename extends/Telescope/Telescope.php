@@ -36,8 +36,9 @@ class Telescope
 
     /**
      * The callback executed after queuing a new entry.
+     * @var Closure
      */
-    public static Closure $afterRecordingHook;
+    public static $afterRecordingHook;
 
     /**
      * The callbacks executed after storing the entries.
