@@ -85,13 +85,6 @@ class AnnoRoute
 
         $middleware = $this->middleware;
 
-        // 检查是否有权限注解
-        $authorizeIndex = array_search(Authorize::class, $attributeClassNames);
-        if (in_array(Authorize::class, $attributeClassNames)) {
-            $authInstance = $attributes[$authorizeIndex]->newInstance();
-            $middleware[] = 'abilities:' . $authInstance->name;
-        }
-
         // 遍历所有注解
         foreach ($attributes as $attribute) {
             $attributeClass = $attribute->getName();
@@ -107,9 +100,15 @@ class AnnoRoute
             // 添加基础认证中间件（如果不在白名单中）
             if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
                 $middleware[] = 'auth:sanctum';
+                // 添加令牌能力认证中间件
+                if (in_array(Authorize::class, $attributeClassNames)) {
+                    $authorizeIndex = array_search(Authorize::class, $attributeClassNames);
+                    $authInstance = $attributes[$authorizeIndex]->newInstance();
+                    $middleware[] = 'abilities:' . $authInstance->name;
+                }
             }
 
-            // 添加路由中间件
+            // 添加自定义路由中间件
             $routeMiddleware = $routeInstance->middleware ?? [];
             $middleware = array_merge($middleware, $this->registerMiddleware($routeMiddleware));
 
