@@ -9,17 +9,17 @@ class EntryQueryOptions
     /**
      * The batch ID that entries should belong to.
      */
-    public string $batchId;
+    public ?string $batchId;
 
     /**
      * The tag that must belong to retrieved entries.
      */
-    public string $tag;
+    public ?string $tag;
 
     /**
      * The family hash that must belong to retrieved entries.
      */
-    public string $familyHash;
+    public ?string $familyHash;
 
     /**
      * The ID that all retrieved entries should be less than.

@@ -6,4 +6,6 @@ export default [
   'login',
   'index',
   '/',
+  '/system/watcher/request',
+  '/system/watcher/request/preview',
 ];

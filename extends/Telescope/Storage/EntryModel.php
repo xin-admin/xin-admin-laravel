@@ -2,7 +2,6 @@
 
 namespace Xin\Telescope\Storage;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -58,8 +57,7 @@ class EntryModel extends Model
     /**
      * Scope the query for the given query options.
      */
-    #[Scope]
-    public function withTelescopeOptions(Builder $query, string $type, EntryQueryOptions $options): Builder
+    public function scopeWithTelescopeOptions(Builder $query, string $type, EntryQueryOptions $options): Builder
     {
         $this->whereType($query, $type)
                 ->whereBatchId($query, $options)
