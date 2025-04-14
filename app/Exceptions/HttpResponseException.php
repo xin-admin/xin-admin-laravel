@@ -42,7 +42,7 @@ class HttpResponseException extends RuntimeException
         parent::__construct($data['msg'] ?? '', $code);
     }
 
-    public function getResData(): array
+    public function toArray(): array
     {
         return [
             'data' => $this->data,
