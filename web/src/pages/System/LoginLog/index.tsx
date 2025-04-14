@@ -23,7 +23,7 @@ export default () => {
             '0': { text: '成功', status: 'success' },
           }
         },
-        { title: '登录消息', dataIndex: 'msg', valueType: 'text', hideInSearch: true, },
+        { title: '登录消息', dataIndex: 'msg', valueType: 'text', hideInSearch: true, ellipsis: true, },
         { title: '登录时间', dataIndex: 'login_time', hideInForm: true, valueType: 'fromNow', hideInSearch: true, },
       ]}
     />
