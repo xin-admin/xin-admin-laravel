@@ -55,7 +55,7 @@ class FileModel extends Model
                 }
                 // 生成默认的预览图
                 $previewPath = FileType::from($data['file_type'])->previewPath();
-                return env('APP_URL').$previewPath;
+                return config('app.url').$previewPath;
             }, set: fn () => null
         );
     }
