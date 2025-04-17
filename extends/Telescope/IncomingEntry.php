@@ -2,142 +2,51 @@
 
 namespace Xin\Telescope;
 
-use Illuminate\Support\Str;
-use Xin\Telescope\Contracts\EntriesRepository;
+use DateTimeInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class IncomingEntry
 {
     /**
-     * The entry's UUID.
-     *
-     * @var string
-     */
-    public $uuid;
-
-    /**
-     * The entry's batch ID.
-     *
-     * @var string
-     */
-    public $batchId;
-
-    /**
      * The entry's type.
-     *
-     * @var string
      */
-    public $type;
-
-    /**
-     * The entry's family hash.
-     *
-     * @var string|null
-     */
-    public $familyHash;
+    public string $type;
 
     /**
      * The currently authenticated user, if applicable.
-     *
-     * @var mixed
      */
-    public $user;
+    public mixed $user;
 
     /**
      * The entry's content.
-     *
-     * @var array
      */
-    public $content = [];
-
-    /**
-     * The entry's tags.
-     *
-     * @var array
-     */
-    public $tags = [];
-
-    /**
-     * The DateTime that indicates when the entry was recorded.
-     *
-     * @var \DateTimeInterface
-     */
-    public $recordedAt;
+    public array $content = [];
 
     /**
      * Create a new incoming entry instance.
-     *
-     * @param  array  $content
-     * @param  string|null  $uuid
-     * @return void
      */
-    public function __construct(array $content, $uuid = null)
+    public function __construct(array $content, string $type)
     {
-        $this->uuid = $uuid ?: (string) Str::orderedUuid();
+        $this->type = $type;
 
-        $this->recordedAt = now();
-
-        $this->content = array_merge($content, ['hostname' => gethostname()]);
-
-        // $this->tags = ['hostname:'.gethostname()];
+        $this->content = array_merge($content, [
+            'host_name' => gethostname(),
+            'recorded_at' => now()->toDateTimeString()
+        ]);
     }
 
     /**
      * Create a new entry instance.
-     *
-     * @param  mixed  ...$arguments
-     * @return static
      */
-    public static function make(...$arguments)
+    public static function make(array $content, string $type): static
     {
-        return new static(...$arguments);
-    }
-
-    /**
-     * Assign the entry a given batch ID.
-     *
-     * @param  string  $batchId
-     * @return $this
-     */
-    public function batchId(string $batchId)
-    {
-        $this->batchId = $batchId;
-
-        return $this;
-    }
-
-    /**
-     * Assign the entry a given type.
-     *
-     * @param  string  $type
-     * @return $this
-     */
-    public function type(string $type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Assign the entry a family hash.
-     *
-     * @param  null|string  $familyHash
-     * @return $this
-     */
-    public function withFamilyHash($familyHash)
-    {
-        $this->familyHash = $familyHash;
-
-        return $this;
+        return new static($content, $type);
     }
 
     /**
      * Set the currently authenticated user.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @return $this
      */
-    public function user($user)
+    public function user(Authenticatable $user): static
     {
         $this->user = $user;
 
@@ -149,204 +58,97 @@ class IncomingEntry
             ],
         ]);
 
-        $this->tags(['Auth:'.$user->getAuthIdentifier()]);
+        return $this;
+    }
+
+    /**
+     * Set the entry's type.
+     */
+    public function type(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Merge tags into the entry's existing tags.
-     *
-     * @param  array  $tags
-     * @return $this
+     * Determine if the incoming entry is a batch.
      */
-    public function tags(array $tags)
+    public function isBatch(): bool
     {
-        $this->tags = array_unique(array_merge($this->tags, $tags));
-
-        return $this;
+        return $this->type === EntryType::BATCH;
     }
 
     /**
-     * Determine if the incoming entry has a monitored tag.
-     *
-     * @return bool
+     * Determine if the incoming entry is a cache entry.
      */
-    public function hasMonitoredTag()
+    public function isCache(): bool
     {
-        if (! empty($this->tags)) {
-            return app(EntriesRepository::class)->isMonitoring($this->tags);
-        }
-
-        return false;
+        return $this->type === EntryType::CACHE;
     }
 
     /**
-     * Determine if the incoming entry is a request.
-     *
-     * @return bool
+     * Determine if the incoming entry is an client request.
      */
-    public function isRequest()
+    public function isClientRequest(): bool
     {
-        return $this->type === EntryType::REQUEST;
-    }
-
-    /**
-     * Determine if the incoming entry is a failed request.
-     *
-     * @return bool
-     */
-    public function isFailedRequest()
-    {
-        return $this->type === EntryType::REQUEST &&
-            ($this->content['response_status'] ?? 200) >= 500;
+        return $this->type === EntryType::CLIENT_REQUEST;
     }
 
     /**
      * Determine if the incoming entry is a query.
-     *
-     * @return bool
      */
-    public function isQuery()
+    public function isQuery(): bool
     {
         return $this->type === EntryType::QUERY;
     }
 
     /**
      * Determine if the incoming entry is a slow query.
-     *
-     * @return bool
      */
-    public function isSlowQuery()
+    public function isSlowQuery(): bool
     {
         return $this->type === EntryType::QUERY && ($this->content['slow'] ?? false);
     }
 
     /**
-     * Determine if the incoming entry is a event entry.
-     *
-     * @return bool
+     * Determine if the incoming entry is a redis.
      */
-    public function isEvent()
+    public function isRedis(): bool
     {
-        return $this->type === EntryType::EVENT;
+        return $this->type === EntryType::REDIS;
     }
 
     /**
-     * Determine if the incoming entry is a cache entry.
-     *
-     * @return bool
+     * Determine if the incoming entry is a request.
      */
-    public function isCache()
+    public function isRequest(): bool
     {
-        return $this->type === EntryType::CACHE;
+        return $this->type === EntryType::REQUEST;
     }
 
     /**
-     * Determine if the incoming entry is an authorization gate check.
-     *
-     * @return bool
+     * Determine if the incoming entry is a failed request.
      */
-    public function isGate()
+    public function isFailedRequest(): bool
     {
-        return $this->type === EntryType::GATE;
-    }
-
-    /**
-     * Determine if the incoming entry is a failed job.
-     *
-     * @return bool
-     */
-    public function isFailedJob()
-    {
-        return $this->type === EntryType::JOB &&
-               ($this->content['status'] ?? null) === 'failed';
-    }
-
-    /**
-     * Determine if the incoming entry is a reportable exception.
-     *
-     * @return bool
-     */
-    public function isReportableException()
-    {
-        return false;
-    }
-
-    /**
-     * Determine if the incoming entry is an exception.
-     *
-     * @return bool
-     */
-    public function isException()
-    {
-        return false;
-    }
-
-    /**
-     * Determine if the incoming entry is a dump.
-     *
-     * @return bool
-     */
-    public function isDump()
-    {
-        return false;
-    }
-
-    /**
-     * Determine if the incoming entry is a log entry.
-     *
-     * @return bool
-     */
-    public function isLog()
-    {
-        return $this->type === EntryType::LOG;
+        return $this->type === EntryType::REQUEST &&
+            ($this->content['response_status'] ?? 200) >= 500;
     }
 
     /**
      * Determine if the incoming entry is a scheduled task.
-     *
-     * @return bool
      */
-    public function isScheduledTask()
+    public function isScheduledTask(): bool
     {
         return $this->type === EntryType::SCHEDULED_TASK;
     }
 
     /**
-     * Determine if the incoming entry is an client request.
-     *
-     * @return bool
+     * Get the entry's content as a string.
      */
-    public function isClientRequest()
+    public function getContentAsString(): string
     {
-        return $this->type === EntryType::CLIENT_REQUEST;
-    }
-
-    /**
-     * Get the family look-up hash for the incoming entry.
-     *
-     * @return string|null
-     */
-    public function familyHash()
-    {
-        return $this->familyHash;
-    }
-
-    /**
-     * Get an array representation of the entry for storage.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'uuid' => $this->uuid,
-            'batch_id' => $this->batchId,
-            'family_hash' => $this->familyHash,
-            'type' => $this->type,
-            'content' => $this->content,
-            'created_at' => $this->recordedAt->toDateTimeString(),
-        ];
+        return json_encode($this->content, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 }

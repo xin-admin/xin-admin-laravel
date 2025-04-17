@@ -4,8 +4,8 @@ namespace Xin\Telescope\Watchers;
 
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Console\Scheduling\CallbackEvent;
-use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 
@@ -13,9 +13,6 @@ class ScheduleWatcher extends Watcher
 {
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
     public function register($app)
     {
@@ -24,11 +21,8 @@ class ScheduleWatcher extends Watcher
 
     /**
      * Record a scheduled command was executed.
-     *
-     * @param  \Illuminate\Console\Events\CommandStarting  $event
-     * @return void
      */
-    public function recordCommand(CommandStarting $event)
+    public function recordCommand(CommandStarting $event): void
     {
         if (! Telescope::isRecording() ||
             $event->command !== 'schedule:run' &&
@@ -38,25 +32,22 @@ class ScheduleWatcher extends Watcher
 
         collect(app(Schedule::class)->events())->each(function ($event) {
             $event->then(function () use ($event) {
-                Telescope::recordScheduledCommand(IncomingEntry::make([
+                Telescope::record(IncomingEntry::make([
                     'command' => $event instanceof CallbackEvent ? 'Closure' : $event->command,
                     'description' => $event->description,
                     'expression' => $event->expression,
                     'timezone' => $event->timezone,
                     'user' => $event->user,
                     'output' => $this->getEventOutput($event),
-                ]));
+                ], EntryType::SCHEDULED_TASK));
             });
         });
     }
 
     /**
      * Get the output for the scheduled event.
-     *
-     * @param  \Illuminate\Console\Scheduling\Event  $event
-     * @return string|null
      */
-    protected function getEventOutput(Event $event)
+    protected function getEventOutput($event): ?string
     {
         if (! $event->output ||
             $event->output === $event->getDefaultOutput() ||

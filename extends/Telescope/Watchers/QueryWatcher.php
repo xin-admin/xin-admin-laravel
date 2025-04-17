@@ -3,6 +3,7 @@
 namespace Xin\Telescope\Watchers;
 
 use Illuminate\Database\Events\QueryExecuted;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 
@@ -12,11 +13,8 @@ class QueryWatcher extends Watcher
 
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         $app['events']->listen(QueryExecuted::class, [$this, 'recordQuery']);
     }
@@ -24,10 +22,10 @@ class QueryWatcher extends Watcher
     /**
      * Record a query was executed.
      *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
+     * @param QueryExecuted $event
      * @return void
      */
-    public function recordQuery(QueryExecuted $event)
+    public function recordQuery(QueryExecuted $event): void
     {
         if (! Telescope::isRecording()) {
             return;
@@ -36,59 +34,37 @@ class QueryWatcher extends Watcher
         $time = $event->time;
 
         if ($caller = $this->getCallerFromStackTrace()) {
-            Telescope::recordQuery(IncomingEntry::make([
+            Telescope::record(IncomingEntry::make([
                 'connection' => $event->connectionName,
-                'bindings' => [],
                 'sql' => $this->replaceBindings($event),
                 'time' => number_format($time, 2, '.', ''),
                 'slow' => isset($this->options['slow']) && $time >= $this->options['slow'],
                 'file' => $caller['file'],
                 'line' => $caller['line'],
-                'hash' => $this->familyHash($event),
-            ])->tags($this->tags($event)));
+            ], EntryType::QUERY));
         }
     }
 
     /**
-     * Get the tags for the query.
-     *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
-     * @return array
-     */
-    protected function tags($event)
-    {
-        return isset($this->options['slow']) && $event->time >= $this->options['slow'] ? ['slow'] : [];
-    }
-
-    /**
      * Calculate the family look-up hash for the query event.
-     *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
-     * @return string
      */
-    public function familyHash($event)
+    public function familyHash(QueryExecuted $event): string
     {
         return md5($event->sql);
     }
 
     /**
      * Format the given bindings to strings.
-     *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
-     * @return array
      */
-    protected function formatBindings($event)
+    protected function formatBindings(QueryExecuted $event): array
     {
         return $event->connection->prepareBindings($event->bindings);
     }
 
     /**
      * Replace the placeholders with the actual bindings.
-     *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
-     * @return string
      */
-    public function replaceBindings($event)
+    public function replaceBindings(QueryExecuted $event): string
     {
         $sql = $event->sql;
 
@@ -116,12 +92,8 @@ class QueryWatcher extends Watcher
 
     /**
      * Add quotes to string bindings.
-     *
-     * @param  \Illuminate\Database\Events\QueryExecuted  $event
-     * @param  string  $binding
-     * @return string
      */
-    protected function quoteStringBinding($event, $binding)
+    protected function quoteStringBinding(QueryExecuted $event, string $binding): string
     {
         try {
             $pdo = $event->connection->getPdo();

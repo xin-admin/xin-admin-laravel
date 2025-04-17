@@ -2,12 +2,9 @@
 
 namespace Xin\Telescope;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Xin\Telescope\Contracts\ClearableRepository;
 use Xin\Telescope\Contracts\EntriesRepository;
-use Xin\Telescope\Contracts\PrunableRepository;
-use Xin\Telescope\Storage\DatabaseEntriesRepository;
+use Xin\Telescope\Storage\StorageRepository;
 
 class TelescopeServiceProvider extends ServiceProvider
 {
@@ -20,8 +17,6 @@ class TelescopeServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middlewareGroup('telescope', config('telescope.middleware', []));
-
         Telescope::start($this->app);
         Telescope::listenForStorageOpportunities($this->app);
     }
@@ -33,19 +28,18 @@ class TelescopeServiceProvider extends ServiceProvider
     {
         $this->registerDatabaseDriver();
 
-        // Telescope::night();
-
         $this->hideSensitiveRequestDetails();
 
-        $isLocal = $this->app->environment('local');
-
-        Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            return $isLocal ||
-                $entry->isReportableException() ||
-                $entry->isFailedRequest() ||
-                $entry->isFailedJob() ||
+        Telescope::filter(function (IncomingEntry $entry) {
+            return $entry->isFailedRequest() ||
                 $entry->isScheduledTask() ||
-                $entry->hasMonitoredTag();
+                $entry->isQuery() ||
+                $entry->isSlowQuery() ||
+                $entry->isBatch() ||
+                $entry->isRequest() ||
+                $entry->isCache() ||
+                $entry->isRedis() ||
+                $entry->isClientRequest();
         });
     }
 
@@ -55,24 +49,8 @@ class TelescopeServiceProvider extends ServiceProvider
     protected function registerDatabaseDriver(): void
     {
         $this->app->singleton(
-            EntriesRepository::class, DatabaseEntriesRepository::class
+            EntriesRepository::class, StorageRepository::class
         );
-
-        $this->app->singleton(
-            ClearableRepository::class, DatabaseEntriesRepository::class
-        );
-
-        $this->app->singleton(
-            PrunableRepository::class, DatabaseEntriesRepository::class
-        );
-
-        $this->app->when(DatabaseEntriesRepository::class)
-            ->needs('$connection')
-            ->give(config('telescope.storage.database.connection'));
-
-        $this->app->when(DatabaseEntriesRepository::class)
-            ->needs('$chunkSize')
-            ->give(config('telescope.storage.database.chunk'));
     }
 
     /**
@@ -80,10 +58,6 @@ class TelescopeServiceProvider extends ServiceProvider
      */
     protected function hideSensitiveRequestDetails(): void
     {
-        if ($this->app->environment('local')) {
-            return;
-        }
-
         Telescope::hideRequestParameters(['_token']);
 
         Telescope::hideRequestHeaders([

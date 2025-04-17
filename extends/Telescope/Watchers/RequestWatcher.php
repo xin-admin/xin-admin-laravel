@@ -2,14 +2,13 @@
 
 namespace Xin\Telescope\Watchers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
-use Xin\Telescope\FormatModel;
+use Throwable;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,15 +29,18 @@ class RequestWatcher extends Watcher
      */
     public function recordRequest(RequestHandled $event): void
     {
+
         if (! Telescope::isRecording() ||
             $this->shouldIgnoreHttpMethod($event) ||
-            $this->shouldIgnoreStatusCode($event)) {
+            $this->shouldIgnoreStatusCode($event) ||
+            $this->shouldIgnoreHttpPath($event)
+        ) {
             return;
         }
 
         $startTime = defined('LARAVEL_START') ? LARAVEL_START : $event->request->server('REQUEST_TIME_FLOAT');
 
-        Telescope::recordRequest(IncomingEntry::make([
+        $entry = IncomingEntry::make([
             'ip_address' => $event->request->ip(),
             'uri' => str_replace($event->request->root(), '', $event->request->fullUrl()) ?: '/',
             'method' => $event->request->method(),
@@ -52,7 +54,17 @@ class RequestWatcher extends Watcher
             'response' => $this->response($event->response),
             'duration' => $startTime ? floor((microtime(true) - $startTime) * 1000) : null,
             'memory' => round(memory_get_peak_usage(true) / 1024 / 1024, 1),
-        ]));
+        ], EntryType::REQUEST);
+
+        try {
+            if (Auth::hasResolvedGuards() && Auth::hasUser()) {
+                $entry->user(Auth::user());
+            }
+        } catch (Throwable $e) {
+            // Do nothing.
+        }
+
+        Telescope::record($entry);
     }
 
     /**
@@ -76,6 +88,14 @@ class RequestWatcher extends Watcher
         return in_array(
             $event->response->getStatusCode(),
             $this->options['ignore_status_codes'] ?? []
+        );
+    }
+
+    protected function shouldIgnoreHttpPath(mixed $event): bool
+    {
+        return in_array(
+            $event->request->path(),
+            $this->options['ignore_http_path'] ?? []
         );
     }
 
@@ -158,8 +178,7 @@ class RequestWatcher extends Watcher
         $content = $response->getContent();
 
         if (is_string($content)) {
-            if (is_array(json_decode($content, true)) &&
-                json_last_error() === JSON_ERROR_NONE) {
+            if (is_array(json_decode($content, true)) && json_last_error() === JSON_ERROR_NONE) {
                 return $this->contentWithinLimits($content)
                         ? $this->hideParameters(json_decode($content, true), Telescope::$hiddenResponseParameters)
                         : 'Purged By Telescope';
@@ -172,13 +191,6 @@ class RequestWatcher extends Watcher
 
         if ($response instanceof RedirectResponse) {
             return 'Redirected to '.$response->getTargetUrl();
-        }
-
-        if ($response instanceof IlluminateResponse && $response->getOriginalContent() instanceof View) {
-            return [
-                'view' => $response->getOriginalContent()->getPath(),
-                'data' => $this->extractDataFromView($response->getOriginalContent()),
-            ];
         }
 
         if (is_string($content) && empty($content)) {
@@ -196,26 +208,5 @@ class RequestWatcher extends Watcher
         $limit = $this->options['size_limit'] ?? 64;
 
         return intdiv(mb_strlen($content), 1000) <= $limit;
-    }
-
-    /**
-     * Extract the data from the given view in array form.
-     */
-    protected function extractDataFromView($view): array
-    {
-        return collect($view->getData())->map(function ($value) {
-            if ($value instanceof Model) {
-                return FormatModel::given($value);
-            } elseif (is_object($value)) {
-                return [
-                    'class' => get_class($value),
-                    'properties' => method_exists($value, 'formatForTelescope')
-                        ? $value->formatForTelescope()
-                        : json_decode(json_encode($value), true),
-                ];
-            } else {
-                return json_decode(json_encode($value), true);
-            }
-        })->toArray();
     }
 }

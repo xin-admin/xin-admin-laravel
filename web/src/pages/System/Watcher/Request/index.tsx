@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import { listApi } from '@/services/common/table';
-import { Table, TableProps } from 'antd';
-import { ProCard } from '@ant-design/pro-components';
+import XinTable from '@/components/Xin/XinTable';
+import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 
 interface IDataType {
   uuid?: string;
@@ -15,71 +13,68 @@ interface IDataType {
 
 export default () => {
 
-  const [data, setData] = useState<IDataType[]>([]);
-
-  useEffect(() => {
-    listApi('/system/watcher/request').then((res) => {
-      setData(res.data);
-    })
-  }, []);
-
-  const columns: TableProps<IDataType>['columns'] = [
+  const columns: XinTableColumn<IDataType>[] = [
     {
-      title: 'Verb',
-      dataIndex: ['content','method'],
-      key: 'content.method',
+      title: '请求方法',
+      align: 'center',
+      dataIndex: 'method',
+      key: 'method',
     },
     {
       title: 'Path',
-      dataIndex: ['content','uri'],
-      key: 'content.uri',
+      dataIndex: 'uri',
+      key: 'uri',
     },
     {
-      title: 'IP-Address',
-      dataIndex: ['content','ip_address'],
-      key: 'content.ip_address',
+      title: 'IP地址',
+      align: 'center',
+      dataIndex: 'ip_address',
+      key: 'ip_address',
     },
     {
-      title: 'Hostname',
-      dataIndex: ['content','hostname'],
-      key: 'content.hostname',
+      title: '主机名称',
+      align: 'center',
+      dataIndex: 'host_name',
+      key: 'host_name',
     },
     {
-      title: 'Status',
-      dataIndex: ['content','response_status'],
-      key: 'content.response_status',
+      title: '请求状态',
+      align: 'center',
+      dataIndex: 'response_status',
+      key: 'response_status',
     },
     {
-      title: 'Duration',
-      dataIndex: ['content','duration'],
-      key: 'content.duration',
+      title: '请求时间',
+      align: 'center',
+      dataIndex: 'duration',
+      key: 'duration',
       render: (text) => <>{text} ms</>
     },
     {
-      title: 'Happened',
-      dataIndex: 'created_at',
-      key: 'created_at',
-    },
-    {
-      render: () => (
-        <div style={{ width: 20, height: 20 }}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM6.75 9.25a.75.75 0 000 1.5h4.59l-2.1 1.95a.75.75 0 001.02 1.1l3.5-3.25a.75.75 0 000-1.1l-3.5-3.25a.75.75 0 10-1.02 1.1l2.1 1.95H6.75z"
-                  clip-rule="evenodd" />
-          </svg>
-        </div>
-      )
+      title: '记录时间',
+      align: 'center',
+      dataIndex: 'recorded_at',
+      key: 'recorded_at',
     }
   ];
 
-  return <ProCard>
-    <Table<IDataType>
+  return (
+    <XinTable<IDataType>
+      api={'/system/watcher/request'}
+      rowKey={''}
+      accessName={''}
       columns={columns}
-      dataSource={data}
-      pagination={{ pageSize: 50 }}
-      size={'small'}
-      bordered
+      addShow={false}
+      operateShow={false}
+      tableProps={{
+        search: false,
+        params: {
+          type: 'request'
+        },
+        pagination: {
+          pageSize: 10,
+        },
+      }}
     />
-  </ProCard>;
+  );
 }

@@ -7,34 +7,28 @@ use Illuminate\Http\Request;
 class EntryQueryOptions
 {
     /**
-     * The batch ID that entries should belong to.
-     */
-    public ?string $batchId;
-
-    /**
-     * The tag that must belong to retrieved entries.
-     */
-    public ?string $tag;
-
-    /**
-     * The family hash that must belong to retrieved entries.
-     */
-    public ?string $familyHash;
-
-    /**
-     * The ID that all retrieved entries should be less than.
-     */
-    public mixed $beforeSequence;
-
-    /**
-     * The list of UUIDs of entries tor retrieve.
-     */
-    public mixed $uuids;
-
-    /**
      * The number of entries to retrieve.
+     *
+     * @var int
      */
-    public int $limit = 50;
+    public int $limit = 10;
+
+    /**
+     * The page of entries to retrieve.
+     * @var int
+     */
+    public int $page = 1;
+
+    /**
+     * The tag that must belong to retrieved entries
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * The date of entries to retrieve
+     */
+    public string $date;
 
     /**
      * Create new entry query options from the incoming request.
@@ -44,69 +38,47 @@ class EntryQueryOptions
      */
     public static function fromRequest(Request $request): static
     {
+        // 表单验证必须包含 type
+        $params = $request->validate([
+            'type' => ['required', 'string'],
+            'date' => ['nullable', 'date'],
+            'pageSize' => ['nullable', 'integer'],
+            'current' => ['nullable', 'integer'],
+        ]);
+
         return (new static)
-                ->batchId($request->batch_id)
-                ->uuids($request->uuids)
-                ->beforeSequence($request->before)
-                ->tag($request->tag)
-                ->familyHash($request->family_hash)
-                ->limit($request->take ?? 50);
+            ->type($params['type'])
+            ->date($params['date'] ?? date('Y-m-d'))
+            ->page($params['current'] ?? 1)
+            ->limit($params['pageSize'] ?? 10);
     }
 
     /**
-     * Create new entry query options for the given batch ID.
+     * Set the date of entries to retrieve.
      */
-    public static function forBatchId(?string $batchId): static
+    public function date(string $date): static
     {
-        return (new static)->batchId($batchId);
-    }
-
-    /**
-     * Set the batch ID for the query.
-     */
-    public function batchId(?string $batchId): static
-    {
-        $this->batchId = $batchId;
+        $this->date = $date;
 
         return $this;
     }
 
     /**
-     * Set the list of UUIDs of entries tor retrieve.
+     * Set the type of entries to retrieve.
      */
-    public function uuids(?array $uuids): static
+    public function page(int $page): static
     {
-        $this->uuids = $uuids;
+        $this->page = $page;
 
         return $this;
     }
 
     /**
-     * Set the ID that all retrieved entries should be less than.
+     * Set the type of entries to retrieve.
      */
-    public function beforeSequence(mixed $id): static
+    public function type(string $type): static
     {
-        $this->beforeSequence = $id;
-
-        return $this;
-    }
-
-    /**
-     * Set the tag that must belong to retrieved entries.
-     */
-    public function tag(?string $tag): static
-    {
-        $this->tag = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Set the family hash that must belong to retrieved entries.
-     */
-    public function familyHash(?string $familyHash): static
-    {
-        $this->familyHash = $familyHash;
+        $this->type = $type;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\Events\KeyForgotten;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Support\Str;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 
@@ -15,10 +16,10 @@ class CacheWatcher extends Watcher
     /**
      * Register the watcher.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  mixed $app
      * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         $app['events']->listen(CacheHit::class, [$this, 'recordCacheHit']);
         $app['events']->listen(CacheMissed::class, [$this, 'recordCacheMissed']);
@@ -30,85 +31,87 @@ class CacheWatcher extends Watcher
     /**
      * Record a cache key was found.
      *
-     * @param  \Illuminate\Cache\Events\CacheHit  $event
+     * @param CacheHit $event
      * @return void
      */
-    public function recordCacheHit(CacheHit $event)
+    public function recordCacheHit(CacheHit $event): void
     {
         if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
             return;
         }
 
-        Telescope::recordCache(IncomingEntry::make([
+        $entry = IncomingEntry::make([
             'type' => 'hit',
             'key' => $event->key,
             'value' => $this->formatValue($event),
-        ]));
+        ], EntryType::CACHE);
+
+        Telescope::record($entry);
     }
 
     /**
      * Record a missing cache key.
      *
-     * @param  \Illuminate\Cache\Events\CacheMissed  $event
+     * @param CacheMissed $event
      * @return void
      */
-    public function recordCacheMissed(CacheMissed $event)
+    public function recordCacheMissed(CacheMissed $event): void
     {
         if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
             return;
         }
-
-        Telescope::recordCache(IncomingEntry::make([
+        $entry = IncomingEntry::make([
             'type' => 'missed',
             'key' => $event->key,
-        ]));
+        ], EntryType::CACHE);
+
+        Telescope::record($entry);
     }
 
     /**
      * Record a cache key was updated.
      *
-     * @param  \Illuminate\Cache\Events\KeyWritten  $event
+     * @param KeyWritten $event
      * @return void
      */
-    public function recordKeyWritten(KeyWritten $event)
+    public function recordKeyWritten(KeyWritten $event): void
     {
         if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
             return;
         }
-
-        Telescope::recordCache(IncomingEntry::make([
+        $entry = IncomingEntry::make([
             'type' => 'set',
             'key' => $event->key,
             'value' => $this->formatValue($event),
-            'expiration' => $this->formatExpiration($event),
-        ]));
+            'expiration' => $event->seconds,
+        ], EntryType::CACHE);
+
+        Telescope::record($entry);
     }
 
     /**
      * Record a cache key was forgotten / removed.
      *
-     * @param  \Illuminate\Cache\Events\KeyForgotten  $event
+     * @param KeyForgotten $event
      * @return void
      */
-    public function recordKeyForgotten(KeyForgotten $event)
+    public function recordKeyForgotten(KeyForgotten $event): void
     {
         if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
             return;
         }
-
-        Telescope::recordCache(IncomingEntry::make([
+        $entry = IncomingEntry::make([
             'type' => 'forget',
             'key' => $event->key,
-        ]));
+        ], EntryType::CACHE);
+
+        Telescope::record($entry);
     }
 
     /**
      * Determine the value of an event.
-     *
-     * @param  mixed  $event
-     * @return mixed
      */
-    private function formatValue($event)
+    private function formatValue(mixed $event): mixed
     {
         return (! $this->shouldHideValue($event))
                     ? $event->value
@@ -117,11 +120,8 @@ class CacheWatcher extends Watcher
 
     /**
      * Determine if the event value should be ignored.
-     *
-     * @param  mixed  $event
-     * @return bool
      */
-    private function shouldHideValue($event)
+    private function shouldHideValue(mixed $event): bool
     {
         return Str::is(
             $this->options['hidden'] ?? [],
@@ -130,22 +130,9 @@ class CacheWatcher extends Watcher
     }
 
     /**
-     * @param  \Illuminate\Cache\Events\KeyWritten  $event
-     * @return mixed
-     */
-    protected function formatExpiration(KeyWritten $event)
-    {
-        return property_exists($event, 'seconds')
-                ? $event->seconds : $event->minutes * 60;
-    }
-
-    /**
      * Determine if the event should be ignored.
-     *
-     * @param  mixed  $event
-     * @return bool
      */
-    private function shouldIgnore($event)
+    private function shouldIgnore(mixed $event): bool
     {
         return Str::is([
             'illuminate:queue:restart',

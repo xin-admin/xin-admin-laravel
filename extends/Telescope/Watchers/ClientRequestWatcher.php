@@ -8,6 +8,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 use Symfony\Component\HttpFoundation\File\File;
@@ -16,11 +17,8 @@ class ClientRequestWatcher extends Watcher
 {
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         $app['events']->listen(ConnectionFailed::class, [$this, 'recordFailedRequest']);
         $app['events']->listen(ResponseReceived::class, [$this, 'recordResponse']);
@@ -28,40 +26,33 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Record a HTTP Client connection failed request event.
-     *
-     * @param  \Illuminate\Http\Client\Events\ConnectionFailed  $event
-     * @return void
      */
-    public function recordFailedRequest(ConnectionFailed $event)
+    public function recordFailedRequest(ConnectionFailed $event): void
     {
         if (! Telescope::isRecording()) {
             return;
         }
 
-        Telescope::recordClientRequest(
+        Telescope::record(
             IncomingEntry::make([
                 'method' => $event->request->method(),
                 'uri' => $event->request->url(),
                 'headers' => $this->headers($event->request->headers()),
                 'payload' => $this->payload($this->input($event->request)),
-            ])
-            ->tags([$event->request->toPsrRequest()->getUri()->getHost()])
+            ], EntryType::CLIENT_REQUEST)
         );
     }
 
     /**
      * Record a HTTP Client response.
-     *
-     * @param  \Illuminate\Http\Client\Events\ResponseReceived  $event
-     * @return void
      */
-    public function recordResponse(ResponseReceived $event)
+    public function recordResponse(ResponseReceived $event): void
     {
         if (! Telescope::isRecording()) {
             return;
         }
 
-        Telescope::recordClientRequest(
+        Telescope::record(
             IncomingEntry::make([
                 'method' => $event->request->method(),
                 'uri' => $event->request->url(),
@@ -71,18 +62,14 @@ class ClientRequestWatcher extends Watcher
                 'response_headers' => $this->headers($event->response->headers()),
                 'response' => $this->response($event->response),
                 'duration' => $this->duration($event->response),
-            ])
-            ->tags([$event->request->toPsrRequest()->getUri()->getHost()])
+            ], EntryType::CLIENT_REQUEST)
         );
     }
 
     /**
      * Determine if the content is within the set limits.
-     *
-     * @param  string  $content
-     * @return bool
      */
-    public function contentWithinLimits($content)
+    public function contentWithinLimits(string $content): bool
     {
         $limit = $this->options['size_limit'] ?? 64;
 
@@ -91,11 +78,8 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Format the given response object.
-     *
-     * @param  \Illuminate\Http\Client\Response  $response
-     * @return array|string
      */
-    protected function response(Response $response)
+    protected function response(Response $response): array|string
     {
         $content = $response->body();
 
@@ -131,11 +115,8 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Format the given headers.
-     *
-     * @param  array  $headers
-     * @return array
      */
-    protected function headers($headers)
+    protected function headers(array $headers): array
     {
         $headerNames = collect($headers)->keys()->map(function ($headerName) {
             return strtolower($headerName);
@@ -154,11 +135,8 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Format the given payload.
-     *
-     * @param  array  $payload
-     * @return array
      */
-    protected function payload($payload)
+    protected function payload(array $payload): array
     {
         return $this->hideParameters($payload,
             Telescope::$hiddenRequestParameters
@@ -167,12 +145,8 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Hide the given parameters.
-     *
-     * @param  array  $data
-     * @param  array  $hidden
-     * @return mixed
      */
-    protected function hideParameters($data, $hidden)
+    protected function hideParameters(array $data, array $hidden): array
     {
         foreach ($hidden as $parameter) {
             if (Arr::get($data, $parameter)) {
@@ -185,11 +159,8 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Extract the input from the given request.
-     *
-     * @param  \Illuminate\Http\Client\Request  $request
-     * @return array
      */
-    protected function input(Request $request)
+    protected function input(Request $request): array
     {
         if (! $request->isMultipart()) {
             return $request->data();
@@ -226,16 +197,14 @@ class ClientRequestWatcher extends Watcher
 
     /**
      * Get the request duration in milliseconds.
-     *
-     * @param  \Illuminate\Http\Client\Response  $response
-     * @return int|null
      */
-    protected function duration(Response $response)
+    protected function duration(Response $response): ?int
     {
         if (property_exists($response, 'transferStats') &&
             $response->transferStats &&
             $response->transferStats->getTransferTime()) {
             return floor($response->transferStats->getTransferTime() * 1000);
         }
+        return null;
     }
 }

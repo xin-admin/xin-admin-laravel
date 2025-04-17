@@ -2,8 +2,6 @@
 
 namespace Xin\Telescope;
 
-use Carbon\Carbon;
-use Carbon\CarbonInterface;
 use JsonSerializable;
 
 class EntryResult implements JsonSerializable
@@ -41,30 +39,23 @@ class EntryResult implements JsonSerializable
     /**
      * The datetime that the entry was recorded.
      */
-    public CarbonInterface|Carbon $createdAt;
-
-    /**
-     * The tags assigned to the entry.
-     */
-    private array $tags;
+    public string $createdAt;
 
     /**
      * Create a new entry result instance.
      *
-     * @param  mixed  $id
-     * @param  mixed  $sequence
-     * @param  string  $batchId
-     * @param  string  $type
-     * @param  string|null  $familyHash
-     * @param  array  $content
-     * @param  CarbonInterface|Carbon  $createdAt
-     * @param  array  $tags
+     * @param mixed $id
+     * @param mixed $sequence
+     * @param string $batchId
+     * @param string $type
+     * @param string|null $familyHash
+     * @param array $content
+     * @param string $createdAt
      */
-    public function __construct(mixed $id, mixed $sequence, string $batchId, string $type, ?string $familyHash, array $content, $createdAt, $tags = [])
+    public function __construct(mixed $id, mixed $sequence, string $batchId, string $type, ?string $familyHash, array $content, string $createdAt)
     {
         $this->id = $id;
         $this->type = $type;
-        $this->tags = $tags;
         $this->batchId = $batchId;
         $this->content = $content;
         $this->sequence = $sequence;
@@ -86,9 +77,8 @@ class EntryResult implements JsonSerializable
             'batch_id' => $this->batchId,
             'type' => $this->type,
             'content' => $this->content,
-            'tags' => $this->tags,
             'family_hash' => $this->familyHash,
-            'created_at' => $this->createdAt->toDateTimeString(),
+            'created_at' => $this->createdAt,
         ])->all();
     }
 }

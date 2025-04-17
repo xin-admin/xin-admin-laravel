@@ -45,6 +45,13 @@ return [
             'throw' => false,
         ],
 
+        'telescope' => [
+            'driver' => 'local',
+            'root' => storage_path('telescope'),
+            'serve' => true,
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

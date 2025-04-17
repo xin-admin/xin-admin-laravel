@@ -3,6 +3,7 @@
 namespace Xin\Telescope\Watchers;
 
 use Illuminate\Redis\Events\CommandExecuted;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 
@@ -10,11 +11,8 @@ class RedisWatcher extends Watcher
 {
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         if (! $app->bound('redis')) {
             return;
@@ -32,30 +30,26 @@ class RedisWatcher extends Watcher
     /**
      * Record a Redis command was executed.
      *
-     * @param  \Illuminate\Redis\Events\CommandExecuted  $event
+     * @param CommandExecuted $event
      * @return void
      */
-    public function recordCommand(CommandExecuted $event)
+    public function recordCommand(CommandExecuted $event): void
     {
         if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
             return;
         }
 
-        Telescope::recordRedis(IncomingEntry::make([
+        Telescope::record(IncomingEntry::make([
             'connection' => $event->connectionName,
             'command' => $this->formatCommand($event->command, $event->parameters),
             'time' => number_format($event->time, 2, '.', ''),
-        ]));
+        ], EntryType::REDIS));
     }
 
     /**
      * Format the given Redis command.
-     *
-     * @param  string  $command
-     * @param  array  $parameters
-     * @return string
      */
-    private function formatCommand($command, $parameters)
+    private function formatCommand(string $command, array $parameters): string
     {
         $parameters = collect($parameters)->map(function ($parameter) {
             if (is_array($parameter)) {
@@ -76,11 +70,8 @@ class RedisWatcher extends Watcher
 
     /**
      * Determine if the event should be ignored.
-     *
-     * @param  mixed  $event
-     * @return bool
      */
-    private function shouldIgnore($event)
+    private function shouldIgnore(mixed $event): bool
     {
         return in_array($event->command, [
             'pipeline', 'transaction',

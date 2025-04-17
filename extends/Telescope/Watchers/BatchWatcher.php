@@ -3,6 +3,8 @@
 namespace Xin\Telescope\Watchers;
 
 use Illuminate\Bus\Events\BatchDispatched;
+use Illuminate\Support\Facades\Event;
+use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 use Xin\Telescope\Telescope;
 
@@ -10,24 +12,16 @@ class BatchWatcher extends Watcher
 {
     /**
      * Register the watcher.
-     *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
      */
-    public function register($app)
+    public function register($app): void
     {
         $app['events']->listen(BatchDispatched::class, [$this, 'recordBatch']);
     }
 
     /**
      * Record a job being created.
-     *
-     * @param  string  $connection
-     * @param  string  $queue
-     * @param  array  $payload
-     * @return IncomingEntry|null
      */
-    public function recordBatch(BatchDispatched $event)
+    public function recordBatch(BatchDispatched $event): void
     {
         if (! Telescope::isRecording()) {
             return;
@@ -39,13 +33,8 @@ class BatchWatcher extends Watcher
             'allowsFailures' => $event->batch->allowsFailures(),
         ]);
 
-        Telescope::recordBatch(
-            $entry = IncomingEntry::make(
-                $content,
-                $event->batch->id
-            )->withFamilyHash($event->batch->id)
-        );
+        $entry = IncomingEntry::make($content, EntryType::BATCH);
 
-        return $entry;
+        Telescope::record($entry);
     }
 }

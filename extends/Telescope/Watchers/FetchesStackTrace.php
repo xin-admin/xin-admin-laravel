@@ -12,7 +12,7 @@ trait FetchesStackTrace
      * @param  string|array  $forgetLines
      * @return array|null
      */
-    protected function getCallerFromStackTrace($forgetLines = 0)
+    protected function getCallerFromStackTrace($forgetLines = 0): ?array
     {
         $trace = collect(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS))->forget($forgetLines);
 
@@ -40,13 +40,12 @@ trait FetchesStackTrace
 
     /**
      * Choose the frame outside of either Telescope / Laravel or all extends.
-     *
-     * @return string|null
      */
-    protected function ignoredVendorPath()
+    protected function ignoredVendorPath(): string
     {
         if (! ($this->options['ignore_packages'] ?? true)) {
             return 'laravel';
         }
+        return "";
     }
 }
