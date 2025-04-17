@@ -55,6 +55,7 @@ class IncomingEntry
                 'id' => $user->getAuthIdentifier(),
                 'name' => $user->username ?? null,
                 'email' => $user->email ?? null,
+                'avatar' => $user->avatarUrl ?? null,
             ],
         ]);
 

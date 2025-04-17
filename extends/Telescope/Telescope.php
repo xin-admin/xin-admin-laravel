@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Log\Events\MessageLogged;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Testing\Fakes\EventFake;
 use Xin\Telescope\Contracts\EntriesRepository;
@@ -91,7 +90,7 @@ class Telescope
             (static::runningApprovedArtisanCommand($app) ||
             static::handlingApprovedRequest($app))
         ) {
-            static::startRecording($loadMonitoredTags = false);
+            static::startRecording();
         }
     }
 
@@ -176,12 +175,8 @@ class Telescope
     /**
      * Start recording entries.
      */
-    public static function startRecording(bool $loadMonitoredTags = true): void
+    public static function startRecording(): void
     {
-        if ($loadMonitoredTags) {
-            app(EntriesRepository::class)->loadMonitoredTags();
-        }
-
         $recordingPaused = false;
 
         try {

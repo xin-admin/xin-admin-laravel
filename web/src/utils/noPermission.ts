@@ -7,5 +7,4 @@ export default [
   'index',
   '/',
   '/system/watcher/request',
-  '/system/watcher/request/preview',
 ];
