@@ -1,8 +1,9 @@
 import XinTable from '@/components/Xin/XinTable';
 import { XinTableColumn } from '@/components/Xin/XinTable/typings';
-import { Modal, Space, Tabs, Tag } from 'antd';
+import { DatePicker, Modal, Tabs, Tag } from 'antd';
 import { useState, CSSProperties } from 'react';
 import { ProDescriptions } from '@ant-design/pro-components';
+import dayjs from 'dayjs';
 
 interface IDataType {
   [key: string]: any;
@@ -13,6 +14,10 @@ export default () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modelData, setModelData] = useState<IDataType>();
   const [tabsKey, setTabsKey] = useState<string>('1');
+  const [params, setParams] = useState({
+    type: 'request',
+    date: dayjs().format('YYYY-MM-DD'),
+  })
   const methodValueEnum = {
     GET: { text: 'GET', status: 'Processing' },
     POST: { text: 'POST', status: 'Success' },
@@ -107,10 +112,14 @@ export default () => {
         operateShow={false}
         tableProps={{
           headerTitle: '请求记录',
+          toolbar: { settings: [] },
+          toolBarRender: () => [
+            <DatePicker
+              onChange={(date, dateString) => setParams({ type: 'request', date: date.format('YYYY-MM-DD') })}
+            />
+          ],
           search: false,
-          params: {
-            type: 'request'
-          },
+          params: params,
           pagination: {
             showSizeChanger: true
           },
