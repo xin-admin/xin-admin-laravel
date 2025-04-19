@@ -34,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        SettingService::refreshSettings();
+        if (!$this->app->runningInConsole()) {
+            SettingService::refreshSettings();
+        }
     }
 }
