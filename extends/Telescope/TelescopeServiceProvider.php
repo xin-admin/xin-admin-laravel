@@ -39,7 +39,8 @@ class TelescopeServiceProvider extends ServiceProvider
                 $entry->isRequest() ||
                 $entry->isCache() ||
                 $entry->isRedis() ||
-                $entry->isClientRequest();
+                $entry->isClientRequest() ||
+                $entry->isAuth();
         });
     }
 

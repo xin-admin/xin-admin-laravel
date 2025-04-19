@@ -97,6 +97,14 @@ class IncomingEntry
     }
 
     /**
+     * Determine if the incoming entry is a auth.
+     */
+    public function isAuth(): bool
+    {
+        return $this->type === EntryType::AUTH;
+    }
+
+    /**
      * Determine if the incoming entry is a query.
      */
     public function isQuery(): bool

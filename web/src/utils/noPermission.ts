@@ -7,4 +7,6 @@ export default [
   'index',
   '/',
   '/system/watcher/request',
+  '/system/watcher/auth',
+  '/system/watcher/query',
 ];

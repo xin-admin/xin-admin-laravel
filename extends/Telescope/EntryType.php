@@ -12,4 +12,5 @@ class EntryType
     public const REQUEST = 'request';
     public const SCHEDULED_TASK = 'schedule';
     public const CLIENT_REQUEST = 'client_request';
+    public const AUTH = 'auth';
 }

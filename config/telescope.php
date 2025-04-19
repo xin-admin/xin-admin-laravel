@@ -122,24 +122,6 @@ return [
 
         Watchers\ClientRequestWatcher::class => env('TELESCOPE_CLIENT_REQUEST_WATCHER', true),
 
-//        Watchers\EventWatcher::class => [
-//            'enabled' => env('TELESCOPE_EVENT_WATCHER', false),
-//            'ignore' => [],
-//        ],
-//
-//        Watchers\ExceptionWatcher::class => env('TELESCOPE_EXCEPTION_WATCHER', false),
-//
-//        Watchers\GateWatcher::class => [
-//            'enabled' => env('TELESCOPE_GATE_WATCHER', false),
-//            'ignore_abilities' => [],
-//            'ignore_packages' => true,
-//            'ignore_paths' => [],
-//        ],
-//
-//        Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', false),
-//        Watchers\MailWatcher::class => env('TELESCOPE_MAIL_WATCHER', false),
-//        Watchers\NotificationWatcher::class => env('TELESCOPE_NOTIFICATION_WATCHER', false),
-
         Watchers\QueryWatcher::class => [
             'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
             'ignore_packages' => true,
@@ -157,10 +139,19 @@ return [
             ],
             'ignore_status_codes' => [],
             'ignore_http_path' => [
-                'system/watcher/request'
+                'system/watcher/request',
+                'admin/login',
+                'api/login'
             ],
         ],
 
         Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
+
+        Watchers\AuthWatcher::class => [
+            'enabled' => env('TELESCOPE_AUTH_WATCHER', true),
+            'ignore_login_credentials' => [
+                'password'
+            ],
+        ],
     ],
 ];
