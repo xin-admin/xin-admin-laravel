@@ -88,6 +88,7 @@ return [
             'ignore_http_path' => [
                 'system/watcher*',
                 '*login',
+                '*logout',
             ],
         ],
 
