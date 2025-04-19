@@ -1,36 +1,41 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import XinTable from '@/components/Xin/XinTable';
-import { DatePicker, Tag } from 'antd';
+import { DatePicker, Popover, Tag, Typography } from 'antd';
 import { XinTableColumn } from '@/components/Xin/XinTable/typings';
 import { ProTableProps } from '@ant-design/pro-components';
-
+const { Text } = Typography;
 export default function() {
 
   const [params, setParams] = useState({
-    type: 'query',
+    type: 'redis',
     date: dayjs().format('YYYY-MM-DD'),
   })
 
   const columns: XinTableColumn<any>[] = [
     {
-      title: '驱动',
+      title: '链接',
       dataIndex: 'connection',
-      width: 80,
       align: 'center',
-      render: (_, record) => <Tag color={'processing'}>{record.connection}</Tag>
+      render: (_, record) =>  <Tag color={'processing'}>{record.connection}</Tag>
     },
-    { title: 'sql', dataIndex: 'sql', width: 400, ellipsis: true, },
-    { title: '执行文件', dataIndex: 'file', width: 400, ellipsis: true, },
-    { title: '执行位置', dataIndex: 'line', width: 80, align: 'center', renderText: (text) => `${text} 行` },
-    { title: '用时', dataIndex: 'time', width: 80, align: 'center', renderText: (text) => `${text} ms` },
-    { title: '速度', dataIndex: 'slow', width: 80, align: 'center', valueEnum: { true: '慢速', false: '正常' }},
-    { title: '主机', dataIndex: 'host_name'},
-    { title: '记录时间', dataIndex: 'recorded_at'},
+    { title: '命令',  dataIndex: 'command', width: 600, render: (dom) => (
+        <Popover content={(
+          <div style={{ maxHeight: 400, maxWidth: 600, overflow: 'auto' }}>
+            {dom}
+          </div>
+        )} trigger="click" >
+          <Text ellipsis style={{ maxWidth: 600 }}>{dom}</Text>
+        </Popover>
+
+    )},
+    { title: '用时', dataIndex: 'time', align: 'center', renderText: (time) => `${time ?? '-'} ms` },
+    { title: '主机', dataIndex: 'host_name', align: 'center',},
+    { title: '记录时间', dataIndex: 'recorded_at', align: 'center',},
   ]
 
   const tableProps: ProTableProps<any, any> = {
-    headerTitle: 'SQL 日志',
+    headerTitle: 'Redis 日志',
     toolbar: { settings: [] },
     toolBarRender: () => [
       <DatePicker
@@ -43,12 +48,12 @@ export default function() {
     pagination: {
       showSizeChanger: true
     },
-    scroll: { x: 1460 }
+    scroll: { x: 1000 }
   }
 
   return (
     <XinTable
-      api={'/system/watcher/query'}
+      api={'/system/watcher/redis'}
       accessName={''}
       addShow={false}
       operateShow={false}

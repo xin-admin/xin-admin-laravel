@@ -45,4 +45,12 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
+    #[GetMapping('/redis')] // #[Authorize('system.watcher.redis')]
+    public function redis(Request $request, EntriesRepository $storage): JsonResponse
+    {
+        $options = EntryQueryOptions::fromRequest($request);
+        $options->type('redis');
+        return $this->success($storage->get($options));
+    }
+
 }
