@@ -20,7 +20,7 @@ class AdminUserSeeder extends Seeder
             'username' => 'admin',
             'nickname' => 'admin',
             'email' => Str::random(10).'@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
             'dept_id' => 1,
             'role_id' => 1,
             'avatar_id' => 1,
