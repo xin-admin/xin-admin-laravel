@@ -36,15 +36,6 @@ return new class extends Migration
             });
         }
 
-        // 管理员重置密码表
-        if (! Schema::hasTable('password_reset_tokens')) {
-            Schema::create('password_reset_tokens', function (Blueprint $table) {
-                $table->string('email')->primary();
-                $table->string('token');
-                $table->timestamp('created_at')->nullable();
-            });
-        }
-
         // 管理员角色表
         if (! Schema::hasTable('admin_role')) {
             Schema::create('admin_role', function (Blueprint $table) {
