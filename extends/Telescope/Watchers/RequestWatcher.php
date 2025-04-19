@@ -93,10 +93,7 @@ class RequestWatcher extends Watcher
 
     protected function shouldIgnoreHttpPath(mixed $event): bool
     {
-        return in_array(
-            $event->request->path(),
-            $this->options['ignore_http_path'] ?? []
-        );
+        return $event->request->is($this->options['ignore_http_path'] ?? []);
     }
 
     /**

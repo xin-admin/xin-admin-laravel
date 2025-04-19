@@ -86,8 +86,8 @@ return [
             ],
             'ignore_status_codes' => [],
             'ignore_http_path' => [
-                'system/watcher/*',
-                '*/login',
+                'system/watcher*',
+                '*login',
             ],
         ],
 
