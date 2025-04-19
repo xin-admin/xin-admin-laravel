@@ -74,7 +74,7 @@ export default () => {
         addShow={false}
         operateShow={false}
         tableProps={{
-          headerTitle: '请求记录',
+          headerTitle: '请求日志',
           toolbar: { settings: [] },
           toolBarRender: () => [
             <DatePicker

@@ -42,8 +42,7 @@ export default function() {
               {node}
             </div>
           )} trigger="click" >
-
-            <Button type={'link'}><EyeOutlined /> 查看</Button>
+            <a><EyeOutlined /> 查看</a>
           </Popover>
         ): '-'}
       </>),
