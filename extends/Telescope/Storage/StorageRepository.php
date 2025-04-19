@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\LazyCollection;
 use Xin\Telescope\Contracts\EntriesRepository;
-use Xin\Telescope\EntryType;
 use Xin\Telescope\IncomingEntry;
 
 class StorageRepository implements EntriesRepository
@@ -43,17 +42,12 @@ class StorageRepository implements EntriesRepository
             return;
         }
         $date = date('Y-m-d');
-
-        $contents = [
-            EntryType::BATCH => [],
-            EntryType::CACHE => [],
-            EntryType::EXCEPTION => [],
-            EntryType::QUERY => [],
-            EntryType::REDIS => [],
-            EntryType::REQUEST => [],
-            EntryType::SCHEDULED_TASK => [],
-            EntryType::CLIENT_REQUEST => [],
-        ];
+        $contents = [];
+        foreach (config('telescope.watchers') as $key => $watcher) {
+            if (! is_string($key)) continue;
+            if( $watcher === false ) continue;
+            $contents[$key] = [];
+        }
         $entries->each(function (IncomingEntry $chunked) use (&$contents) {
             if(empty($chunked->content)) {
                 return;
