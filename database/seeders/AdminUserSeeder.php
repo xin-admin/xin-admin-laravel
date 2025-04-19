@@ -113,7 +113,7 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 69, 'parent_id' => 66, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组编辑', 'path' => '', 'icon' => '', 'key' => 'file.group.edit', 'local' => ''],
             ['rule_id' => 70, 'parent_id' => 66, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组删除', 'path' => '', 'icon' => '', 'key' => 'file.group.delete', 'local' => ''],
             ['rule_id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => 'UserOutlined', 'key' => 'admin.setting', 'local' => 'menu.personal'],
-            ['rule_id' => 72, 'parent_id' => 0 , 'type' => '0', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 助理', 'path' => '/ai', 'icon' => 'OpenAIFilled', 'key' => 'ai', 'local' => 'menu.ai'],
+            ['rule_id' => 72, 'parent_id' => 0 , 'type' => '0', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 助理', 'path' => '/ai', 'icon' => 'OpenAIFilled', 'key' => 'ai', 'local' => 'menu.ai'],
             ['rule_id' => 73, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '添加用户会话', 'path' => '', 'icon' => '', 'key' => 'ai.add', 'local' => ''],
             ['rule_id' => 74, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取会话列表', 'path' => '', 'icon' => '', 'key' => 'ai.list', 'local' => ''],
             ['rule_id' => 75, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取对话详情', 'path' => '', 'icon' => '', 'key' => 'ai.list.uuid', 'local' => ''],
@@ -133,6 +133,12 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 89, 'parent_id' => 88, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志查询', 'path' => '', 'icon' => '', 'key' => 'admin.loginlog.list', 'local' => ''],
             ['rule_id' => 90, 'parent_id' => 51, 'type' => '2', 'sort' => 8, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置刷新缓存', 'path' => '', 'icon' => '', 'key' => 'system.setting.refresh', 'local' => ''],
             ['rule_id' => 91, 'parent_id' => 51, 'type' => '2', 'sort' => 9, 'created_at' => $date, 'updated_at' => $date, 'name' => '保存设置', 'path' => '', 'icon' => '', 'key' => 'system.setting.save', 'local' => ''],
+            ['rule_id' => 92, 'parent_id' => 0 , 'type' => '0', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统监控', 'path' => '/watcher', 'icon' => 'FolderOutlined', 'key' => 'watcher', 'local' => 'menu.watcher'],
+            ['rule_id' => 93, 'parent_id' => 92, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '请求日志', 'path' => '/system/watcher/request', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.request', 'local' => 'menu.watcher.request'],
+            ['rule_id' => 94, 'parent_id' => 92, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志', 'path' => '/system/watcher/auth', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.auth', 'local' => 'menu.watcher.auth'],
+            ['rule_id' => 95, 'parent_id' => 92, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => 'SQL 日志', 'path' => '/system/watcher/query', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.query', 'local' => 'menu.watcher.query'],
+            ['rule_id' => 96, 'parent_id' => 92, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => 'Redis 日志', 'path' => '/system/watcher/redis', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.redis', 'local' => 'menu.watcher.redis'],
+            ['rule_id' => 97, 'parent_id' => 92, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '缓存日志', 'path' => '/system/watcher/cache', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.cache', 'local' => 'menu.watcher.cache'],
         ]);
     }
 }

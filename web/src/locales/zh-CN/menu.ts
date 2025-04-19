@@ -52,4 +52,10 @@ export default {
   'menu.example.child': '二级子路由',
   'menu.example.child2': '三级子路由',
   'menu.system.loginlog': '登录日志',
+  'menu.watcher': '系统监控',
+  'menu.watcher.request': '请求日志',
+  'menu.watcher.redis': 'Redis日志',
+  'menu.watcher.query': 'SQL日志',
+  'menu.watcher.auth': '登录日志',
+  'menu.watcher.cache': '缓存日志',
 };

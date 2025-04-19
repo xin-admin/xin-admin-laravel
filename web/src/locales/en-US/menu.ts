@@ -52,4 +52,10 @@ export default {
   'menu.example.child': 'Second Child',
   'menu.example.child2': 'Three Child',
   'menu.system.loginlog': 'Login Log',
+  'menu.watcher': 'System Watcher',
+  'menu.watcher.request': 'Request Watcher',
+  'menu.watcher.redis': 'Redis Watcher',
+  'menu.watcher.query': 'SQL Watcher',
+  'menu.watcher.auth': 'Login Watcher',
+  'menu.watcher.cache': 'Cache Watcher',
 };
