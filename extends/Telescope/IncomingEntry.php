@@ -73,27 +73,11 @@ class IncomingEntry
     }
 
     /**
-     * Determine if the incoming entry is a batch.
-     */
-    public function isBatch(): bool
-    {
-        return $this->type === EntryType::BATCH;
-    }
-
-    /**
      * Determine if the incoming entry is a cache entry.
      */
     public function isCache(): bool
     {
         return $this->type === EntryType::CACHE;
-    }
-
-    /**
-     * Determine if the incoming entry is an client request.
-     */
-    public function isClientRequest(): bool
-    {
-        return $this->type === EntryType::CLIENT_REQUEST;
     }
 
     /**
@@ -143,14 +127,6 @@ class IncomingEntry
     {
         return $this->type === EntryType::REQUEST &&
             ($this->content['response_status'] ?? 200) >= 500;
-    }
-
-    /**
-     * Determine if the incoming entry is a scheduled task.
-     */
-    public function isScheduledTask(): bool
-    {
-        return $this->type === EntryType::SCHEDULED_TASK;
     }
 
     /**

@@ -40,14 +40,14 @@ class EntryQueryOptions
     {
         // 表单验证必须包含 type
         $params = $request->validate([
-            'type' => ['required', 'string'],
+            'type' => ['nullable', 'string'],
             'date' => ['nullable', 'date'],
             'pageSize' => ['nullable', 'integer'],
             'current' => ['nullable', 'integer'],
         ]);
 
         return (new static)
-            ->type($params['type'])
+            ->type($params['type'] ?? 'request')
             ->date($params['date'] ?? date('Y-m-d'))
             ->page($params['current'] ?? 1)
             ->limit($params['pageSize'] ?? 10);

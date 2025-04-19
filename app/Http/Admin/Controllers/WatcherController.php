@@ -13,9 +13,7 @@ use Xin\Telescope\Storage\EntryQueryOptions;
 #[RequestMapping("/system/watcher")]
 class WatcherController extends BaseController
 {
-
-    // #[Authorize('system.watcher.request.list')]
-    #[GetMapping('/request')]
+    #[GetMapping('/request')] // #[Authorize('system.watcher.request')]
     public function request(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
@@ -23,7 +21,7 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/auth')]
+    #[GetMapping('/auth')] // #[Authorize('system.watcher.auth')]
     public function auth(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
@@ -31,11 +29,19 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/query')]
+    #[GetMapping('/query')] // #[Authorize('system.watcher.query')]
     public function query(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
         $options->type('query');
+        return $this->success($storage->get($options));
+    }
+
+    #[GetMapping('/cache')] // #[Authorize('system.watcher.cache')]
+    public function cache(Request $request, EntriesRepository $storage): JsonResponse
+    {
+        $options = EntryQueryOptions::fromRequest($request);
+        $options->type('cache');
         return $this->success($storage->get($options));
     }
 

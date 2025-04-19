@@ -6,7 +6,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Telescope Master Switch
+    | Telescope Master Switch . 监控总开关
     |--------------------------------------------------------------------------
     |
     | This option may be used to disable all Telescope watchers regardless
@@ -19,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Telescope Domain
+    | Telescope Domain. 监控可访问的域名，为空时监控所有
     |--------------------------------------------------------------------------
     |
     | This is the subdomain where Telescope will be accessible from. If the
@@ -32,62 +32,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Telescope Path
-    |--------------------------------------------------------------------------
-    |
-    | This is the URI path where Telescope will be accessible from. Feel free
-    | to change this path to anything you like. Note that the URI will not
-    | affect the paths of its internal API that aren't exposed to users.
-    |
-    */
-
-    'path' => env('TELESCOPE_PATH', 'telescope'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Telescope Storage Driver
-    |--------------------------------------------------------------------------
-    |
-    | This configuration options determines the storage driver that will
-    | be used to store Telescope's data. In addition, you may set any
-    | custom options as needed by the particular driver you choose.
-    |
-    */
-
-    'driver' => env('TELESCOPE_DRIVER', 'database'),
-
-    'storage' => [
-        'database' => [
-            'connection' => env('DB_CONNECTION', 'mysql'),
-            'chunk' => 1000,
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Telescope Queue
-    |--------------------------------------------------------------------------
-    |
-    | This configuration options determines the queue connection and queue
-    | which will be used to process ProcessPendingUpdate jobs. This can
-    | be changed if you would prefer to use a non-default connection.
-    |
-    */
-
-    'queue' => [
-        'connection' => env('TELESCOPE_QUEUE_CONNECTION', null),
-        'queue' => env('TELESCOPE_QUEUE', null),
-        'delay' => env('TELESCOPE_QUEUE_DELAY', 10),
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Allowed / Ignored Paths & Commands
+    | Allowed / Ignored Paths & Commands . 监控地址白名单
     |--------------------------------------------------------------------------
     |
     | The following array lists the URI paths and Artisan commands that will
     | not be watched by Telescope. In addition to this list, some Laravel
-    | commands, like migrations and queue commands, are always ignored.
+    | commands.
     |
     */
 
@@ -103,7 +53,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Telescope Watchers
+    | Telescope Watchers 监控器
     |--------------------------------------------------------------------------
     |
     | The following array lists the "watchers" that will be registered with
@@ -113,14 +63,11 @@ return [
     */
 
     'watchers' => [
-        Watchers\BatchWatcher::class => env('TELESCOPE_BATCH_WATCHER', true),
 
         Watchers\CacheWatcher::class => [
             'enabled' => env('TELESCOPE_CACHE_WATCHER', true),
             'hidden' => [],
         ],
-
-        Watchers\ClientRequestWatcher::class => env('TELESCOPE_CLIENT_REQUEST_WATCHER', true),
 
         Watchers\QueryWatcher::class => [
             'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
@@ -139,13 +86,10 @@ return [
             ],
             'ignore_status_codes' => [],
             'ignore_http_path' => [
-                'system/watcher/request',
-                'admin/login',
-                'api/login'
+                'system/watcher/*',
+                '*/login',
             ],
         ],
-
-        Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
 
         Watchers\AuthWatcher::class => [
             'enabled' => env('TELESCOPE_AUTH_WATCHER', true),

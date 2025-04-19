@@ -66,11 +66,6 @@ class Telescope
     public static array $hiddenResponseParameters = [];
 
     /**
-     * Indicates if Telescope should ignore events fired by Laravel.
-     */
-    public static bool $ignoreFrameworkEvents = true;
-
-    /**
      * Indicates if Telescope should record entries.
      */
     public static bool $shouldRecord = false;
@@ -86,10 +81,7 @@ class Telescope
 
         static::registerWatchers($app);
 
-        if (! static::runningWithinOctane() &&
-            (static::runningApprovedArtisanCommand($app) ||
-            static::handlingApprovedRequest($app))
-        ) {
+        if (! static::runningWithinOctane() && static::handlingApprovedRequest($app)) {
             static::startRecording();
         }
     }
@@ -100,30 +92,6 @@ class Telescope
     protected static function runningWithinOctane(): bool
     {
         return isset($_SERVER['LARAVEL_OCTANE']);
-    }
-
-    /**
-     * Determine if the application is running an approved command.
-     */
-    protected static function runningApprovedArtisanCommand($app): bool
-    {
-        return $app->runningInConsole() && ! in_array(
-            $_SERVER['argv'][1] ?? null,
-            array_merge([
-                // 'migrate',
-                'migrate:rollback',
-                'migrate:fresh',
-                // 'migrate:refresh',
-                'migrate:reset',
-                'migrate:install',
-                'package:discover',
-                'queue:listen',
-                'queue:work',
-                'horizon',
-                'horizon:work',
-                'horizon:supervisor',
-            ], config('telescope.ignoreCommands', []), config('telescope.ignore_commands', []))
-        );
     }
 
     /**
@@ -165,9 +133,6 @@ class Telescope
                 'vendor/horizon*',
             ])
             ->merge(config('telescope.ignore_paths', []))
-            ->unless(is_null(config('telescope.path')), function ($paths) {
-                return $paths->prepend(config('telescope.path').'*');
-            })
             ->all()
         );
     }
@@ -274,16 +239,6 @@ class Telescope
     }
 
     /**
-     * Set the callback that filters the batches that should be recorded.
-     */
-    public static function filterBatch(Closure $callback): static
-    {
-        static::$filterBatchUsing[] = $callback;
-
-        return new static;
-    }
-
-    /**
      * Set the callback that will be executed after an entry is recorded in the queue.
      */
     public static function afterRecording(Closure $callback): static
@@ -369,16 +324,6 @@ class Telescope
             static::$hiddenResponseParameters,
             $attributes
         )));
-
-        return new static;
-    }
-
-    /**
-     * Specifies that Telescope should record events fired by Laravel.
-     */
-    public static function recordFrameworkEvents(): static
-    {
-        static::$ignoreFrameworkEvents = false;
 
         return new static;
     }

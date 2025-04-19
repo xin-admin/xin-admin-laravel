@@ -32,14 +32,11 @@ class TelescopeServiceProvider extends ServiceProvider
 
         Telescope::filter(function (IncomingEntry $entry) {
             return $entry->isFailedRequest() ||
-                $entry->isScheduledTask() ||
                 $entry->isQuery() ||
                 $entry->isSlowQuery() ||
-                $entry->isBatch() ||
                 $entry->isRequest() ||
                 $entry->isCache() ||
                 $entry->isRedis() ||
-                $entry->isClientRequest() ||
                 $entry->isAuth();
         });
     }
