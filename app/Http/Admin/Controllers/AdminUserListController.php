@@ -7,56 +7,30 @@ use App\Http\BaseController;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\Authorize;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Create;
+use Xin\AnnoRoute\Attribute\Query;
+use Xin\AnnoRoute\Attribute\Update;
+use Xin\AnnoRoute\Attribute\Delete;
 
 /**
  * 管理员列表控制器
  */
-#[RequestMapping('/admin/list')]
+#[RequestMapping('/admin/list', 'admin.list')]
+#[Create, Update, Delete, Query]
 class AdminUserListController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new AdminUserModel;
-        $this->searchField = ['dept_id' => '='];
-        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
-    }
+    protected string $model = AdminUserModel::class;
 
-    /** 新增管理员用户 */
-    #[PostMapping] #[Authorize('admin.list.add')]
-    public function add(AdminUserRequest $request): JsonResponse
-    {
-        return $this->addResponse($request);
-    }
+    protected string $formRequest = AdminUserRequest::class;
 
-    /** 获取管理员用户列表 */
-    #[GetMapping] #[Authorize('admin.list.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
+    protected array $searchField = ['dept_id' => '='];
 
-    /** 编辑管理员用户 */
-    #[PutMapping] #[Authorize('admin.list.edit')]
-    public function edit(AdminUserRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
-
-    /** 删除管理员用户 */
-    #[DeleteMapping] #[Authorize('admin.list.delete')]
-    public function delete(): JsonResponse
-    {
-        return $this->deleteResponse();
-    }
+    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
 
     /** 重置管理员密码 */
-    #[PutMapping('/resetPassword')] #[Authorize('admin.list.resetPassword')]
+    #[PutMapping('/resetPassword', 'resetPassword')]
     public function resetPassword(Request $request): JsonResponse
     {
         $data = $request->validate([

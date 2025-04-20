@@ -22,13 +22,8 @@ class AdminUserController extends BaseController
 {
     protected array $noPermission = ['refreshToken', 'login'];
 
-    public function __construct()
-    {
-        $this->service = new AdminUserService;
-    }
-
     /** 用户登录 */
-    #[PostMapping('/login', 'login_log')]
+    #[PostMapping('/login', middleware: 'login_log')]
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
@@ -59,21 +54,24 @@ class AdminUserController extends BaseController
     #[GetMapping('/info')]
     public function info(): JsonResponse
     {
-        return $this->service->getAdminInfo();
+        $service = new AdminUserService;
+        return $service->getAdminInfo();
     }
 
     /** 更新管理员信息 */
     #[PutMapping]
     public function updateAdmin(Request $request): JsonResponse
     {
-        return $this->service->updateAdmin($request);
+        $service = new AdminUserService;
+        return $service->updateAdmin($request);
     }
 
     /** 修改密码 */
     #[PutMapping('/updatePassword')]
     public function updatePassword(Request $request): JsonResponse
     {
-        return $this->service->updatePassword($request);
+        $service = new AdminUserService;
+        return $service->updatePassword($request);
     }
 
     /** 上传头像 */

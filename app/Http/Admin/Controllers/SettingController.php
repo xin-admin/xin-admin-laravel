@@ -8,33 +8,32 @@ use App\Models\SettingModel;
 use App\Service\SettingService;
 use Illuminate\Http\JsonResponse;
 use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\Create;
+use Xin\AnnoRoute\Attribute\Delete;
 use Xin\AnnoRoute\Attribute\DeleteMapping;
+use Xin\AnnoRoute\Attribute\Find;
 use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 系统设置
  */
-#[RequestMapping('/system/setting')]
+#[RequestMapping('/system/setting', 'system.setting')]
+#[Query, Create, Update, Delete]
 class SettingController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new SettingModel;
-        $this->searchField = ['group_id' => '='];
-    }
-
-    /** 获取设置列表 */
-    #[GetMapping] #[Authorize('system.setting.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
+    public string $model = SettingModel::class;
+    protected string $formRequest = SettingRequest::class;
+    protected array $searchField = [
+        'group_id' => '=',
+    ];
 
     /** 通过ID获取设置列表 */
-    #[GetMapping('/query/{id}')] #[Authorize('system.setting.list')]
+    #[GetMapping('/query/{id}', 'query')]
     public function get(int $id): JsonResponse
     {
         $data = $this->model->query()->where('group_id', $id)->get()->toArray();
@@ -42,28 +41,7 @@ class SettingController extends BaseController
         return $this->success($data);
     }
 
-    /** 新增设置 */
-    #[PostMapping] #[Authorize('system.setting.add')]
-    public function add(SettingRequest $request): JsonResponse
-    {
-        return $this->addResponse($request);
-    }
-
-    /** 修改设置 */
-    #[PutMapping] #[Authorize('system.setting.edit')]
-    public function edit(SettingRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
-
-    /** 删除设置 */
-    #[DeleteMapping] #[Authorize('system.setting.delete')]
-    public function delete(): JsonResponse
-    {
-        return $this->deleteResponse();
-    }
-
-    #[PutMapping('/save/{id}')] #[Authorize('system.setting.save')]
+    #[PutMapping('/save/{id}', 'save')]
     public function save(int $id): JsonResponse
     {
         $value = request()->all();
@@ -77,7 +55,7 @@ class SettingController extends BaseController
         return $this->success('保存成功');
     }
 
-    #[PostMapping('/refreshCache')] #[Authorize('system.setting.refresh')]
+    #[PostMapping('/refreshCache', 'refresh')]
     public function refreshCache(): JsonResponse
     {
         SettingService::refreshSettings();

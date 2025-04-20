@@ -1,17 +1,9 @@
 <?php
 namespace Xin\AnnoRoute;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use ReflectionClass;
-use Xin\AnnoRoute\Attribute\Authorize;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
-use Xin\AnnoRoute\Attribute\RequestMapping;
 
 class RouteServiceProvider extends ServiceProvider
 {

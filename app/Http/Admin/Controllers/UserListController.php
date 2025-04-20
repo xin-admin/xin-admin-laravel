@@ -8,40 +8,24 @@ use App\Models\XinUserModel;
 use App\Service\XinUserListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\Authorize;
-use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 前台用户列表
  */
-#[RequestMapping('/user/list')]
+#[RequestMapping('/user/list', 'user.list')]
+#[Query, Update]
 class UserListController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new XinUserModel;
-        $this->service = new XinUserListService;
-        $this->quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
-    }
-
-    /** 获取用户列表 */
-    #[GetMapping] #[Authorize('user.list.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
-
-    /** 编辑用户信息 */
-    #[PutMapping] #[Authorize('user.list.edit')]
-    public function edit(UserRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
+    protected string $model = XinUserModel::class;
+    protected string $formRequest = UserRequest::class;
+    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
 
     /** 重置密码 */
-    #[PutMapping('/resetPassword')] #[Authorize('user.list.resetPassword')]
+    #[PutMapping('/resetPassword', 'resetPassword')]
     public function resetPassword(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -49,7 +33,8 @@ class UserListController extends BaseController
             'password' => 'required|string|min:6|max:20',
             'rePassword' => 'required|same:password',
         ]);
-        $this->service->resetPassword($data['user_id'], $data['password']);
+        $service = new XinUserListService;
+        $service->resetPassword($data['user_id'], $data['password']);
 
         return $this->success('ok');
     }

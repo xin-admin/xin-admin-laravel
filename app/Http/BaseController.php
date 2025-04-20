@@ -18,37 +18,53 @@ abstract class BaseController
     use RequestJson;
 
     /**
-     * model
+     * 当前控制器中用于CRUD的模型类
+     * The model class used for CRUD in the current controller
+     *
+     * @var string
      */
-    protected Model $model;
+    protected string $model;
 
     /**
-     * service
+     * 当前控制器中用于新增或者编辑的表单验证
+     * The form validation used for CRUD in the current controller
+     *
+     * @var string
      */
-    protected mixed $service;
+    protected string $formRequest;
 
     /**
      * 权限验证白名单
+     * Permission verification whitelist
+     *
+     * @var array
      */
     protected array $noPermission = [];
 
     /**
      * 查询字符串
+     * The fields queried by the current model
+     *
+     * @var array
      */
     protected array $searchField = [];
 
     /**
      * 快速搜索字段
+     * Quick search field
+     *
+     * @var array
      */
     protected array $quickSearchField = [];
 
     /**
      * 查询响应
      */
-    protected function getResponse($id): JsonResponse
+    public function find($id): JsonResponse
     {
-        $key = $this->model->getKeyName();
-        $data = $this->model->where($key, $id)->first()->toArray();
+        $model = $this->model();
+        $key = $model->getKeyName();
+        $data = $model->where($key, $id)->first()->toArray();
 
         return $this->success($data);
     }
@@ -56,7 +72,7 @@ abstract class BaseController
     /**
      * 列表响应
      */
-    protected function listResponse(): JsonResponse
+    public function query(): JsonResponse
     {
         [$buildModel, $paginate] = $this->buildSearch();
         // TODO 分页响应优化，去除不需要的参数：page （待完成）
@@ -71,24 +87,23 @@ abstract class BaseController
     /**
      * 更新响应
      */
-    public function editResponse(FormRequest $request): JsonResponse
+    public function update(): JsonResponse
     {
-        $data = $request->validated();
-        $key = $this->model->getKeyName();
-        $this->model->where($key, $data[$key])->update($data);
+        $data = $this->formRequest()->validated();
+        $model = $this->model();
+        $key = $model->getKeyName();
+        $model->where($key, $data[$key])->update($data);
 
         return $this->success('ok');
     }
 
     /**
      * 新增响应
-     *
-     * @param  FormRequest  $request  请求
      */
-    public function addResponse(FormRequest $request): JsonResponse
+    public function create(): JsonResponse
     {
-        $data = $request->validated();
-        $this->model->create($data);
+        $data = $this->formRequest()->validated();
+        $this->model()->create($data);
 
         return $this->success('ok');
     }
@@ -96,15 +111,16 @@ abstract class BaseController
     /**
      * 删除响应
      */
-    public function deleteResponse(): JsonResponse
+    public function delete(): JsonResponse
     {
         $data = request()->all();
-        $key = $this->model->getKeyName();
+        $model = $this->model();
+        $key = $model->getKeyName();
         if (! isset($data[$key])) {
             return $this->error('请输入删除KEY！');
         }
         $delArr = explode(',', $data[$key]);
-        $delNum = $this->model->destroy($delArr);
+        $delNum = $model->destroy($delArr);
         if ($delNum != 0) {
             return $this->success('删除成功，删除了'.$delNum.'条数据');
         } else {
@@ -118,7 +134,7 @@ abstract class BaseController
     private function buildSearch(): array
     {
         $params = request()->query();
-        $model = $this->model->query();
+        $model = $this->model();
         // 构建筛选
         if (isset($params['filter']) && $params['filter'] != '') {
             $filter = json_decode($params['filter'], true);
@@ -189,5 +205,39 @@ abstract class BaseController
         ];
 
         return [$model, $paginate];
+    }
+
+    /**
+     * 获取当前控制器的模型
+     * Obtain the model of the current controller
+     *
+     * @return Model
+     */
+    protected function model(): Model
+    {
+        if(! $this->model) {
+            $this->throwError('The model class used for CRUD in the current controller is not set.');
+        }
+        if(! is_subclass_of($this->model, Model::class)) {
+            $this->throwError('The model class used for CRUD in the current controller is incorrect.');
+        }
+        return new $this->model;
+    }
+
+    /**
+     * 获取当前控制器的表单请求
+     * Obtain the form request class used for CRUD in the current controller
+     *
+     * @return FormRequest
+     */
+    protected function formRequest(): FormRequest
+    {
+        if (! $this->formRequest) {
+            $this->throwError('The form request class used for CRUD in the current controller is not set.');
+        }
+        if (! is_subclass_of($this->formRequest, FormRequest::class)) {
+            $this->throwError('The form request class used for CRUD in the current controller is incorrect.');
+        }
+        return new $this->formRequest;
     }
 }

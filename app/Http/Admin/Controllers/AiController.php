@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Xin\AnnoRoute\Attribute\Authorize;
 use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\RequestMapping;
@@ -18,11 +17,11 @@ use Xin\AnnoRoute\Attribute\RequestMapping;
 /**
  * AI对话控制器
  */
-#[RequestMapping('/ai')]
+#[RequestMapping('/ai', 'ai')]
 class AiController extends BaseController
 {
     /** 添加会话 */
-    #[PostMapping] #[Authorize('ai.add')]
+    #[PostMapping(authorize: 'create')]
     public function add(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -34,8 +33,8 @@ class AiController extends BaseController
     }
 
     /** 获取用户会话列表 */
-    #[GetMapping] #[Authorize('ai.list')]
-    public function list(): JsonResponse
+    #[GetMapping(authorize: 'query')]
+    public function query(): JsonResponse
     {
         $data = AiConversationGroupModel::where('user_id', auth()->id())
             ->orderBy('id', 'desc')
@@ -45,7 +44,7 @@ class AiController extends BaseController
     }
 
     /** 通过UUID获取 对话 */
-    #[GetMapping('/{uuid}')] #[Authorize('ai.list.uuid')]
+    #[GetMapping('/{uuid}', 'query.uuid')]
     public function listByUuid($uuid): JsonResponse
     {
         $model = AiConversationGroupModel::where('uuid', $uuid)->first();
@@ -65,7 +64,7 @@ class AiController extends BaseController
      * @return StreamedResponse|JsonResponse
      * @throws ValidationException
      */
-    #[PostMapping('/send')] #[Authorize('ai.send')]
+    #[PostMapping('/send', 'send')]
     public function send(Request $request): StreamedResponse | JsonResponse
     {
         $content = $request->getContent();

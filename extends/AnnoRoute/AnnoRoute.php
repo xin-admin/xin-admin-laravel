@@ -2,48 +2,62 @@
 
 namespace Xin\AnnoRoute;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionException;
-use Xin\AnnoRoute\Attribute\Authorize;
 use Xin\AnnoRoute\Attribute\DeleteMapping;
 use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\Mapping;
 use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
+use Xin\AnnoRoute\Attribute\Find;
+use Xin\AnnoRoute\Attribute\Create;
+use Xin\AnnoRoute\Attribute\Delete;
+use Xin\AnnoRoute\Attribute\Query;
 
 class AnnoRoute
 {
-
     /**
-     * the class name
+     * 当前请求控制器类名
+     * The current requested controller class
+     *
+     * @var string
      */
     private string $className;
 
     /**
-     * the route base path
-     */
-    private string $basePath = '';
-
-    /**
-     * no permission method
-     */
-    private array $noPermission = [];
-
-    /**
-     * @var array|string[]
-     */
-    private array $routeClass = [
-        PutMapping::class => 'put',
-        GetMapping::class => 'get',
-        PostMapping::class => 'post',
-        DeleteMapping::class => 'delete',
-    ];
-
-    /**
+     * 当前请求中默认的中间件
+     * The default middleware of the current request
+     *
      * @var array
      */
     private array $middleware = [];
+
+    /**
+     * 当前请求路由的前缀
+     * The prefix of the currently requested routing path
+     *
+     * @var string
+     */
+    private string $routePrefix = '';
+
+    /**
+     * 当前请求路由的能力前缀
+     * The routing abilities prefix of the current request
+     *
+     * @var string
+     */
+    private string $abilitiesPrefix = '';
+
+    /**
+     * 不需要权限校验的方法
+     * Methods not permission verification
+     */
+    private array $noPermission = [];
 
     /**
      * register
@@ -53,101 +67,90 @@ class AnnoRoute
         try {
             $this->className = $className;
 
-            $reflection = new ReflectionClass($className);
+            $classRef = new ReflectionClass($className);
 
-            $this->registerBaseData($reflection);
+            $classAttr = collect($classRef->getAttributes());
+            if($classAttr->isEmpty()) return;
 
-            // 循环所有的方法
-            foreach ($reflection->getMethods() as $method) {
+            $classAttrName = $classAttr->map->getName();
+            if(! $classAttrName->contains(RequestMapping::class)) {
+                return;
+            }
+            $requestMapping = $classAttr->first(fn ($item) => $item->getName() == RequestMapping::class);
+            $routeInstance = $requestMapping->newInstance();
+            // 默认参数
+            $this->routePrefix = $routeInstance->routePrefix ?? '';
+            $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
+            $this->middleware = $this->registerMiddleware($routeInstance->middleware);
+            // 不需要权限校验
+            $this->noPermission = $classRef->getProperty('noPermission')->getDefaultValue();
+
+            $this->registerCRUD($classAttr);
+
+            collect($classRef->getMethods())->each(function ($method) {
                 // 方法注解
                 $attributes = $method->getAttributes();
 
-                if(empty($attributes)) continue;
+                if(!empty($attributes)) {
+                    $methodName = $method->getName();
 
-                $methodName = $method->getName();
-
-                $this->registerRoute($attributes , $methodName);
-
-            }
+                    $this->registerMapping($attributes , $methodName);
+                }
+            });
         } catch (ReflectionException $e) {
             echo $e->getMessage();
         }
+    }
+
+    private function registerCRUD(Collection $classAttr): void
+    {
+        $CRUD = [ Create::class, Query::class, Find::class, Update::class, Delete::class ];
+        $classAttr->filter(fn ($item) => in_array($item->getName(), $CRUD))->each(function ($item) {
+            $instance = $item->newInstance();
+            $this->registerRoute($instance, $instance->handlerMethod);
+        });
+    }
+
+    private function registerRoute(Mapping $instance, $method): void
+    {
+        $authorize = $instance->authorize;
+        $middleware = [];
+
+        if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
+            $middleware = ['auth:sanctum'];
+            if (!empty($this->abilitiesPrefix) && !empty($authorize)) {
+                $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
+            }
+        }
+
+        $middleware = array_merge($middleware, $this->registerMiddleware($instance->middleware), $this->middleware);
+
+        Route::{Str::lower($instance->httpMethod)}(
+            $this->routePrefix . $instance->route,
+            [$this->className, $method]
+        )->middleware(array_unique($middleware));
     }
 
     /**
      * @param array $attributes
      * @param $method
      */
-    private function registerRoute(array $attributes, $method): void
+    private function registerMapping(array $attributes, $method): void
     {
-        // 获取所有注解类名
-        $attributeClassNames = array_map(fn ($item) => $item->getName(), $attributes);
+        $mapping = [ GetMapping::class, PostMapping::class, PutMapping::class, DeleteMapping::class ];
 
-        $middleware = $this->middleware;
-
-        // 遍历所有注解
-        foreach ($attributes as $attribute) {
-            $attributeClass = $attribute->getName();
-
-            // 检查是否是路由注解 (Get/Post/Put/Delete Mapping)
-            if (!array_key_exists($attributeClass, $this->routeClass)) {
-                continue;
-            }
-
-            $routeInstance = $attribute->newInstance();
-            $routePath = $routeInstance->route;
-
-            // 添加基础认证中间件（如果不在白名单中）
-            if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
-                $middleware[] = 'auth:sanctum';
-                // 添加令牌能力认证中间件
-                if (in_array(Authorize::class, $attributeClassNames)) {
-                    $authorizeIndex = array_search(Authorize::class, $attributeClassNames);
-                    $authInstance = $attributes[$authorizeIndex]->newInstance();
-                    $middleware[] = 'abilities:' . $authInstance->name;
-                }
-            }
-
-            // 添加自定义路由中间件
-            $routeMiddleware = $routeInstance->middleware ?? [];
-            $middleware = array_merge($middleware, $this->registerMiddleware($routeMiddleware));
-
-            // 注册路由
-            Route::{$this->routeClass[$attributeClass]}(
-                $this->basePath . $routePath,
-                [$this->className, $method]
-            )->middleware(array_unique($middleware));
-        }
-    }
-
-    /**
-     * set base path
-     * @param ReflectionClass $class
-     * @throws ReflectionException
-     * @return void
-     */
-    private function registerBaseData(ReflectionClass $class): void
-    {
-        $attributes = $class->getAttributes();
-        foreach ($attributes as $attribute) {
-            $attributeClass = $attribute->getName();
-            if ($attributeClass == RequestMapping::class) {
-                $routeInstance = $attribute->newInstance();
-                $this->basePath = $routeInstance->route ?? '';
-                $middleware = $routeInstance->middleware ?? [];
-                $this->middleware = $this->registerMiddleware($middleware);
-            }
-        }
-        // 不需要权限校验
-        $this->noPermission = $class->getProperty('noPermission')->getDefaultValue();
+        collect($attributes)->filter(fn ($item) => in_array($item->getName(), $mapping))->each(function ($item) use ($method) {
+            $instance = $item->newInstance();
+            $this->registerRoute($instance, $method);
+        });
     }
 
     /**
      * 注册中间件
-     * @param array|string $middleware
+     * @param $middleware
      * @return string[]
      */
-    private function registerMiddleware(array | string $middleware): array
+    private function registerMiddleware($middleware): array
     {
         if(empty($middleware)) {
             return [];
@@ -155,6 +158,9 @@ class AnnoRoute
         if(is_array($middleware)) {
             return $middleware;
         }
-        return [$middleware];
+        if (is_string($middleware)) {
+            return [$middleware];
+        }
+        return [];
     }
 }

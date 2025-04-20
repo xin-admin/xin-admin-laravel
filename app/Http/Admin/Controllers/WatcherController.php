@@ -10,10 +10,10 @@ use Xin\AnnoRoute\Attribute\RequestMapping;
 use Xin\Telescope\Contracts\EntriesRepository;
 use Xin\Telescope\Storage\EntryQueryOptions;
 
-#[RequestMapping("/system/watcher")]
+#[RequestMapping('/system/watcher', 'system.watcher')]
 class WatcherController extends BaseController
 {
-    #[GetMapping('/request')] // #[Authorize('system.watcher.request')]
+    #[GetMapping('/request', 'request')]
     public function request(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
@@ -21,7 +21,7 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/auth')] // #[Authorize('system.watcher.auth')]
+    #[GetMapping('/auth', 'auth')]
     public function auth(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
@@ -29,15 +29,15 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/query')] // #[Authorize('system.watcher.query')]
-    public function query(Request $request, EntriesRepository $storage): JsonResponse
+    #[GetMapping('/query', 'query')]
+    public function queryLog(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
         $options->type('query');
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/cache')] // #[Authorize('system.watcher.cache')]
+    #[GetMapping('/cache', 'cache')]
     public function cache(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);
@@ -45,7 +45,7 @@ class WatcherController extends BaseController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/redis')] // #[Authorize('system.watcher.redis')]
+    #[GetMapping('/redis', 'redis')]
     public function redis(Request $request, EntriesRepository $storage): JsonResponse
     {
         $options = EntryQueryOptions::fromRequest($request);

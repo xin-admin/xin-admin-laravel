@@ -5,31 +5,24 @@ namespace App\Http\Admin\Controllers;
 use App\Http\BaseController;
 use App\Models\AdminLoginLogModel;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Authorize;
 use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 管理员登录日志
  */
-#[RequestMapping('/admin/loginlog')]
+#[RequestMapping('/admin/loginlog', 'admin.loginlog')]
+#[Query]
 class AdminLoginLogController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new AdminLoginLogModel();
-        $this->searchField = [
-            'username' => 'like',
-            'ip' => 'like',
-            'status' => '=',
-        ];
-    }
+    protected string $model = AdminLoginLogModel::class;
 
-    #[GetMapping] #[Authorize('admin.loginlog.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
+    protected array $searchField = [
+        'username' => 'like',
+        'ip' => 'like',
+        'status' => '=',
+    ];
 
     #[GetMapping('/my')]
     public function get(): JsonResponse

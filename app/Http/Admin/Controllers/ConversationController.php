@@ -6,38 +6,23 @@ use App\Http\BaseController;
 use App\Models\AiConversationGroupModel;
 use App\Models\AiConversationModel;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\Delete;
 use Xin\AnnoRoute\Attribute\DeleteMapping;
 use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 对话管理控制器
  */
-#[RequestMapping('/system/conversation')]
+#[RequestMapping('/system/conversation', 'system.conversation')]
+#[Query, Delete]
 class ConversationController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new AiConversationModel();
-    }
-
-    /** 获取对话列表 */
-    #[GetMapping] #[Authorize('system.conversation.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
-
-    /** 删除消息 */
-    #[DeleteMapping] #[Authorize('system.conversation.delete')]
-    public function delete(): JsonResponse
-    {
-        return $this->deleteResponse();
-    }
+    protected string $model = AiConversationModel::class;
 
     /** 通过UUID获取 对话内容 */
-    #[GetMapping('/uuid/{uuid}')] #[Authorize('system.conversation.list')]
+    #[GetMapping('/uuid/{uuid}', 'query')]
     public function listByUuid($uuid): JsonResponse
     {
         $model = new AiConversationGroupModel();

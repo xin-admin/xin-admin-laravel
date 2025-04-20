@@ -9,66 +9,39 @@ use App\Models\AdminRuleModel;
 use App\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\GetMapping;
+use Xin\AnnoRoute\Attribute\Find;
 use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 角色管理控制器
  */
-#[RequestMapping('/admin/role')]
+#[RequestMapping('/admin/role', 'admin.role')]
+#[Find, Query, Create, Update]
 class AdminUserRoleController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new AdminRoleModel;
-    }
+    protected string $model = AdminRoleModel::class;
 
-    /** 获取角色详情 */
-    #[GetMapping('/{id}')] #[Authorize('admin.role.get')]
-    public function get($id): JsonResponse
-    {
-        return $this->getResponse($id);
-    }
-
-    /** 获取角色列表 */
-    #[GetMapping] #[Authorize('admin.role.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
-
-    /** 添加角色 */
-    #[PostMapping] #[Authorize('admin.role.add')]
-    public function add(AdminUserRoleRequest $request): JsonResponse
-    {
-        return $this->addResponse($request);
-    }
-
-    /** 编辑角色 */
-    #[PutMapping] #[Authorize('admin.role.edit')]
-    public function edit(AdminUserRoleRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
+    protected string $formRequest = AdminUserRoleRequest::class;
 
     /** 删除角色 */
-    #[DeleteMapping] #[Authorize('admin.role.delete')]
-    public function delete(Request $request): JsonResponse
+    #[DeleteMapping(authorize: 'delete')]
+    public function deleted(Request $request): JsonResponse
     {
         $user = AdminUserModel::whereIn('role_id', $request->all('role_ids'))->first();
         if (! $user) {
             return $this->error('该角色下存在用户，无法删除');
         }
 
-        return $this->deleteResponse();
+        return $this->delete();
     }
 
     /** 设置角色权限 */
-    #[PostMapping('/rule')] #[Authorize('admin.role.edit')]
+    #[PostMapping('/rule', 'update')]
     public function setRoleRule(Request $request): JsonResponse
     {
         $validated = $request->validate([

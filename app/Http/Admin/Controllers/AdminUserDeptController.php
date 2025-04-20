@@ -7,51 +7,28 @@ use App\Http\BaseController;
 use App\Models\AdminDeptModel;
 use App\Service\AdminUserDeptService;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Authorize;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
+use Xin\AnnoRoute\Attribute\Create;
+use Xin\AnnoRoute\Attribute\Delete;
 use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 部门管理控制器
  */
-#[RequestMapping('/admin/dept')]
+#[RequestMapping('/admin/dept', 'admin.dept')]
+#[Create, Update, Delete]
 class AdminUserDeptController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new AdminDeptModel;
-        $this->service = new AdminUserDeptService;
-    }
+    protected string $model = AdminDeptModel::class;
+
+    protected string $formRequest = AdminUserDeptRequest::class;
 
     /** 部门列表 */
-    #[GetMapping] #[Authorize('admin.dept.list')]
+    #[GetMapping(authorize: 'list')]
     public function list(): JsonResponse
     {
-        return $this->service->list();
+        $service = new AdminUserDeptService;
+        return $service->list();
     }
-
-    /** 新增部门 */
-    #[PostMapping] #[Authorize('admin.dept.add')]
-    public function add(AdminUserDeptRequest $request): JsonResponse
-    {
-        return $this->addResponse($request);
-    }
-
-    /** 编辑部门 */
-    #[PutMapping] #[Authorize('admin.dept.edit')]
-    public function edit(AdminUserDeptRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
-
-    /** 删除部门 */
-    #[DeleteMapping] #[Authorize('admin.dept.delete')]
-    public function delete(): JsonResponse
-    {
-        return $this->deleteResponse();
-    }
-
 }

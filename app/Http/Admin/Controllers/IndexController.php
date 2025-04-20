@@ -10,7 +10,7 @@ use Xin\AnnoRoute\Attribute\RequestMapping;
 #[RequestMapping('/admin')]
 class IndexController extends BaseController
 {
-    protected array $noPermission = ['index', 'openai'];
+    protected array $noPermission = ['index'];
 
     /** 测试接口 */
     #[GetMapping]

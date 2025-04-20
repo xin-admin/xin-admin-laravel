@@ -8,48 +8,31 @@ use App\Models\SettingGroupModel;
 use App\Models\SettingModel;
 use Illuminate\Http\JsonResponse;
 use Xin\AnnoRoute\Attribute\Authorize;
+use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\DeleteMapping;
 use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
+use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 设置分组控制器
  */
-#[RequestMapping('/system/setting/group')]
+#[RequestMapping('/system/setting/group', 'system.setting.group')]
+#[Query, Create, Update]
 class SettingGroupController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new SettingGroupModel;
-        $this->searchField = ['id' => '=', 'key' => '='];
-    }
-
-    /** 获取设置列表 */
-    #[GetMapping] #[Authorize('system.setting.group.list')]
-    public function list(): JsonResponse
-    {
-        return $this->listResponse();
-    }
-
-    /** 新增设置 */
-    #[PostMapping] #[Authorize('system.setting.group.add')]
-    public function add(SettingGroupRequest $request): JsonResponse
-    {
-        return $this->addResponse($request);
-    }
-
-    /** 修改设置 */
-    #[PutMapping] #[Authorize('system.setting.group.edit')]
-    public function edit(SettingGroupRequest $request): JsonResponse
-    {
-        return $this->editResponse($request);
-    }
+    protected string $model = SettingGroupModel::class;
+    protected string $formRequest = SettingGroupRequest::class;
+    protected array $searchField = [
+        'id' => '=',
+        'key' => '=',
+    ];
 
     /** 删除设置 */
-    #[DeleteMapping]
-    #[Authorize('system.setting.group.delete')]
+    #[DeleteMapping(authorize: 'delete')]
     public function delete(): JsonResponse
     {
         $settingModel = new SettingModel;
@@ -60,6 +43,6 @@ class SettingGroupController extends BaseController
             return $this->error('请先删除该分组下的设置');
         }
 
-        return $this->deleteResponse();
+        return $this->delete();
     }
 }
