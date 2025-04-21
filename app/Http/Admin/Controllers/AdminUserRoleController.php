@@ -49,7 +49,7 @@ class AdminUserRoleController extends BaseController
             'rule_keys' => 'required|array|exists:admin_rule,key',
         ]);
         $rule_ids = AdminRuleModel::whereIn('key', $validated)->pluck('rule_id')->toArray();
-        $this->model
+        $this->model()
             ->where('role_id', $validated('role_id'))
             ->update([
                 'rules' => implode(',', $rule_ids),

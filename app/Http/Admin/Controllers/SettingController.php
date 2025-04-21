@@ -7,11 +7,8 @@ use App\Http\BaseController;
 use App\Models\SettingModel;
 use App\Service\SettingService;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Authorize;
 use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\Delete;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\Find;
 use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
@@ -36,7 +33,7 @@ class SettingController extends BaseController
     #[GetMapping('/query/{id}', 'query')]
     public function get(int $id): JsonResponse
     {
-        $data = $this->model->query()->where('group_id', $id)->get()->toArray();
+        $data = $this->model()->where('group_id', $id)->get()->toArray();
 
         return $this->success($data);
     }
@@ -46,7 +43,7 @@ class SettingController extends BaseController
     {
         $value = request()->all();
         foreach ($value as $k => $v) {
-            $model = $this->model->where('key', $k)->where('group_id', $id)->first();
+            $model = $this->model()->where('key', $k)->where('group_id', $id)->first();
             if ($model) {
                 $model->values = $v;
                 $model->save();
