@@ -95,7 +95,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
           <Space split={<Divider type="vertical" />} size={0}>
             {beforeOperateRender?.(record)}
             {(typeof editShow === 'function' ? editShow(record) : editShow) &&
-              <ButtonAccess auth={props.accessName + '.edit'} key={'edit'}>
+              <ButtonAccess auth={props.accessName + '.update'} key={'update'}>
                 <a children={'编辑'} type={'link'} onClick={() => editButtonClick(record)} />
               </ButtonAccess>
             }
@@ -127,7 +127,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
       return [
         <>
           {addShow &&
-            <ButtonAccess auth={accessName + '.add'} key={'add'}>
+            <ButtonAccess auth={accessName + '.create'} key={'create'}>
               <Button children={'新增'} type={'primary'} onClick={addButtonClick} />
             </ButtonAccess>
           }
@@ -136,7 +136,7 @@ export default function XinTable<T extends Record<string, any>>(props: XinTableP
       ];
     },
     request: async (params, sorter, filter) => {
-      const { data, success } = await listApi(props.api, { ...params, sorter, filter });
+      const { data, success } = await listApi(props.api, { page: params.current,  sorter, filter, ...params });
       return { ...data, success };
     },
     ...props.tableProps,

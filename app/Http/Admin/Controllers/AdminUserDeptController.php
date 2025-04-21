@@ -25,7 +25,7 @@ class AdminUserDeptController extends BaseController
     protected string $formRequest = AdminUserDeptRequest::class;
 
     /** 部门列表 */
-    #[GetMapping(authorize: 'list')]
+    #[GetMapping(authorize: 'query')]
     public function list(): JsonResponse
     {
         $service = new AdminUserDeptService;

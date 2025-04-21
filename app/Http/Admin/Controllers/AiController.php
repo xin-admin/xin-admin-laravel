@@ -34,7 +34,7 @@ class AiController extends BaseController
 
     /** 获取用户会话列表 */
     #[GetMapping(authorize: 'query')]
-    public function query(): JsonResponse
+    public function query(Request $request): JsonResponse
     {
         $data = AiConversationGroupModel::where('user_id', auth()->id())
             ->orderBy('id', 'desc')

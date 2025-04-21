@@ -26,7 +26,7 @@ class AdminUserRuleController extends BaseController
     protected string $formRequest = AdminUserRuleRequest::class;
 
     /** 管理员权限列表 */
-    #[GetMapping(authorize: 'list')]
+    #[GetMapping(authorize: 'query')]
     public function list(): JsonResponse
     {
         $service = new AdminUserRuleService;
@@ -34,7 +34,7 @@ class AdminUserRuleController extends BaseController
     }
 
     /** 获取父级权限 */
-    #[GetMapping('/parent', authorize: 'list')]
+    #[GetMapping('/parent', authorize: 'query')]
     public function getRulesParent(): JsonResponse
     {
         $service = new AdminUserRuleService;

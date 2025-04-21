@@ -6,16 +6,22 @@ use App\RequestJson;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(
     version: '1.0.0',
-    description: 'XinAdmin [ A Full stack framework ] <br> Copyright (c) 2023~2024 http://xinadmin.cn All rights reserved. <br> Apache License ( http://www.apache.org/licenses/LICENSE-2.0 ) <br> Author: 小刘同学 <2302563948@qq.com> <br>',
+    description: "
+        XinAdmin [ A Full stack framework ] <br>
+        Copyright (c) 2023~2024 http://xinadmin.cn All rights reserved. <br>
+        Apache License ( http://www.apache.org/licenses/LICENSE-2.0 ) <br>
+        Author: 小刘同学 <2302563948@qq.com> <br>
+    ",
     title: 'XinAdmin DOCUMENTS',
 )]
 abstract class BaseController
 {
-    use RequestJson;
+    use RequestJson, BuildSearch;
 
     /**
      * 当前控制器中用于CRUD的模型类
@@ -69,17 +75,15 @@ abstract class BaseController
         return $this->success($data);
     }
 
-    /**
-     * 列表响应
-     */
-    public function query(): JsonResponse
+    /** 列表响应 */
+    public function query(Request $request): JsonResponse
     {
-        [$buildModel, $paginate] = $this->buildSearch();
-        // TODO 分页响应优化，去除不需要的参数：page （待完成）
-        $data = $buildModel->paginate(
-            $paginate['prePage'],
-            page: $paginate['page'] ?? 1
-        )->toArray();
+        $pageSize = $request->input('pageSize', 10);
+
+        $query = $this->model()->query();
+        $data = $this->buildSearch($request, $query)
+            ->paginate($pageSize)
+            ->toArray();
 
         return $this->success($data);
     }
@@ -128,84 +132,6 @@ abstract class BaseController
         }
     }
 
-    /**
-     * 构建查询方法
-     */
-    private function buildSearch(): array
-    {
-        $params = request()->query();
-        $model = $this->model();
-        // 构建筛选
-        if (isset($params['filter']) && $params['filter'] != '') {
-            $filter = json_decode($params['filter'], true);
-            foreach ($filter as $k => $v) {
-                if (! $v) {
-                    continue;
-                }
-                $model->whereIn($k, $v);
-            }
-        }
-
-        // 构建查询
-        foreach ($this->searchField as $key => $op) {
-            if (isset($params[$key]) && $params[$key] != '') {
-                if (in_array($op, ['=', '>', '<>', '<', '>=', '<='])) {
-                    $model->where($key, $op, $params[$key]);
-
-                    continue;
-                }
-                if ($op == 'like') {
-                    $model->where($key, $op, '%'.$params[$key].'%');
-
-                    continue;
-                }
-                if ($op == 'date') {
-                    $date = date('Y-m-d', strtotime($params[$key]));
-                    $model->whereDate($key, $date);
-
-                    continue;
-                }
-                if ($op == 'betweenDate') {
-                    if (is_array($params[$key])) {
-                        $start = $params[$key][0];
-                        $end = $params[$key][1];
-                        $model->whereDate($key, '>=', $start);
-                        $model->whereDate($key, '<=', $end);
-                    }
-                }
-            }
-        }
-
-        // 快速搜索
-        if (isset($params['keywordSearch']) && $params['keywordSearch'] != '') {
-            $quickSearchArr = $this->quickSearchField;
-            if (count($quickSearchArr) > 0) {
-                $model->whereAny(
-                    $quickSearchArr,
-                    'like',
-                    '%'.str_replace('%', '\%', $params['keywordSearch']).'%'
-                );
-            }
-        }
-
-        // 构建排序
-        if (isset($params['sorter']) && $params['sorter']) {
-            $sorter = json_decode($params['sorter'], true);
-            if (count($sorter) > 0) {
-                $column = array_keys($sorter)[0];
-                $direction = $sorter[$column] == 'ascend' ? 'asc' : 'desc';
-                $model->orderBy($column, $direction);
-            }
-        }
-
-        // 构建分页
-        $paginate = [
-            'prePage' => $params['pageSize'] ?? 10,
-            'page' => $params['current'] ?? 1,
-        ];
-
-        return [$model, $paginate];
-    }
 
     /**
      * 获取当前控制器的模型
@@ -238,6 +164,6 @@ abstract class BaseController
         if (! is_subclass_of($this->formRequest, FormRequest::class)) {
             $this->throwError('The form request class used for CRUD in the current controller is incorrect.');
         }
-        return new $this->formRequest;
+        return app($this->formRequest);
     }
 }

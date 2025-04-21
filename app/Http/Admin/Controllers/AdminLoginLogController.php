@@ -28,7 +28,8 @@ class AdminLoginLogController extends BaseController
     public function get(): JsonResponse
     {
         $username = auth()->user()['username'];
-        $data = $this->model
+        $data = $this->model()
+            ->query()
             ->where('username', $username)
             ->limit(20)
             ->orderBy('log_id', 'desc')
