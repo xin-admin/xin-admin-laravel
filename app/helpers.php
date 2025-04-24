@@ -1,8 +1,6 @@
 <?php
 
 use App\Service\SettingService;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpFoundation\Response;
 
 if (! function_exists('setting')) {
     /**
@@ -15,5 +13,17 @@ if (! function_exists('setting')) {
     {
         return SettingService::getSetting($name, $default);
     }
+}
 
+if (! function_exists('web_path')) {
+    /**
+     * Get the path to the web of the install.
+     *
+     * @param string $path
+     * @return string
+     */
+    function web_path(string $path = ''): string
+    {
+        return base_path('web'. DIRECTORY_SEPARATOR . $path);
+    }
 }
