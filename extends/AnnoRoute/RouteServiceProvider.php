@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(AnnoRoute $annoRoute): void
     {
         // 获取所有控制器
-        $dir = app_path('Http');
+        $dir = app_path();
         $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
         foreach ($controllers as $controller) {
             if (! $controller->isFile()) {
@@ -37,8 +37,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function getClassName($controller): string
     {
-        $filePath = str_replace(app_path('Http'), '', $controller->getPath());
+        $filePath = str_replace(app_path(), '', $controller->getPath());
         $filePath = str_replace('/', '\\', $filePath);
-        return 'App\\Http'.$filePath.'\\'.basename($controller->getFileName(), '.php');
+        return 'App'.$filePath.'\\'.basename($controller->getFileName(), '.php');
     }
 }
