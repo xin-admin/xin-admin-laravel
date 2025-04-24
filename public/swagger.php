@@ -2,6 +2,6 @@
 
 require '../vendor/autoload.php';
 
-$openapi = \OpenApi\Generator::scan(['../app/Http']);
+$openapi = \OpenApi\Generator::scan(['../app']);
 
 echo $openapi->toJson();
