@@ -66,12 +66,12 @@ return [
     'providers' => [
         'admins' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AdminUserModel::class,
+            'model' => \App\Common\Models\AdminUserModel::class,
         ],
 
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\XinUserModel::class,
+            'model' => \App\Common\Models\XinUserModel::class,
         ],
     ],
 

@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Service\LengthAwarePaginatorService;
-use App\Service\SettingService;
+use App\Common\Service\LengthAwarePaginatorService;
+use App\Common\Service\SettingService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(\Illuminate\Foundation\Exceptions\Handler::class, Exceptions\ExceptionsHandler::class);
+        $this->app->bind(\Illuminate\Foundation\Exceptions\Handler::class, Common\Exceptions\ExceptionsHandler::class);
     }
 
     /**

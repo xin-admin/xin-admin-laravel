@@ -1,6 +1,6 @@
 <?php
 
-use App\Service\SettingService;
+use App\Common\Service\SettingService;
 
 if (! function_exists('setting')) {
     /**
