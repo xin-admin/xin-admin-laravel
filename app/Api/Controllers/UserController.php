@@ -1,8 +1,8 @@
 <?php
 
-namespace App\App\Controllers;
+namespace App\Api\Controllers;
 
-use App\App\Requests\UserUpdateInfoRequest;
+use App\Api\Requests\UserUpdateInfoRequest;
 use App\BaseController;
 use App\Common\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;

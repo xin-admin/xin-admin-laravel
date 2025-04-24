@@ -1,9 +1,9 @@
 <?php
 
-namespace App\App\Controllers;
+namespace App\Api\Controllers;
 
 use App\Admin\Mail\VerificationCodeMail;
-use App\App\Requests\UserRegisterRequest;
+use App\Api\Requests\UserRegisterRequest;
 use App\BaseController;
 use App\Common\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
