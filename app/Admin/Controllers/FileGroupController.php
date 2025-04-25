@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\FileGroupRequest;
+use App\Admin\Requests\FileGroupRequest;
 use App\BaseController;
 use App\Common\Models\FileGroupModel;
 use Xin\AnnoRoute\Attribute\Create;

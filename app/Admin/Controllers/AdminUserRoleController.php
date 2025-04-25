@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\AdminUserRoleRequest;
+use App\Admin\Requests\AdminUserRoleRequest;
 use App\BaseController;
 use App\Common\Models\AdminRoleModel;
 use App\Common\Models\AdminRuleModel;

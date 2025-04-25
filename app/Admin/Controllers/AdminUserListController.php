@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\AdminUserRequest;
+use App\Admin\Requests\AdminUserRequest;
 use App\BaseController;
 use App\Common\Models\AdminUserModel;
 use Illuminate\Http\JsonResponse;

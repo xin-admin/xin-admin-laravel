@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\UserRequest;
+use App\Admin\Requests\UserRequest;
 use App\Admin\Service\XinUserListService;
 use App\BaseController;
 use App\Common\Models\XinUserModel;

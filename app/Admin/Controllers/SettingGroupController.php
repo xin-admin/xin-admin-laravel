@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\SettingGroupRequest;
+use App\Admin\Requests\SettingGroupRequest;
 use App\BaseController;
 use App\Common\Models\SettingGroupModel;
 use App\Common\Models\SettingModel;

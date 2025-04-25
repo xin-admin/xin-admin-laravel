@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\FileUpdateInfoRequest;
+use App\Admin\Requests\FileUpdateInfoRequest;
 use App\BaseController;
 use App\Common\Models\FileModel;
 use App\Common\Service\FileService;

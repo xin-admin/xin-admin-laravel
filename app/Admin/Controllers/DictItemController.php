@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\DictItemRequest;
+use App\Admin\Requests\DictItemRequest;
 use App\BaseController;
 use App\Common\Models\DictItemModel;
 use Xin\AnnoRoute\Attribute\Create;

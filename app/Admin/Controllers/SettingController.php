@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\SettingRequest;
+use App\Admin\Requests\SettingRequest;
 use App\BaseController;
 use App\Common\Models\SettingModel;
 use App\Common\Service\SettingService;

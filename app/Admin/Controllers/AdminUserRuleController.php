@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\AdminUserRuleRequest;
+use App\Admin\Requests\AdminUserRuleRequest;
 use App\Admin\Service\AdminUserRuleService;
 use App\BaseController;
 use App\Common\Models\AdminRuleModel;

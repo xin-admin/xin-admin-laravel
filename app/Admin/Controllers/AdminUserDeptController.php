@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\AdminUserDeptRequest;
+use App\Admin\Requests\AdminUserDeptRequest;
 use App\Admin\Service\AdminUserDeptService;
 use App\BaseController;
 use App\Common\Models\AdminDeptModel;

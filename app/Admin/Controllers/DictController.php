@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Request\DictRequest;
+use App\Admin\Requests\DictRequest;
 use App\BaseController;
 use App\Common\Models\DictModel;
 use Illuminate\Http\JsonResponse;
