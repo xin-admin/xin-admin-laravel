@@ -2,7 +2,7 @@
 
 namespace App\Generator\Validation;
 
-use App\Generator\Service\ModuleService;
+use App\Generator\Generator;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -14,7 +14,7 @@ class ModuleValidation implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $modules = ModuleService::moules();
+        $modules = Generator::moules();
         if (!in_array($value, $modules)) {
             $fail('The :attribute modules not exists.');
         }

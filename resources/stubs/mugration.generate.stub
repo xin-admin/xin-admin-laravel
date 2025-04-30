@@ -1,0 +1,22 @@
+<?php
+
+{{ use }}
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        {{ up }}
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        {{ down }}
+    }
+};
