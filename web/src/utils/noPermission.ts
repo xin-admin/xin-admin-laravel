@@ -6,4 +6,5 @@ export default [
   'login',
   'index',
   '/',
+  '/generator'
 ];
