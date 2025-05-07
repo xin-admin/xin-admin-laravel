@@ -2,7 +2,7 @@
 
 namespace App\Generator;
 
-use App\Generator\Enum\MigrationColumnType;
+use App\Generator\Enum\MigrationType;
 use App\Generator\Enum\SqlColumnType;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +43,7 @@ class Column
 
     protected int $scale;
 
-    protected MigrationColumnType $type;
+    protected MigrationType $type;
 
     protected bool $unsigned = false;
 
@@ -88,42 +88,42 @@ class Column
         $this->setStoredDefinition();
 
         switch ($this->type) {
-            case MigrationColumnType::UNSIGNED_TINY_INTEGER:
-            case MigrationColumnType::TINY_INTEGER:
+            case MigrationType::UNSIGNED_TINY_INTEGER:
+            case MigrationType::TINY_INTEGER:
                 if ($this->isBoolean()) {
-                    $this->type = MigrationColumnType::BOOLEAN;
+                    $this->type = MigrationType::BOOLEAN;
                 }
 
                 break;
 
-            case MigrationColumnType::ENUM:
+            case MigrationType::ENUM:
                 $this->presetValues = $this->getEnumPresetValues($column['type']);
                 break;
 
-            case MigrationColumnType::SET:
+            case MigrationType::SET:
                 $this->presetValues = $this->getSetPresetValues($column['type']);
                 break;
 
-            case MigrationColumnType::SOFT_DELETES:
-            case MigrationColumnType::SOFT_DELETES_TZ:
-            case MigrationColumnType::DATETIME:
-            case MigrationColumnType::DATETIME_TZ:
-            case MigrationColumnType::TIMESTAMP:
-            case MigrationColumnType::TIMESTAMP_TZ:
+            case MigrationType::SOFT_DELETES:
+            case MigrationType::SOFT_DELETES_TZ:
+            case MigrationType::DATETIME:
+            case MigrationType::DATETIME_TZ:
+            case MigrationType::TIMESTAMP:
+            case MigrationType::TIMESTAMP_TZ:
                 $this->onUpdateCurrentTimestamp = $this->hasOnUpdateCurrentTimestamp();
                 $this->flattenCurrentTimestamp();
 
                 break;
 
-            case MigrationColumnType::GEOGRAPHY:
-            case MigrationColumnType::GEOMETRY:
-            case MigrationColumnType::GEOMETRY_COLLECTION:
-            case MigrationColumnType::LINE_STRING:
-            case MigrationColumnType::MULTI_LINE_STRING:
-            case MigrationColumnType::POINT:
-            case MigrationColumnType::MULTI_POINT:
-            case MigrationColumnType::POLYGON:
-            case MigrationColumnType::MULTI_POLYGON:
+            case MigrationType::GEOGRAPHY:
+            case MigrationType::GEOMETRY:
+            case MigrationType::GEOMETRY_COLLECTION:
+            case MigrationType::LINE_STRING:
+            case MigrationType::MULTI_LINE_STRING:
+            case MigrationType::POINT:
+            case MigrationType::MULTI_POINT:
+            case MigrationType::POLYGON:
+            case MigrationType::MULTI_POLYGON:
                 $this->setRealSpatialColumn();
                 break;
 
@@ -156,7 +156,7 @@ class Column
     /**
      * Get the column type.
      */
-    public function getType(): MigrationColumnType
+    public function getType(): MigrationType
     {
         return $this->type;
     }
@@ -306,15 +306,15 @@ class Column
     protected function parseLength(string $fullDefinitionType): ?int
     {
         switch ($this->type) {
-            case MigrationColumnType::CHAR:
-            case MigrationColumnType::STRING:
-            case MigrationColumnType::DATE:
-            case MigrationColumnType::DATETIME:
-            case MigrationColumnType::DATETIME_TZ:
-            case MigrationColumnType::TIME:
-            case MigrationColumnType::TIME_TZ:
-            case MigrationColumnType::TIMESTAMP:
-            case MigrationColumnType::TIMESTAMP_TZ:
+            case MigrationType::CHAR:
+            case MigrationType::STRING:
+            case MigrationType::DATE:
+            case MigrationType::DATETIME:
+            case MigrationType::DATETIME_TZ:
+            case MigrationType::TIME:
+            case MigrationType::TIME_TZ:
+            case MigrationType::TIMESTAMP:
+            case MigrationType::TIMESTAMP_TZ:
                 if (preg_match('/\((\d*)\)/', $fullDefinitionType, $matches) === 1) {
                     return (int) $matches[1];
                 }
@@ -335,9 +335,9 @@ class Column
     protected function parsePrecisionAndScale(string $fullDefinitionType): array
     {
         switch ($this->type) {
-            case MigrationColumnType::DECIMAL:
-            case MigrationColumnType::DOUBLE:
-            case MigrationColumnType::FLOAT:
+            case MigrationType::DECIMAL:
+            case MigrationType::DOUBLE:
+            case MigrationType::FLOAT:
                 if (preg_match('/\((\d+)(?:,\s*(\d+))?\)?/', $fullDefinitionType, $matches) === 1) {
                     return [(int) $matches[1], isset($matches[2]) ? (int) $matches[2] : 0];
                 }
@@ -392,7 +392,7 @@ class Column
             return;
         }
 
-        $this->type = MigrationColumnType::REMEMBER_TOKEN;
+        $this->type = MigrationType::REMEMBER_TOKEN;
     }
 
     /**
@@ -405,12 +405,12 @@ class Column
         }
 
         switch ($this->type) {
-            case MigrationColumnType::TIMESTAMP:
-                $this->type = MigrationColumnType::SOFT_DELETES;
+            case MigrationType::TIMESTAMP:
+                $this->type = MigrationType::SOFT_DELETES;
                 return;
 
-            case MigrationColumnType::TIMESTAMP_TZ:
-                $this->type = MigrationColumnType::SOFT_DELETES_TZ;
+            case MigrationType::TIMESTAMP_TZ:
+                $this->type = MigrationType::SOFT_DELETES_TZ;
                 return;
 
             default:
@@ -424,18 +424,18 @@ class Column
     {
         if (
             !in_array($this->type, [
-                MigrationColumnType::BIG_INTEGER,
-                MigrationColumnType::INTEGER,
-                MigrationColumnType::MEDIUM_INTEGER,
-                MigrationColumnType::SMALL_INTEGER,
-                MigrationColumnType::TINY_INTEGER,
+                MigrationType::BIG_INTEGER,
+                MigrationType::INTEGER,
+                MigrationType::MEDIUM_INTEGER,
+                MigrationType::SMALL_INTEGER,
+                MigrationType::TINY_INTEGER,
             ])
             || !$this->unsigned
         ) {
             return;
         }
 
-        $this->type = MigrationColumnType::from('unsigned' . ucfirst($this->type->value));
+        $this->type = MigrationType::from('unsigned' . ucfirst($this->type->value));
     }
 
     /**
@@ -446,11 +446,11 @@ class Column
     {
         if (
             !in_array($this->type, [
-                MigrationColumnType::BIG_INTEGER,
-                MigrationColumnType::INTEGER,
-                MigrationColumnType::MEDIUM_INTEGER,
-                MigrationColumnType::SMALL_INTEGER,
-                MigrationColumnType::TINY_INTEGER,
+                MigrationType::BIG_INTEGER,
+                MigrationType::INTEGER,
+                MigrationType::MEDIUM_INTEGER,
+                MigrationType::SMALL_INTEGER,
+                MigrationType::TINY_INTEGER,
             ])
         ) {
             return;
@@ -464,12 +464,12 @@ class Column
             return;
         }
 
-        if ($this->type === MigrationColumnType::INTEGER) {
-            $this->type = MigrationColumnType::INCREMENTS;
+        if ($this->type === MigrationType::INTEGER) {
+            $this->type = MigrationType::INCREMENTS;
             return;
         }
 
-        $this->type = MigrationColumnType::from(str_replace('Integer', 'Increments', $this->type->value));
+        $this->type = MigrationType::from(str_replace('Integer', 'Increments', $this->type->value));
     }
 
     /**
@@ -504,38 +504,38 @@ class Column
     private function setRealSpatialColumn(): void
     {
         switch ($this->type) {
-            case MigrationColumnType::GEOMETRY_COLLECTION:
+            case MigrationType::GEOMETRY_COLLECTION:
                 $this->spatialSubType = 'geometryCollection';
                 break;
 
-            case MigrationColumnType::LINE_STRING:
+            case MigrationType::LINE_STRING:
                 $this->spatialSubType = 'lineString';
                 break;
 
-            case MigrationColumnType::MULTI_LINE_STRING:
+            case MigrationType::MULTI_LINE_STRING:
                 $this->spatialSubType = 'multiLineString';
                 break;
 
-            case MigrationColumnType::POINT:
+            case MigrationType::POINT:
                 $this->spatialSubType = 'point';
                 break;
 
-            case MigrationColumnType::MULTI_POINT:
+            case MigrationType::MULTI_POINT:
                 $this->spatialSubType = 'multiPoint';
                 break;
 
-            case MigrationColumnType::POLYGON:
+            case MigrationType::POLYGON:
                 $this->spatialSubType = 'polygon';
                 break;
 
-            case MigrationColumnType::MULTI_POLYGON:
+            case MigrationType::MULTI_POLYGON:
                 $this->spatialSubType = 'multiPolygon';
                 break;
 
             default:
         }
 
-        $this->type = MigrationColumnType::GEOMETRY;
+        $this->type = MigrationType::GEOMETRY;
 
         $this->spatialSrID = $this->getSrID($this->tableName, $this->name);
 
@@ -543,7 +543,7 @@ class Column
             return;
         }
 
-        $this->type = MigrationColumnType::GEOGRAPHY;
+        $this->type = MigrationType::GEOGRAPHY;
     }
 
     /**

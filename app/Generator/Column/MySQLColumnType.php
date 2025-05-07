@@ -2,157 +2,67 @@
 
 namespace App\Generator\Column;
 
-use App\Generator\Enum\MigrationColumnType;
+use App\Generator\Enum\MigrationType;
 
 class MySQLColumnType
 {
     /**
-     * @var array<string, MigrationColumnType>
+     * @var array<string, MigrationType>
      */
     protected static array $map = [
-        'bigint'             => [
-            'migration' => MigrationColumnType::BIG_INTEGER,
-            'request'   => MigrationColumnType::BIG_INTEGER,
-        ],
-        'binary' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'bit' => [
-            'migration' => MigrationColumnType::BOOLEAN,
-        ],
-        'blob' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'char' => [
-            'migration' => MigrationColumnType::CHAR,
-        ],
-        'date' => [
-            'migration' => MigrationColumnType::DATE,
-        ],
-        'datetime' => [
-            'migration' => MigrationColumnType::DATETIME,
-        ],
-        'decimal' => [
-            'migration' => MigrationColumnType::DECIMAL,
-        ],
-        'double' => [
-            'migration' => MigrationColumnType::DOUBLE,
-        ],
-        'enum' => [
-            'migration' => MigrationColumnType::ENUM,
-        ],
-        'float' => [
-            'migration' => MigrationColumnType::FLOAT,
-        ],
-        'geography' => [
-            'migration' => MigrationColumnType::GEOGRAPHY,
-        ],
-        'geometry' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'int' => [
-            'migration' => MigrationColumnType::INTEGER,
-        ],
-        'integer' => [
-            'migration' => MigrationColumnType::INTEGER,
-        ],
-        'json' => [
-            'migration' => MigrationColumnType::JSON,
-        ],
-        'longblob' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'longtext' => [
-            'migration' => MigrationColumnType::LONG_TEXT,
-        ],
-        'mediumblob' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'mediumint' => [
-            'migration' => MigrationColumnType::MEDIUM_INTEGER,
-        ],
-        'mediumtext' => [
-            'migration' => MigrationColumnType::MEDIUM_TEXT,
-        ],
-        'numeric' => [
-            'migration' => MigrationColumnType::DECIMAL,
-        ],
-        'real' => [
-            'migration' => MigrationColumnType::FLOAT,
-        ],
-        'set' => [
-            'migration' => MigrationColumnType::SET,
-        ],
-        'smallint' => [
-            'migration' => MigrationColumnType::SMALL_INTEGER,
-        ],
-        'string' => [
-            'migration' => MigrationColumnType::STRING,
-        ],
-        'text' => [
-            'migration' => MigrationColumnType::TEXT,
-        ],
-        'time' => [
-            'migration' => MigrationColumnType::TIME,
-        ],
-        'timestamp' => [
-            'migration' => MigrationColumnType::TIMESTAMP,
-        ],
-        'tinyblob' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'tinyint' => [
-            'migration' => MigrationColumnType::TINY_INTEGER,
-        ],
-        'tinytext' => [
-            'migration' => MigrationColumnType::TINY_TEXT,
-        ],
-        'varbinary' => [
-            'migration' => MigrationColumnType::BINARY,
-        ],
-        'varchar' => [
-            'migration' => MigrationColumnType::STRING,
-        ],
-        'year' => [
-            'migration' => MigrationColumnType::YEAR,
-        ],
+        'bigint'             => MigrationType::BIG_INTEGER,
+        'binary'             => MigrationType::BINARY,
+        'bit'                => MigrationType::BOOLEAN,
+        'blob'               => MigrationType::BINARY,
+        'char'               => MigrationType::CHAR,
+        'date'               => MigrationType::DATE,
+        'datetime'           => MigrationType::DATETIME,
+        'decimal'            => MigrationType::DECIMAL,
+        'double'             => MigrationType::DOUBLE,
+        'enum'               => MigrationType::ENUM,
+        'float'              => MigrationType::FLOAT,
+        'geography'          => MigrationType::GEOGRAPHY,
+        'geometry'           => MigrationType::GEOMETRY,
+        'int'                => MigrationType::INTEGER,
+        'integer'            => MigrationType::INTEGER,
+        'json'               => MigrationType::JSON,
+        'longblob'           => MigrationType::BINARY,
+        'longtext'           => MigrationType::LONG_TEXT,
+        'mediumblob'         => MigrationType::BINARY,
+        'mediumint'          => MigrationType::MEDIUM_INTEGER,
+        'mediumtext'         => MigrationType::MEDIUM_TEXT,
+        'numeric'            => MigrationType::DECIMAL,
+        'real'               => MigrationType::FLOAT,
+        'set'                => MigrationType::SET,
+        'smallint'           => MigrationType::SMALL_INTEGER,
+        'string'             => MigrationType::STRING,
+        'text'               => MigrationType::TEXT,
+        'time'               => MigrationType::TIME,
+        'timestamp'          => MigrationType::TIMESTAMP,
+        'tinyblob'           => MigrationType::BINARY,
+        'tinyint'            => MigrationType::TINY_INTEGER,
+        'tinytext'           => MigrationType::TINY_TEXT,
+        'varbinary'          => MigrationType::BINARY,
+        'varchar'            => MigrationType::STRING,
+        'year'               => MigrationType::YEAR,
 
-        // Geometry types
-        'geomcollection' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'linestring' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'multilinestring' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'point' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'multipoint' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'polygon' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
-        'multipolygon' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
+        'geomcollection'     => MigrationType::GEOMETRY,
+        'linestring'         => MigrationType::GEOMETRY,
+        'multilinestring'    => MigrationType::GEOMETRY,
+        'point'              => MigrationType::GEOMETRY,
+        'multipoint'         => MigrationType::GEOMETRY,
+        'polygon'            => MigrationType::GEOMETRY,
+        'multipolygon'       => MigrationType::GEOMETRY,
 
-        // MariaDB specific
-        'uuid' => [
-            'migration' => MigrationColumnType::UUID,
-        ],
+        // For MariaDB
+        'uuid'               => MigrationType::UUID,
 
-        // MariaDB and MySQL 5.7+
-        'geometrycollection' => [
-            'migration' => MigrationColumnType::GEOMETRY,
-        ],
+        // For MariaDB and MySQL57
+        'geometrycollection' => MigrationType::GEOMETRY,
     ];
 
-    public static function toMigration(string $dbType): MigrationColumnType
+    public static function toMigration(string $dbType): MigrationType
     {
-        return self::$map[strtolower($dbType)]['migration'] ?? MigrationColumnType::STRING;
+        return self::$map[strtolower($dbType)] ?? MigrationType::STRING;
     }
 }

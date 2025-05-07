@@ -3,11 +3,11 @@
 namespace App\Generator\Enum;
 
 /**
- * Define column types of the framework.
+ * Define column types of migration.
  *
  * @link https://laravel.com/docs/master/migrations#available-column-types
  */
-enum MigrationColumnType: string implements ColumnEnum
+enum MigrationType: string implements ColumnEnum
 {
     case BIG_INTEGER             = 'bigInteger';
     case BIG_INCREMENTS          = 'bigIncrements';
