@@ -38,6 +38,16 @@ trait BuildSearch
 
                     continue;
                 }
+                if ($op == 'afterLike') {
+                    $model->where($key, $op, $params[$key].'%');
+
+                    continue;
+                }
+                if ($op == 'beforeLike') {
+                    $model->where($key, $op, '%'.$params[$key]);
+
+                    continue;
+                }
                 if ($op == 'date') {
                     $date = date('Y-m-d', strtotime($params[$key]));
                     $model->whereDate($key, $date);
