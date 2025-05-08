@@ -16,7 +16,7 @@ class AdminUserRuleRequest extends FormRequest
                         $fail('The '.$attribute.' must exist in the database or be equal to 0.');
                     }
                 }, ],
-                'key' => ['required', 'string', 'max:50', 'unique:App\Common\Models\AdminRuleModel,key'],
+                'key' => ['required', 'string', 'max:50', 'unique:admin_rule,key'],
                 'name' => ['required', 'string', 'max:50'],
                 'type' => ['required', 'integer', 'in:0,1,2'],
                 'show' => ['required', 'integer', 'between:0,1'],
