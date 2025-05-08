@@ -67,7 +67,7 @@ enum ValidationRulesType: string implements ColumnEnum
     case LESS_THAN = 'lt';
     case LESS_THAN_OR_EQUAL = 'lte';
     case LOWERCASE = 'lowercase';
-    case LIST = 'list';
+    case LIST_ = 'list';
     case MAC_ADDRESS = 'mac_address';
     case MAX = 'max';
     case MAX_DIGITS = 'max_digits';
