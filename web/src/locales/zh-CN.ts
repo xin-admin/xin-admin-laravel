@@ -1,7 +1,8 @@
 import menu from './zh-CN/menu';
 import settingDrawer from './zh-CN/settingDrawer';
-import dashboard from "@/locales/zh-CN/dashboard";
-import ai from '@/locales/zh-CN/ai';
+import dashboard from "./zh-CN/dashboard";
+import ai from './zh-CN/ai';
+import generator from './zh-CN/generator'
 export default {
   'navBar.lang': '语言',
   'layout.user.link.help': '帮助',
@@ -16,4 +17,5 @@ export default {
   ...settingDrawer,
   ...dashboard,
   ...ai,
+  ...generator,
 };

@@ -2,6 +2,7 @@ import menu from './en-US/menu';
 import settingDrawer from './en-US/settingDrawer';
 import dashboard from "./en-US/dashboard";
 import ai from "./en-US/ai";
+import generator from './en-US/generator';
 
 export default {
   'navBar.lang': 'Languages',
@@ -16,5 +17,6 @@ export default {
   ...menu,
   ...settingDrawer,
   ...dashboard,
-  ...ai
+  ...ai,
+  ...generator
 };
