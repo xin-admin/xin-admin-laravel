@@ -8,6 +8,7 @@ use App\BaseController;
 use App\Common\Models\XinUserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use OpenApi\Attributes as OA;
 use Xin\AnnoRoute\Attribute\GetMapping;
@@ -46,17 +47,17 @@ class IndexController extends BaseController
     #[PostMapping('/login')]
     public function login(Request $request): JsonResponse
     {
-        $data = $request->validate([
+        $credentials = $request->validate([
             'username' => 'required|min:4|alphaDash',
             'password' => 'required|min:4|alphaDash',
         ]);
-        $model = new XinUserModel;
-        $data = $model->login($data['username'], $data['password']);
-        if ($data) {
-            return $this->success($data);
+        if (Auth::guard('users')->attempt($credentials)) {
+            $data = $request->user()
+                ->createToken($credentials['username'])
+                ->toArray();
+            return $this->success($data, __('user.login_success'));
         }
-
-        return $this->error($model->getErrorMsg());
+        return $this->error(__('user.login_error'));
     }
 
     /**
