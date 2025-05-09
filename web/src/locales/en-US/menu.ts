@@ -26,7 +26,7 @@ export default {
   'menu.system.setting': 'System Setting',
   'menu.system.info': 'System Info',
   'menu.online': 'Online',
-  'menu.online.table': 'Online Table',
+  'menu.online.generator': 'Code Generator',
   'menu.xinadmin': 'Xin Admin',
   'menu.index': 'Index',
   'menu.git': 'Git',

@@ -26,7 +26,7 @@ export default {
   'menu.system.setting': '系统设置',
   'menu.system.info': '系统信息',
   'menu.online': '在线开发',
-  'menu.online.table': '表格开发',
+  'menu.online.generator': '代码生成',
   'menu.xinadmin': 'Xin Admin',
   'menu.index': '首页',
   'menu.git': '代码仓库',
