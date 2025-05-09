@@ -27,3 +27,18 @@ if (! function_exists('web_path')) {
         return base_path('web'. DIRECTORY_SEPARATOR . $path);
     }
 }
+
+if (! function_exists('module_path'))
+{
+    /**
+     * Get the path to the module.
+     *
+     * @param string $module
+     * @param string $path
+     * @return string
+     */
+    function module_path(string $module, string $path = ''): string
+    {
+        return app_path($module . DIRECTORY_SEPARATOR . $path);
+    }
+}

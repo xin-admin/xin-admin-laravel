@@ -4,6 +4,7 @@ namespace App\Generator\Requests;
 
 use App\Generator\Validation\ColumnsTypeValidation;
 use App\Generator\Validation\ModuleValidation;
+use App\Generator\Validation\PathValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GenRequest extends FormRequest
@@ -11,16 +12,14 @@ class GenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'modules' => ['required', 'string', new ModuleValidation],
-            'controllerNamespace' => 'required',
-            'modelName' => 'required',
-            'modelPath' => 'required',
-            'requestName' => 'required',
-            'requestNamespace' => 'required',
-            'controllerName' => 'required',
-            'routePrefix' => 'required',
-            'abilitiesPrefix' => 'required',
-            'searchField' => 'required',
+            'name' => ['required', 'string', 'max:30'],
+            'module' => ['required', 'string', new ModuleValidation],
+            'path' => ['required', 'string', new PathValidation],
+            'routePrefix' => ['required', 'string', 'max:255'],
+            'abilitiesPrefix' => ['required', 'string', 'max:255'],
+            'pageRoute' => ['required', 'string', 'max:255'],
+            'page_is_file' => ['required', 'boolean'],
+
             'quickSearchField' => 'required|list',
             'find' => 'required|boolean',
             'create' => 'required|boolean',
