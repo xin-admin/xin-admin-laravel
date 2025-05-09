@@ -139,8 +139,8 @@ class AdminUserSeeder extends Seeder
             ['rule_id' => 95, 'parent_id' => 92, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => 'SQL 日志', 'path' => '/system/watcher/query', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.query', 'local' => 'menu.watcher.query'],
             ['rule_id' => 96, 'parent_id' => 92, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => 'Redis 日志', 'path' => '/system/watcher/redis', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.redis', 'local' => 'menu.watcher.redis'],
             ['rule_id' => 97, 'parent_id' => 92, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '缓存日志', 'path' => '/system/watcher/cache', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.cache', 'local' => 'menu.watcher.cache'],
-            ['rule_id' => 98, 'parent_id' => 0 , 'type' => '0', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => '在线开发', 'path' => '/online', 'icon' => 'OnlineOutlined', 'key' => 'online', 'local' => 'menu.online'],
-            ['rule_id' => 99, 'parent_id' => 98, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '代码生成', 'path' => '/online/generator', 'icon' => 'CodeOutlined', 'key' => 'online.generator', 'local' => 'menu.online.generator'],
+            ['rule_id' => 98, 'parent_id' => 0 , 'type' => '0', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => '在线开发', 'path' => '/online', 'icon' => 'CloudOutlined', 'key' => 'online', 'local' => 'menu.online'],
+            ['rule_id' => 99, 'parent_id' => 98, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '代码生成', 'path' => '/online/generator', 'icon' => 'ConsoleSqlOutlined', 'key' => 'online.generator', 'local' => 'menu.online.generator'],
         ]);
     }
 }
