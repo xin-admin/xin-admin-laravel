@@ -48,21 +48,20 @@ class GeneratorEntry
     private string $abilitiesPrefix;
 
     /**
-     * 前端页面的配置
-     * @var array
+     * 前端路由地址，将根据路由地址自动生成文件地址，再依托UmiJs的约定路由前端自动生成此路由。
+     *
+     * @var string|mixed
      */
-    private array $page = [
-        /**
-         * 前端路由地址，将根据路由地址自动生成文件地址，再依托UmiJs的约定路由前端自动生成此路由。
-         */
-        'route' => '',
-        /**
-         * 是否为文件
-         * 如果是文件，则将路由的最后一个地址作为前端页面文件名称
-         * 如果不是文件将创建路由文件夹。并将页面文件名作为 index.tsx
-         */
-        'is_file' => false,
-    ];
+    private string $pageRoute;
+
+    /**
+     * 是否为文件
+     * 如果是文件，则将路由的最后一个地址作为前端页面文件名称
+     * 如果不是文件将创建路由文件夹。并将页面文件名作为 index.tsx
+     *
+     * @var bool
+     */
+    private bool $page_is_file = false;
 
     /**
      * 需要生成的CRUD路由
@@ -89,8 +88,8 @@ class GeneratorEntry
         $this->path = $this->toFilePath($content['path']);
         $this->routePrefix = $content['routePrefix'];
         $this->abilitiesPrefix = $content['abilitiesPrefix'];
-        $this->page['route'] = $content['page']['route'];
-        $this->page['is_file'] = $content['page']['is_file'] ?? false;
+        $this->pageRoute = $content['page']['route'];
+        $this->page_is_file = $content['page']['is_file'] ?? false;
     }
 
     /**
@@ -328,7 +327,7 @@ class GeneratorEntry
      */
     public function pageRoute(): string
     {
-        return str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $this->page['route']);
+        return str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $this->pageRoute);
     }
 
     /**
@@ -337,7 +336,7 @@ class GeneratorEntry
      */
     public function pageFileName(): string
     {
-        if($this->page['is_file']) {
+        if($this->page_is_file) {
             $filePathArr = array_filter(explode('/', $this->pageRoute()));
             // 获取最后一个元素
             $fileName = array_pop($filePathArr);
@@ -354,7 +353,7 @@ class GeneratorEntry
     public function pagePath(): string
     {
         $filePathArr = array_filter(explode('/', $this->pageRoute()));
-        if($this->page['is_file']) {
+        if($this->page_is_file) {
             // 删除最后一个元素
             array_pop($filePathArr);
         }
