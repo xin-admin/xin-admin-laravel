@@ -61,19 +61,13 @@ class GeneratorEntry
      *
      * @var bool
      */
-    private bool $page_is_file = false;
+    private bool $page_is_file;
 
     /**
      * 需要生成的CRUD路由
      * @var array|true[]
      */
-    private array $crud = [
-        'find' => true,
-        'create' => true,
-        'update' => true,
-        'delete' => true,
-        'query' => true,
-    ];
+    private array $crudRequest = [];
 
     /**
      * Create a new gen entry instance.
@@ -88,8 +82,9 @@ class GeneratorEntry
         $this->path = $this->toFilePath($content['path']);
         $this->routePrefix = $content['routePrefix'];
         $this->abilitiesPrefix = $content['abilitiesPrefix'];
-        $this->pageRoute = $content['page']['route'];
-        $this->page_is_file = $content['page']['is_file'] ?? false;
+        $this->pageRoute = $content['pageRoute'];
+        $this->page_is_file = $content['page_is_file'] ?? false;
+        $this->crudRequest = $content['crudRequest'];
     }
 
     /**

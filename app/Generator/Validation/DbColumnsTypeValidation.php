@@ -7,7 +7,7 @@ use App\Generator\Generator;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Closure;
 
-class ColumnsTypeValidation implements ValidationRule
+class DbColumnsTypeValidation implements ValidationRule
 {
     /**
      * Run the validation rule.

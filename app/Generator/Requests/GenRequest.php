@@ -2,9 +2,10 @@
 
 namespace App\Generator\Requests;
 
-use App\Generator\Validation\ColumnsTypeValidation;
+use App\Generator\Validation\DbColumnsTypeValidation;
 use App\Generator\Validation\ModuleValidation;
 use App\Generator\Validation\PathValidation;
+use App\Generator\Validation\QuickSearchFieldValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GenRequest extends FormRequest
@@ -19,30 +20,23 @@ class GenRequest extends FormRequest
             'abilitiesPrefix' => ['required', 'string', 'max:255'],
             'pageRoute' => ['required', 'string', 'max:255'],
             'page_is_file' => ['required', 'boolean'],
+            'crudRequest' => ['required', 'array'],
+            'crudRequest.*' => ['required', 'string', 'in:create,update,delete,query,find'],
+            'quickSearchField' => ['required', 'array', new QuickSearchFieldValidation],
 
-            'quickSearchField' => 'required|list',
-            'find' => 'required|boolean',
-            'create' => 'required|boolean',
-            'update' => 'required|boolean',
-            'delete' => 'required|boolean',
-            'query' => 'required|boolean',
 
-            'columns' => 'required|array|min:1',
-            'columns.*.name' => 'required|string|max:64',
-            'columns.*.type' => [
-                'required',
-                'string',
-                new ColumnsTypeValidation,
-            ],
-            'columns.*.nullable' => 'boolean',
-            'columns.*.default' => 'nullable',
-            'columns.*.length' => 'nullable|integer|min:1',
-            'columns.*.precision' => 'nullable|integer|min:1',
-            'columns.*.scale' => 'nullable|integer|min:0',
-            'columns.*.unsigned' => 'boolean',
-            'columns.*.autoIncrement' => 'boolean',
-            'columns.*.comment' => 'nullable|string|max:255',
-            'columns.*.primaryKey' => 'boolean',
+            'dbColumns' => 'required|array|min:1',
+            'dbColumns.*.name' => 'required|string|max:64',
+            'dbColumns.*.type' => ['required', 'string', new DbColumnsTypeValidation],
+            'dbColumns.*.nullable' => 'boolean',
+            'dbColumns.*.default' => 'nullable',
+            'dbColumns.*.length' => 'nullable|integer|min:1',
+            'dbColumns.*.precision' => 'nullable|integer|min:1',
+            'dbColumns.*.scale' => 'nullable|integer|min:0',
+            'dbColumns.*.unsigned' => 'boolean',
+            'dbColumns.*.autoIncrement' => 'boolean',
+            'dbColumns.*.comment' => 'nullable|string|max:255',
+            'dbColumns.*.primaryKey' => 'boolean',
         ];
     }
 }
