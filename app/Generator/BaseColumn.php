@@ -2,6 +2,7 @@
 
 namespace App\Generator;
 
+use App\Generator\Enum\SqlColumnType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -21,9 +22,9 @@ class BaseColumn
     /**
      * 数据类型 / Data type (e.g. 'integer', 'string', 'datetime')
      *
-     * @var string
+     * @var SqlColumnType
      */
-    private string $type;
+    private SqlColumnType $type;
 
     /**
      * 是否允许NULL / Whether NULL values are allowed
@@ -104,7 +105,8 @@ class BaseColumn
     public function __construct(string $name, string $type)
     {
         $this->name = $name;
-        $this->type = $type;
+
+        $this->type = SqlColumnType::from($type);
     }
 
     // Getter 和 Setter 方法 / Getter and Setter methods
@@ -114,7 +116,7 @@ class BaseColumn
         return $this->name;
     }
 
-    public function getType(): string
+    public function getType(): SqlColumnType
     {
         return $this->type;
     }
@@ -135,8 +137,15 @@ class BaseColumn
         return $this->default;
     }
 
-    public function setDefault($default): self
+    public function setDefault(?string $default): self
     {
+        if ($default !== null) {
+            $default = stripslashes($default);
+            if (strtoupper($default) === 'NULL') {
+                $default = null;
+            }
+        }
+
         $this->default = $default;
         return $this;
     }
@@ -148,7 +157,20 @@ class BaseColumn
 
     public function setLength(?int $length): self
     {
-        $this->length = $length;
+        $this->length = match ($this->type) {
+            SqlColumnType::CHAR,
+            SqlColumnType::VARCHAR,
+            SqlColumnType::BINARY,
+            SqlColumnType::VARBINARY,
+            SqlColumnType::TINY_INT,
+            SqlColumnType::SMALL_INT,
+            SqlColumnType::MEDIUM_INT,
+            SqlColumnType::INT,
+            SqlColumnType::INTEGER,
+            SqlColumnType::BIGINT => $length,
+            default => null,
+        };
+
         return $this;
     }
 
@@ -159,7 +181,15 @@ class BaseColumn
 
     public function setPrecision(?int $precision): self
     {
-        $this->precision = $precision;
+        $this->precision = match ($this->type) {
+            SqlColumnType::DECIMAL,
+            SqlColumnType::NUMERIC,
+            SqlColumnType::TIME,
+            SqlColumnType::DATETIME,
+            SqlColumnType::TIMESTAMP => $precision,
+            default => null,
+        };
+
         return $this;
     }
 
@@ -170,7 +200,15 @@ class BaseColumn
 
     public function setScale(?int $scale): self
     {
-        $this->scale = $scale;
+        $this->scale = match ($this->type) {
+            SqlColumnType::DECIMAL,
+            SqlColumnType::NUMERIC,
+            SqlColumnType::TIME,
+            SqlColumnType::DATETIME,
+            SqlColumnType::TIMESTAMP => $scale,
+            default => null,
+        };
+
         return $this;
     }
 
@@ -181,7 +219,17 @@ class BaseColumn
 
     public function setUnsigned(bool $unsigned): self
     {
-        $this->unsigned = $unsigned;
+        $this->unsigned = match ($this->type) {
+            SqlColumnType::TINY_INT,
+            SqlColumnType::SMALL_INT,
+            SqlColumnType::MEDIUM_INT,
+            SqlColumnType::INT,
+            SqlColumnType::INTEGER,
+            SqlColumnType::BIGINT,
+            SqlColumnType::FLOAT,
+            SqlColumnType::DOUBLE => $unsigned,
+            default => false,
+        };
         return $this;
     }
 
@@ -192,7 +240,15 @@ class BaseColumn
 
     public function setAutoIncrement(bool $autoIncrement): self
     {
-        $this->autoIncrement = $autoIncrement;
+        $this->autoIncrement = match ($this->type) {
+            SqlColumnType::TINY_INT,
+            SqlColumnType::SMALL_INT,
+            SqlColumnType::MEDIUM_INT,
+            SqlColumnType::INT,
+            SqlColumnType::INTEGER,
+            SqlColumnType::BIGINT => $autoIncrement,
+            default => false,
+        };
         return $this;
     }
 
@@ -223,9 +279,36 @@ class BaseColumn
         return $this->presetValues;
     }
 
-    public function setPresetValues(array $presetValues): self
+    public function setPresetValues(string | array | null $presetValues): self
     {
-        $this->presetValues = $presetValues;
+        if(! in_array($this->type, [ SqlColumnType::ENUM, SqlColumnType::SET ])) {
+            return $this;
+        }
+        if ($presetValues == null) {
+            return $this;
+        }
+        if (is_array($presetValues)) {
+            $this->presetValues = $presetValues;
+            return $this;
+        }
+        if (str_contains($presetValues, 'enum')) {
+            $value = substr(
+                $presetValues,
+                strlen("enum('"),
+                -strlen("')"),
+            );
+            $this->presetValues =  explode("','", $value);
+        } elseif(str_contains($presetValues, 'set')){
+            $value = substr(
+                $presetValues,
+                strlen("set('"),
+                -strlen("')"),
+            );
+            $this->presetValues = explode("','", $value);
+        }else {
+            $this->presetValues = explode(',', $presetValues);
+        }
+
         return $this;
     }
 
@@ -262,17 +345,6 @@ class BaseColumn
         // 创建实例并设置属性
         $column = new self($columnInfo['COLUMN_NAME'], $columnInfo['DATA_TYPE']);
 
-        // 如果是 enum 或者 set
-        if (in_array($columnInfo['DATA_TYPE'], ['enum', 'set'])) {
-            $type = $columnInfo['DATA_TYPE'] === 'enum' ? 'enum' : 'set';
-            $value = substr(
-                $columnInfo['COLUMN_TYPE'],
-                strlen("$type('"),
-                -strlen("')"),
-            );
-            $column->setPresetValues(explode("','", $value));
-        }
-
         return $column
             ->setNullable($columnInfo['IS_NULLABLE'] === 'YES')
             ->setDefault($columnInfo['COLUMN_DEFAULT'])
@@ -282,6 +354,7 @@ class BaseColumn
             ->setUnsigned(str_contains($columnInfo['COLUMN_TYPE'], 'unsigned'))
             ->setAutoIncrement(str_contains($columnInfo['EXTRA'], 'auto_increment'))
             ->setComment($columnInfo['COLUMN_COMMENT'])
+            ->setPresetValues($columnInfo['COLUMN_TYPE'])
             ->setPrimaryKey($columnInfo['COLUMN_KEY'] === 'PRI');
     }
 
