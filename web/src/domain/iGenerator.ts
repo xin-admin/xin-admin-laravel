@@ -9,21 +9,16 @@ export interface IGenSettingType {
 }
 
 export interface IColumnsType {
-  id: string;
-  name?: string;
-  remark?: string;
-  key: string;
+  id: string;  // 字段的唯一标识
+  name: string; // 字段名称
+  title?: string; // 字段标题
+  comment?: string; // 字段备注
   select?: boolean;
   form?: boolean;
   table?: boolean;
   dbColumns?: boolean;
-}
-
-export interface IDbColumnsType {
-  comment?: string;
   default?: string;
   length?: number;
-  name: string;
   notNull?: boolean;
   type?: string;
   unsigned?: boolean;

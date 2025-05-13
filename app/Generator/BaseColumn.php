@@ -183,10 +183,7 @@ class BaseColumn
     {
         $this->precision = match ($this->type) {
             SqlColumnType::DECIMAL,
-            SqlColumnType::NUMERIC,
-            SqlColumnType::TIME,
-            SqlColumnType::DATETIME,
-            SqlColumnType::TIMESTAMP => $precision,
+            SqlColumnType::NUMERIC => $precision,
             default => null,
         };
 
@@ -202,10 +199,7 @@ class BaseColumn
     {
         $this->scale = match ($this->type) {
             SqlColumnType::DECIMAL,
-            SqlColumnType::NUMERIC,
-            SqlColumnType::TIME,
-            SqlColumnType::DATETIME,
-            SqlColumnType::TIMESTAMP => $scale,
+            SqlColumnType::NUMERIC => $scale,
             default => null,
         };
 

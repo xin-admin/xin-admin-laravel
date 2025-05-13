@@ -1,5 +1,5 @@
-import { Button, Card, message, Space } from 'antd';
-import React, { useState } from 'react';
+import { Button, Card, FormInstance, message, Popconfirm, Space } from 'antd';
+import React, { ReactNode, useState } from 'react';
 import { CardProps } from 'antd/es/card';
 import {
   ActionType,
@@ -9,8 +9,40 @@ import {
   ProColumns,
   ProFormColumnsType,
 } from '@ant-design/pro-components';
-import { IColumnsType, IDbColumnsType, IGenSettingType } from '@/domain/iGenerator';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { IColumnsType, IGenSettingType } from '@/domain/iGenerator';
 import { FormattedMessage } from '@umijs/max';
+import { useRequest } from 'ahooks';
+import {dbTypes } from './utils';
+
+interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  'data-row-key': string;
+}
+
+const Row: React.FC<Readonly<RowProps>> = (props) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: props['data-row-key'],
+  });
+
+  const style: React.CSSProperties = {
+    ...props.style,
+    transform: CSS.Translate.toString(transform),
+    transition,
+    cursor: 'move',
+    ...(isDragging ? { position: 'relative', zIndex: 100 } : {}),
+  };
+
+  return <tr {...props} ref={setNodeRef} style={style} {...attributes} {...listeners} />;
+};
 
 // tab 配置
 const tabList:  CardProps['tabList'] = [
@@ -29,9 +61,16 @@ export default () => {
   const [baseColumnsEditableKeys, setBaseColumnsEditableKeys] = useState<React.Key[]>(() =>
     baseColumns.map((item) => item.id)
   );
-  const [dbColumns, setDbColumns] = useState<IDbColumnsType[]>([]);
   const [dbColumnsEditableKeys, setDbColumnsEditableKeys] = useState<React.Key[]>(() =>
-    dbColumns.map((item) => item.name)
+    baseColumns.filter((item) => item.dbColumns).map((item) => item.id)
+  );
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        // https://docs.dndkit.com/api-documentation/sensors/pointer#activation-constraints
+        distance: 1,
+      },
+    }),
   );
 
   // -------------- Ref -----------------------
@@ -81,9 +120,9 @@ export default () => {
       dataIndex: 'quickSearchField',
       title: <FormattedMessage id={'gen.baseSetting.quickSearchField'} />,
       tooltip: <FormattedMessage id={'gen.baseSetting.quickSearchField.tooltip'} />,
-      params: {dbColumns: dbColumns},
-      request: async (params: {dbColumns: IDbColumnsType[]}) => {
-        return params.dbColumns.map(item => {
+      params: {columns: baseColumns},
+      request: async (params: {columns: IColumnsType[]}) => {
+        return params.columns.filter((item) => item.dbColumns).map(item => {
           return {
             label: item.name,
             value: item.name
@@ -127,53 +166,53 @@ export default () => {
       valueType: 'text',
       editable: false,
       width: 140,
-      title: <FormattedMessage id={'gen.baseColumn.id'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.id.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.id'} />,
+      tooltip: <FormattedMessage id={'gen.column.id.tooltip'} />,
     },
     {
       dataIndex: 'name',
       valueType: 'text',
       editable: false,
-      title: <FormattedMessage id={'gen.baseColumn.name'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.name.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.name'} />,
+      tooltip: <FormattedMessage id={'gen.column.name.tooltip'} />,
     },
     {
-      dataIndex: 'key',
+      dataIndex: 'title',
       valueType: 'text',
       editable: false,
-      title: <FormattedMessage id={'gen.baseColumn.key'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.key.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.title'} />,
+      tooltip: <FormattedMessage id={'gen.column.title.tooltip'} />,
     },
     {
-      dataIndex: 'remark',
+      dataIndex: 'comment',
       valueType: 'text',
       editable: false,
-      title: <FormattedMessage id={'gen.baseColumn.remark'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.remark.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.comment'} />,
+      tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
     },
     {
       dataIndex: 'dbColumns',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.baseColumn.dbColumns'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.dbColumns.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.dbColumns'} />,
+      tooltip: <FormattedMessage id={'gen.column.dbColumns.tooltip'} />,
     },
     {
       dataIndex: 'table',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.baseColumn.table'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.table.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.table'} />,
+      tooltip: <FormattedMessage id={'gen.column.table.tooltip'} />,
     },
     {
       dataIndex: 'form',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.baseColumn.form'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.form.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.form'} />,
+      tooltip: <FormattedMessage id={'gen.column.form.tooltip'} />,
     },
     {
       dataIndex: 'select',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.baseColumn.select'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.select.tooltip'} />,
+      title: <FormattedMessage id={'gen.column.select'} />,
+      tooltip: <FormattedMessage id={'gen.column.select.tooltip'} />,
     },
     {
       valueType: 'option',
@@ -185,108 +224,218 @@ export default () => {
   ];
   const addColumnColumns: ProFormColumnsType<IColumnsType>[] = [
     {
-      dataIndex: 'name',
+      dataIndex: 'title',
       valueType: 'text',
-      title: <FormattedMessage id={'gen.baseColumn.name'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.name.tooltip'} />,
-    },
-    {
-      dataIndex: 'remark',
-      valueType: 'text',
-      title: <FormattedMessage id={'gen.baseColumn.remark'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.remark.tooltip'} />,
-    },
-    {
-      dataIndex: 'key',
-      valueType: 'text',
-      title: <FormattedMessage id={'gen.baseColumn.key'} />,
-      tooltip: <FormattedMessage id={'gen.baseColumn.key.tooltip'} />,
-    },
-  ];
-  const dbColumnColumns: ProColumns<IDbColumnsType>[] = [
-    {
-      dataIndex: 'name',
-      valueType: 'text',
-      title: <FormattedMessage id={'gen.dbColumn.name'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.name.tooltip'} />,
-    },
-    {
-      dataIndex: 'type',
-      valueType: 'text',
-      title: <FormattedMessage id={'gen.dbColumn.type'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.type.tooltip'} />,
+      formItemProps: {rules: [{required: true}]},
+      title: <FormattedMessage id={'gen.column.title'} />,
+      tooltip: <FormattedMessage id={'gen.column.title.tooltip'} />,
     },
     {
       dataIndex: 'comment',
       valueType: 'text',
-      title: <FormattedMessage id={'gen.dbColumn.comment'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.comment.tooltip'} />,
+      formItemProps: {rules: [{required: true}]},
+      title: <FormattedMessage id={'gen.column.comment'} />,
+      tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
+    },
+    {
+      dataIndex: 'name',
+      valueType: 'text',
+      formItemProps: {rules: [{required: true}]},
+      title: <FormattedMessage id={'gen.column.name'} />,
+      tooltip: <FormattedMessage id={'gen.column.name.tooltip'} />,
+    },
+  ];
+  const dbColumnColumns: ProColumns<IColumnsType>[] = [
+    {
+      dataIndex: 'name',
+      valueType: 'text',
+      editable: false,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.name'} />,
+      tooltip: <FormattedMessage id={'gen.column.name.tooltip'} />,
+    },
+    {
+      dataIndex: 'comment',
+      valueType: 'text',
+      editable: false,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.comment'} />,
+      tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
+    },
+    {
+      dataIndex: 'type',
+      valueType: 'select',
+      fieldProps: {
+        showSearch: true,
+        filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+      },
+      valueEnum: dbTypes,
+      width: 130,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.type'} />,
+      tooltip: <FormattedMessage id={'gen.column.type.tooltip'} />,
     },
     {
       dataIndex: 'default',
       valueType: 'text',
-      title: <FormattedMessage id={'gen.dbColumn.default'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.default.tooltip'} />,
+      width: 130,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.default'} />,
+      tooltip: <FormattedMessage id={'gen.column.default.tooltip'} />,
     },
     {
       dataIndex: 'length',
       valueType: 'digit',
-      title: <FormattedMessage id={'gen.dbColumn.length'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.length.tooltip'} />,
+      width: 130,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.length'} />,
+      tooltip: <FormattedMessage id={'gen.column.length.tooltip'} />,
+      fieldProps: (form, {rowKey}) => disableColumn(form, rowKey,
+        ["bigint", "int", "integer", "mediumint", "smallint", "tinyint", "char", "varchar", "binary", "varbinary"]
+      ),
     },
     {
       dataIndex: 'notNull',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.dbColumn.notNull'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.notNull.tooltip'} />,
+      width: 100,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.notNull'} />,
+      tooltip: <FormattedMessage id={'gen.column.notNull.tooltip'} />,
     },
     {
       dataIndex: 'unsigned',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.dbColumn.unsigned'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.unsigned.tooltip'} />,
+      width: 100,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.unsigned'} />,
+      tooltip: <FormattedMessage id={'gen.column.unsigned.tooltip'} />,
+      fieldProps: (form, {rowKey}) => disableColumn(form, rowKey,
+        ["bigint", "int", "integer", "mediumint", "smallint", "tinyint", "float", "double"]
+      ),
     },
     {
       dataIndex: 'autoincrement',
       valueType: 'switch',
-      title: <FormattedMessage id={'gen.dbColumn.autoincrement'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.autoincrement.tooltip'} />,
+      width: 110,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.autoincrement'} />,
+      tooltip: <FormattedMessage id={'gen.column.autoincrement.tooltip'} />,
+      fieldProps: (form, {rowKey}) => disableColumn(form, rowKey,
+        ["bigint", "int", "integer", "mediumint", "smallint", "tinyint"]
+      ),
     },
     {
       dataIndex: 'precision',
       valueType: 'digit',
-      title: <FormattedMessage id={'gen.dbColumn.precision'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.precision.tooltip'} />,
+      width: 130,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.precision'} />,
+      tooltip: <FormattedMessage id={'gen.column.precision.tooltip'} />,
+      fieldProps: (form, {rowKey}) => disableColumn(form, rowKey,
+        ["decimal", "numeric"]
+      ),
     },
     {
       dataIndex: 'scale',
       valueType: 'digit',
-      title: <FormattedMessage id={'gen.dbColumn.scale'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.scale.tooltip'} />,
+      width: 130,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.scale'} />,
+      tooltip: <FormattedMessage id={'gen.column.scale.tooltip'} />,
+      fieldProps: (form, {rowKey}) => disableColumn(form, rowKey,
+        ["decimal", "numeric"]
+      ),
     },
     {
       dataIndex: 'presetValues',
       valueType: 'text',
-      title: <FormattedMessage id={'gen.dbColumn.presetValues'} />,
-      tooltip: <FormattedMessage id={'gen.dbColumn.presetValues.tooltip'} />,
-    }
-  ]
+      width: 140,
+      align: 'center',
+      title: <FormattedMessage id={'gen.column.presetValues'} />,
+      tooltip: <FormattedMessage id={'gen.column.presetValues.tooltip'} />,
+      fieldProps: (form, {rowKey}) => {
+        return disableColumn(form, rowKey, ['enum', 'set']);
+      }
+    },
+    {
+      valueType: 'option',
+      width: 100,
+      align: 'center',
+      fixed: 'right',
+      title: <FormattedMessage id={'gen.option'} />,
+    },
+  ];
+  const tableColumnColumns: ProColumns<IColumnsType>[] = [];
 
   // -------------- Function -------------------
   const addBaseColumn = async (values: IColumnsType) => {
-    if(baseColumns.find((item) => item.key === values.key)) {
+    if(baseColumns.find((item) => item.name === values.name)) {
       message.error('字段已存在');
       return false;
     }
-    return baseColumnsTableActionRef.current?.addEditRecord({
-      ...values,
-      select: false,
-      form: false,
-      table: false,
-      dbColumns: false,
+    let dataSource: IColumnsType[] = baseColumns.concat({
       id: Date.now().toString(),
-    }, { newRecordType: 'dataSource' });
+      name: values.name,
+      title: values.title,
+      comment: values.comment,
+      select: true,
+      form: true,
+      table: true,
+      dbColumns: true,
+    })
+    setBaseColumns(dataSource);
+    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
+    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+    return true;
   }
+  const updateValues = async (record: IColumnsType) => {
+    let dataSource: IColumnsType[] = baseColumns.map((item) => {
+      if(item.id === record.id) {return { ...item, ...record }}
+      return item
+    });
+    console.log(dataSource);
+    setBaseColumns(dataSource);
+    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
+    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+  }
+  const { run: onValuesChange } = useRequest(updateValues, {
+    debounceWait: 300,
+    manual: true,
+  });
+  const deleteColumn = async (record: IColumnsType) => {
+    let dataSource: IColumnsType[] = baseColumns.filter((item) => item.id !== record.id);
+    setBaseColumns(dataSource);
+    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
+    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+  }
+  const disableColumn = (form: FormInstance, rowKey: string | undefined, types: string[]) => {
+    let valueType = form?.getFieldValue([rowKey, 'type']);
+    if(! valueType ) {
+      return { disabled: true }
+    }else if(! types.includes(valueType)) {
+      return { disabled: true }
+    }
+  }
+  const actionRender = (record: IColumnsType) => [
+    <Popconfirm
+      okText="确认"
+      cancelText="取消"
+      title="Delete the task"
+      description="你确定要删除这条数据吗？"
+      onConfirm={() => deleteColumn(record)}
+    >
+      <a>删除</a>
+    </Popconfirm>
+  ]
+  const onDragEnd = ({ active, over }: DragEndEvent) => {
+    if (active.id !== over?.id) {
+      setBaseColumns((prev) => {
+        const activeIndex = prev.findIndex((i) => i.id === active.id);
+        const overIndex = prev.findIndex((i) => i.id === over?.id);
+        return arrayMove(prev, activeIndex, overIndex);
+      });
+    }
+  };
 
   // -------------- Element -------------------
   const tabBarExt = (<>
@@ -297,6 +446,11 @@ export default () => {
         layoutType="ModalForm"
         onFinish={addBaseColumn}
         columns={addColumnColumns}
+        initialValues={{
+          title: '姓名',
+          name: "name",
+          comment: "姓名",
+        }}
       />
       <Button color="purple" variant="solid">AI一键生成字段</Button>
       <Button color="purple" variant="solid">导入数据库字段</Button>
@@ -337,6 +491,15 @@ export default () => {
       }}
     />
   </>);
+  const tableViewRender = (_: any, dom: ReactNode) => (<>
+    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+      <SortableContext
+        items={baseColumns.map((i) => i.id)}
+        strategy={verticalListSortingStrategy}
+      > { dom }
+      </SortableContext>
+    </DndContext>
+  </>)
   const baseColumnsTable = (<>
     <EditableProTable<IColumnsType>
       columns={baseColumnColumns}
@@ -347,45 +510,40 @@ export default () => {
       value={baseColumns}
       toolBarRender={false}
       recordCreatorProps={false}
+      tableViewRender={tableViewRender}
+      components={{ body: { row: Row } }}
       editableFormRef={baseColumnsTableRef}
       actionRef={baseColumnsTableActionRef}
       editable={{
         type: 'multiple',
         editableKeys: baseColumnsEditableKeys,
-        actionRender: (row, config, defaultDoms) => {
-          return [defaultDoms.delete];
-        },
-        onValuesChange: (record, recordList) => {
-          console.log(record);
-          setBaseColumns(recordList);
-        },
+        actionRender,
+        onValuesChange,
         onChange: setBaseColumnsEditableKeys,
       }}
     />
   </>);
   const dbColumnsTable = (<>
-    <EditableProTable<IDbColumnsType>
+    <EditableProTable<IColumnsType>
       columns={dbColumnColumns}
-      rowKey="name"
+      rowKey="id"
       size={'large'}
       bordered={true}
-      scroll={{ x: 800 }}
-      value={dbColumns}
+      scroll={{ x: 1400 }}
+      style={{minHeight: 500}}
+      value={baseColumns}
       toolBarRender={false}
+      components={{ body: { row: Row } }}
       recordCreatorProps={false}
       editableFormRef={dbColumnsTableRef}
       actionRef={dbColumnsTableActionRef}
+      tableViewRender={tableViewRender}
       editable={{
         type: 'multiple',
         editableKeys: dbColumnsEditableKeys,
-        actionRender: (row, config, defaultDoms) => {
-          return [defaultDoms.delete];
-        },
-        onValuesChange: (record, recordList) => {
-          console.log(record);
-          setDbColumns(recordList);
-        },
-        onChange: setBaseColumnsEditableKeys,
+        onValuesChange,
+        actionRender,
+        onChange: setDbColumnsEditableKeys,
       }}
     />
   </>);
