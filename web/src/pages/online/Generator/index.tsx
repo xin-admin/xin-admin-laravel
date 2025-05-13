@@ -22,7 +22,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { IColumnsType, IGenSettingType } from '@/domain/iGenerator';
 import { FormattedMessage } from '@umijs/max';
 import { useRequest } from 'ahooks';
-import {dbTypes } from './utils';
+import { dbTypes, valueTypes } from './utils';
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   'data-row-key': string;
@@ -48,10 +48,7 @@ const Row: React.FC<Readonly<RowProps>> = (props) => {
 const tabList:  CardProps['tabList'] = [
   { key: '1', label: '基本配置' },
   { key: '2', label: '字段列表' },
-  { key: '3', label: '数据库字段配置' },
-  { key: '4', label: '表格字段配置' },
-  { key: '5', label: '表单字段配置' },
-  { key: '6', label: '搜索字段配置' }
+  { key: '3', label: '数据库字段配置' }
 ]
 
 export default () => {
@@ -189,6 +186,27 @@ export default () => {
       editable: false,
       title: <FormattedMessage id={'gen.column.comment'} />,
       tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
+    },
+    {
+      title: '表单类型',
+      dataIndex: 'valueType',
+      valueType: 'select',
+      align: 'center',
+      tooltip: '生成CRUD表单的类型',
+      valueEnum: valueTypes,
+      fieldProps: (form, { rowKey }) => {
+        return {
+          showSearch: true,
+          filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
+        };
+      },
+      formItemProps: {
+        rules: [
+          { required: true, message: '此项为必填项' },
+        ],
+      },
+      fixed: 'left',
+      width: 160,
     },
     {
       dataIndex: 'dbColumns',
@@ -365,7 +383,6 @@ export default () => {
       title: <FormattedMessage id={'gen.option'} />,
     },
   ];
-  const tableColumnColumns: ProColumns<IColumnsType>[] = [];
 
   // -------------- Function -------------------
   const addBaseColumn = async (values: IColumnsType) => {
@@ -436,6 +453,15 @@ export default () => {
       });
     }
   };
+  const tableViewRender = (_: any, dom: ReactNode) => (<>
+    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
+      <SortableContext
+        items={baseColumns.map((i) => i.id)}
+        strategy={verticalListSortingStrategy}
+      > { dom }
+      </SortableContext>
+    </DndContext>
+  </>)
 
   // -------------- Element -------------------
   const tabBarExt = (<>
@@ -491,15 +517,6 @@ export default () => {
       }}
     />
   </>);
-  const tableViewRender = (_: any, dom: ReactNode) => (<>
-    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
-      <SortableContext
-        items={baseColumns.map((i) => i.id)}
-        strategy={verticalListSortingStrategy}
-      > { dom }
-      </SortableContext>
-    </DndContext>
-  </>)
   const baseColumnsTable = (<>
     <EditableProTable<IColumnsType>
       columns={baseColumnColumns}
