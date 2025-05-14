@@ -28,7 +28,7 @@ interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   'data-row-key': string;
 }
 
-const Row: React.FC<Readonly<RowProps>> = (props) => {
+const RowRender: React.FC<Readonly<RowProps>> = (props) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: props['data-row-key'],
   });
@@ -188,25 +188,18 @@ export default () => {
       tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
     },
     {
-      title: '表单类型',
+      title: <FormattedMessage id={'gen.column.valueType'} />,
       dataIndex: 'valueType',
       valueType: 'select',
-      align: 'center',
-      tooltip: '生成CRUD表单的类型',
+      tooltip: <FormattedMessage id={'gen.column.valueType.tooltip'} />,
       valueEnum: valueTypes,
+      initialValue: "text",
       fieldProps: (form, { rowKey }) => {
         return {
           showSearch: true,
           filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
         };
-      },
-      formItemProps: {
-        rules: [
-          { required: true, message: '此项为必填项' },
-        ],
-      },
-      fixed: 'left',
-      width: 160,
+      }
     },
     {
       dataIndex: 'dbColumns',
@@ -288,6 +281,7 @@ export default () => {
         filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       },
       valueEnum: dbTypes,
+      initialValue: 'varchar',
       width: 130,
       align: 'center',
       title: <FormattedMessage id={'gen.column.type'} />,
@@ -528,7 +522,7 @@ export default () => {
       toolBarRender={false}
       recordCreatorProps={false}
       tableViewRender={tableViewRender}
-      components={{ body: { row: Row } }}
+      components={{ body: { row: RowRender } }}
       editableFormRef={baseColumnsTableRef}
       actionRef={baseColumnsTableActionRef}
       editable={{
@@ -550,7 +544,7 @@ export default () => {
       style={{minHeight: 500}}
       value={baseColumns}
       toolBarRender={false}
-      components={{ body: { row: Row } }}
+      components={{ body: { row: RowRender } }}
       recordCreatorProps={false}
       editableFormRef={dbColumnsTableRef}
       actionRef={dbColumnsTableActionRef}

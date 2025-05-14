@@ -30,6 +30,8 @@ export default {
   'gen.column.comment.tooltip': '数据库字段的备注，以及表单和表格的 tooltip',
   'gen.column.title': '字段标题',
   'gen.column.title.tooltip': '字段标题，表格的表头以及表单的 label',
+  'gen.column.valueType': '表单类型',
+  'gen.column.valueType.tooltip': '前端的类型，是 ProComponents 的灵魂，ProComponents 会根据 valueType 来映射成不同的表单项。',
   'gen.column.select': '查询显示',
   'gen.column.select.tooltip': '是否在查询时显示，如果为 true，则表示在查询时显示，如果为 false，则表示在查询时隐藏',
   'gen.column.form': '表单显示',
