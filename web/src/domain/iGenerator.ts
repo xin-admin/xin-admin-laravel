@@ -19,7 +19,7 @@ export interface IColumnsType {
   dbColumns?: boolean;
   default?: string;
   length?: number;
-  notNull?: boolean;
+  nullable?: boolean;
   type?: string;
   unsigned?: boolean;
   autoincrement?: boolean;

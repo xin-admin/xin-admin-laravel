@@ -94,7 +94,7 @@ class BaseColumn
      *
      * @var string[]
      */
-    protected array $presetValues;
+    protected array $presetValues = [];
 
     /**
      * 构造函数 / Constructor
@@ -327,7 +327,7 @@ class BaseColumn
         }
 
         // 获取列信息（需要执行原生查询）
-        $columnInfo = DB::selectOne(/** @lang text */ "
+        $columnInfo = (array) DB::selectOne(/** @lang text */ "
             SELECT * FROM information_schema.COLUMNS
             WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?
         ", [
@@ -340,7 +340,7 @@ class BaseColumn
         $column = new self($columnInfo['COLUMN_NAME'], $columnInfo['DATA_TYPE']);
 
         return $column
-            ->setNullable($columnInfo['IS_NULLABLE'] === 'YES')
+            ->setNullable($columnInfo['IS_NULLABLE'] == 'NO')
             ->setDefault($columnInfo['COLUMN_DEFAULT'])
             ->setLength($columnInfo['CHARACTER_MAXIMUM_LENGTH'])
             ->setPrecision($columnInfo['NUMERIC_PRECISION'])
@@ -375,5 +375,23 @@ class BaseColumn
         isset($columnData['presetValues']) && $column->setPresetValues($columnData['presetValues']);
 
         return $column;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'type' => $this->type,
+            'primaryKey' => $this->primaryKey,
+            'presetValues' => $this->presetValues,
+            'nullable' => $this->nullable,
+            'default' => $this->default,
+            'length' => $this->length,
+            'precision' => $this->precision,
+            'scale' => $this->scale,
+            'unsigned' => $this->unsigned,
+            'autoincrement' => $this->autoIncrement,
+            'comment' => $this->comment,
+        ];
     }
 }

@@ -1,5 +1,5 @@
-import { Button, Card, FormInstance, message, Popconfirm, Space } from 'antd';
-import React, { ReactNode, useState } from 'react';
+import { Button, Card, FormInstance, message, Modal, Popconfirm, Select, Space } from 'antd';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { CardProps } from 'antd/es/card';
 import {
   ActionType,
@@ -23,6 +23,7 @@ import { IColumnsType, IGenSettingType } from '@/domain/iGenerator';
 import { FormattedMessage } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { dbTypes, valueTypes } from './utils';
+import { getTableList, importSql } from '@/services/gen';
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   'data-row-key': string;
@@ -69,6 +70,20 @@ export default () => {
       },
     }),
   );
+  const [importSqlShow, setImportSqlShow] = useState<boolean>(false);
+  const [tableList, setTableList] = useState<{label: string, value: string}[]>([]);
+  const [selectTable,  setSelectTable] = useState<string>();
+
+  useEffect(()=> {
+    getTableList().then((res) => {
+      setTableList(res.data.map((item: string) => {
+        return {
+          label: item,
+          value: item
+        }
+      }))
+    })
+  }, [])
 
   // -------------- Ref -----------------------
   const baseColumnsTableRef = React.useRef<EditableFormInstance>();
@@ -194,11 +209,9 @@ export default () => {
       tooltip: <FormattedMessage id={'gen.column.valueType.tooltip'} />,
       valueEnum: valueTypes,
       initialValue: "text",
-      fieldProps: (form, { rowKey }) => {
-        return {
-          showSearch: true,
-          filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
-        };
+      fieldProps: {
+        showSearch: true,
+        filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
       }
     },
     {
@@ -307,7 +320,7 @@ export default () => {
       ),
     },
     {
-      dataIndex: 'notNull',
+      dataIndex: 'nullable',
       valueType: 'switch',
       width: 100,
       align: 'center',
@@ -456,6 +469,26 @@ export default () => {
       </SortableContext>
     </DndContext>
   </>)
+  const importSqlChange = () => {
+    if(!selectTable) {
+      message.warning('请选择数据表');
+      return;
+    } else {
+      importSql(selectTable).then((result) => {
+        let dataSource: IColumnsType[] = result.data.map((item: IColumnsType) => {
+          return {
+            ...item,
+            id: item.name + Date.now().toString(),
+            name: item.name,
+          }
+        });
+        setBaseColumns(dataSource);
+        setDbColumnsEditableKeys(dataSource.map(item => item.id));
+      }).finally(() => {
+        setImportSqlShow(false);
+      })
+    }
+  }
 
   // -------------- Element -------------------
   const tabBarExt = (<>
@@ -473,7 +506,7 @@ export default () => {
         }}
       />
       <Button color="purple" variant="solid">AI一键生成字段</Button>
-      <Button color="purple" variant="solid">导入数据库字段</Button>
+      <Button color="purple" variant="solid" onClick={() => setImportSqlShow(true)}>导入数据库字段</Button>
       <Button color="magenta" variant="solid">生成预览</Button>
       <Button color="default" variant="solid">一键生成代码</Button>
     </Space>
@@ -575,5 +608,24 @@ export default () => {
       { tabChange === '2' && baseColumnsTable }
       { tabChange === '3' && dbColumnsTable }
     </Card>
+    <Modal
+      title="导入数据库字段"
+      closable={{ 'aria-label': 'Custom Close Button' }}
+      open={importSqlShow}
+      onOk={importSqlChange}
+      onCancel={() => setImportSqlShow(false)}
+    >
+      <Select
+        showSearch
+        placeholder="Select a person"
+        filterOption={(input, option) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        }
+        value={selectTable}
+        onChange={(value) => setSelectTable(value)}
+        style={{ width: '100%' }}
+        options={tableList}
+      />
+    </Modal>
   </>)
 }

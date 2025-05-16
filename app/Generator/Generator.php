@@ -43,7 +43,10 @@ class Generator
     public function getSchemaColumns(string $table): Collection
     {
         $tableName =  substr($table, strlen(DB::getTablePrefix()));
-        return new Collection(Schema::getColumns(Schema::getCurrentSchemaName() . '.' . $tableName));
+        $data = new Collection(Schema::getColumns(Schema::getCurrentSchemaName() . '.' . $tableName));
+        return $data->map(function ($column) use ($tableName) {
+           return BaseColumn::fromSchema($tableName, $column)->toArray();
+        });
     }
 
 }
