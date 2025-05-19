@@ -91,12 +91,5 @@ return [
                 '*logout',
             ],
         ],
-
-        Watchers\AuthWatcher::class => [
-            'enabled' => env('TELESCOPE_AUTH_WATCHER', true),
-            'ignore_login_credentials' => [
-                'password'
-            ],
-        ],
     ],
 ];
