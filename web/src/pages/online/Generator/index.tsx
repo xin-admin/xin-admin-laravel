@@ -199,15 +199,6 @@ export default () => {
       tooltip: <FormattedMessage id={'gen.column.title.tooltip'} />,
     },
     {
-      dataIndex: 'comment',
-      valueType: 'text',
-      width: 140,
-      align: 'center',
-      ellipsis: true,
-      title: <FormattedMessage id={'gen.column.comment'} />,
-      tooltip: <FormattedMessage id={'gen.column.comment.tooltip'} />,
-    },
-    {
       title: <FormattedMessage id={'gen.column.valueType'} />,
       dataIndex: 'valueType',
       valueType: 'select',
@@ -292,7 +283,6 @@ export default () => {
     {
       dataIndex: 'comment',
       valueType: 'text',
-      editable: false,
       align: 'center',
       width: 160,
       ellipsis: true,
