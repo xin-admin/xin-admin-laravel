@@ -20,7 +20,7 @@ import { getTableList, importSql } from '@/services/gen';
 const tabList:  CardProps['tabList'] = [
   { key: '1', label: '基本配置' },
   { key: '2', label: '字段列表' },
-  { key: '3', label: '数据库字段配置' }
+  // { key: '3', label: '数据库字段配置' }
 ]
 
 export default () => {
@@ -201,13 +201,13 @@ export default () => {
       title: <FormattedMessage id={'gen.column.select'} />,
       tooltip: <FormattedMessage id={'gen.column.select.tooltip'} />,
     },
-    {
-      valueType: 'option',
-      width: 100,
-      align: 'center',
-      fixed: 'right',
-      title: <FormattedMessage id={'gen.option'} />,
-    },
+    // {
+    //   valueType: 'option',
+    //   width: 100,
+    //   align: 'center',
+    //   fixed: 'right',
+    //   title: <FormattedMessage id={'gen.option'} />,
+    // },
   ];
   const addColumnColumns: ProFormColumnsType<IColumnsType>[] = [
     {
@@ -406,15 +406,15 @@ export default () => {
     }
   }
   const actionRender = (record: IColumnsType) => [
-    <Popconfirm
-      okText="确认"
-      cancelText="取消"
-      title="Delete the task"
-      description="你确定要删除这条数据吗？"
-      onConfirm={() => deleteColumn(record)}
-    >
-      <a>删除</a>
-    </Popconfirm>
+    // <Popconfirm
+    //   okText="确认"
+    //   cancelText="取消"
+    //   title="Delete the task"
+    //   description="你确定要删除这条数据吗？"
+    //   onConfirm={() => deleteColumn(record)}
+    // >
+    //   <a>删除</a>
+    // </Popconfirm>
   ]
   const importSqlChange = async () => {
     setLoading(true);
@@ -448,19 +448,19 @@ export default () => {
   // -------------- Element -------------------
   const TabBarExt = (<>
     <Space>
-      <BetaSchemaForm<IColumnsType>
-        trigger={<Button color="primary" variant="solid">新增字段</Button>}
-        shouldUpdate={false}
-        layoutType="ModalForm"
-        onFinish={addBaseColumn}
-        columns={addColumnColumns}
-        initialValues={{
-          title: '姓名',
-          name: "name",
-          comment: "姓名",
-        }}
-      />
-      <Button color="purple" variant="solid">AI一键生成字段</Button>
+      {/*<BetaSchemaForm<IColumnsType>*/}
+      {/*  trigger={<Button color="primary" variant="solid">新增字段</Button>}*/}
+      {/*  shouldUpdate={false}*/}
+      {/*  layoutType="ModalForm"*/}
+      {/*  onFinish={addBaseColumn}*/}
+      {/*  columns={addColumnColumns}*/}
+      {/*  initialValues={{*/}
+      {/*    title: '姓名',*/}
+      {/*    name: "name",*/}
+      {/*    comment: "姓名",*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Button color="purple" variant="solid">AI一键生成字段</Button>*/}
       <Button color="purple" variant="solid" onClick={() => setImportSqlShow(true)}>导入数据库字段</Button>
       <Button color="magenta" variant="solid">生成预览</Button>
       <Button color="default" variant="solid">一键生成代码</Button>
@@ -545,7 +545,7 @@ export default () => {
     >
       { tabChange === '1' && baseSettingForm }
       { tabChange === '2' && baseColumnsTable }
-      { tabChange === '3' && dbColumnsTable }
+      {/*{ tabChange === '3' && dbColumnsTable }*/}
     </Card>
     <Modal
       title="导入数据库字段"
