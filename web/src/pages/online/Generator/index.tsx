@@ -1,5 +1,5 @@
 import { Button, Card, FormInstance, message, Modal, Popconfirm, Select, Space } from 'antd';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardProps } from 'antd/es/card';
 import {
   ActionType,
@@ -9,41 +9,12 @@ import {
   ProColumns,
   ProFormColumnsType,
 } from '@ant-design/pro-components';
-import type { DragEndEvent } from '@dnd-kit/core';
-import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { IColumnsType, IGenSettingType } from '@/domain/iGenerator';
 import { FormattedMessage } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { dbTypes, valueTypes } from './utils';
 import { getTableList, importSql } from '@/services/gen';
 
-interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
-  'data-row-key': string;
-}
-
-const RowRender: React.FC<Readonly<RowProps>> = (props) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: props['data-row-key'],
-  });
-
-  const style: React.CSSProperties = {
-    ...props.style,
-    transform: CSS.Translate.toString(transform),
-    transition,
-    cursor: 'move',
-    ...(isDragging ? { position: 'relative', zIndex: 100 } : {}),
-  };
-
-  return <tr {...props} ref={setNodeRef} style={style} {...attributes} {...listeners} />;
-};
 
 // tab 配置
 const tabList:  CardProps['tabList'] = [
@@ -59,14 +30,6 @@ export default () => {
   const [baseColumns, setBaseColumns] = useState<IColumnsType[]>([]);
   const [columnsEditableKeys, setColumnsEditableKeys] = useState<React.Key[]>(() =>
     baseColumns.map((item) => item.id)
-  );
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        // https://docs.dndkit.com/api-documentation/sensors/pointer#activation-constraints
-        distance: 1,
-      },
-    }),
   );
   const [importSqlShow, setImportSqlShow] = useState<boolean>(false);
   const [tableList, setTableList] = useState<{label: string, value: string}[]>([]);
@@ -453,24 +416,6 @@ export default () => {
       <a>删除</a>
     </Popconfirm>
   ]
-  const onDragEnd = ({ active, over }: DragEndEvent) => {
-    if (active.id !== over?.id) {
-      setBaseColumns((prev) => {
-        const activeIndex = prev.findIndex((i) => i.id === active.id);
-        const overIndex = prev.findIndex((i) => i.id === over?.id);
-        return arrayMove(prev, activeIndex, overIndex);
-      });
-    }
-  };
-  const tableViewRender = (_: any, dom: ReactNode) => (<>
-    <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
-      <SortableContext
-        items={baseColumns.map((i) => i.id)}
-        strategy={verticalListSortingStrategy}
-      > { dom }
-      </SortableContext>
-    </DndContext>
-  </>)
   const importSqlChange = async () => {
     setLoading(true);
     if(!selectTable) {
@@ -553,8 +498,6 @@ export default () => {
       value={baseColumns}
       toolBarRender={false}
       recordCreatorProps={false}
-      tableViewRender={tableViewRender}
-      components={{ body: { row: RowRender } }}
       editableFormRef={baseColumnsTableRef}
       actionRef={baseColumnsTableActionRef}
       editable={{
@@ -576,11 +519,9 @@ export default () => {
       style={{minHeight: 500}}
       value={baseColumns}
       toolBarRender={false}
-      components={{ body: { row: RowRender } }}
       recordCreatorProps={false}
       editableFormRef={dbColumnsTableRef}
       actionRef={dbColumnsTableActionRef}
-      tableViewRender={tableViewRender}
       editable={{
         type: 'multiple',
         editableKeys: columnsEditableKeys,
