@@ -54,13 +54,11 @@ const tabList:  CardProps['tabList'] = [
 
 export default () => {
   // -------------- state -------------------
+  const [loading, setLoading] = useState<boolean>(false);
   const [tabChange, setTabChange] = useState('1');
   const [baseColumns, setBaseColumns] = useState<IColumnsType[]>([]);
-  const [baseColumnsEditableKeys, setBaseColumnsEditableKeys] = useState<React.Key[]>(() =>
+  const [columnsEditableKeys, setColumnsEditableKeys] = useState<React.Key[]>(() =>
     baseColumns.map((item) => item.id)
-  );
-  const [dbColumnsEditableKeys, setDbColumnsEditableKeys] = useState<React.Key[]>(() =>
-    baseColumns.filter((item) => item.dbColumns).map((item) => item.id)
   );
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -134,7 +132,7 @@ export default () => {
       tooltip: <FormattedMessage id={'gen.baseSetting.quickSearchField.tooltip'} />,
       params: {columns: baseColumns},
       request: async (params: {columns: IColumnsType[]}) => {
-        return params.columns.filter((item) => item.dbColumns).map(item => {
+        return params.columns.map(item => {
           return {
             label: item.name,
             value: item.name
@@ -221,15 +219,6 @@ export default () => {
         showSearch: true,
         filterOption: (input: string, option: any) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
       }
-    },
-    {
-      dataIndex: 'dbColumns',
-      valueType: 'switch',
-      initialValue: true,
-      width: 130,
-      align: 'center',
-      title: <FormattedMessage id={'gen.column.dbColumns'} />,
-      tooltip: <FormattedMessage id={'gen.column.dbColumns.tooltip'} />,
     },
     {
       dataIndex: 'table',
@@ -417,6 +406,7 @@ export default () => {
 
   // -------------- Function -------------------
   const addBaseColumn = async (values: IColumnsType) => {
+    setLoading(true);
     if(baseColumns.find((item) => item.name === values.name)) {
       message.error('字段已存在');
       return false;
@@ -429,22 +419,21 @@ export default () => {
       select: true,
       form: true,
       table: true,
-      dbColumns: true,
     })
     setBaseColumns(dataSource);
-    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
-    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+    setColumnsEditableKeys(dataSource.map((item) => item.id));
+    setLoading(false);
     return true;
   }
   const updateValues = async (record: IColumnsType) => {
+    setLoading(true);
     let dataSource: IColumnsType[] = baseColumns.map((item) => {
       if(item.id === record.id) {return { ...item, ...record }}
       return item
     });
-    console.log(dataSource);
     setBaseColumns(dataSource);
-    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
-    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+    setColumnsEditableKeys(dataSource.map((item) => item.id));
+    setLoading(false);
   }
   const { run: onValuesChange } = useRequest(updateValues, {
     debounceWait: 300,
@@ -453,8 +442,7 @@ export default () => {
   const deleteColumn = async (record: IColumnsType) => {
     let dataSource: IColumnsType[] = baseColumns.filter((item) => item.id !== record.id);
     setBaseColumns(dataSource);
-    setBaseColumnsEditableKeys(dataSource.map((item) => item.id));
-    setDbColumnsEditableKeys(dataSource.filter((item) => item.dbColumns).map((item) => item.id))
+    setColumnsEditableKeys(dataSource.map((item) => item.id));
   }
   const disableColumn = (form: FormInstance, rowKey: string | undefined, types: string[]) => {
     let valueType = form?.getFieldValue([rowKey, 'type']);
@@ -493,35 +481,37 @@ export default () => {
       </SortableContext>
     </DndContext>
   </>)
-  const importSqlChange = () => {
+  const importSqlChange = async () => {
+    setLoading(true);
     if(!selectTable) {
       message.warning('请选择数据表');
+      setLoading(false);
       return;
-    } else {
-      importSql(selectTable).then((result) => {
-        let dataSource: IColumnsType[] = result.data.map((item: IColumnsType) => {
-          return {
-            ...item,
-            id: item.name + Date.now().toString(),
-            name: item.name,
-            title: item.comment,
-            select: true,
-            form: true,
-            table: true,
-            dbColumns: true
-          }
-        });
-        setBaseColumns(dataSource);
-        setDbColumnsEditableKeys(dataSource.map(item => item.id));
-        setBaseColumnsEditableKeys(dataSource.map(item => item.id));
-      }).finally(() => {
-        setImportSqlShow(false);
-      })
+    }
+    try {
+      let result = await importSql(selectTable)
+      let dataSource: IColumnsType[] = result.data.map((item: IColumnsType) => {
+        return {
+          ...item,
+          id: item.name + Date.now().toString(),
+          name: item.name,
+          title: item.comment,
+          select: !!item.comment,
+          form: !!item.comment,
+          table: !!item.comment,
+        }
+      });
+      setBaseColumns(dataSource);
+      setColumnsEditableKeys(dataSource.map(item => item.id));
+      setLoading(false);
+      setImportSqlShow(false);
+    }catch (e) {
+      setLoading(false);
     }
   }
 
   // -------------- Element -------------------
-  const tabBarExt = (<>
+  const TabBarExt = (<>
     <Space>
       <BetaSchemaForm<IColumnsType>
         trigger={<Button color="primary" variant="solid">新增字段</Button>}
@@ -560,18 +550,7 @@ export default () => {
       onValuesChange={(data, allValues) => {
         console.log(allValues);
       }}
-      submitter={{
-        render: (props) => {
-          return [
-            <Button type='default' key="rest" onClick={() => props.form?.resetFields()}>
-              重置表单
-            </Button>,
-            <Button type="primary" key="preview" onClick={() => {}}>
-              预览文件结果
-            </Button>,
-          ];
-        },
-      }}
+      submitter={false}
     />
   </>);
   const baseColumnsTable = (<>
@@ -590,10 +569,10 @@ export default () => {
       actionRef={baseColumnsTableActionRef}
       editable={{
         type: 'multiple',
-        editableKeys: baseColumnsEditableKeys,
+        editableKeys: columnsEditableKeys,
         actionRender,
         onValuesChange,
-        onChange: setBaseColumnsEditableKeys,
+        onChange: setColumnsEditableKeys,
       }}
     />
   </>);
@@ -614,25 +593,24 @@ export default () => {
       tableViewRender={tableViewRender}
       editable={{
         type: 'multiple',
-        editableKeys: dbColumnsEditableKeys,
+        editableKeys: columnsEditableKeys,
         onValuesChange,
         actionRender,
-        onChange: setDbColumnsEditableKeys,
+        onChange: setColumnsEditableKeys,
       }}
     />
   </>);
 
   return (<>
     <Card
-      tabBarExtraContent={tabBarExt}
+      tabBarExtraContent={TabBarExt}
       tabList={tabList}
       activeTabKey={tabChange}
       onTabChange={setTabChange}
       defaultActiveTabKey={'1'}
-      loading={false}
+      loading={loading}
       style={ { minWidth: 1080 }}
-      styles={{ body: { minHeight: 500}
-      }}
+      styles={{ body: { minHeight: 500} }}
     >
       { tabChange === '1' && baseSettingForm }
       { tabChange === '2' && baseColumnsTable }
@@ -643,6 +621,7 @@ export default () => {
       closable={{ 'aria-label': 'Custom Close Button' }}
       open={importSqlShow}
       onOk={importSqlChange}
+      loading={loading}
       onCancel={() => setImportSqlShow(false)}
     >
       <Select
