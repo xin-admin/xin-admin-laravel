@@ -1,0 +1,15 @@
+services:
+  xin-admin:
+    build: .
+    # 如果要在生产环境中运行，请取消注释以下行
+    # restart: always
+    ports:
+      - "2016:2016"
+    volumes:
+      - .:/app
+    # 在生产环境中注释以下行，它允许在 dev 中使用清晰可读日志
+    tty: true
+    environment:
+      FRANKENPHP_HTTPS_OFF: "1"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # 用于容器访问宿主机服务

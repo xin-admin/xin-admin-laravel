@@ -10,6 +10,7 @@
         "ext-bcmath": "*",
         "ext-curl": "*",
         "ext-redis": "*",
+        "ext-frankenphp": "*",
         "laravel/framework": "^v12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
