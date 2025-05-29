@@ -1,10 +1,11 @@
 {
+    debug
 	frankenphp {
 		worker /app/public/index.php
 	}
 }
 
-localhost:2016 {
+http://localhost:2016 {
 	root /app/public
 	php_server
 }

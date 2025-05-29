@@ -19,8 +19,6 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 # 关闭 HTTPS（FrankenPHP 默认启用）
 ENV FRANKENPHP_HTTPS_OFF=1
 
-ENV FRANKENPHP_CONFIG="--access-log"
-
 #Usage:
 #   caddy php-server [--domain <example.com>] [--root <path>] [--listen <addr>] [--worker /path/to/worker.php<,nb-workers>] [--watch <paths...>] [--access-log] [--debug] [--no-compress] [--mercure] [flags]
 #
@@ -37,4 +35,4 @@ ENV FRANKENPHP_CONFIG="--access-log"
 #   -w, --worker stringArray   Worker script
 
 # 使用 FrankenPHP 启动 Laravel 的 index.php 入口文件
-CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
+CMD ["frankenphp", "run", "--watch", "--config", "/app/Caddyfile"]
