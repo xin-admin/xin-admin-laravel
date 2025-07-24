@@ -46,12 +46,19 @@ class AnnoRoute
     private string $routePrefix = '';
 
     /**
-     * 当前请求路由的能力前缀
+     * 当前请求路由的权限能力前缀
      * The routing abilities prefix of the current request
      *
      * @var string
      */
     private string $abilitiesPrefix = '';
+
+    /**
+     * 当前请求路由的 Authentication Guards
+     * The Authentication Guards of the current request
+     * @var ?string
+     */
+    private ?string $authGuard = null;
 
     /**
      * 不需要权限校验的方法
@@ -80,6 +87,7 @@ class AnnoRoute
             $routeInstance = $requestMapping->newInstance();
             // 默认参数
             $this->routePrefix = $routeInstance->routePrefix ?? '';
+            $this->authGuard = $routeInstance->authGuard ?? null;
             $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
             $this->middleware = $this->registerMiddleware($routeInstance->middleware);
             // 不需要权限校验
@@ -117,7 +125,11 @@ class AnnoRoute
         $middleware = [];
 
         if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
-            $middleware = ['auth:sanctum'];
+            if(! empty($this->authGuard) ) {
+                $middleware[] = 'auth:sanctum:' . $this->authGuard;
+            } else {
+                $middleware[] = 'auth:sanctum';
+            }
             if (!empty($this->abilitiesPrefix) && !empty($authorize)) {
                 $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
             }
