@@ -1,7 +1,7 @@
 <?php
 
-use App\Common\Middleware\AllowCrossDomain;
-use App\Common\Middleware\LoginLogMiddleware;
+use App\Http\Middleware\AllowCrossDomain;
+use App\Http\Middleware\LoginLogMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

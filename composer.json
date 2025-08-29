@@ -35,7 +35,7 @@
             "Xin\\": "extends/"
         },
         "files": [
-            "app/helpers.php"
+          "app/Support/helpers.php"
         ]
     },
     "autoload-dev": {
