@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminUserService extends \App\Services\BaseService
 {
-    /**
-     * 获取管理员信息
-     */
+    /** 获取管理员信息 */
     public function getAdminInfo(): JsonResponse
     {
         $info = auth()->user();

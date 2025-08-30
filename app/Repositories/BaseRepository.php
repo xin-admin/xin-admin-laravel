@@ -153,6 +153,11 @@ abstract class BaseRepository
         return $model;
     }
 
+    public function find(int $id): Model
+    {
+        return $this->model()->find($id);
+    }
+
     public function list(array $params): array
     {
         $pageSize = $params['pageSize'] ?? 10;
