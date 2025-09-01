@@ -48,20 +48,18 @@
           "Composer\\Config::disableProcessTimeout",
           "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" --names='server,queue'"
         ],
+        "post-create-project-cmd": [
+          "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+          "@php artisan key:generate --ansi",
+          "@php artisan migrate --graceful --ansi",
+          "@php artisan db:seed --force"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
         ]
     },
     "extra": {
