@@ -32,7 +32,7 @@ return new class extends Migration
                 $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();
-                $table->comment('管理员表');
+                $table->comment('系统用户表');
             });
         }
 
@@ -46,7 +46,7 @@ return new class extends Migration
                 $table->string('description', 100)->default('')->comment('角色描述');
                 $table->integer('status')->default(0)->comment('状态（0正常 1停用）');
                 $table->timestamps();
-                $table->comment('管理员角色表');
+                $table->comment('系统用户角色表');
             });
         }
 
@@ -62,7 +62,7 @@ return new class extends Migration
                 $table->string('email', '50')->default('')->comment('部门邮箱');
                 $table->integer('status')->default(0)->comment('部门状态（0正常 1停用）');
                 $table->timestamps();
-                $table->comment('管理员部门表');
+                $table->comment('系统用户部门表');
             });
         }
         // 管理员权限表
@@ -80,7 +80,7 @@ return new class extends Migration
                 $table->integer('status')->default(1)->comment('状态：1、正常，0、禁用');
                 $table->integer('show')->default(1)->comment('显示：1、显示，0、隐藏');
                 $table->timestamps();
-                $table->comment('管理员权限表');
+                $table->comment('系统用户权限表');
             });
         }
         // 登录日志表
@@ -95,6 +95,7 @@ return new class extends Migration
                 $table->string('status', 1)->default('0')->comment('登录状态（0成功 1失败）');
                 $table->string('msg', 255)->default('')->comment('提示消息');
                 $table->timestamp('login_time')->comment('登录时间');
+                $table->comment('系统用户登录日志表');
             });
         }
     }

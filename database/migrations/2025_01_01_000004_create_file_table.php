@@ -30,7 +30,7 @@ return new class extends Migration
             });
         }
         if (! Schema::hasTable('sys_file_group')) {
-            Schema::create('file_group', function (Blueprint $table) {
+            Schema::create('sys_file_group', function (Blueprint $table) {
                 $table->increments('id')->comment('文件分组ID');
                 $table->string('name', 50)->comment('文件名称');
                 $table->integer('sort')->comment('分组排序');

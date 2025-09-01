@@ -51,9 +51,9 @@ class SysUserController extends BaseController
 
     /** 更新管理员信息 */
     #[PutMapping]
-    public function update(Request $request): JsonResponse
+    public function update(): JsonResponse
     {
-        $this->repository->update(Auth::id(), $request->toArray());
+        $this->repository->update(Auth::id(), request()->toArray());
         return $this->success();
     }
 

@@ -20,6 +20,7 @@ return new class extends Migration
                 $table->string('describe', 255)->nullable()->comment('字典描述');
                 $table->string('type', 10)->default('default')->comment('字典类型');
                 $table->timestamps();
+                $table->comment('字典表');
             });
         }
         if (! Schema::hasTable('sys_dict_item')) {
@@ -31,6 +32,7 @@ return new class extends Migration
                 $table->unsignedInteger('switch')->default(1)->comment('是否启用：0：禁用，1：启用');
                 $table->string('status', 10)->default('default')->comment('状态：（default,success,error,processing,warning）');
                 $table->timestamps();
+                $table->comment('字典项表');
             });
         }
     }

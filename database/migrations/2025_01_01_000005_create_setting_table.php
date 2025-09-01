@@ -24,6 +24,7 @@ return new class extends Migration
                 $table->integer('group_id')->comment('分组ID');
                 $table->integer('sort')->comment('排序');
                 $table->timestamps();
+                $table->comment('系统设置表');
             });
         }
         if (! Schema::hasTable('sys_setting_group')) {
@@ -33,6 +34,7 @@ return new class extends Migration
                 $table->string('key', 50)->comment('分组KEY');
                 $table->string('remark', 255)->nullable()->comment('备注描述');
                 $table->timestamps();
+                $table->comment('设置分组表');
             });
         }
     }
