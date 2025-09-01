@@ -41,7 +41,7 @@ class SysDataSeeder extends Seeder
         ]);
         // 文件初始化数据
         DB::table('sys_file_group')->insert([
-            ['group_id' => 1, 'name' => '默认分组', 'sort' => 0, 'describe' => '默认分组', 'created_at' => $date, 'updated_at' => $date]
+            ['id' => 1, 'name' => '默认分组', 'sort' => 0, 'describe' => '默认分组', 'created_at' => $date, 'updated_at' => $date]
         ]);
     }
 }
