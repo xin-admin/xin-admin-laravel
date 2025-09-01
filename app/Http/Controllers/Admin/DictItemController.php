@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\DictItemRequest;
-use App\Models\DictItemModel;
+use App\Models\SysDictItemModel;
 use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\Delete;
 use Xin\AnnoRoute\Attribute\Query;
@@ -18,7 +18,7 @@ use Xin\AnnoRoute\Attribute\Update;
 #[Query, Create, Update, Delete]
 class DictItemController extends BaseController
 {
-    protected string $model = DictItemModel::class;
+    protected string $model = SysDictItemModel::class;
     protected string $formRequest = DictItemRequest::class;
     protected array $searchField = [
         'name' => 'like',

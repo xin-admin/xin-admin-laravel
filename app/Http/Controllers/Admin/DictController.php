@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\DictRequest;
-use App\Models\DictModel;
+use App\Models\SysDictModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Xin\AnnoRoute\Attribute\Create;
@@ -23,7 +23,7 @@ class DictController extends BaseController
 {
     protected array $noPermission = ['itemList'];
     protected string $formRequest = DictRequest::class;
-    protected string $model = DictModel::class;
+    protected string $model = SysDictModel::class;
     protected array $quickSearchField = ['id', 'name', 'code'];
 
     // TODO 删除字典需判断是否有子项 （待完成）
@@ -35,7 +35,7 @@ class DictController extends BaseController
         if (Cache::has('sys_dict')) {
             $dict = Cache::get('sys_dict');
         } else {
-            $model = new DictModel();
+            $model = new SysDictModel();
             $dict = $model->getDictItems();
             // 缓存字典
             Cache::store('redis')->put('bar', $dict, 600);

@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Dict
+ * 字典模型
  */
-class DictModel extends Model
+class SysDictModel extends Model
 {
-    protected $table = 'dict';
+    protected $table = 'sys_dict';
 
     protected $fillable = [
         'name',
@@ -18,13 +18,17 @@ class DictModel extends Model
         'code',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
     /**
      * 关联字典子项
-     * @return HasMany
      */
     public function dictItems(): HasMany
     {
-        return $this->hasMany(DictItemModel::class, 'dict_id', 'id');
+        return $this->hasMany(SysDictItemModel::class, 'dict_id', 'id');
     }
 
     /**

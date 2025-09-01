@@ -9,14 +9,6 @@ use Illuminate\Support\Facades\Validator;
 abstract class BaseRepository
 {
     /**
-     * 用于CRUD的模型类
-     * The model class used for CRUD
-     *
-     * @var string
-     */
-    protected string $model;
-
-    /**
      * 验证规则
      * @var array
      */
@@ -45,19 +37,7 @@ abstract class BaseRepository
     protected array $quickSearchField = [];
 
     /** 获取模型 */
-    protected function model(): Builder
-    {
-        if (! isset($this->model)) {
-            throw new RepositoryException('Model not set');
-        }
-        $model = app($this->model);
-        if (!$model instanceof Model) {
-            throw new RepositoryException(
-                "Class {$this->model} must be an instance of Illuminate\\Database\\Eloquent\\Model"
-            );
-        }
-        return $model->newQuery();
-    }
+    abstract protected function model(): Builder;
 
     /** 验证数据 */
     protected function validation(array $data): array

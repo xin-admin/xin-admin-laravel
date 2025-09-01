@@ -2,40 +2,71 @@
 
 namespace App\Repositories;
 
-use App\Models\AdminUserModel;
+use App\Models\SysUserModel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class SysUserRepository extends BaseRepository
 {
-
-    /** @var string 模型 */
-    protected string $model = AdminUserModel::class;
-
-    /** @var array|string[] 验证规则 */
     protected array $validation = [
-        'username' => 'required',
+        'username' => 'required|unique:sys_user,username',
         'nickname' => 'required',
-        'sex' => 'required',
+        'sex' => 'required|in:0,1',
         'mobile' => 'required',
-        'email' => 'required|email',
-        'avatar_id' => 'required|exists:file,file_id',
-        'role_id' => 'required|exists:admin_role,role_id',
-        'dept_id' => 'required|exists:admin_dept,dept_id',
+        'email' => 'required|email|unique:sys_user,email',
+        'avatar_id' => 'required|integer',
+        'dept_id' => 'required|exists:sys_dept,id',
         'status' => 'required|in:1,0',
-        'password' => 'required',
+        'password' => 'required|min:6',
         'rePassword' => 'required|same:password',
     ];
 
-    /** @var array 验证消息 */
-    protected array $messages = [];
-
-    /** @var array|string[] 搜索字段 */
-    protected array $searchField = [
-        'dept_id' => '='
+    protected array $messages = [
+        'username.required' => '用户名不能为空',
+        'username.unique' => '用户名已存在',
+        'nickname.required' => '昵称不能为空',
+        'sex.required' => '性别不能为空',
+        'sex.in' => '性别格式错误',
+        'mobile.required' => '手机号不能为空',
+        'email.required' => '邮箱不能为空',
+        'email.email' => '邮箱格式错误',
+        'email.unique' => '邮箱已存在',
+        'avatar_id.required' => '头像不能为空',
+        'avatar_id.integer' => '头像格式错误',
+        'dept_id.required' => '部门不能为空',
+        'dept_id.exists' => '部门不存在',
+        'status.required' => '状态不能为空',
+        'status.in' => '状态格式错误',
+        'password.required' => '密码不能为空',
+        'password.min' => '密码至少6位',
+        'rePassword.required' => '确认密码不能为空',
+        'rePassword.same' => '两次密码不一致',
     ];
 
-    /** @var array|string[] 快速搜索字段 */
-    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'user_id'];
+    protected array $searchField = [
+        'dept_id' => '=',
+        'status' => '=',
+        'sex' => '='
+    ];
 
-    /** 以下可以自定义储存方法 */
+    protected array $quickSearchField = ['username', 'nickname', 'email', 'mobile', 'id'];
 
+    protected function model(): Builder
+    {
+        return SysUserModel::newQuery();
+    }
+
+    /** ---------------- 自定义方法 ----------------------- */
+
+    /** 获取系统活跃用户总数 */
+    public function getActiveUsersCount(): int
+    {
+        return $this->model()->where('status', 1)->count();
+    }
+
+    /** 通过部门获取用户总数 */
+    public function getDeptUserCount($deptId): int
+    {
+        return $this->model()->where('dept_id', $deptId)->count();
+    }
 }

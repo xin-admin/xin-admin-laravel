@@ -5,14 +5,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class DictItem
+ * 字典项模型
  */
-class DictItemModel extends Model
+class SysDictItemModel extends Model
 {
-    protected $table = 'dict_item';
+    protected $table = 'sys_dict_item';
 
     protected $casts = [
-        'dict_id' => 'int',
+        'dict_id' => 'integer',
+        'switch' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     protected $fillable = [
@@ -25,10 +28,9 @@ class DictItemModel extends Model
 
     /**
      * 字典项关联字典表
-     * @return BelongsTo
      */
     public function dict(): BelongsTo
     {
-        return $this->belongsTo(DictModel::class, 'dict_id', 'id');
+        return $this->belongsTo(SysDictModel::class, 'dict_id', 'id');
     }
 }

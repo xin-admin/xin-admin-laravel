@@ -36,10 +36,10 @@ class SysUserSeeder extends Seeder
             ['id' => 4, 'name' => '市场运营', 'rules' => '5,6,7,8,9,10,11', 'created_at' => $date, 'updated_at' => $date],
         ]);
         DB::table('sys_dept')->insert([
-            ['id' => 1, 'name' => '小刘快跑网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'name' => '小刘洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'name' => '小刘郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'name' => '小刘南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 1, 'name' => '网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
         ]);
         DB::table('sys_rule')->insert([
             ['id' => 1 , 'parent_id' => 0 , 'type' => '0', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '仪表盘', 'path' => '/dashboard', 'icon' => 'PieChartOutlined', 'key' => 'dashboard', 'local' => 'menu.dashboard'],

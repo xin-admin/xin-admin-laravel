@@ -1,17 +1,16 @@
 <?php
 namespace App\Models;
 
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * Class XinUser
+ * APP 用户模型
  */
-class XinUserModel extends Authenticatable
+class UserModel extends Authenticatable
 {
-    protected $table = 'xin_user';
+    protected $table = 'user';
 
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
 
     protected $hidden = [
         'password',

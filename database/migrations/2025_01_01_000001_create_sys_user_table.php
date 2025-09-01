@@ -8,14 +8,14 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 管理员相关数据表
+     * 系统用户相关数据表
      */
     public function up(): void
     {
-        // 管理员表
+        // 系统用户表
         if (! Schema::hasTable('sys_user')) {
             Schema::create('sys_user', function (Blueprint $table) {
-                $table->increments('id')->comment('管理员ID');
+                $table->increments('id')->comment('系统用户ID');
                 $table->string('username', 20)->unique()->comment('用户名');
                 $table->string('password', 100)->comment('密码');
                 $table->string('nickname', 20)->default('')->comment('昵称');
@@ -25,7 +25,6 @@ return new class extends Migration
                 $table->string('email', 50)->unique()->comment('邮箱');
                 $table->timestamp('email_verified_at')->nullable();
                 $table->integer('dept_id')->default(0)->comment('部门ID');
-                $table->integer('role_id')->default(0)->comment('角色ID');
                 $table->string('login_ip', 60)->default('')->comment('最后登录IP');
                 $table->timestamp('login_time')->nullable()->comment('最后登录时间');
                 $table->integer('status')->default(1)->comment('状态（1正常 0停用）');
@@ -36,7 +35,7 @@ return new class extends Migration
             });
         }
 
-        // 管理员角色表
+        // 系统用户角色表
         if (! Schema::hasTable('sys_role')) {
             Schema::create('sys_role', function (Blueprint $table) {
                 $table->increments('id')->comment('角色ID');
@@ -50,7 +49,27 @@ return new class extends Migration
             });
         }
 
-        // 管理员部门表
+        // 系统用户角色中间表
+        if (! Schema::hasTable('sys_user_role')) {
+            Schema::create('sys_user_role', function (Blueprint $table) {
+                $table->increments('id')->comment('主键ID');
+                $table->integer('user_id')->comment('用户ID');
+                $table->integer('role_id')->comment('角色ID');
+                $table->timestamps();
+                $table->unique(['user_id', 'role_id'], 'user_role_unique');
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('sys_user')
+                    ->onDelete('cascade');
+                $table->foreign('role_id')
+                    ->references('id')
+                    ->on('sys_role')
+                    ->onDelete('cascade');
+                $table->comment('系统用户角色关联表');
+            });
+        }
+
+        // 系统用户部门表
         if (! Schema::hasTable('sys_dept')) {
             Schema::create('sys_dept', function (Blueprint $table) {
                 $table->increments('id')->comment('部门ID');
@@ -65,7 +84,8 @@ return new class extends Migration
                 $table->comment('系统用户部门表');
             });
         }
-        // 管理员权限表
+        
+        // 系统用户权限表
         if (! Schema::hasTable('sys_rule')) {
             Schema::create('sys_rule', function (Blueprint $table) {
                 $table->increments('id')->comment('权限ID');
@@ -83,11 +103,31 @@ return new class extends Migration
                 $table->comment('系统用户权限表');
             });
         }
+
+        // 角色权限关联表
+        if (! Schema::hasTable('sys_role_rule')) {
+            Schema::create('sys_role_rule', function (Blueprint $table) {
+                $table->integer('role_id')->comment('角色ID');
+                $table->integer('rule_id')->comment('权限ID');
+                $table->primary(['role_id', 'rule_id'], 'role_rule_primary');
+                $table->foreign('role_id')
+                    ->references('id')
+                    ->on('sys_role')
+                    ->onDelete('cascade');
+                $table->foreign('rule_id')
+                    ->references('id')
+                    ->on('sys_rule')
+                    ->onDelete('cascade');
+                $table->comment('角色权限关联表');
+            });
+        }
+
         // 登录日志表
         if (! Schema::hasTable('sys_login_record')) {
             Schema::create('sys_login_record', function (Blueprint $table) {
                 $table->increments('id')->comment('记录ID');
                 $table->string('username', 20)->default('')->comment('用户名');
+                $table->integer('user_id')->comment('用户ID');
                 $table->string('ipaddr', 60)->default('')->comment('登录IP');
                 $table->string('login_location', 255)->default('')->comment('登录地点');
                 $table->string('browser', 255)->default('')->comment('浏览器');
@@ -109,6 +149,8 @@ return new class extends Migration
         Schema::dropIfExists('sys_rule');
         Schema::dropIfExists('sys_dept');
         Schema::dropIfExists('sys_role');
+        Schema::dropIfExists('sys_user_role');
+        Schema::dropIfExists('sys_role_rule');
         Schema::dropIfExists('sys_login_record');
     }
 };
