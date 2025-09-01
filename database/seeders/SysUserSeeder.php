@@ -15,7 +15,7 @@ class SysUserSeeder extends Seeder
     public function run(): void
     {
         $date = date('Y-m-d H:i:s');
-        DB::table('admin_user')->insert([
+        DB::table('sys_user')->insert([
             'user_id' => 1,
             'username' => 'admin',
             'nickname' => 'admin',
@@ -29,19 +29,19 @@ class SysUserSeeder extends Seeder
             'created_at' => $date,
             'updated_at' => $date,
         ]);
-        DB::table('admin_role')->insert([
+        DB::table('sys_role')->insert([
             ['role_id' => 1, 'name' => '超级管理员', 'rules' => '*', 'created_at' => $date, 'updated_at' => $date],
             ['role_id' => 2, 'name' => '财务', 'rules' => '1,2,3,4', 'created_at' => $date, 'updated_at' => $date],
             ['role_id' => 3, 'name' => '电商总监', 'rules' => '1,2,3,4', 'created_at' => $date, 'updated_at' => $date],
             ['role_id' => 4, 'name' => '市场运营', 'rules' => '5,6,7,8,9,10,11', 'created_at' => $date, 'updated_at' => $date],
         ]);
-        DB::table('admin_dept')->insert([
+        DB::table('sys_dept')->insert([
             ['dept_id' => 1, 'name' => '小刘快跑网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
             ['dept_id' => 2, 'name' => '小刘洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
             ['dept_id' => 3, 'name' => '小刘郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
             ['dept_id' => 4, 'name' => '小刘南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
         ]);
-        DB::table('admin_rule')->insert([
+        DB::table('sys_rule')->insert([
             ['rule_id' => 1 , 'parent_id' => 0 , 'type' => '0', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '仪表盘', 'path' => '/dashboard', 'icon' => 'PieChartOutlined', 'key' => 'dashboard', 'local' => 'menu.dashboard'],
             ['rule_id' => 2 , 'parent_id' => 1 , 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '分析页', 'path' => '/dashboard/analysis', 'icon' => 'StockOutlined', 'key' => 'dashboard.analysis', 'local' => 'menu.dashboard.analysis'],
             ['rule_id' => 3 , 'parent_id' => 1 , 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '监控页', 'path' => '/dashboard/monitor', 'icon' => 'BarChartOutlined', 'key' => 'dashboard.monitor', 'local' => 'menu.dashboard.monitor'],
