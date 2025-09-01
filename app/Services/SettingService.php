@@ -51,6 +51,6 @@ class SettingService
      */
     private static function getCacheKey(): string
     {
-        return env('SETTING_CACHE_KEY', 'app_settings');
+        return env('SETTING_CACHE_KEY', 'settings');
     }
 }

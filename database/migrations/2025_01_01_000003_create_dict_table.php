@@ -12,8 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('dict')) {
-            Schema::create('dict', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_dict')) {
+            Schema::create('sys_dict', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name', 50)->comment('字典名称');
                 $table->string('code', 50)->comment('字典编码');
@@ -22,8 +22,8 @@ return new class extends Migration
                 $table->timestamps();
             });
         }
-        if (! Schema::hasTable('dict_item')) {
-            Schema::create('dict_item', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_dict_item')) {
+            Schema::create('sys_dict_item', function (Blueprint $table) {
                 $table->increments('id');
                 $table->unsignedBigInteger('dict_id')->comment('字典ID');
                 $table->string('label', 50)->comment('字典项名称');
@@ -40,7 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dict');
-        Schema::dropIfExists('dict_item');
+        Schema::dropIfExists('sys_dict');
+        Schema::dropIfExists('sys_dict_item');
     }
 };

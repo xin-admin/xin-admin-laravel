@@ -280,11 +280,11 @@ return [
         */
 
         'except' => [
-            'cache',
-            'cache_locks',
-            'token',
+            'sys_cache',
+            'sys_cache_locks',
+            'sys_token',
             'migrations',
-            'failed_jobs',
+            'sys_failed_jobs',
             'password_resets',
             'personal_access_tokens',
             'password_reset_tokens',

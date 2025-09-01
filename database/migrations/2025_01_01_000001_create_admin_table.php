@@ -13,9 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         // 管理员表
-        if (! Schema::hasTable('admin_user')) {
-            Schema::create('admin_user', function (Blueprint $table) {
-                $table->increments('user_id')->comment('管理员ID');
+        if (! Schema::hasTable('sys_user')) {
+            Schema::create('sys_user', function (Blueprint $table) {
+                $table->increments('id')->comment('管理员ID');
                 $table->string('username', 20)->unique()->comment('用户名');
                 $table->string('password', 100)->comment('密码');
                 $table->string('nickname', 20)->default('')->comment('昵称');
@@ -37,9 +37,9 @@ return new class extends Migration
         }
 
         // 管理员角色表
-        if (! Schema::hasTable('admin_role')) {
-            Schema::create('admin_role', function (Blueprint $table) {
-                $table->increments('role_id')->comment('角色ID');
+        if (! Schema::hasTable('sys_role')) {
+            Schema::create('sys_role', function (Blueprint $table) {
+                $table->increments('id')->comment('角色ID');
                 $table->string('name', 20)->default('')->comment('角色名称');
                 $table->integer('sort')->default(0)->comment('排序');
                 $table->text('rules')->comment('角色权限');
@@ -51,9 +51,9 @@ return new class extends Migration
         }
 
         // 管理员部门表
-        if (! Schema::hasTable('admin_dept')) {
-            Schema::create('admin_dept', function (Blueprint $table) {
-                $table->increments('dept_id')->comment('部门ID');
+        if (! Schema::hasTable('sys_dept')) {
+            Schema::create('sys_dept', function (Blueprint $table) {
+                $table->increments('id')->comment('部门ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
                 $table->string('name', 100)->default('')->comment('部门名称');
                 $table->integer('sort')->default(0)->comment('排序');
@@ -66,9 +66,9 @@ return new class extends Migration
             });
         }
         // 管理员权限表
-        if (! Schema::hasTable('admin_rule')) {
-            Schema::create('admin_rule', function (Blueprint $table) {
-                $table->increments('rule_id')->comment('权限ID');
+        if (! Schema::hasTable('sys_rule')) {
+            Schema::create('sys_rule', function (Blueprint $table) {
+                $table->increments('id')->comment('权限ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
                 $table->string('type', 1)->default('0')->comment('类型：1、一级菜单，2、子菜单，3、操作');
                 $table->integer('sort')->default(0)->comment('排序');
@@ -84,9 +84,9 @@ return new class extends Migration
             });
         }
         // 登录日志表
-        if (! Schema::hasTable('admin_login_log')) {
-            Schema::create('admin_login_log', function (Blueprint $table) {
-                $table->increments('log_id')->comment('记录ID');
+        if (! Schema::hasTable('sys_login_record')) {
+            Schema::create('sys_login_record', function (Blueprint $table) {
+                $table->increments('id')->comment('记录ID');
                 $table->string('username', 20)->default('')->comment('用户名');
                 $table->string('ipaddr', 60)->default('')->comment('登录IP');
                 $table->string('login_location', 255)->default('')->comment('登录地点');
@@ -104,11 +104,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin_user');
-        Schema::dropIfExists('admin_rule');
-        Schema::dropIfExists('admin_dept');
-        Schema::dropIfExists('admin_role');
-        Schema::dropIfExists('admin_login_log');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sys_user');
+        Schema::dropIfExists('sys_rule');
+        Schema::dropIfExists('sys_dept');
+        Schema::dropIfExists('sys_role');
+        Schema::dropIfExists('sys_login_record');
     }
 };

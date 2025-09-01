@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('xin_user')) {
-            Schema::create('xin_user', function (Blueprint $table) {
-                $table->increments('user_id')->comment('用户ID');
+        if (! Schema::hasTable('user')) {
+            Schema::create('user', function (Blueprint $table) {
+                $table->increments('id')->comment('用户ID');
                 $table->string('username', 20)->unique()->comment('用户名');
                 $table->string('password', 100)->comment('密码');
                 $table->string('nickname', 20)->default('')->comment('昵称');
                 $table->string('email', 50)->default('')->comment('邮箱');
+                $table->timestamp('email_verified_at')->nullable();
+                $table->rememberToken();
                 $table->timestamps();
             });
         }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('xin_user');
+        Schema::dropIfExists('user');
     }
 };
