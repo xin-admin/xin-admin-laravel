@@ -4,7 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\App\UserRegisterRequest;
-use App\Models\XinUserModel;
+use App\Models\UserModel;
 use App\Support\Mail\VerificationCodeMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -67,7 +67,7 @@ class IndexController extends BaseController
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $model = new XinUserModel;
+        $model = new UserModel;
         $model->username = $data['username'];
         $model->password = password_hash($data['password'], PASSWORD_DEFAULT);
         $model->email = $data['email'];

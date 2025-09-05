@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Common;
 use App\Services\LengthAwarePaginatorService;
-use App\Services\SettingService;
+use App\Services\SysSettingService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
 
-        $this->app->singleton(SettingService::class, SettingService::class);
+        $this->app->singleton(SysSettingService::class, SysSettingService::class);
 
         $this->app->bind('Illuminate\Pagination\LengthAwarePaginator', function ($app, $options) {
             return new LengthAwarePaginatorService(
@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (!$this->app->runningInConsole()) {
-            SettingService::refreshSettings();
+            SysSettingService::refreshSettings();
         }
     }
 }

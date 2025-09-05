@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\SettingService;
+use App\Services\SysSettingService;
 
 if (! function_exists('setting')) {
     /**
@@ -11,7 +11,7 @@ if (! function_exists('setting')) {
      */
     function setting(string $name, mixed $default = null): mixed
     {
-        return SettingService::getSetting($name, $default);
+        return SysSettingService::getSetting($name, $default);
     }
 }
 

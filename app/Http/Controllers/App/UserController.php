@@ -4,7 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\App\UserUpdateInfoRequest;
-use App\Models\XinUserModel;
+use App\Models\UserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Xin\AnnoRoute\Attribute\GetMapping;
@@ -20,7 +20,7 @@ class UserController extends BaseController
     #[GetMapping]
     public function getUserInfo(): JsonResponse
     {
-        $info = auth('user')->userInfo();
+        $info = auth('user')->user();
 
         return $this->success(compact('info'));
     }
@@ -29,7 +29,7 @@ class UserController extends BaseController
     public function logout(): JsonResponse
     {
         $user_id = auth('user')->id();
-        $model = new XinUserModel;
+        $model = new UserModel;
         if ($model->logout($user_id)) {
             return $this->success('退出登录成功');
         } else {
@@ -40,7 +40,7 @@ class UserController extends BaseController
     #[PutMapping]
     public function setUserInfo(UserUpdateInfoRequest $request): JsonResponse
     {
-        XinUserModel::where('user_id', auth('user')->id())->update($request->validated());
+        UserModel::where('user_id', auth('user')->id())->update($request->validated());
 
         return $this->error('更新成功');
     }
@@ -54,7 +54,7 @@ class UserController extends BaseController
             'rePassword' => 'required|same:newPassword',
         ]);
         $user_id = auth('user')->id();
-        $user = XinUserModel::query()->find($user_id);
+        $user = UserModel::query()->find($user_id);
         if (! password_verify($data['oldPassword'], $user['password'])) {
             return $this->error('旧密码不正确！');
         }

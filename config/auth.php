@@ -66,10 +66,10 @@ return [
     'providers' => [
         'sys_users' => [
             'driver' => 'eloquent',
-            'table' => 'sys_user',
+            'model' => \App\Models\Sys\SysUserModel::class
         ],
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'database',
             'table' => 'user',
         ],
     ],

@@ -22,7 +22,6 @@ class SysUserSeeder extends Seeder
             'email' => Str::random(10).'@example.com',
             'password' => Hash::make('123456'),
             'dept_id' => 1,
-            'role_id' => 1,
             'avatar_id' => 1,
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),

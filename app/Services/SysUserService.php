@@ -2,14 +2,22 @@
 
 namespace App\Services;
 
-use App\Repositories\SysUserRuleRepository;
+use App\Models\Sys\SysUserModel;
+use App\Repositories\Sys\SysRuleRepository;
+use App\Repositories\Sys\SysUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SysUserService extends BaseService
+class SysUserService extends Service
 {
-    protected SysUserRuleRepository $repository;
+    protected SysUserRepository $repository;
+    protected SysUserModel $model;
+
+    public function __construct(SysUserRepository $repository, SysUserModel $model) {
+        $this->repository = $repository;
+        $this->model = $model;
+    }
 
     /**
      * 系统用户登录
@@ -19,12 +27,13 @@ class SysUserService extends BaseService
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
-            'username' => 'required|min:4|alphaDash',
+            'username' => 'required|min:3|alphaDash',
             'password' => 'required|min:4|alphaDash',
         ]);
 
         if (Auth::attempt($credentials)) {
-            $access = auth()->user()['rules'];
+            $userID = auth()->id();
+            $access = $this->repository->ruleKeys($userID);
             $data = $request->user()
                 ->createToken($credentials['username'], $access)
                 ->toArray();
@@ -40,9 +49,10 @@ class SysUserService extends BaseService
     public function getAdminInfo(): JsonResponse
     {
         $info = auth()->user();
-        $access = $info['rules'];
-        $menus = $this->repository->getRuleByKeys($access);
-        $menus = $this->getTreeData($menus, 'rule_id');
+        $userID = auth()->id();
+        $access = $this->repository->ruleKeys($userID);
+        $menus = $this->repository->rules($userID);
+        $menus = $this->getTreeData($menus, 'id');
         return $this->success(compact('info', 'menus', 'access'));
     }
 
@@ -59,7 +69,7 @@ class SysUserService extends BaseService
             'rePassword' => 'required|same:newPassword',
         ]);
         $user_id = auth()->id();
-        $user = $this->repository->find($user_id);
+        $user = $this->model->find($user_id);
         if (! password_verify($validated['oldPassword'], $user->password)) {
             return $this->error(__('user.old_password_error'));
         }
@@ -67,4 +77,19 @@ class SysUserService extends BaseService
         $user->save();
         return $this->success('ok');
     }
+
+    /** 重置管理员密码 */
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'id' => 'required|exists:App\Models\SysUserModel,id',
+            'password' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:password',
+        ]);
+        $user = SysUserModel::find($data['id']);
+        $user->password = $data['password'];
+        $user->save();
+        return $this->success('ok');
+    }
+
 }

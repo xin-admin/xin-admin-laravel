@@ -57,14 +57,6 @@ return new class extends Migration
                 $table->integer('role_id')->comment('角色ID');
                 $table->timestamps();
                 $table->unique(['user_id', 'role_id'], 'user_role_unique');
-                $table->foreign('user_id')
-                    ->references('id')
-                    ->on('sys_user')
-                    ->onDelete('cascade');
-                $table->foreign('role_id')
-                    ->references('id')
-                    ->on('sys_role')
-                    ->onDelete('cascade');
                 $table->comment('系统用户角色关联表');
             });
         }
@@ -110,14 +102,6 @@ return new class extends Migration
                 $table->integer('role_id')->comment('角色ID');
                 $table->integer('rule_id')->comment('权限ID');
                 $table->primary(['role_id', 'rule_id'], 'role_rule_primary');
-                $table->foreign('role_id')
-                    ->references('id')
-                    ->on('sys_role')
-                    ->onDelete('cascade');
-                $table->foreign('rule_id')
-                    ->references('id')
-                    ->on('sys_rule')
-                    ->onDelete('cascade');
                 $table->comment('角色权限关联表');
             });
         }

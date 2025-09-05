@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\AdminLoginLogModel;
+use App\Models\Sys\SysLoginRecordModel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,7 @@ class LoginLogMiddleware
             // 获取响应状态和消息
             $content = json_decode($response->getContent(), true); // 响应内容
             $message = $content['msg'] ?? 'No message'; // 从响应中提取消息
-            AdminLoginLogModel::create([
+            SysLoginRecordModel::create([
                 'ipaddr' => $request->ip(),
                 'browser' => $this->getBrowser($userAgent),
                 'os' => $this->getOs($userAgent),
