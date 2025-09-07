@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Exceptions\RepositoryException;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Sys\SysRuleRepository;
 use App\Repositories\Sys\SysUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class SysUserService extends Service
 {
@@ -73,12 +76,16 @@ class SysUserService extends Service
         if (! password_verify($validated['oldPassword'], $user->password)) {
             return $this->error(__('user.old_password_error'));
         }
-        $user->password = $validated['newPassword'];
+        $user->password = Hash::make($validated['newPassword']);
         $user->save();
         return $this->success('ok');
     }
 
-    /** 重置管理员密码 */
+    /**
+     * 重置管理员密码
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function resetPassword(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -90,6 +97,34 @@ class SysUserService extends Service
         $user->password = $data['password'];
         $user->save();
         return $this->success('ok');
+    }
+
+    /**
+     * 更新用户信息
+     * @param int $id 用户ID
+     * @param Request $request 请求
+     * @return JsonResponse
+     */
+    public function updateInfo(int $id, Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'nickname' => 'required',
+            'sex' => 'required|in:0,1',
+            'mobile' => 'required',
+            'email' => 'required|email|unique:sys_user,email',
+        ], [
+            'nickname.required' => '昵称不能为空',
+            'sex.required' => '性别不能为空',
+            'sex.in' => '性别格式错误',
+            'mobile.required' => '手机号不能为空',
+            'email.required' => '邮箱不能为空',
+            'email.email' => '邮箱格式错误'
+        ]);
+        $model = SysUserModel::find($id);
+        if (empty($model)) {
+            return $this->error(__('user.user_not_exist'));
+        }
+        return $this->success($model->update($data));
     }
 
 }

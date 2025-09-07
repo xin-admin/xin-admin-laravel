@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Sys;
 
+use App\Exceptions\RepositoryException;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 class SysUserRepository extends Repository
@@ -99,5 +101,4 @@ class SysUserRepository extends Repository
             ->unique('id')
             ->toArray();
     }
-
 }

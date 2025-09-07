@@ -160,7 +160,7 @@ abstract class Repository
     {
         $validated = $this->validation($data);
         $model = $this->model()->find($id);
-        if (empty($data)) {
+        if (empty($model)) {
             throw new RepositoryException('Model not found');
         }
         return $model->update($validated);
@@ -169,7 +169,7 @@ abstract class Repository
     public function delete(int $id): bool
     {
         $model = $this->model()->find($id);
-        if (empty($data)) {
+        if (empty($model)) {
             throw new RepositoryException('Model not found');
         }
         return $model->delete();

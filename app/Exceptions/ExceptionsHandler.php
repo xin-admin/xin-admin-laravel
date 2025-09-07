@@ -43,7 +43,7 @@ class ExceptionsHandler extends ExceptionHandler
             },
             AuthenticationException::class => function ($e) {
                 return response()->json([
-                    'msg' => __('user.refresh_token_expired'),
+                    'msg' => __('user.not_login'),
                     'success' => false
                 ], 401);
             },

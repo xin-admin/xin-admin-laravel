@@ -53,10 +53,9 @@ class SysUserController extends BaseController
 
     /** 更新管理员信息 */
     #[PutMapping]
-    public function updateAdmin(Request $request): JsonResponse
+    public function updateInfo(Request $request): JsonResponse
     {
-        $this->repository->update(Auth::id(), $request->all());
-        return $this->success();
+        return $this->service->updateInfo(Auth::id(), $request);
     }
 
     /** 修改密码 */
@@ -67,7 +66,7 @@ class SysUserController extends BaseController
     }
 
     /** 上传头像 */
-    #[PostMapping('/uploadAvatar')]
+    #[PostMapping('/avatar')]
     public function uploadAvatar(): JsonResponse
     {
         $service = new SysFileService();
