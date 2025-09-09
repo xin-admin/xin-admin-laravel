@@ -41,7 +41,6 @@ return new class extends Migration
                 $table->increments('id')->comment('角色ID');
                 $table->string('name', 20)->default('')->comment('角色名称');
                 $table->integer('sort')->default(0)->comment('排序');
-                $table->text('rules')->comment('角色权限');
                 $table->string('description', 100)->default('')->comment('角色描述');
                 $table->integer('status')->default(0)->comment('状态（0正常 1停用）');
                 $table->timestamps();

@@ -78,13 +78,16 @@ class SysUserRepository extends Repository
      */
     public function ruleKeys($id): array
     {
-        return $this->model()->find($id)
-            ->roles()->with('rules')->get()
-            ->pluck('rules')
-            ->flatten()
-            ->pluck('key')
+        $roles = $this->model()->with(['roles.rules' => function ($query) {
+            $query->where('status', 1); // 只获取启用的权限
+        }])->find($id)->roles->toArray();
+
+        return collect($roles)
+            ->map(fn ($item) => $item['rules'] )
+            ->collapse()
+            ->map(fn ($item) => $item['key'] )
             ->unique()
-            ->values()->toArray();
+            ->toArray();
     }
 
     /**
@@ -94,10 +97,13 @@ class SysUserRepository extends Repository
      */
     public function rules($id): array
     {
-        return $this->model()->find($id)
-            ->roles()->with('rules')->get()
-            ->pluck('rules')
-            ->flatten()
+        $roles = $this->model()->with(['roles.rules' => function ($query) {
+            $query->where('status', 1);
+        }])->find($id)->roles->toArray();
+
+        return collect($roles)
+            ->map(fn ($item) => $item['rules'] )
+            ->collapse()
             ->unique('id')
             ->toArray();
     }

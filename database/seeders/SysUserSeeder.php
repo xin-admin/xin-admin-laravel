@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use function Laravel\Prompts\table;
 
 class SysUserSeeder extends Seeder
 {
@@ -29,10 +30,10 @@ class SysUserSeeder extends Seeder
             'updated_at' => $date,
         ]);
         DB::table('sys_role')->insert([
-            ['id' => 1, 'name' => '超级管理员', 'rules' => '*', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'name' => '财务', 'rules' => '1,2,3,4', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'name' => '电商总监', 'rules' => '1,2,3,4', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'name' => '市场运营', 'rules' => '5,6,7,8,9,10,11', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 1, 'name' => '超级管理员', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '财务', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '电商总监', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '市场运营', 'created_at' => $date, 'updated_at' => $date],
         ]);
         DB::table('sys_dept')->insert([
             ['id' => 1, 'name' => '网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
@@ -137,6 +138,20 @@ class SysUserSeeder extends Seeder
             ['id' => 95, 'parent_id' => 92, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => 'SQL 日志', 'path' => '/system/watcher/query', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.query', 'local' => 'menu.watcher.query'],
             ['id' => 96, 'parent_id' => 92, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => 'Redis 日志', 'path' => '/system/watcher/redis', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.redis', 'local' => 'menu.watcher.redis'],
             ['id' => 97, 'parent_id' => 92, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '缓存日志', 'path' => '/system/watcher/cache', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.cache', 'local' => 'menu.watcher.cache'],
+        ]);
+
+        DB::table('sys_role_rule')->insertUsing(
+            ['role_id', 'rule_id'],
+            DB::table('sys_rule')
+                ->where('status', 1)
+                ->select(DB::raw('1 as role_id'), 'id')
+        );
+
+        DB::table('sys_user_role')->insert([
+            'user_id' => 1,
+            'role_id' => 1,
+            'created_at' => $date,
+            'updated_at' => $date
         ]);
     }
 }
