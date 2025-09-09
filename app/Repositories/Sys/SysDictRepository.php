@@ -38,6 +38,6 @@ class SysDictRepository extends Repository
      */
     protected function model(): Builder
     {
-        return SysDictModel::newQuery();
+        return SysDictModel::query();
     }
 }
