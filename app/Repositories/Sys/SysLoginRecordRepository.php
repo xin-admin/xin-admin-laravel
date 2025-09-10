@@ -63,7 +63,7 @@ class SysLoginRecordRepository extends Repository
         return $this->model()
             ->where('user_id', $id)
             ->limit(20)
-            ->orderBy('log_id', 'desc')
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
     }

@@ -12,6 +12,7 @@ class SysLoginRecordModel extends Model
 {
     protected $table = 'sys_login_record';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Repositories\Sys\SysLoginRecordRepository;
 use App\Repositories\Sys\SysUserRepository;
 use App\Services\SysFileService;
 use App\Services\SysUserService;
@@ -71,6 +72,15 @@ class SysUserController extends BaseController
     {
         $service = new SysFileService();
         $data = $service->upload(FileType::IMAGE, 1, 'public');
+        return $this->success($data);
+    }
+
+    /** 获取管理员登录日志 */
+    #[GetMapping('/login/record')]
+    public function get(SysLoginRecordRepository $repository): JsonResponse
+    {
+        $id = auth()->id();
+        $data = $repository->getRecordByID($id);
         return $this->success($data);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\AdminLoginLogModel;
 use App\Models\Sys\SysLoginRecordModel;
 use Closure;
 use Illuminate\Http\Request;
@@ -19,10 +18,11 @@ class LoginLogMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // 获取用户名（假设用户名通过请求体传递）
-        $username = $request->input('username', '');
         $userAgent = $request->userAgent();
         // 继续处理请求
         $response = $next($request);
+        $user_id = auth()->id();
+        $username = auth()->user()['username'];
         try {
             // 获取响应状态和消息
             $content = json_decode($response->getContent(), true); // 响应内容
@@ -32,6 +32,7 @@ class LoginLogMiddleware
                 'browser' => $this->getBrowser($userAgent),
                 'os' => $this->getOs($userAgent),
                 'username' => $username,
+                'user_id' => $user_id,
                 'login_location' => $this->getLocation($request->ip()),
                 'status' => $content['success'] ? '0' : '1',
                 'msg' => $message,
