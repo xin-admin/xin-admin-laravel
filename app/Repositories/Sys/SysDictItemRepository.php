@@ -44,6 +44,6 @@ class SysDictItemRepository extends Repository
      */
     protected function model(): Builder
     {
-        return SysDictItemModel::newQuery();
+        return SysDictItemModel::query();
     }
 }

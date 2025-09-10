@@ -52,7 +52,7 @@ class SysLoginRecordRepository extends Repository
      */
     protected function model(): Builder
     {
-        return SysLoginRecordModel::newQuery();
+        return SysLoginRecordModel::query();
     }
 
     /**

@@ -30,17 +30,16 @@ class SysDictController extends BaseController
     }
 
     /** 删除字典 */
-    #[DeleteMapping(authorize: 'delete')]
+    #[DeleteMapping('/{id}', 'delete')]
     public function delete($id): JsonResponse
     {
         $model = $this->model->findOrFail($id);
-        $count = $model->dicts()->count();
+        $count = $model->dictItems()->count();
         if ($count > 0) {
-            $model->dicts()->delete();
-            $model->delete();
-            return $this->success('ok');
+            return $this->error('字典包含子项！');
         }
-        return $this->error('字典包含子项！');
+        $model->delete();
+        return $this->success('ok');
     }
 
     /** 获取字典 */

@@ -13,7 +13,7 @@ class Delete extends Mapping
      * @param string $handlerMethod 方法名称 method
      */
     public function __construct(
-        public string $route = '',
+        public string $route = '/{id}',
         public string | array $middleware = '',
         public string $httpMethod = 'DELETE',
         public string $authorize = 'delete',
