@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\Delete;
+use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
 use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
@@ -28,9 +29,16 @@ class SysUserListController extends BaseController
     }
 
     /** 重置管理员密码 */
-    #[PutMapping('/resetPassword', 'resetPassword')]
+    #[PutMapping('/reset/password', 'resetPassword')]
     public function resetPassword(Request $request): JsonResponse
     {
         return $this->service->resetPassword($request);
+    }
+
+    /** 修改管理员状态 */
+    #[PostMapping('/status/{id}', 'resetStatus')]
+    public function resetStatus($id): JsonResponse
+    {
+        return $this->service->resetStatus($id);
     }
 }

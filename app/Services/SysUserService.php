@@ -91,12 +91,39 @@ class SysUserService extends Service
     public function resetPassword(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'id' => 'required|exists:App\Models\SysUserModel,id',
+            'id' => 'required|exists:sys_user,id',
             'password' => 'required|string|min:6|max:20',
             'rePassword' => 'required|same:password',
+        ], [
+            'id.required' => '请选择管理员用户！',
+            'id.exists' => '管理员用户不存在！',
+            'password.required' => '请输入管理员密码！',
+            'password.min' => '密码最短为6个字符！',
+            'password.max' => '密码最长伟20个字符！',
+            'rePassword.required' => '请重复输入密码！',
+            'rePassword.same' => '两次输入的密码不同！',
         ]);
         $user = SysUserModel::find($data['id']);
-        $user->password = $data['password'];
+        if (!$user) {
+            return $this->error(__('user.user_not_exist'));
+        }
+        $user->password = Hash::make($data['password']);
+        $user->save();
+        return $this->success('ok');
+    }
+
+    /**
+     * 修改管理员用户状态
+     * @param $id
+     * @return JsonResponse
+     */
+    public function resetStatus($id): JsonResponse
+    {
+        $user = SysUserModel::find($id);
+        if (!$user) {
+            return $this->error(__('user.user_not_exist'));
+        }
+        $user->status = $user->status == 0 ? 1 : 0;
         $user->save();
         return $this->success('ok');
     }

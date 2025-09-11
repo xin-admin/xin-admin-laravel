@@ -62,7 +62,7 @@ class SysUserRepository extends Repository
     }
 
     /** ---------------- 自定义方法 ----------------------- */
-    /** 新增响应 */
+    /** 新增系统用户 */
     public function create(array $data): Model
     {
         $data = $this->validation($data);
@@ -81,6 +81,56 @@ class SysUserRepository extends Repository
             'sex' => $data['sex'] ?? 0,
             'remember_token' => Str::random(10),
         ]);
+    }
+
+    /** 修改系统用户 */
+    public function update(int $id, array $data): bool
+    {
+        $validator = Validator::make($data, [
+            'username' => 'required|unique:sys_user,username',
+            'nickname' => 'required',
+            'sex' => 'in:0,1',
+            'mobile' => 'required',
+            'email' => 'required|email|unique:sys_user,email',
+            'avatar_id' => 'integer|exists:sys_file,id',
+            'dept_id' => 'required|exists:sys_dept,id',
+        ], [
+            'username.required' => '用户名不能为空',
+            'username.unique' => '用户名已存在',
+            'nickname.required' => '昵称不能为空',
+            'sex.in' => '性别格式错误',
+            'mobile.required' => '手机号不能为空',
+            'email.required' => '邮箱不能为空',
+            'email.email' => '邮箱格式错误',
+            'email.unique' => '邮箱已存在',
+            'avatar_id.integer' => '头像格式错误',
+            'avatar_id.exists' => '头像文件不存在',
+            'dept_id.exists' => '部门不存在',
+        ])->stopOnFirstFailure();
+        if ($validator->fails()) {
+            throw new RepositoryException(
+                'Validation failed: ' . $validator->errors()->first(),
+            );
+        }
+        $model = $this->model()->find($id);
+        if (empty($model)) {
+            throw new RepositoryException('Model not found');
+        }
+        return $model->update($validator->validated());
+    }
+
+    /** 删除系统用户 */
+    public function delete(int $id): bool
+    {
+        if($id == 1) {
+            throw new RepositoryException('不能删除系统用户！');
+        }
+        $user = $this->model()->find($id);
+        if (empty($user)) {
+            throw new RepositoryException('Model not found');
+        }
+        $user->roles()->detach();
+        return $user->delete();
     }
 
     /** 获取系统活跃用户总数 */

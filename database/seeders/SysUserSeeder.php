@@ -138,6 +138,7 @@ class SysUserSeeder extends Seeder
             ['id' => 95, 'parent_id' => 92, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => 'SQL 日志', 'path' => '/system/watcher/query', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.query', 'local' => 'menu.watcher.query'],
             ['id' => 96, 'parent_id' => 92, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => 'Redis 日志', 'path' => '/system/watcher/redis', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.redis', 'local' => 'menu.watcher.redis'],
             ['id' => 97, 'parent_id' => 92, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '缓存日志', 'path' => '/system/watcher/cache', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.cache', 'local' => 'menu.watcher.cache'],
+            ['id' => 98, 'parent_id' => 18, 'type' => '2', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '修改管理员状态', 'path' => '', 'icon' => '', 'key' => 'admin.list.resetStatus', 'local' => ''],
         ]);
 
         DB::table('sys_role_rule')->insertUsing(
