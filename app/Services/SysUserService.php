@@ -37,6 +37,11 @@ class SysUserService extends Service
             $data = $request->user()
                 ->createToken($credentials['username'], $access)
                 ->toArray();
+            // 记录登录 IP 与 时间
+            SysUserModel::query()->where('id', $userID)->update([
+                'login_time' => now(),
+                'login_ip' => $request->ip(),
+            ]);
             return $this->success($data, __('user.login_success'));
         }
         return $this->error(__('user.login_error'));
