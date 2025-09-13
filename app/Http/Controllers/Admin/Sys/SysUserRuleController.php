@@ -6,10 +6,12 @@ use App\Http\Controllers\BaseController;
 use App\Repositories\Sys\SysRuleRepository;
 use App\Services\SysUserRuleService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Xin\AnnoRoute\Attribute\Create;
 use Xin\AnnoRoute\Attribute\Delete;
 use Xin\AnnoRoute\Attribute\GetMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
+use Xin\AnnoRoute\Attribute\Query;
 use Xin\AnnoRoute\Attribute\RequestMapping;
 use Xin\AnnoRoute\Attribute\Update;
 
@@ -26,11 +28,11 @@ class SysUserRuleController extends BaseController
         $this->service = $service;
     }
 
-    /** 管理员权限列表 */
-    #[GetMapping(authorize: 'query')]
-    public function listData(): JsonResponse
+    /** 获取权限列表 */
+    #[GetMapping]
+    public function query(Request $request): JsonResponse
     {
-        return $this->service->list();
+        return $this->service->getList();
     }
 
     /** 获取父级权限 */

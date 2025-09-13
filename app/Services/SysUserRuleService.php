@@ -7,16 +7,20 @@ use Illuminate\Http\JsonResponse;
 
 class SysUserRuleService extends Service
 {
-    /**
-     * 获取权限树状列表
-     */
-    public function list(): JsonResponse
-    {
-        $model = new SysRuleModel;
-        $data = $model->orderBy('sort', 'asc')->get()->toArray();
-        $data = $this->getTreeData($data, 'rule_id');
+    private SysRuleModel $model;
 
-        return $this->success(compact('data'));
+    public function __construct(SysRuleModel $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * 获取权限列表
+     */
+    public function getList(): JsonResponse
+    {
+        $rules = $this->model->all();
+        return $this->success($rules->toArray());
     }
 
     /**
@@ -24,15 +28,12 @@ class SysUserRuleService extends Service
      */
     public function setShow($ruleID): JsonResponse
     {
-        $model = new SysRuleModel;
-        $data = $model->where('rule_id', $ruleID)->first();
-        if (! $data) {
+        $model = $this->model->find($ruleID);
+        if (! $model) {
             return $this->error(__('system.data_not_exist'));
         }
-        $model->where('rule_id', $ruleID)->update([
-            'show' => $data->show ? 0 : 1,
-        ]);
-
+        $model->show = $model->show ? 0 : 1;
+        $model->save();
         return $this->success();
     }
 
@@ -41,15 +42,12 @@ class SysUserRuleService extends Service
      */
     public function setStatus($ruleID): JsonResponse
     {
-        $model = new SysRuleModel;
-        $data = $model->where('rule_id', $ruleID)->first();
-        if (! $data) {
+        $model = $this->model->find($ruleID);
+        if (! $model) {
             return $this->error(__('system.data_not_exist'));
         }
-        $model->where('rule_id', $ruleID)->update([
-            'status' => $data->status ? 0 : 1,
-        ]);
-
+        $model->status = $model->status ? 0 : 1;
+        $model->save();
         return $this->success();
     }
 
@@ -58,10 +56,11 @@ class SysUserRuleService extends Service
      */
     public function getRuleParent(): JsonResponse
     {
-        $model = new SysRuleModel;
-        $data = $model->whereIn('type', [0, 1])->get(['name', 'rule_id', 'parent_id'])->toArray();
-        $data = $this->getTreeData($data, 'rule_id');
-
+        $data = $this->model
+            ->whereIn('type', [0, 1])
+            ->get(['name', 'id', 'parent_id'])
+            ->toArray();
+        $data = $this->getTreeData($data, 'id');
         return $this->success(compact('data'));
     }
 }
