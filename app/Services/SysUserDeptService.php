@@ -18,7 +18,7 @@ class SysUserDeptService extends Service
     {
         $model = new SysDeptModel();
         $data = $model->orderBy('sort', 'desc')->get()->toArray();
-        $data = $this->getTreeData($data, 'dept_id');
+        $data = $this->getTreeData($data, 'id');
 
         return $this->success(compact('data'));
     }
