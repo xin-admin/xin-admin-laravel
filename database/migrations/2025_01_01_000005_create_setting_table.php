@@ -25,6 +25,7 @@ return new class extends Migration
                 $table->integer('sort')->comment('排序');
                 $table->timestamps();
                 $table->comment('系统设置表');
+                $table->unique(['key', 'group_id']);
             });
         }
         if (! Schema::hasTable('sys_setting_group')) {
