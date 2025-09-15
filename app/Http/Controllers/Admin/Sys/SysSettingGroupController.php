@@ -29,11 +29,7 @@ class SysSettingGroupController extends BaseController
     #[DeleteMapping('/{id}', 'delete')]
     public function delete($id): JsonResponse
     {
-        $model = $this->model->find($id);
-        $count = $model->settings()->count();
-        if ($count > 0) {
-            return $this->error('请先删除该分组下的设置');
-        }
-        return $this->success($model->delete());
+        $this->repository->delete($id);
+        return $this->success('ok');
     }
 }

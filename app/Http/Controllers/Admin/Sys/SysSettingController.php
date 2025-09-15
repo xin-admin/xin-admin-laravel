@@ -28,14 +28,7 @@ class SysSettingController extends BaseController
         $this->repository = $repository;
     }
 
-    /** 通过ID获取设置列表 */
-    #[GetMapping('/query/{id}', 'query')]
-    public function get(int $id): JsonResponse
-    {
-        $data = $this->model->where('group_id', $id)->get()->toArray();
-        return $this->success($data);
-    }
-
+    /** 保存设置 */
     #[PutMapping('/save/{id}', 'save')]
     public function save(int $id): JsonResponse
     {
@@ -50,6 +43,7 @@ class SysSettingController extends BaseController
         return $this->success('保存成功');
     }
 
+    /** 刷新设置 */
     #[PostMapping('/refreshCache', 'refresh')]
     public function refreshCache(): JsonResponse
     {
