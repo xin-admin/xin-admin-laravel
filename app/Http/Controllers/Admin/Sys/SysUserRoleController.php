@@ -19,7 +19,7 @@ use Xin\AnnoRoute\Attribute\Update;
  * 角色管理控制器
  */
 #[RequestMapping('/admin/role', 'admin.role')]
-#[Find, Query, Create, Update]
+#[Query, Create, Update]
 class SysUserRoleController extends BaseController
 {
     public function __construct(SysRoleRepository $repository, SysRoleModel $model)
@@ -45,11 +45,7 @@ class SysUserRoleController extends BaseController
     #[PostMapping('/rule', 'update')]
     public function setRoleRule(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'role_id' => 'required|exists:sys_role,id',
-            'rule_ids' => 'required|array|exists:sys_rule,id',
-        ]);
-        $this->model->rules()->sync($validated['rule_ids']);
+        $this->repository->setRule($request);
         return $this->success();
     }
 }
