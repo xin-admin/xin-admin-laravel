@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'admin'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'admins'),
+        'guard' => 'sys_users',
+        'passwords' => 'sys_users',
     ],
 
     /*
@@ -36,11 +36,11 @@ return [
     */
 
     'guards' => [
-        'admin' => [
+        'sys_users' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'sys_users',
         ],
-        'user' => [
+        'users' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -64,14 +64,13 @@ return [
     */
 
     'providers' => [
-        'admins' => [
+        'sys_users' => [
             'driver' => 'eloquent',
-            'model' => \App\Common\Models\AdminUserModel::class,
+            'model' => \App\Models\Sys\SysUserModel::class
         ],
-
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Common\Models\XinUserModel::class,
+            'model' => \App\Models\UserModel::class
         ],
     ],
 
@@ -95,15 +94,17 @@ return [
     */
 
     'passwords' => [
-        'admins' => [
-            'provider' => 'admins',
-            'table' => 'admin_password_reset_tokens',
+        'sys_users' => [
+            'driver' => 'cache',
+            'provider' => 'sys_users',
+            'store' => 'sys_passwords',
             'expire' => 60,
             'throttle' => 60,
         ],
         'users' => [
+            'driver' => 'cache',
             'provider' => 'users',
-            'table' => 'xin_user_password_reset_tokens',
+            'store' => 'passwords',
             'expire' => 60,
             'throttle' => 60,
         ],

@@ -12,11 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('file')) {
-            Schema::create('file', function (Blueprint $table) {
-                $table->increments('file_id')->comment('文件ID');
+        if (! Schema::hasTable('sys_file')) {
+            Schema::create('sys_file', function (Blueprint $table) {
+                $table->increments('id')->comment('文件ID');
                 $table->integer('group_id')->comment('文件分组ID');
-                $table->integer('channel')->comment('上传来源(10商户后台 20用户端)');
+                $table->integer('channel')->comment('上传来源(10:系统用户 20:App用户端)');
                 $table->string('disk', 10)->comment('存储方式');
                 $table->integer('file_type')->comment('文件类型');
                 $table->string('file_name', 255)->comment('文件名称');
@@ -29,9 +29,9 @@ return new class extends Migration
                 $table->comment('文件表');
             });
         }
-        if (! Schema::hasTable('file_group')) {
-            Schema::create('file_group', function (Blueprint $table) {
-                $table->increments('group_id')->comment('文件分组ID');
+        if (! Schema::hasTable('sys_file_group')) {
+            Schema::create('sys_file_group', function (Blueprint $table) {
+                $table->increments('id')->comment('文件分组ID');
                 $table->string('name', 50)->comment('文件名称');
                 $table->integer('sort')->comment('分组排序');
                 $table->string('describe', 500)->comment('分组描述');
@@ -46,7 +46,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('file');
-        Schema::dropIfExists('file_group');
+        Schema::dropIfExists('sys_file');
+        Schema::dropIfExists('sys_file_group');
     }
 };

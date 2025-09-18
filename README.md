@@ -59,3 +59,7 @@ XinAdmin 拥有强大的文件系统，可拓展 AliOss 存储 支持多选、�
 - 系统设置：系统设置是对服务器可变参数快速设置的表单，可以自定义分组以及表单类型
 - 文件管理：文件上传解决方案，可拓展 AliOss 存储，后台文件管理文件夹，支持多选、文件分组等，支持图片、视频、音频、压缩文件和其它文件上传
 - 字典管理：对系统中经常使用的一些较为固定的数据进行维护
+
+## 其他
+- 接口文档：[https://api.xinadmin.cn/](https://api.xinadmin.cn/)
+- 演示站：[https://laravel.xinadmin.cn/](https://laravel.xinadmin.cn/)

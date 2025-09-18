@@ -14,11 +14,9 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "laravel/octane": "^2.0",
-        "openai-php/client": "^0.10.0",
         "predis/predis": "2.0"
     },
     "require-dev": {
-        "zircote/swagger-php": "^4.11",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
@@ -30,12 +28,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Xin\\": "extends/"
+            "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/helpers.php"
+          "app/Support/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -48,20 +44,18 @@
           "Composer\\Config::disableProcessTimeout",
           "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" --names='server,queue'"
         ],
+        "post-create-project-cmd": [
+          "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+          "@php artisan key:generate --ansi",
+          "@php artisan migrate --graceful --ansi",
+          "@php artisan db:seed --force"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
         ]
     },
     "extra": {

@@ -1,8 +1,11 @@
 <?php
 
+use App\Providers\AnnoRoute\RouteServiceProvider;
+use App\Providers\Telescope\TelescopeServiceProvider;
+
 return [
-    App\AppServiceProvider::class,
-    Xin\AnnoRoute\RouteServiceProvider::class,
-    Xin\OpenAI\OpenAIServiceProvider::class,
-    Xin\Telescope\TelescopeServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\AutoBindServiceProvider::class,
+    RouteServiceProvider::class,
+    TelescopeServiceProvider::class,
 ];

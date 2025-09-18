@@ -1,0 +1,158 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use function Laravel\Prompts\table;
+
+class SysUserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $date = date('Y-m-d H:i:s');
+        DB::table('sys_user')->insert([
+            'id' => 1,
+            'username' => 'admin',
+            'nickname' => 'admin',
+            'email' => Str::random(10).'@example.com',
+            'password' => Hash::make('123456'),
+            'dept_id' => 1,
+            'avatar_id' => 1,
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'created_at' => $date,
+            'updated_at' => $date,
+        ]);
+        DB::table('sys_role')->insert([
+            ['id' => 1, 'name' => '超级管理员', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '财务', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '电商总监', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '市场运营', 'created_at' => $date, 'updated_at' => $date],
+        ]);
+        DB::table('sys_dept')->insert([
+            ['id' => 1, 'name' => '网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+        ]);
+        DB::table('sys_rule')->insert([
+            ['id' => 1 , 'parent_id' => 0 , 'type' => '0', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '仪表盘', 'path' => '/dashboard', 'icon' => 'PieChartOutlined', 'key' => 'dashboard', 'local' => 'menu.dashboard'],
+            ['id' => 2 , 'parent_id' => 1 , 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '分析页', 'path' => '/dashboard/analysis', 'icon' => 'StockOutlined', 'key' => 'dashboard.analysis', 'local' => 'menu.dashboard.analysis'],
+            ['id' => 3 , 'parent_id' => 1 , 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '监控页', 'path' => '/dashboard/monitor', 'icon' => 'BarChartOutlined', 'key' => 'dashboard.monitor', 'local' => 'menu.dashboard.monitor'],
+            ['id' => 4 , 'parent_id' => 1 , 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '工作台', 'path' => '/dashboard/workplace', 'icon' => 'RadarChartOutlined', 'key' => 'dashboard.workplace', 'local' => 'menu.dashboard.workplace'],
+            ['id' => 5 , 'parent_id' => 0 , 'type' => '0', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '示例组件', 'path' => '/data', 'icon' => 'GoldOutlined', 'key' => 'data', 'local' => 'menu.components'],
+            ['id' => 6 , 'parent_id' => 5 , 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '单选卡片', 'path' => '/data/checkcard', 'icon' => 'CreditCardOutlined', 'key' => 'data.checkcard', 'local' => 'menu.components.checkcard'],
+            ['id' => 7 , 'parent_id' => 5 , 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '定义列表', 'path' => '/data/descriptions', 'icon' => 'BarsOutlined', 'key' => 'data.descriptions', 'local' => 'menu.components.descriptions'],
+            ['id' => 8 , 'parent_id' => 5 , 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '高级表单', 'path' => '/data/form', 'icon' => 'BarsOutlined', 'key' => 'data.form', 'local' => 'menu.components.form'],
+            ['id' => 9 , 'parent_id' => 5 , 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '图标选择', 'path' => '/data/icon', 'icon' => 'SmileOutlined', 'key' => 'data.icon', 'local' => 'menu.components.iconForm'],
+            ['id' => 10, 'parent_id' => 5 , 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '高级列表', 'path' => '/data/list', 'icon' => 'ProfileOutlined', 'key' => 'data.list', 'local' => 'menu.components.list'],
+            ['id' => 11, 'parent_id' => 5 , 'type' => '1', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '高级表格', 'path' => '/data/table', 'icon' => 'ProfileOutlined', 'key' => 'data.table', 'local' => 'menu.components.table'],
+            ['id' => 12, 'parent_id' => 0 , 'type' => '0', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员管理', 'path' => '/user', 'icon' => 'UserOutlined', 'key' => 'user', 'local' => 'menu.user'],
+            ['id' => 13, 'parent_id' => 12, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员列表', 'path' => '/user/list', 'icon' => 'TeamOutlined', 'key' => 'user.list', 'local' => 'menu.user.list'],
+            ['id' => 14, 'parent_id' => 13, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员列表查询', 'path' => '', 'icon' => '', 'key' => 'user.list.query', 'local' => ''],
+            ['id' => 15, 'parent_id' => 13, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员列表编辑', 'path' => '', 'icon' => '', 'key' => 'user.list.update', 'local' => ''],
+            ['id' => 16, 'parent_id' => 13, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '会员重置密码', 'path' => '', 'icon' => '', 'key' => 'user.list.resetPassword', 'local' => ''],
+            ['id' => 17, 'parent_id' => 0 , 'type' => '0', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '管理员', 'path' => '/admin', 'icon' => 'SafetyCertificateOutlined', 'key' => 'admin', 'local' => 'menu.admin'],
+            ['id' => 18, 'parent_id' => 17, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表', 'path' => '/admin/list', 'icon' => 'TeamOutlined', 'key' => 'admin.list', 'local' => 'menu.admin.list'],
+            ['id' => 19, 'parent_id' => 18, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表查询', 'path' => '', 'icon' => '', 'key' => 'admin.list.query', 'local' => ''],
+            ['id' => 20, 'parent_id' => 18, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表新增', 'path' => '', 'icon' => '', 'key' => 'admin.list.create', 'local' => ''],
+            ['id' => 21, 'parent_id' => 18, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表编辑', 'path' => '', 'icon' => '', 'key' => 'admin.list.update', 'local' => ''],
+            ['id' => 22, 'parent_id' => 18, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户列表删除', 'path' => '', 'icon' => '', 'key' => 'admin.list.delete', 'local' => ''],
+            ['id' => 23, 'parent_id' => 18, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '重置用户密码', 'path' => '', 'icon' => '', 'key' => 'admin.list.resetPassword', 'local' => ''],
+            ['id' => 24, 'parent_id' => 17, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理', 'path' => '/admin/role', 'icon' => 'DeploymentUnitOutlined', 'key' => 'admin.role', 'local' => 'menu.admin.role'],
+            ['id' => 25, 'parent_id' => 24, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理查询', 'path' => '', 'icon' => '', 'key' => 'admin.role.query', 'local' => ''],
+            ['id' => 26, 'parent_id' => 24, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理详情', 'path' => '', 'icon' => '', 'key' => 'admin.role.find', 'local' => ''],
+            ['id' => 27, 'parent_id' => 24, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理新增', 'path' => '', 'icon' => '', 'key' => 'admin.role.create', 'local' => ''],
+            ['id' => 28, 'parent_id' => 24, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理编辑', 'path' => '', 'icon' => '', 'key' => 'admin.role.update', 'local' => ''],
+            ['id' => 29, 'parent_id' => 24, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '角色管理删除', 'path' => '', 'icon' => '', 'key' => 'admin.role.delete', 'local' => ''],
+            ['id' => 30, 'parent_id' => 17, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '部门管理', 'path' => '/admin/dept', 'icon' => 'ClusterOutlined', 'key' => 'admin.dept', 'local' => 'menu.admin.dept'],
+            ['id' => 31, 'parent_id' => 30, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '部门管理查询', 'path' => '', 'icon' => '', 'key' => 'admin.dept.query', 'local' => ''],
+            ['id' => 32, 'parent_id' => 30, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '部门管理新增', 'path' => '', 'icon' => '', 'key' => 'admin.dept.create', 'local' => ''],
+            ['id' => 33, 'parent_id' => 30, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '部门管理编辑', 'path' => '', 'icon' => '', 'key' => 'admin.dept.update', 'local' => ''],
+            ['id' => 34, 'parent_id' => 30, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '部门管理删除', 'path' => '', 'icon' => '', 'key' => 'admin.dept.delete', 'local' => ''],
+            ['id' => 35, 'parent_id' => 17, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '权限管理', 'path' => '/admin/rule', 'icon' => 'IdcardOutlined', 'key' => 'admin.rule', 'local' => 'menu.admin.rule'],
+            ['id' => 36, 'parent_id' => 35, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '权限管理查询', 'path' => '', 'icon' => '', 'key' => 'admin.rule.query', 'local' => ''],
+            ['id' => 37, 'parent_id' => 35, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '权限管理新增', 'path' => '', 'icon' => '', 'key' => 'admin.rule.create', 'local' => ''],
+            ['id' => 38, 'parent_id' => 35, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '权限管理编辑', 'path' => '', 'icon' => '', 'key' => 'admin.rule.update', 'local' => ''],
+            ['id' => 39, 'parent_id' => 35, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '权限管理删除', 'path' => '', 'icon' => '', 'key' => 'admin.rule.delete', 'local' => ''],
+            ['id' => 40, 'parent_id' => 0 , 'type' => '0', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统管理', 'path' => '/system', 'icon' => 'SettingOutlined', 'key' => 'system', 'local' => 'menu.system'],
+            ['id' => 41, 'parent_id' => 40, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典管理', 'path' => '/system/dict', 'icon' => 'SortAscendingOutlined', 'key' => 'system.dict', 'local' => 'menu.system.dict'],
+            ['id' => 42, 'parent_id' => 41, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典管理查询', 'path' => '', 'icon' => '', 'key' => 'system.dict.query', 'local' => ''],
+            ['id' => 43, 'parent_id' => 41, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典管理新增', 'path' => '', 'icon' => '', 'key' => 'system.dict.create', 'local' => ''],
+            ['id' => 44, 'parent_id' => 41, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典管理编辑', 'path' => '', 'icon' => '', 'key' => 'system.dict.update', 'local' => ''],
+            ['id' => 45, 'parent_id' => 41, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典管理删除', 'path' => '', 'icon' => '', 'key' => 'system.dict.delete', 'local' => ''],
+            ['id' => 46, 'parent_id' => 41, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典项查询', 'path' => '', 'icon' => '', 'key' => 'system.dict.item.query', 'local' => ''],
+            ['id' => 47, 'parent_id' => 41, 'type' => '2', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典项新增', 'path' => '', 'icon' => '', 'key' => 'system.dict.item.create', 'local' => ''],
+            ['id' => 48, 'parent_id' => 41, 'type' => '2', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典项编辑', 'path' => '', 'icon' => '', 'key' => 'system.dict.item.update', 'local' => ''],
+            ['id' => 49, 'parent_id' => 41, 'type' => '2', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => '字典项删除', 'path' => '', 'icon' => '', 'key' => 'system.dict.item.delete', 'local' => ''],
+            ['id' => 50, 'parent_id' => 40, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统详情', 'path' => '/system/info', 'icon' => 'InfoCircleOutlined', 'key' => 'system.info', 'local' => 'menu.system.info'],
+            ['id' => 51, 'parent_id' => 40, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置', 'path' => '/system/setting', 'icon' => 'ToolOutlined', 'key' => 'system.setting', 'local' => 'menu.system.setting'],
+            ['id' => 52, 'parent_id' => 51, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置查询', 'path' => '', 'icon' => '', 'key' => 'system.setting.query', 'local' => ''],
+            ['id' => 53, 'parent_id' => 51, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置新增', 'path' => '', 'icon' => '', 'key' => 'system.setting.create', 'local' => ''],
+            ['id' => 54, 'parent_id' => 51, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置编辑', 'path' => '', 'icon' => '', 'key' => 'system.setting.update', 'local' => ''],
+            ['id' => 55, 'parent_id' => 51, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置删除', 'path' => '', 'icon' => '', 'key' => 'system.setting.delete', 'local' => ''],
+            ['id' => 56, 'parent_id' => 51, 'type' => '2', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置分组查询', 'path' => '', 'icon' => '', 'key' => 'system.setting.group.query', 'local' => ''],
+            ['id' => 57, 'parent_id' => 51, 'type' => '2', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置分组新增', 'path' => '', 'icon' => '', 'key' => 'system.setting.group.create', 'local' => ''],
+            ['id' => 58, 'parent_id' => 51, 'type' => '2', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置分组编辑', 'path' => '', 'icon' => '', 'key' => 'system.setting.group.update', 'local' => ''],
+            ['id' => 59, 'parent_id' => 51, 'type' => '2', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置分组删除', 'path' => '', 'icon' => '', 'key' => 'system.setting.group.delete', 'local' => ''],
+            ['id' => 60, 'parent_id' => 0 , 'type' => '0', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件管理', 'path' => '/file', 'icon' => 'FolderOutlined', 'key' => 'file', 'local' => 'menu.file'],
+            ['id' => 61, 'parent_id' => 60, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件列表', 'path' => '/file/list', 'icon' => 'FileSearchOutlined', 'key' => 'file.list', 'local' => 'menu.file.list'],
+            ['id' => 62, 'parent_id' => 61, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件列表查询', 'path' => '', 'icon' => '', 'key' => 'file.list.query', 'local' => ''],
+            ['id' => 63, 'parent_id' => 61, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件列表删除', 'path' => '', 'icon' => '', 'key' => 'file.list.delete', 'local' => ''],
+            ['id' => 64, 'parent_id' => 61, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件列表编辑', 'path' => '', 'icon' => '', 'key' => 'file.list.update', 'local' => ''],
+            ['id' => 65, 'parent_id' => 61, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件列表下载', 'path' => '', 'icon' => '', 'key' => 'file.list.download', 'local' => ''],
+            ['id' => 66, 'parent_id' => 60, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组', 'path' => '/file/group', 'icon' => 'FolderOpenOutlined', 'key' => 'file.group', 'local' => 'menu.file.group'],
+            ['id' => 67, 'parent_id' => 66, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组查询', 'path' => '', 'icon' => '', 'key' => 'file.group.query', 'local' => ''],
+            ['id' => 68, 'parent_id' => 66, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组新增', 'path' => '', 'icon' => '', 'key' => 'file.group.create', 'local' => ''],
+            ['id' => 69, 'parent_id' => 66, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组编辑', 'path' => '', 'icon' => '', 'key' => 'file.group.update', 'local' => ''],
+            ['id' => 70, 'parent_id' => 66, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '文件分组删除', 'path' => '', 'icon' => '', 'key' => 'file.group.delete', 'local' => ''],
+            ['id' => 71, 'parent_id' => 17, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '用户设置', 'path' => '/admin/setting', 'icon' => 'UserOutlined', 'key' => 'admin.setting', 'local' => 'menu.personal'],
+            ['id' => 72, 'parent_id' => 0 , 'type' => '0', 'sort' => 7, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 助理', 'path' => '/ai', 'icon' => 'OpenAIFilled', 'key' => 'ai', 'local' => 'menu.ai'],
+            ['id' => 73, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '添加用户会话', 'path' => '', 'icon' => '', 'key' => 'ai.create', 'local' => ''],
+            ['id' => 74, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取会话列表', 'path' => '', 'icon' => '', 'key' => 'ai.query', 'local' => ''],
+            ['id' => 75, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '获取对话详情', 'path' => '', 'icon' => '', 'key' => 'ai.query.uuid', 'local' => ''],
+            ['id' => 76, 'parent_id' => 72, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '发送AI消息', 'path' => '', 'icon' => '', 'key' => 'ai.send', 'local' => ''],
+            ['id' => 77, 'parent_id' => 40, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => 'AI 会话记录', 'path' => '/system/conversation', 'icon' => 'OpenAIFilled', 'key' => 'system.conversation', 'local' => 'menu.system.conversation'],
+            ['id' => 78, 'parent_id' => 77, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '会话记录查询', 'path' => '', 'icon' => '', 'key' => 'system.conversation.group.query', 'local' => ''],
+            ['id' => 79, 'parent_id' => 77, 'type' => '2', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '会话记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.group.delete', 'local' => ''],
+            ['id' => 80, 'parent_id' => 77, 'type' => '2', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录查询', 'path' => '', 'icon' => '', 'key' => 'system.conversation.query', 'local' => ''],
+            ['id' => 81, 'parent_id' => 77, 'type' => '2', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => '消息记录删除', 'path' => '', 'icon' => '', 'key' => 'system.conversation.delete', 'local' => ''],
+            ['id' => 82, 'parent_id' => 0 , 'type' => '0', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '示例菜单', 'path' => '/menu', 'icon' => 'BarsOutlined', 'key' => 'menu', 'local' => 'menu.example'],
+            ['id' => 83, 'parent_id' => 82, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '二级子菜单', 'path' => '/menu/one', 'icon' => 'BarsOutlined', 'key' => 'menu.one', 'local' => 'menu.example.one'],
+            ['id' => 84, 'parent_id' => 83, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子菜单', 'path' => '/menu/two', 'icon' => 'BarsOutlined', 'key' => 'menu.two', 'local' => 'menu.example.two'],
+            ['id' => 85, 'parent_id' => 84, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '四级子路由', 'path' => '/menu/three', 'icon' => 'BarsOutlined', 'key' => 'menu.three', 'local' => 'menu.example.three'],
+            ['id' => 86, 'parent_id' => 82, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '二级子路由', 'path' => '/menu/child', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child', 'local' => 'menu.example.child'],
+            ['id' => 87, 'parent_id' => 83, 'type' => '1', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date, 'name' => '三级子路由', 'path' => '/menu/child2', 'icon' => 'AppstoreOutlined', 'key' => 'menu.child2', 'local' => 'menu.example.child2'],
+            ['id' => 88, 'parent_id' => 40, 'type' => '1', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志', 'path' => '/system/loginlog', 'icon' => 'FieldTimeOutlined', 'key' => 'system.loginlog', 'local' => 'menu.system.loginlog'],
+            ['id' => 89, 'parent_id' => 88, 'type' => '2', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '登录日志查询', 'path' => '', 'icon' => '', 'key' => 'admin.loginlog.query', 'local' => ''],
+            ['id' => 90, 'parent_id' => 51, 'type' => '2', 'sort' => 8, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统设置刷新缓存', 'path' => '', 'icon' => '', 'key' => 'system.setting.refresh', 'local' => ''],
+            ['id' => 91, 'parent_id' => 51, 'type' => '2', 'sort' => 9, 'created_at' => $date, 'updated_at' => $date, 'name' => '保存设置', 'path' => '', 'icon' => '', 'key' => 'system.setting.save', 'local' => ''],
+            ['id' => 92, 'parent_id' => 0 , 'type' => '0', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date, 'name' => '系统监控', 'path' => '/watcher', 'icon' => 'FolderOutlined', 'key' => 'watcher', 'local' => 'menu.watcher'],
+            ['id' => 93, 'parent_id' => 92, 'type' => '1', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date, 'name' => '请求日志', 'path' => '/system/watcher/request', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.request', 'local' => 'menu.watcher.request'],
+            ['id' => 95, 'parent_id' => 92, 'type' => '1', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date, 'name' => 'SQL 日志', 'path' => '/system/watcher/query', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.query', 'local' => 'menu.watcher.query'],
+            ['id' => 96, 'parent_id' => 92, 'type' => '1', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date, 'name' => 'Redis 日志', 'path' => '/system/watcher/redis', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.redis', 'local' => 'menu.watcher.redis'],
+            ['id' => 97, 'parent_id' => 92, 'type' => '1', 'sort' => 4, 'created_at' => $date, 'updated_at' => $date, 'name' => '缓存日志', 'path' => '/system/watcher/cache', 'icon' => 'FolderOutlined', 'key' => 'system.watcher.cache', 'local' => 'menu.watcher.cache'],
+            ['id' => 98, 'parent_id' => 18, 'type' => '2', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date, 'name' => '修改管理员状态', 'path' => '', 'icon' => '', 'key' => 'admin.list.resetStatus', 'local' => ''],
+        ]);
+
+        DB::table('sys_role_rule')->insertUsing(
+            ['role_id', 'rule_id'],
+            DB::table('sys_rule')
+                ->where('status', 1)
+                ->select(DB::raw('1 as role_id'), 'id')
+        );
+
+        DB::table('sys_user_role')->insert([
+            'user_id' => 1,
+            'role_id' => 1,
+            'created_at' => $date,
+            'updated_at' => $date
+        ]);
+    }
+}

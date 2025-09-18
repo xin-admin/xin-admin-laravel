@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('setting')) {
-            Schema::create('setting', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_setting')) {
+            Schema::create('sys_setting', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('key', 50)->comment('设置项标示');
                 $table->string('title', 50)->comment('设置标题');
@@ -24,15 +24,18 @@ return new class extends Migration
                 $table->integer('group_id')->comment('分组ID');
                 $table->integer('sort')->comment('排序');
                 $table->timestamps();
+                $table->comment('系统设置表');
+                $table->unique(['key', 'group_id']);
             });
         }
-        if (! Schema::hasTable('setting_group')) {
-            Schema::create('setting_group', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_setting_group')) {
+            Schema::create('sys_setting_group', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('title', 50)->comment('分组标题');
                 $table->string('key', 50)->comment('分组KEY');
                 $table->string('remark', 255)->nullable()->comment('备注描述');
                 $table->timestamps();
+                $table->comment('设置分组表');
             });
         }
     }
@@ -42,7 +45,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('setting');
-        Schema::dropIfExists('setting_group');
+        Schema::dropIfExists('sys_setting');
+        Schema::dropIfExists('sys_setting_group');
     }
 };
