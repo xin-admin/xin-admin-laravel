@@ -125,10 +125,11 @@ class AnnoRoute
         $middleware = [];
 
         if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
+            $middleware[] = 'auth:sanctum';
             if(! empty($this->authGuard) ) {
-                $middleware[] = 'auth:sanctum:' . $this->authGuard;
+                $middleware[] = 'authGuard:' . $this->authGuard;
             } else {
-                $middleware[] = 'auth:sanctum';
+                $middleware[] = 'authGuard';
             }
             if (!empty($this->abilitiesPrefix) && !empty($authorize)) {
                 $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
@@ -136,7 +137,6 @@ class AnnoRoute
         }
 
         $middleware = array_merge($middleware, $this->registerMiddleware($instance->middleware), $this->middleware);
-
         Route::{Str::lower($instance->httpMethod)}(
             $this->routePrefix . $instance->route,
             [$this->className, $method]

@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Middleware\AllowCrossDomain;
+use App\Http\Middleware\AllowCrossDomainMiddleware;
+use App\Http\Middleware\AuthGuardMiddleware;
 use App\Http\Middleware\LoginLogMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,11 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         // 全局跨域中间件
-        $middleware->append(AllowCrossDomain::class);
+        $middleware->append(AllowCrossDomainMiddleware::class);
         $middleware->alias([
             'login_log' => LoginLogMiddleware::class,
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
+            'authGuard' => AuthGuardMiddleware::class,
         ]);
         // 未登录响应
         $middleware->redirectGuestsTo(function (Request $request) {

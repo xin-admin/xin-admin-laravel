@@ -69,8 +69,8 @@ return [
             'model' => \App\Models\Sys\SysUserModel::class
         ],
         'users' => [
-            'driver' => 'database',
-            'table' => 'user',
+            'driver' => 'eloquent',
+            'model' => \App\Models\UserModel::class
         ],
     ],
 
