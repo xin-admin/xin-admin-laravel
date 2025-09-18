@@ -31,7 +31,7 @@ class SysUserService extends Service
             'password' => 'required|min:4|alphaDash',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, true)) {
             $userID = auth()->id();
             $access = $this->repository->ruleKeys($userID);
             $data = $request->user()
