@@ -13,7 +13,6 @@ class UserRegisterRequest extends FormRequest
             'password' => 'required|min:4|alphaDash',
             'rePassword' => 'required|min:4|same:password',
             'email' => 'required|email',
-            'mobile' => 'required',
         ];
     }
 }

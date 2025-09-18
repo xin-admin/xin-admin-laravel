@@ -12,7 +12,7 @@ use Xin\AnnoRoute\Attribute\PostMapping;
 use Xin\AnnoRoute\Attribute\PutMapping;
 use Xin\AnnoRoute\Attribute\RequestMapping;
 
-#[RequestMapping('/api/user')]
+#[RequestMapping('/api/user', authGuard: 'users')]
 class UserController extends BaseController
 {
     protected array $noPermission = ['refreshToken'];
@@ -20,15 +20,14 @@ class UserController extends BaseController
     #[GetMapping]
     public function getUserInfo(): JsonResponse
     {
-        $info = auth('user')->user();
-
+        $info = auth()->user();
         return $this->success(compact('info'));
     }
 
     #[PostMapping('/logout')]
     public function logout(): JsonResponse
     {
-        $user_id = auth('user')->id();
+        $user_id = auth('users')->id();
         $model = new UserModel;
         if ($model->logout($user_id)) {
             return $this->success('退出登录成功');
