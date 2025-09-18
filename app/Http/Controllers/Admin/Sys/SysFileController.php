@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\Delete;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\Query;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysFileRepository;
 use App\Services\SysFileService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Xin\AnnoRoute\Attribute\Delete;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 文件列表

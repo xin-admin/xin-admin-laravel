@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\PostMapping;
+use App\Providers\AnnoRoute\Attribute\PutMapping;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Repositories\Sys\SysLoginRecordRepository;
 use App\Repositories\Sys\SysUserRepository;
 use App\Services\SysFileService;
@@ -11,10 +15,6 @@ use App\Support\Enum\FileType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
-use Xin\AnnoRoute\Attribute\RequestMapping;
 
 /**
  * 管理员用户控制器

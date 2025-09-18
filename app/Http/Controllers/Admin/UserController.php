@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\PutMapping;
+use App\Providers\AnnoRoute\Attribute\Query;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\PutMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 前台用户列表

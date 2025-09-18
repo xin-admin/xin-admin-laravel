@@ -64,21 +64,21 @@ return [
 
     'watchers' => [
 
-        Watchers\CacheWatcher::class => [
+        \App\Providers\Telescope\Watchers\CacheWatcher::class => [
             'enabled' => env('TELESCOPE_CACHE_WATCHER', true),
             'hidden' => [],
         ],
 
-        Watchers\QueryWatcher::class => [
+        \App\Providers\Telescope\Watchers\QueryWatcher::class => [
             'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
             'ignore_packages' => true,
             'ignore_paths' => [],
             'slow' => 100,
         ],
 
-        Watchers\RedisWatcher::class => env('TELESCOPE_REDIS_WATCHER', true),
+        \App\Providers\Telescope\Watchers\RedisWatcher::class => env('TELESCOPE_REDIS_WATCHER', true),
 
-        Watchers\RequestWatcher::class => [
+        \App\Providers\Telescope\Watchers\RequestWatcher::class => [
             'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
             'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 10),
             'ignore_http_methods' => [

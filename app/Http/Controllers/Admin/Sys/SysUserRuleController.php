@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\Delete;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\PutMapping;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysRuleRepository;
 use App\Services\SysUserRuleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\Create;
-use Xin\AnnoRoute\Attribute\Delete;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PutMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 管理员权限控制器

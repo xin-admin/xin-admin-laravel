@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\Delete;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysDeptRepository;
 use App\Services\SysUserDeptService;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Create;
-use Xin\AnnoRoute\Attribute\Delete;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 部门管理控制器

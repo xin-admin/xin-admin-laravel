@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysRoleModel;
+use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\DeleteMapping;
+use App\Providers\AnnoRoute\Attribute\PostMapping;
+use App\Providers\AnnoRoute\Attribute\Query;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysRoleRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\Create;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\Find;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 角色管理控制器

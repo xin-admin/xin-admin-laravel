@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysDictModel;
+use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\DeleteMapping;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\Query;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysDictRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use Xin\AnnoRoute\Attribute\Create;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 字典管理

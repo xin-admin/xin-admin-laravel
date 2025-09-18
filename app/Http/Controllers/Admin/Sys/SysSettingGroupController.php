@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysSettingGroupModel;
+use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\DeleteMapping;
+use App\Providers\AnnoRoute\Attribute\Query;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\Sys\SysSettingGroupRepository;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Attribute\Create;
-use Xin\AnnoRoute\Attribute\DeleteMapping;
-use Xin\AnnoRoute\Attribute\Query;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\AnnoRoute\Attribute\Update;
 
 /**
  * 设置分组控制器

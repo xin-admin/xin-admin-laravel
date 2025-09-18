@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin\Sys;
 
 use App\Http\Controllers\BaseController;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\Telescope\Contracts\EntriesRepository;
+use App\Providers\Telescope\Storage\EntryQueryOptions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\RequestMapping;
-use Xin\Telescope\Contracts\EntriesRepository;
-use Xin\Telescope\Storage\EntryQueryOptions;
 
 #[RequestMapping('/system/watcher', 'system.watcher')]
 class SysWatcherController extends BaseController

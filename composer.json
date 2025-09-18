@@ -14,11 +14,9 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "laravel/octane": "^2.0",
-        "openai-php/client": "^0.10.0",
         "predis/predis": "2.0"
     },
     "require-dev": {
-        "zircote/swagger-php": "^4.11",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
@@ -30,9 +28,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Xin\\": "extends/"
+            "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
           "app/Support/helpers.php"

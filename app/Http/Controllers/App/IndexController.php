@@ -5,12 +5,12 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\App\UserRegisterRequest;
 use App\Models\UserModel;
+use App\Providers\AnnoRoute\Attribute\GetMapping;
+use App\Providers\AnnoRoute\Attribute\PostMapping;
+use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Xin\AnnoRoute\Attribute\GetMapping;
-use Xin\AnnoRoute\Attribute\PostMapping;
-use Xin\AnnoRoute\Attribute\RequestMapping;
 
 #[RequestMapping('/api', authGuard: 'users')]
 class IndexController extends BaseController
