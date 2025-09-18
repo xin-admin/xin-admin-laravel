@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AllowCrossDomain
+class AllowCrossDomainMiddleware
 {
     /**
      * Handle an incoming request.
