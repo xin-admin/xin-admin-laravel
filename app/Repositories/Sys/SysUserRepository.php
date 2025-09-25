@@ -163,19 +163,20 @@ class SysUserRepository extends Repository
     }
 
     /**
-     * 获取用户所有的权限
+     * 获取用户所有的菜单权限
      * @param $id
      * @return array
      */
-    public function rules($id): array
+    public function menus($id): array
     {
         $roles = $this->model()->with(['roles.rules' => function ($query) {
-            $query->where('status', 1);
+            $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
         }])->find($id)->roles->toArray();
 
         return collect($roles)
-            ->map(fn ($item) => $item['rules'] )
+            ->map(fn ($item) => $item['rules'])
             ->collapse()
+            ->map(fn ($item) => collect($item)->forget(['pivot', 'updated_at', 'created_at', 'status']) )
             ->unique('id')
             ->toArray();
     }

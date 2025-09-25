@@ -49,7 +49,11 @@ class SysUserController extends BaseController
     #[GetMapping('/info')]
     public function info(): JsonResponse
     {
-        return $this->service->getAdminInfo();
+        $info = auth()->user();
+        $id = auth()->id();
+        $access = $this->repository->ruleKeys($id);
+        $menus = $this->service->getAdminMenus($id);
+        return $this->success(compact('access', 'menus', 'info'));
     }
 
     /** 更新管理员信息 */

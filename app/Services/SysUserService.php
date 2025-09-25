@@ -49,16 +49,33 @@ class SysUserService extends Service
 
     /**
      * 获取管理员信息
-     * @return JsonResponse
+     * @param int $userID
+     * @return array
      */
-    public function getAdminInfo(): JsonResponse
+    public function getAdminMenus(int $userID): array
     {
-        $info = auth()->user();
-        $userID = auth()->id();
-        $access = $this->repository->ruleKeys($userID);
-        $menus = $this->repository->rules($userID);
-        $menus = $this->getTreeData($menus, 'id');
-        return $this->success(compact('info', 'menus', 'access'));
+        $menus = $this->repository->menus($userID);
+        return $this->getMenuTree($menus);
+    }
+
+    /**
+     * 构建树
+     * @param array $list
+     * @param int $pid
+     * @return array
+     */
+    protected function getMenuTree(array &$list, int $pid = 0): array
+    {
+        $data = [];
+        foreach ($list as $k => $item) {
+            if ($item['pid'] == $pid) {
+                $children = $this->getMenuTree($list, $item['id']);
+                ! empty($children) && $item['children'] = $children;
+                $data[] = $item;
+                unset($list[$k]);
+            }
+        }
+        return $data;
     }
 
     /**

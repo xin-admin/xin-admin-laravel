@@ -20,7 +20,6 @@ class SysUserModel extends User
 
     protected $table = 'sys_user';
     protected $primaryKey = 'id';
-
     protected $fillable = [
         'username',
         'password',
@@ -49,6 +48,7 @@ class SysUserModel extends User
     protected $hidden = [
         'password',
         'remember_token',
+        'deleted_at'
     ];
 
     /**
