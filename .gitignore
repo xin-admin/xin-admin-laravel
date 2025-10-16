@@ -22,16 +22,3 @@ yarn-error.log
 /.vscode
 /.zed
 /composer.lock
-
-/web/node_modules
-/web/.env.local
-/web/.umirc.local.ts
-/web/config/config.local.ts
-/web/src/.umi
-/web/src/.umi-production
-/web/src/.umi-test
-/web/dist
-/web/.mfsu
-/web/.swc
-/web/.idea
-/web/pnpm-lock.yaml

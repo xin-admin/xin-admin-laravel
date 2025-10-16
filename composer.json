@@ -13,7 +13,6 @@
         "laravel/framework": "^v12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
-        "laravel/octane": "^2.0",
         "predis/predis": "2.0"
     },
     "require-dev": {
