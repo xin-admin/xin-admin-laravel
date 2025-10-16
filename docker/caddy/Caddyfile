@@ -1,0 +1,22 @@
+{
+    frankenphp {
+
+	}
+}
+
+localhost {
+    root * /app/public
+
+    # 压缩设置
+    encode zstd br gzip
+
+    handle {
+        try_files {path} /index.php
+    }
+
+	php_server {
+		root /app/public
+		worker /app/public/index.php 4
+	}
+
+}
