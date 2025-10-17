@@ -156,12 +156,14 @@ class SysUserService extends Service
         $data = $request->validate([
             'nickname' => 'required',
             'sex' => 'required|in:0,1',
+            'bio' => 'sometimes|max:255',
             'mobile' => 'required',
             'email' => 'required|email|unique:sys_user,email',
         ], [
             'nickname.required' => '昵称不能为空',
             'sex.required' => '性别不能为空',
             'sex.in' => '性别格式错误',
+            'bio.max' => '个人简介最大不能超过255个字符',
             'mobile.required' => '手机号不能为空',
             'email.required' => '邮箱不能为空',
             'email.email' => '邮箱格式错误'

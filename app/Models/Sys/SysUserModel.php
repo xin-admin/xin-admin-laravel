@@ -25,6 +25,7 @@ class SysUserModel extends User
         'password',
         'nickname',
         'avatar_id',
+        'bio',
         'sex',
         'mobile',
         'email',
