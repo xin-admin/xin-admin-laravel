@@ -17,13 +17,13 @@ class LoginLogMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 获取用户名（假设用户名通过请求体传递）
-        $userAgent = $request->userAgent();
-        // 继续处理请求
-        $response = $next($request);
-        $user_id = auth()->id();
-        $username = auth()->user()['username'];
         try {
+            // 获取用户名（假设用户名通过请求体传递）
+            $userAgent = $request->userAgent();
+            // 继续处理请求
+            $response = $next($request);
+            $user_id = auth()->id();
+            $username = auth()->user()['username'];
             // 获取响应状态和消息
             $content = json_decode($response->getContent(), true); // 响应内容
             $message = $content['msg'] ?? 'No message'; // 从响应中提取消息
