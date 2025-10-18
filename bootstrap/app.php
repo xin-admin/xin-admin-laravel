@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AllowCrossDomainMiddleware;
 use App\Http\Middleware\AuthGuardMiddleware;
+use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Middleware\LoginLogMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // 全局跨域中间件
         $middleware->append(AllowCrossDomainMiddleware::class);
+        $middleware->append(LanguageMiddleware::class);
         $middleware->alias([
             'login_log' => LoginLogMiddleware::class,
             'abilities' => CheckAbilities::class,
