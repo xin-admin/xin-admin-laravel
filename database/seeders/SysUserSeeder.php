@@ -380,6 +380,14 @@ class SysUserSeeder extends Seeder
                                 'key' => 'user.setting.verification',
                                 'path' => '/user/setting/verification',
                                 'elementPath' => '/user/setting/verification',
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'nested-route',
+                                'name' => '登录日志',
+                                'key' => 'user.setting.loginlog',
+                                'path' => '/user/setting/loginlog',
+                                'elementPath' => '/user/setting/loginlog',
                             ]
                         ]
                     ]
