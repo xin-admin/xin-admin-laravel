@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->string('username', 20)->unique()->comment('用户名');
                 $table->string('password', 100)->comment('密码');
                 $table->string('nickname', 20)->default('')->comment('昵称');
-                $table->integer('avatar_id')->default(1)->comment('头像');
+                $table->integer('avatar_id')->nullable()->comment('头像');
                 $table->integer('sex')->default(0)->comment('性别（男、女）');
                 $table->string('bio', 255)->default('')->comment('个人简介');
                 $table->string('mobile', 20)->default('')->comment('手机号');

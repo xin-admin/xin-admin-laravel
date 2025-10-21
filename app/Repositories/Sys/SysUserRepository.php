@@ -21,7 +21,6 @@ class SysUserRepository extends Repository
         'sex' => 'in:0,1',
         'mobile' => 'required',
         'email' => 'required|email|unique:sys_user,email',
-        'avatar_id' => 'integer|exists:sys_file,id',
         'dept_id' => 'required|exists:sys_dept,id',
         'status' => 'in:1,0',
         'password' => 'required|min:6',
@@ -37,8 +36,6 @@ class SysUserRepository extends Repository
         'email.required' => '邮箱不能为空',
         'email.email' => '邮箱格式错误',
         'email.unique' => '邮箱已存在',
-        'avatar_id.integer' => '头像格式错误',
-        'avatar_id.in' => '头像文件不存在',
         'dept_id.exists' => '部门不存在',
         'status.required' => '状态不能为空',
         'status.in' => '状态格式错误',
@@ -77,7 +74,6 @@ class SysUserRepository extends Repository
             'password' => Hash::make($data['password']),
             'status' => $data['status'] ?? 1,
             'dept_id' => $data['dept_id'] ?? null,
-            'avatar_id' => $data['avatar_id'] ?? null,
             'sex' => $data['sex'] ?? 0,
             'remember_token' => Str::random(10),
         ]);
@@ -92,7 +88,6 @@ class SysUserRepository extends Repository
             'sex' => 'in:0,1',
             'mobile' => 'required',
             'email' => 'required|email|unique:sys_user,email',
-            'avatar_id' => 'integer|exists:sys_file,id',
             'dept_id' => 'required|exists:sys_dept,id',
         ], [
             'username.required' => '用户名不能为空',
@@ -103,8 +98,6 @@ class SysUserRepository extends Repository
             'email.required' => '邮箱不能为空',
             'email.email' => '邮箱格式错误',
             'email.unique' => '邮箱已存在',
-            'avatar_id.integer' => '头像格式错误',
-            'avatar_id.exists' => '头像文件不存在',
             'dept_id.exists' => '部门不存在',
         ])->stopOnFirstFailure();
         if ($validator->fails()) {
