@@ -22,7 +22,7 @@ class SysUserRepository extends Repository
         'email' => 'required|email|unique:sys_user,email',
         'dept_id' => 'required|exists:sys_dept,id',
         'role_id' => 'required|array|exists:sys_role,id',
-        'status' => 'in:1,0',
+        'status' => 'required|int|in:1,0',
         'password' => 'required|min:6',
         'rePassword' => 'required|same:password',
     ];
@@ -39,6 +39,7 @@ class SysUserRepository extends Repository
         'dept_id.exists' => '部门不存在',
         'role_id.exists' => '角色不存在',
         'status.required' => '状态不能为空',
+        'status.int' => '状态值错误',
         'status.in' => '状态格式错误',
         'password.required' => '密码不能为空',
         'password.min' => '密码至少6位',
@@ -102,6 +103,7 @@ class SysUserRepository extends Repository
             ],
             'role_id' => 'required|array|exists:sys_role,id',
             'dept_id' => 'required|exists:sys_dept,id',
+            'status' => 'required|int|in:1,0',
         ], [
             'username.required' => '用户名不能为空',
             'username.unique' => '用户名已存在',
@@ -113,6 +115,9 @@ class SysUserRepository extends Repository
             'role_id.exists' => '角色不存在',
             'email.unique' => '邮箱已存在',
             'dept_id.exists' => '部门不存在',
+            'status.required' => '状态不能为空',
+            'status.int' => '状态值错误',
+            'status.in' => '状态格式错误',
         ])->stopOnFirstFailure();
         if ($validator->fails()) {
             throw new RepositoryException(

@@ -45,7 +45,7 @@ class SysUserModel extends User
         'dept_id' => 'integer'
     ];
 
-    protected $appends = ['roles_field', 'dept_name'];
+    protected $appends = ['role_id', 'dept_name'];
 
     protected $hidden = [
         'dept',
@@ -79,17 +79,10 @@ class SysUserModel extends User
     /**
      * 获取用户角色列表
      */
-    public function getRolesFieldAttribute()
+    public function getRoleIdAttribute()
     {
         return $this->roles()
-            ->select('id as role_id', 'name')
-            ->get()
-            ->map(function ($role) {
-                return [
-                    'role_id' => $role->role_id,
-                    'name' => $role->name
-                ];
-            });
+            ->pluck('id')->toArray();
     }
 
     /**

@@ -38,13 +38,6 @@ class SysUserListController extends BaseController
         return $this->service->resetPassword($request);
     }
 
-    /** 修改用户状态 */
-    #[PostMapping('/status/{id}', 'resetStatus')]
-    public function resetStatus($id): JsonResponse
-    {
-        return $this->service->resetStatus($id);
-    }
-
     /** 获取用户角色选项栏数据 */
     #[GetMapping('/role', 'getRole')]
     public function role(SysRoleRepository $repository): JsonResponse

@@ -131,22 +131,6 @@ class SysUserService extends Service
     }
 
     /**
-     * 修改管理员用户状态
-     * @param $id
-     * @return JsonResponse
-     */
-    public function resetStatus($id): JsonResponse
-    {
-        $user = SysUserModel::find($id);
-        if (!$user) {
-            return $this->error(__('user.user_not_exist'));
-        }
-        $user->status = $user->status == 0 ? 1 : 0;
-        $user->save();
-        return $this->success('ok');
-    }
-
-    /**
      * 更新用户信息
      * @param int $id 用户ID
      * @param Request $request 请求
