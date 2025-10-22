@@ -59,7 +59,11 @@ abstract class Repository
     {
         // 构建筛选
         if (isset($params['filter']) && $params['filter'] != '') {
-            $filter = json_decode($params['filter'], true);
+            if(is_array($params['filter'])) {
+                $filter = $params['filter'];
+            } else {
+                $filter = json_decode($params['filter'], true);
+            }
             foreach ($filter as $k => $v) {
                 if (! $v) {
                     continue;
@@ -122,7 +126,11 @@ abstract class Repository
 
         // 构建排序
         if (isset($params['sorter']) && $params['sorter']) {
-            $sorter = json_decode($params['sorter'], true);
+            if(is_array($params['sorter'])) {
+                $sorter = $params['sorter'];
+            } else {
+                $sorter = json_decode($params['sorter'], true);
+            }
             if (count($sorter) > 0) {
                 $column = array_keys($sorter)[0];
                 $direction = $sorter[$column] == 'ascend' ? 'asc' : 'desc';
