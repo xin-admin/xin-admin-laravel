@@ -45,8 +45,10 @@ class SysUserModel extends User
         'dept_id' => 'integer'
     ];
 
+    protected $appends = ['roles_field', 'dept_name'];
 
     protected $hidden = [
+        'dept',
         'password',
         'remember_token',
         'deleted_at'
@@ -60,6 +62,12 @@ class SysUserModel extends User
         return $this->belongsTo(SysDeptModel::class, 'dept_id', 'id');
     }
 
+    /** 部门名称 */
+    public function getDeptNameAttribute(): string
+    {
+        return $this->dept->name ?? '';
+    }
+
     /**
      * 定义与角色的关联
      */
@@ -69,11 +77,28 @@ class SysUserModel extends User
     }
 
     /**
+     * 获取用户角色列表
+     */
+    public function getRolesFieldAttribute()
+    {
+        return $this->roles()
+            ->select('id as role_id', 'name')
+            ->get()
+            ->map(function ($role) {
+                return [
+                    'role_id' => $role->role_id,
+                    'name' => $role->name
+                ];
+            });
+    }
+
+    /**
      * 定义与登录日志的关联
      */
     public function loginRecords(): HasMany
     {
         return $this->hasMany(SysLoginRecordModel::class, 'user_id', 'id');
     }
+
 
 }

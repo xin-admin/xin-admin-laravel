@@ -50,6 +50,35 @@ class SysDeptRepository extends Repository
      */
     protected function model(): Builder
     {
-        return SysDeptModel::newQuery();
+        return SysDeptModel::query();
+    }
+
+    /** 获取部门选择项 */
+    public function getDeptField(): array
+    {
+        $field = $this->model()
+            ->where('status', 0)
+            ->select(['id as dept_id', 'name', 'parent_id'])
+            ->get()
+            ->toArray();
+        return $this->buildTree($field);
+    }
+
+    /** 构建树形结构 */
+    private function buildTree(array $items, $parentId = 0): array
+    {
+        $tree = [];
+        foreach ($items as $item) {
+            if ($item['parent_id'] == $parentId) {
+                $children = $this->buildTree($items, $item['dept_id']);
+                $node = [
+                    'dept_id' => $item['dept_id'],
+                    'name' => $item['name'],
+                    'children' => $children
+                ];
+                $tree[] = $node;
+            }
+        }
+        return $tree;
     }
 }

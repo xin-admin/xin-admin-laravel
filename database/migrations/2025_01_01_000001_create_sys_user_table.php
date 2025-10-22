@@ -52,10 +52,8 @@ return new class extends Migration
         // 系统用户角色中间表
         if (! Schema::hasTable('sys_user_role')) {
             Schema::create('sys_user_role', function (Blueprint $table) {
-                $table->increments('id')->comment('主键ID');
                 $table->integer('user_id')->comment('用户ID');
                 $table->integer('role_id')->comment('角色ID');
-                $table->timestamps();
                 $table->unique(['user_id', 'role_id'], 'user_role_unique');
                 $table->comment('系统用户角色关联表');
             });

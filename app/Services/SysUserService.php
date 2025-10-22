@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class SysUserService extends Service
 {
@@ -154,11 +155,20 @@ class SysUserService extends Service
     public function updateInfo(int $id, Request $request): JsonResponse
     {
         $data = $request->validate([
-            'nickname' => 'required',
+            'nickname' => [
+                'required',
+                Rule::unique('sys_user', 'username')->ignore($id)
+            ],
             'sex' => 'required|in:0,1',
             'bio' => 'sometimes|max:255',
-            'mobile' => 'required',
-            'email' => 'required|email|unique:sys_user,email',
+            'mobile' => [
+                'required',
+                Rule::unique('sys_user', 'mobile')->ignore($id)
+            ],
+            'email' => [
+                'required',
+                Rule::unique('sys_user', 'email')->ignore($id)
+            ],
         ], [
             'nickname.required' => '昵称不能为空',
             'sex.required' => '性别不能为空',

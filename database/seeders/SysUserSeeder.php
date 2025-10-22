@@ -17,17 +17,32 @@ class SysUserSeeder extends Seeder
     {
         $date = date('Y-m-d H:i:s');
         DB::table('sys_user')->insert([
-            'id' => 1,
-            'username' => 'admin',
-            'nickname' => 'admin',
-            'email' => Str::random(10).'@example.com',
-            'password' => Hash::make('123456'),
-            'dept_id' => 1,
-            'avatar_id' => 1,
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-            'created_at' => $date,
-            'updated_at' => $date,
+            [
+                'id' => 1,
+                'username' => 'admin',
+                'nickname' => '管理员',
+                'email' => Str::random(10).'@example.com',
+                'password' => Hash::make('123456'),
+                'dept_id' => 1,
+                'avatar_id' => 1,
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ],
+            [
+                'id' => 2,
+                'username' => 'user',
+                'nickname' => '财务',
+                'email' => Str::random(10).'@example.com',
+                'password' => Hash::make('123456'),
+                'dept_id' => 2,
+                'avatar_id' => 1,
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]
         ]);
         DB::table('sys_role')->insert([
             ['id' => 1, 'name' => '超级管理员', 'created_at' => $date, 'updated_at' => $date],
@@ -330,71 +345,151 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
-                'order' => 6,
-                'type' => 'menu',
-                'name' => '个人中心',
-                'local' => "menu.user",
-                'icon' => "UserOutlined",
-                'key' => 'user',
+                'order' => 7,
+                'type' => 'route',
+                'name' => '用户设置',
+                'local' => "menu.user.setting",
+                'icon' => "UserSwitchOutlined",
+                'key' => 'user.setting',
+                'path' => '/user/setting',
+                'elementPath' => '/user/setting/index',
                 'children' => [
                     [
                         'order' => 0,
-                        'type' => 'route',
-                        'name' => '个人中心',
-                        'local' => "menu.user.index",
-                        'icon' => "UserOutlined",
-                        'key' => 'user.info',
-                        'path' => '/user/index',
-                        'elementPath' => '/user/index',
+                        'type' => 'nested-route',
+                        'name' => '基本信息',
+                        'key' => 'user.setting.info',
+                        'path' => '/user/setting',
+                        'elementPath' => '/user/setting/info',
                     ],
                     [
                         'order' => 1,
-                        'type' => 'route',
-                        'name' => '用户设置',
-                        'local' => "menu.user.setting",
-                        'icon' => "UserSwitchOutlined",
-                        'key' => 'user.setting',
-                        'path' => '/user/setting',
-                        'elementPath' => '/user/setting/index',
-                        'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'nested-route',
-                                'name' => '基本信息',
-                                'key' => 'user.setting.info',
-                                'path' => '/user/setting',
-                                'elementPath' => '/user/setting/info',
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'nested-route',
-                                'name' => '安全设置',
-                                'key' => 'user.setting.security',
-                                'path' => '/user/setting/security',
-                                'elementPath' => '/user/setting/security',
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'nested-route',
-                                'name' => '实名认证',
-                                'key' => 'user.setting.verification',
-                                'path' => '/user/setting/verification',
-                                'elementPath' => '/user/setting/verification',
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'nested-route',
-                                'name' => '登录日志',
-                                'key' => 'user.setting.loginlog',
-                                'path' => '/user/setting/loginlog',
-                                'elementPath' => '/user/setting/loginlog',
-                            ]
-                        ]
+                        'type' => 'nested-route',
+                        'name' => '安全设置',
+                        'key' => 'user.setting.security',
+                        'path' => '/user/setting/security',
+                        'elementPath' => '/user/setting/security',
+                    ],
+                    [
+                        'order' => 2,
+                        'type' => 'nested-route',
+                        'name' => '实名认证',
+                        'key' => 'user.setting.verification',
+                        'path' => '/user/setting/verification',
+                        'elementPath' => '/user/setting/verification',
+                    ],
+                    [
+                        'order' => 3,
+                        'type' => 'nested-route',
+                        'name' => '登录日志',
+                        'key' => 'user.setting.loginlog',
+                        'path' => '/user/setting/loginlog',
+                        'elementPath' => '/user/setting/loginlog',
                     ]
                 ]
             ],
             [
-                'order' => 7,
+                'order' => 8,
+                'type' => 'menu',
+                'name' => '系统用户',
+                'local' => "menu.sys-user",
+                'icon' => "UserOutlined",
+                'key' => 'sys-user',
+                'children' => [
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.list",
+                        'name' => "用户列表",
+                        'path' => "/sys-user/list",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/list",
+                        'order' => 1,
+                        'local' => "menu.sys-user.list",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '查询列表',
+                                'key' => 'sys-user.list.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '新增用户',
+                                'key' => 'sys-user.list.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '修改用户',
+                                'key' => 'sys-user.list.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除用户',
+                                'key' => 'sys-user.list.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '重置用户密码',
+                                'key' => 'sys-user.list.resetPassword'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '修改用户状态',
+                                'key' => 'sys-user.list.resetStatus'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '获取用户角色选项栏数据',
+                                'key' => 'sys-user.list.getRole'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '获取用户部门选项栏数据',
+                                'key' => 'sys-user.list.getDept'
+                            ],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.dept",
+                        'name' => "用户部门",
+                        'path' => "/sys-user/dept",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/dept",
+                        'order' => 1,
+                        'local' => "menu.sys-user.dept",
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.role",
+                        'name' => "用户角色",
+                        'path' => "/sys-user/role",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/role",
+                        'order' => 1,
+                        'local' => "menu.sys-user.role",
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.rule",
+                        'name' => "用户权限",
+                        'path' => "/sys-user/rule",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/rule",
+                        'order' => 1,
+                        'local' => "menu.sys-user.rule",
+                    ],
+                ]
+            ],
+            [
+                'order' => 9,
                 'type' => "menu",
                 'name' => "系统设置",
                 'local' => "menu.system",
@@ -457,7 +552,7 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
-                'order' => 8,
+                'order' => 10,
                 'type' => 'menu',
                 'name' => 'XinAdmin',
                 'local' => "menu.xin-admin",
@@ -478,10 +573,14 @@ class SysUserSeeder extends Seeder
         );
 
         DB::table('sys_user_role')->insert([
-            'user_id' => 1,
-            'role_id' => 1,
-            'created_at' => $date,
-            'updated_at' => $date
+            [
+                'user_id' => 1,
+                'role_id' => 1,
+            ],
+            [
+                'user_id' => 2,
+                'role_id' => 2,
+            ]
         ]);
     }
 

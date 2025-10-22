@@ -54,4 +54,13 @@ class SysRoleRepository extends Repository
         $model = $this->model()->findOrFail($validated['role_id']);
         $model->rules()->sync($validated['rule_ids']);
     }
+
+    /** 获取角色选择项 */
+    public function getRoleField(): array
+    {
+        return $this->model()
+            ->where('status', 0)
+            ->get(['id as role_id', 'name'])
+            ->toArray();
+    }
 }
