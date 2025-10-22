@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->string('nickname', 20)->default('')->comment('昵称');
                 $table->integer('avatar_id')->nullable()->comment('头像');
                 $table->integer('sex')->default(0)->comment('性别（男、女）');
-                $table->string('bio', 255)->default('')->comment('个人简介');
+                $table->string('bio', 255)->default('')->nullable()->comment('个人简介');
                 $table->string('mobile', 20)->default('')->comment('手机号');
                 $table->string('email', 50)->unique()->comment('邮箱');
                 $table->timestamp('email_verified_at')->nullable();
