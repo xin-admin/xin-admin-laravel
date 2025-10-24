@@ -65,10 +65,14 @@ return new class extends Migration
                 $table->increments('id')->comment('部门ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
                 $table->string('name', 100)->default('')->comment('部门名称');
+                $table->string('code', 100)->default('')->comment('部门编码');
+                $table->integer('type', 1)->default(0)->comment('部门类型 0：公司 1：部门 2：岗位');
                 $table->integer('sort')->default(0)->comment('排序');
-                $table->string('leader', '20')->default('')->comment('部门负责人');
-                $table->string('phone', '20')->default('')->comment('部门电话');
-                $table->string('email', '50')->default('')->comment('部门邮箱');
+                $table->string('leader', '20')->default('')->nullable()->comment('部门负责人');
+                $table->string('phone', '20')->default('')->nullable()->comment('部门电话');
+                $table->string('email', '50')->default('')->nullable()->comment('部门邮箱');
+                $table->string('address', '255')->default('')->nullable()->comment('部门地址');
+                $table->string('remark', '255')->default('')->nullable()->comment('备注');
                 $table->integer('status')->default(0)->comment('部门状态（0正常 1停用）');
                 $table->timestamps();
                 $table->comment('系统用户部门表');
