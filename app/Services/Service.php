@@ -11,26 +11,16 @@ abstract class Service
     /**
      * 构建树
      * @param array $list
-     * @param string $key
      * @param int $parentId
-     * @param array $fieldNames
      * @return array
      */
-    protected function getTreeData(
-        array &$list,
-        string $key,
-        int $parentId = 0,
-        array $fieldNames = [
-            'pid' => 'parent_id',
-            'children' => 'children'
-        ]
-    ): array
+    protected function getTreeData(array &$list, int $parentId = 0): array
     {
         $data = [];
         foreach ($list as $k => $item) {
-            if ($item[$fieldNames['pid']] == $parentId) {
-                $children = $this->getTreeData($list, $key, $item[$key]);
-                ! empty($children) && $item[$fieldNames['children']] = $children;
+            if ($item['parent_id'] == $parentId) {
+                $children = $this->getTreeData($list, $item['id']);
+                ! empty($children) && $item['children'] = $children;
                 $data[] = $item;
                 unset($list[$k]);
             }

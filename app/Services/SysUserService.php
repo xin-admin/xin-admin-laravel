@@ -56,27 +56,7 @@ class SysUserService extends Service
     public function getAdminMenus(int $userID): array
     {
         $menus = $this->repository->menus($userID);
-        return $this->getMenuTree($menus);
-    }
-
-    /**
-     * 构建树
-     * @param array $list
-     * @param int $pid
-     * @return array
-     */
-    protected function getMenuTree(array &$list, int $pid = 0): array
-    {
-        $data = [];
-        foreach ($list as $k => $item) {
-            if ($item['pid'] == $pid) {
-                $children = $this->getMenuTree($list, $item['id']);
-                ! empty($children) && $item['children'] = $children;
-                $data[] = $item;
-                unset($list[$k]);
-            }
-        }
-        return $data;
+        return $this->getTreeData($menus);
     }
 
     /**

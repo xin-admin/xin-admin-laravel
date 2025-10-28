@@ -83,7 +83,7 @@ return new class extends Migration
         if (! Schema::hasTable('sys_rule')) {
             Schema::create('sys_rule', function (Blueprint $table) {
                 $table->increments('id')->comment('权限ID');
-                $table->integer('pid')->default(0)->comment('父级ID');
+                $table->integer('parent_id')->default(0)->comment('父级ID');
                 $table->string('type', 20)->default('rule')->comment("类型：'menu' | 'route' | 'nested-route' | 'rule'");
                 $table->string('key', 100)->unique()->comment('唯一标识');
                 $table->string('name', 100)->default('')->comment('名称');

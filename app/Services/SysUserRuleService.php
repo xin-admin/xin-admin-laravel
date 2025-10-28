@@ -60,7 +60,7 @@ class SysUserRuleService extends Service
             ->whereIn('type', [0, 1])
             ->get(['name', 'id', 'parent_id'])
             ->toArray();
-        $data = $this->getTreeData($data, 'id');
+        $data = $this->getTreeData($data);
         return $this->success(compact('data'));
     }
 }

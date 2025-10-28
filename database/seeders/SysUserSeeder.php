@@ -663,7 +663,7 @@ class SysUserSeeder extends Seeder
         foreach ($rules as $rule) {
             // 准备插入数据
             $insertData = [
-                'pid' => $pid,
+                'parent_id' => $pid,
                 'type' => $rule['type'],
                 'key' => $rule['key'],
                 'name' => $rule['name'],
