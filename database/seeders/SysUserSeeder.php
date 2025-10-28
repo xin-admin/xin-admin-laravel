@@ -51,10 +51,76 @@ class SysUserSeeder extends Seeder
             ['id' => 4, 'name' => '市场运营', 'created_at' => $date, 'updated_at' => $date],
         ]);
         DB::table('sys_dept')->insert([
-            ['id' => 1, 'name' => '网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'name' => '洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'name' => '郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'name' => '南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            [
+                'id' => 1,
+                'name' => '新时代股份有限公司',
+                'code' => 'A01',
+                'type' => 0,
+                'parent_id' => 0,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '北京市海淀区某某街道103号',
+                'remark' => '总公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 2,
+                'name' => '新时代软件技术（洛阳）有限公司',
+                'code' => 'A01-B01',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省洛阳市龙门区某某街道99号',
+                'remark' => '洛阳市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 3,
+                'name' => '新时代智能科技（郑州）有限公司',
+                'code' => 'A01-B02',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省郑州市二七区某某街道69号',
+                'remark' => '郑州市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 4,
+                'name' => '新征程科技（南阳）有限公司',
+                'code' => 'A01-B03',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 2,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省南阳市卧龙区某某街道77号',
+                'remark' => '南阳市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 5,
+                'name' => '新时代投资发展有限公司',
+                'code' => 'B01',
+                'type' => 0,
+                'parent_id' => 0,
+                'sort' => 2,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '北京市海淀区人民路666号',
+                'remark' => '我们坚信，卓越的投资在于发现价值，而卓越的投资管理在于创造价值。我们立志成为科技创业者身边最懂业务、最能赋能、最长情的资本伙伴，共同将创新的火种，转化为引领行业的参天大树。',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
         ]);
 
         $rules = [
