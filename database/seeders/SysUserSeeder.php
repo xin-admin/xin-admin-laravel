@@ -511,13 +511,13 @@ class SysUserSeeder extends Seeder
                             [
                                 'order' => 6,
                                 'type' => 'rule',
-                                'name' => '获取用户角色选项栏数据',
+                                'name' => '获取角色选项',
                                 'key' => 'sys-user.list.getRole'
                             ],
                             [
                                 'order' => 7,
                                 'type' => 'rule',
-                                'name' => '获取用户部门选项栏数据',
+                                'name' => '获取部门选项',
                                 'key' => 'sys-user.list.getDept'
                             ],
                         ]
@@ -551,6 +551,50 @@ class SysUserSeeder extends Seeder
                         'elementPath' => "/sys-user/rule",
                         'order' => 1,
                         'local' => "menu.sys-user.rule",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '获取权限列表',
+                                'key' => 'sys-user.rule.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '创建权限规则',
+                                'key' => 'sys-user.rule.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新权限规则',
+                                'key' => 'sys-user.rule.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除权限规则',
+                                'key' => 'sys-user.rule.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '获取父级权限',
+                                'key' => 'sys-user.rule.parentQuery'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '设置显示状态',
+                                'key' => 'sys-user.rule.show'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '设置启用状态',
+                                'key' => 'sys-user.rule.status'
+                            ],
+                        ]
                     ],
                 ]
             ],
@@ -619,7 +663,7 @@ class SysUserSeeder extends Seeder
             ],
             [
                 'order' => 10,
-                'type' => 'menu',
+                'type' => 'route',
                 'name' => 'XinAdmin',
                 'local' => "menu.xin-admin",
                 'key' => "xin-admin",
