@@ -3,6 +3,7 @@
 namespace App\Repositories\Sys;
 
 use App\Exceptions\RepositoryException;
+use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Builder;
@@ -163,6 +164,9 @@ class SysUserRepository extends Repository
      */
     public function ruleKeys($id): array
     {
+        if($id == 1) {
+            return SysRuleModel::query()->pluck('key')->toArray();
+        }
         $roles = $this->model()->with(['roles.rules' => function ($query) {
             $query->where('status', 1); // 只获取启用的权限
         }])->find($id)->roles->toArray();
@@ -182,6 +186,12 @@ class SysUserRepository extends Repository
      */
     public function menus($id): array
     {
+        if($id == 1) {
+            return SysRuleModel::query()
+                ->whereIn('type', ['menu','route','nested-route'])
+                ->get()
+                ->toArray();
+        }
         $roles = $this->model()->with(['roles.rules' => function ($query) {
             $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
         }])->find($id)->roles->toArray();
