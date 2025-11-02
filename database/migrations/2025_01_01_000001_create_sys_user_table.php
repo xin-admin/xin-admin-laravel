@@ -84,14 +84,14 @@ return new class extends Migration
             Schema::create('sys_rule', function (Blueprint $table) {
                 $table->increments('id')->comment('权限ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
-                $table->string('type', 20)->default('rule')->comment("类型：'menu' | 'route' | 'nested-route' | 'rule'");
+                $table->string('type', 20)->comment("类型：'menu' | 'route' | 'nested-route' | 'rule'");
                 $table->string('key', 100)->unique()->comment('唯一标识');
-                $table->string('name', 100)->default('')->comment('名称');
-                $table->string('path', 100)->default('')->comment('路径');
-                $table->string('icon', 100)->default('')->comment('图标');
-                $table->string('elementPath', 255)->default('')->comment('路由组件的路径，当类型值为 route 时该配置有效');
+                $table->string('name', 100)->comment('名称');
+                $table->string('path', 100)->nullable()->comment('路径');
+                $table->string('icon', 100)->nullable()->comment('图标');
+                $table->string('elementPath', 255)->nullable()->comment('路由组件的路径，当类型值为 route 时该配置有效');
                 $table->integer('order')->default(0)->comment('排序');
-                $table->string('local', 100)->default('')->comment('语言包');
+                $table->string('local', 100)->nullable()->comment('语言包');
                 $table->integer('status')->default(1)->comment('状态：1、正常，0、禁用');
                 $table->integer('hidden')->default(1)->comment('显示：1、显示，0、隐藏');
                 $table->integer('link')->default(0)->comment('是否外链：1、是，0、否');
