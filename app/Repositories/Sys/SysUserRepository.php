@@ -165,7 +165,10 @@ class SysUserRepository extends Repository
     public function ruleKeys($id): array
     {
         if($id == 1) {
-            return SysRuleModel::query()->pluck('key')->toArray();
+            return SysRuleModel::query()
+                ->where('status', 1)
+                ->pluck('key')
+                ->toArray();
         }
         $roles = $this->model()->with(['roles.rules' => function ($query) {
             $query->where('status', 1); // 只获取启用的权限
@@ -188,6 +191,7 @@ class SysUserRepository extends Repository
     {
         if($id == 1) {
             return SysRuleModel::query()
+                ->where('status', 1)
                 ->whereIn('type', ['menu','route','nested-route'])
                 ->get()
                 ->toArray();
