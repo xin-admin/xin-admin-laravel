@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 /**
  * 管理员权限控制器
  */
-#[RequestMapping('/admin/rule', 'admin.rule')]
+#[RequestMapping('/sys-user/rule', 'sys-user.rule')]
 #[Create, Update, Delete]
 class SysUserRuleController extends BaseController
 {
@@ -28,28 +28,28 @@ class SysUserRuleController extends BaseController
     }
 
     /** 获取权限列表 */
-    #[GetMapping]
+    #[GetMapping(authorize: 'query')]
     public function query(Request $request): JsonResponse
     {
         return $this->service->getList();
     }
 
     /** 获取父级权限 */
-    #[GetMapping('/parent', authorize: 'query')]
+    #[GetMapping('/parent', authorize: 'parentQuery')]
     public function getRulesParent(): JsonResponse
     {
         return $this->service->getRuleParent();
     }
 
-    /** 设置显示 */
-    #[PutMapping('/show/{id}', authorize: 'update')]
+    /** 设置显示状态 */
+    #[PutMapping('/show/{id}', authorize: 'show')]
     public function show($id): JsonResponse
     {
         return $this->service->setShow($id);
     }
 
-    /** 设置状态 */
-    #[PutMapping('/status/{id}', authorize: 'update')]
+    /** 设置启用状态 */
+    #[PutMapping('/status/{id}', authorize: 'status')]
     public function status($id): JsonResponse
     {
         return $this->service->setStatus($id);

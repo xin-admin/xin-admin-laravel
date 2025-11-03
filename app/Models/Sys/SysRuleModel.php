@@ -18,14 +18,14 @@ class SysRuleModel extends Model
     protected $fillable = [
         'parent_id',
         'type',
-        'sort',
+        'order',
         'name',
+        'key',
         'path',
         'icon',
-        'key',
         'local',
-        'status',
-        'show'
+        'link',
+        'elementPath'
     ];
 
     protected $casts = [

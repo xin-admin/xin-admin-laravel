@@ -7,20 +7,15 @@ use Illuminate\Http\JsonResponse;
 
 class SysUserRuleService extends Service
 {
-    private SysRuleModel $model;
-
-    public function __construct(SysRuleModel $model)
-    {
-        $this->model = $model;
-    }
-
     /**
      * 获取权限列表
      */
     public function getList(): JsonResponse
     {
-        $rules = $this->model->all();
-        return $this->success($rules->toArray());
+        $rules = SysRuleModel::all();
+        $data = $rules->toArray();
+        $data = $this->getTreeData($data);
+        return $this->success($data);
     }
 
     /**
@@ -28,11 +23,11 @@ class SysUserRuleService extends Service
      */
     public function setShow($ruleID): JsonResponse
     {
-        $model = $this->model->find($ruleID);
+        $model = SysRuleModel::find($ruleID);
         if (! $model) {
             return $this->error(__('system.data_not_exist'));
         }
-        $model->show = $model->show ? 0 : 1;
+        $model->hidden = $model->hidden ? 0 : 1;
         $model->save();
         return $this->success();
     }
@@ -42,7 +37,7 @@ class SysUserRuleService extends Service
      */
     public function setStatus($ruleID): JsonResponse
     {
-        $model = $this->model->find($ruleID);
+        $model = SysRuleModel::find($ruleID);
         if (! $model) {
             return $this->error(__('system.data_not_exist'));
         }
@@ -56,11 +51,11 @@ class SysUserRuleService extends Service
      */
     public function getRuleParent(): JsonResponse
     {
-        $data = $this->model
-            ->whereIn('type', [0, 1])
+        $data =SysRuleModel::query()
+            ->whereIn('type', ['menu', 'route', 'nested-route'])
             ->get(['name', 'id', 'parent_id'])
             ->toArray();
         $data = $this->getTreeData($data);
-        return $this->success(compact('data'));
+        return $this->success($data);
     }
 }
