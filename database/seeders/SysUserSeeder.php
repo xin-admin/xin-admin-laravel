@@ -531,6 +531,38 @@ class SysUserSeeder extends Seeder
                         'elementPath' => "/sys-user/dept",
                         'order' => 1,
                         'local' => "menu.sys-user.dept",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '获取部门列表',
+                                'key' => 'sys-user.dept.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '新建部门',
+                                'key' => 'sys-user.dept.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新部门信息',
+                                'key' => 'sys-user.dept.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除部门',
+                                'key' => 'sys-user.dept.delete'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '获取部门用户',
+                                'key' => 'sys-user.dept.users'
+                            ],
+                        ]
                     ],
                     [
                         'type' => "route",
