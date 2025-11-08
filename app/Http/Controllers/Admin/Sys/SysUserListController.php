@@ -42,7 +42,7 @@ class SysUserListController extends BaseController
     #[GetMapping('/role', 'getRole')]
     public function role(SysRoleRepository $repository): JsonResponse
     {
-        return $this->success($repository->getRoleField());
+        return $this->success($repository->getRoleFields());
     }
 
     /** 获取用户部门选项栏数据 */

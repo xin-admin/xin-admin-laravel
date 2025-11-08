@@ -43,7 +43,7 @@ return new class extends Migration
                 $table->string('name', 20)->default('')->comment('角色名称');
                 $table->integer('sort')->default(0)->comment('排序');
                 $table->string('description', 100)->default('')->comment('角色描述');
-                $table->integer('status')->default(0)->comment('状态（0正常 1停用）');
+                $table->integer('status')->default(1)->comment('状态（1正常 0停用）');
                 $table->timestamps();
                 $table->comment('系统用户角色表');
             });

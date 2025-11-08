@@ -573,6 +573,56 @@ class SysUserSeeder extends Seeder
                         'elementPath' => "/sys-user/role",
                         'order' => 1,
                         'local' => "menu.sys-user.role",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '新增角色',
+                                'key' => 'sys-user.role.create'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '查询角色列表',
+                                'key' => 'sys-user.role.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新角色信息',
+                                'key' => 'sys-user.role.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除角色',
+                                'key' => 'sys-user.role.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '设置角色权限',
+                                'key' => 'sys-user.role.rule'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '获取权限选项',
+                                'key' => 'sys-user.role.rule.list'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '设置启用状态',
+                                'key' => 'sys-user.role.rule.status'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '获取角色用户',
+                                'key' => 'sys-user.role.rule.users'
+                            ],
+                        ]
                     ],
                     [
                         'type' => "route",

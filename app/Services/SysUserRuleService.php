@@ -51,9 +51,20 @@ class SysUserRuleService extends Service
      */
     public function getRuleParent(): JsonResponse
     {
-        $data =SysRuleModel::query()
+        $data = SysRuleModel::query()
             ->whereIn('type', ['menu', 'route', 'nested-route'])
             ->get(['name', 'id', 'parent_id'])
+            ->toArray();
+        $data = $this->getTreeData($data);
+        return $this->success($data);
+    }
+
+    /** 获取权限选择项 */
+    public function getRuleFields(): JsonResponse
+    {
+        $data = SysRuleModel::query()
+            ->where("status", 1)
+            ->get(['name as title', 'parent_id', 'id as key', 'id', 'local'])
             ->toArray();
         $data = $this->getTreeData($data);
         return $this->success($data);
