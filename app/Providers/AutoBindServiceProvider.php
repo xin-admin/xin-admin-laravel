@@ -21,8 +21,8 @@ class AutoBindServiceProvider extends ServiceProvider
      * 要排除的基类
      */
     protected array $excludeClasses = [
-        'App\\Repositories\\Repository', // 仓储基类
-        'App\\Services\\Service',    // 服务基类
+        'App\\Repositories\\BaseRepository', // 仓储基类
+        'App\\Services\\BaseService',    // 服务基类
     ];
 
     public function register(): void

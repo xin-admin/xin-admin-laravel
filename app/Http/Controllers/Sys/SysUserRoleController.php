@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Sys\SysRoleModel;
 use App\Providers\AnnoRoute\Attribute\Create;
 use App\Providers\AnnoRoute\Attribute\Delete;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
@@ -12,9 +11,10 @@ use App\Providers\AnnoRoute\Attribute\PutMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysRoleRepository;
-use App\Services\SysUserRoleService;
-use App\Services\SysUserRuleService;
+use App\Services\Sys\SysUserRoleService;
+use App\Services\Sys\SysUserRuleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,31 +25,32 @@ use Illuminate\Http\Request;
 #[Query, Create, Update, Delete]
 class SysUserRoleController extends BaseController
 {
-    public function __construct(SysRoleRepository $repository, SysRoleModel $model)
+
+    protected function repository(): RepositoryInterface
     {
-        $this->repository = $repository;
-        $this->model = $model;
+        return app(SysRoleRepository::class);
     }
+
 
     /** 获取角色用户列表 */
     #[GetMapping('/users/{id}', 'users')]
-    public function users($id): JsonResponse
+    public function users(int $id, SysUserRoleService $service): JsonResponse
     {
-        return $this->success($this->repository->users($id));
+        return $this->success($service->users($id));
     }
 
     /** 设置启用状态 */
     #[PutMapping('/status/{id}', authorize: 'status')]
-    public function status(int $id): JsonResponse
+    public function status(int $id, SysUserRoleService $service): JsonResponse
     {
-        return (new SysUserRoleService)->setStatus($id);
+        return $service->setStatus($id);
     }
 
     /** 设置角色权限 */
     #[PostMapping('/rule', 'rule')]
-    public function setRoleRule(Request $request): JsonResponse
+    public function setRoleRule(Request $request, SysUserRoleService $service): JsonResponse
     {
-        $this->repository->setRule($request);
+        $service->setRule($request);
         return $this->success();
     }
 

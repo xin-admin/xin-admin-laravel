@@ -3,27 +3,11 @@
 namespace App\Repositories\Sys;
 
 use App\Models\Sys\SysDictModel;
-use App\Repositories\Repository;
+use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 
-class SysDictRepository extends Repository
+class SysDictRepository extends BaseRepository
 {
-    /** @var array|string[] 验证规则 */
-    protected array $validation = [
-        'name' => 'required',
-        'code' => 'required|unique:sys_dict,code',
-        'describe' => 'sometimes',
-        'type' => 'required|in:default,custom,system'
-    ];
-
-    /** @var array 验证消息 */
-    protected array $messages = [
-        'name.required' => '字典名称不能为空',
-        'code.required' => '字典编码不能为空',
-        'code.unique' => '字典编码已存在',
-        'type.required' => '字典类型不能为空',
-        'type.in' => '字典类型格式错误'
-    ];
 
     /** @var array|string[] 搜索字段 */
     protected array $searchField = [
@@ -39,5 +23,26 @@ class SysDictRepository extends Repository
     protected function model(): Builder
     {
         return SysDictModel::query();
+    }
+
+    protected function rules(): array
+    {
+        return [
+            'name' => 'required',
+            'code' => 'required|unique:sys_dict,code',
+            'describe' => 'sometimes',
+            'type' => 'required|in:default,custom,system'
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'name.required' => '字典名称不能为空',
+            'code.required' => '字典编码不能为空',
+            'code.unique' => '字典编码已存在',
+            'type.required' => '字典类型不能为空',
+            'type.in' => '字典类型格式错误'
+        ];
     }
 }

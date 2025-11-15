@@ -5,20 +5,27 @@ use App\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
-abstract class Repository
+abstract class BaseRepository implements RepositoryInterface
 {
     /**
      * 验证规则
-     * @var array
+     * @return array
      */
-    protected array $validation = [];
+    protected function rules(): array
+    {
+        return [];
+    }
 
     /**
      * 验证 messages
-     * @var array
+     * @return array
      */
-    protected array $messages = [];
+    protected function messages(): array
+    {
+        return [];
+    }
 
     /**
      * 查询字符串
@@ -42,16 +49,18 @@ abstract class Repository
     /** 验证数据 */
     protected function validation(array $data): array
     {
-        if (empty($this->validation)) {
+        if (empty($this->rules)) {
             return [];
         }
-        $validator = Validator::make($data, $this->validation, $this->messages)->stopOnFirstFailure();
+        $validator = Validator::make($data, $this->rules(), $this->messages())->stopOnFirstFailure();
         if ($validator->fails()) {
-            throw new RepositoryException(
-                'Validation failed: ' . $validator->errors()->first(),
-            );
+            throw new RepositoryException('Validation failed: ' . $validator->errors()->first());
         }
-        return $validator->validated();
+        try {
+            return $validator->validated();
+        } catch (ValidationException $e) {
+            throw new RepositoryException("Validation failed: {$e->getMessage()}");
+        }
     }
 
     /** 构建查询方法 */
@@ -141,11 +150,25 @@ abstract class Repository
         return $model;
     }
 
-    public function find(int $id): Model
+    /**
+     * 查询操作
+     * @param int $id
+     * @return array
+     */
+    public function find(int $id): array
     {
-        return $this->model()->find($id);
+        $model = $this->model()->find($id);
+        if (empty($model)) {
+            throw new RepositoryException("Model not found");
+        }
+        return $model->toArray();
     }
 
+    /**
+     * 列表查询操作
+     * @param array $params
+     * @return array
+     */
     public function list(array $params): array
     {
         $pageSize = $params['pageSize'] ?? 10;
@@ -155,15 +178,27 @@ abstract class Repository
             ->toArray();
     }
 
-    public function create(array $data): Model
+    /**
+     * 新增操作
+     * @param array $data
+     * @return bool
+     */
+    public function create(array $data): bool
     {
         $data = $this->validation($data);
         if(empty($data)) {
             throw new RepositoryException('Validation failed: empty data');
         }
-        return $this->model()->create($data);
+        $model = $this->model()->create($data);
+        return !!$model;
     }
 
+    /**
+     * 更新操作
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
     public function update(int $id, array $data): bool
     {
         $validated = $this->validation($data);
@@ -174,6 +209,11 @@ abstract class Repository
         return $model->update($validated);
     }
 
+    /**
+     * 删除操作
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $model = $this->model()->find($id);
@@ -181,5 +221,14 @@ abstract class Repository
             throw new RepositoryException('Model not found');
         }
         return $model->delete();
+    }
+
+    /**
+     * 是否为更新请求
+     * @return bool
+     */
+    protected function isUpdate(): bool
+    {
+        return request()->method() == 'PUT' && request()->route('id');
     }
 }

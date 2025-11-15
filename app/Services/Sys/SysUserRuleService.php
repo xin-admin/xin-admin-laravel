@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Sys;
 
 use App\Models\Sys\SysRuleModel;
+use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 
-class SysUserRuleService extends Service
+class SysUserRuleService extends BaseService
 {
     /**
      * 获取权限列表

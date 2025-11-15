@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Providers\AnnoRoute\Attribute\Delete;
@@ -8,6 +8,7 @@ use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysFileRepository;
 use App\Services\SysFileService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,11 +20,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 #[Query, Update, Delete]
 class SysFileController extends BaseController
 {
-    public function __construct(SysFileRepository $repository) {
-        $this->repository = $repository;
+    protected array $noPermission = ['download'];
+
+    protected function repository(): RepositoryInterface
+    {
+        return app(SysFileRepository::class);
     }
 
-    protected array $noPermission = ['download'];
 
     /** 下载文件 */
     #[GetMapping('/download/{id}')]

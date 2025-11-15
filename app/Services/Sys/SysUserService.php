@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Sys;
 
+use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Sys\SysUserRepository;
+use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class SysUserService extends Service
+class SysUserService extends BaseService
 {
     protected SysUserRepository $repository;
     protected SysUserModel $model;
@@ -34,7 +36,7 @@ class SysUserService extends Service
 
         if (Auth::attempt($credentials, true)) {
             $userID = auth()->id();
-            $access = $this->repository->ruleKeys($userID);
+            $access = $this->ruleKeys($userID);
             $data = $request->user()
                 ->createToken($credentials['username'], $access)
                 ->toArray();
@@ -55,7 +57,24 @@ class SysUserService extends Service
      */
     public function getAdminMenus(int $userID): array
     {
-        $menus = $this->repository->menus($userID);
+        if($userID == 1) {
+            $menus = SysRuleModel::query()
+                ->where('status', 1)
+                ->whereIn('type', ['menu','route','nested-route'])
+                ->get()
+                ->toArray();
+        } else {
+            $roles = SysUserModel::with(['roles.rules' => function ($query) {
+                $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
+            }])->find($userID)->roles->toArray();
+
+            $menus = collect($roles)
+                ->map(fn ($item) => $item['rules'])
+                ->collapse()
+                ->map(fn ($item) => collect($item)->forget(['pivot', 'updated_at', 'created_at', 'status']) )
+                ->unique('id')
+                ->toArray();
+        }
         return $this->getTreeData($menus);
     }
 
@@ -147,6 +166,29 @@ class SysUserService extends Service
             return $this->error(__('user.user_not_exist'));
         }
         return $this->success($model->update($data));
+    }
+
+    /**
+     * 获取用户的所有权限 KEY
+     */
+    public function ruleKeys($id): array
+    {
+        if($id == 1) {
+            return SysRuleModel::query()
+                ->where('status', 1)
+                ->pluck('key')
+                ->toArray();
+        }
+        $roles = SysUserModel::with(['roles.rules' => function ($query) {
+            $query->where('status', 1); // 只获取启用的权限
+        }])->find($id)->roles->toArray();
+
+        return collect($roles)
+            ->map(fn ($item) => $item['rules'] )
+            ->collapse()
+            ->map(fn ($item) => $item['key'] )
+            ->unique()
+            ->toArray();
     }
 
 }

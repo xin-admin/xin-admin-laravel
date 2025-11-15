@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysDictModel;
@@ -10,6 +10,7 @@ use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysDictRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -23,17 +24,16 @@ class SysDictController extends BaseController
 {
     protected array $noPermission = ['itemList'];
 
-    public function __construct(SysDictRepository $repository, SysDictModel $model)
+    protected function repository(): RepositoryInterface
     {
-        $this->repository = $repository;
-        $this->model = $model;
+        return app(SysDictRepository::class);
     }
 
     /** 删除字典 */
     #[DeleteMapping('/{id}', 'delete')]
     public function delete($id): JsonResponse
     {
-        $model = $this->model->findOrFail($id);
+        $model = SysDictModel::findOrFail($id);
         $count = $model->dictItems()->count();
         if ($count > 0) {
             return $this->error('字典包含子项！');
@@ -49,7 +49,7 @@ class SysDictController extends BaseController
         if (Cache::has('sys_dict')) {
             $dict = Cache::get('sys_dict');
         } else {
-            $dict = $this->model->getDictItems();
+            $dict = SysDictModel::getDictItems();
             // 缓存字典
             Cache::store('redis')->put('bar', $dict, 600);
         }

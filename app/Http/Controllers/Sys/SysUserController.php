@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
-use App\Http\Controllers\BaseController;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\PostMapping;
 use App\Providers\AnnoRoute\Attribute\PutMapping;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
-use App\Repositories\Sys\SysLoginRecordRepository;
-use App\Repositories\Sys\SysUserRepository;
+use App\Services\Sys\SysLoginRecordService;
+use App\Services\Sys\SysUserService;
 use App\Services\SysFileService;
-use App\Services\SysUserService;
 use App\Support\Enum\FileType;
+use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,20 +19,17 @@ use Illuminate\Support\Facades\Auth;
  * 管理员用户控制器
  */
 #[RequestMapping('/admin')]
-class SysUserController extends BaseController
+class SysUserController
 {
-    protected array $noPermission = ['refreshToken', 'login'];
+    use RequestJson;
 
-    public function __construct(SysUserService $service, SysUserRepository $repository) {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    protected array $noPermission = ['refreshToken', 'login'];
 
     /** 用户登录 */
     #[PostMapping('/login', middleware: 'login_log')]
-    public function login(Request $request): JsonResponse
+    public function login(Request $request, SysUserService $service): JsonResponse
     {
-        return $this->service->login($request);
+        return $service->login($request);
     }
 
     /** 退出登录 */
@@ -47,27 +43,27 @@ class SysUserController extends BaseController
 
     /** 获取管理员信息 */
     #[GetMapping('/info')]
-    public function info(): JsonResponse
+    public function info(SysUserService $service): JsonResponse
     {
         $info = auth()->user();
         $id = auth()->id();
-        $access = $this->repository->ruleKeys($id);
-        $menus = $this->service->getAdminMenus($id);
+        $access = $service->ruleKeys($id);
+        $menus = $service->getAdminMenus($id);
         return $this->success(compact('access', 'menus', 'info'));
     }
 
     /** 更新管理员信息 */
     #[PutMapping]
-    public function updateInfo(Request $request): JsonResponse
+    public function updateInfo(Request $request, SysUserService $service): JsonResponse
     {
-        return $this->service->updateInfo(Auth::id(), $request);
+        return $service->updateInfo(Auth::id(), $request);
     }
 
     /** 修改密码 */
     #[PutMapping('/updatePassword')]
-    public function updatePassword(Request $request): JsonResponse
+    public function updatePassword(Request $request, SysUserService $service): JsonResponse
     {
-        return $this->service->updatePassword($request);
+        return $service->updatePassword($request);
     }
 
     /** 上传头像 */
@@ -81,10 +77,10 @@ class SysUserController extends BaseController
 
     /** 获取管理员登录日志 */
     #[GetMapping('/login/record')]
-    public function get(SysLoginRecordRepository $repository): JsonResponse
+    public function get(SysLoginRecordService $service): JsonResponse
     {
         $id = auth()->id();
-        $data = $repository->getRecordByID($id);
+        $data = $service->getRecordByID($id);
         return $this->success($data);
     }
 }

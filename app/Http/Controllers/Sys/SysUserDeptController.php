@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Providers\AnnoRoute\Attribute\Create;
@@ -8,8 +8,9 @@ use App\Providers\AnnoRoute\Attribute\DeleteMapping;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysDeptRepository;
-use App\Services\SysUserDeptService;
+use App\Services\Sys\SysUserDeptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,31 +21,32 @@ use Illuminate\Http\Request;
 #[Create, Update]
 class SysUserDeptController extends BaseController
 {
-    public function __construct(SysDeptRepository $repository, SysUserDeptService $service)
+
+    protected function repository(): RepositoryInterface
     {
-        $this->repository = $repository;
-        $this->service = $service;
+        return app(SysDeptRepository::class);
     }
+
 
     /** 部门列表 */
     #[GetMapping(authorize: 'query')]
-    public function listDept(): JsonResponse
+    public function listDept(SysUserDeptService $service): JsonResponse
     {
-        return $this->service->list();
+        return $service->list();
     }
 
     /** 删除部门 */
     #[DeleteMapping(authorize: 'delete')]
-    public function deleteDept(Request $request): JsonResponse
+    public function deleteDept(Request $request, SysUserDeptService $service): JsonResponse
     {
-        return $this->service->delete($request);
+        return $service->delete($request);
     }
 
     /** 获取部门用户列表 */
     #[GetMapping('/users/{id}', authorize: 'users')]
-    public function deptUsers(int $id): JsonResponse
+    public function deptUsers(int $id, SysUserDeptService $service): JsonResponse
     {
-        return $this->service->users($id);
+        return $service->users($id);
     }
 
 }

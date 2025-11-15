@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysSettingGroupModel;
@@ -9,6 +9,7 @@ use App\Providers\AnnoRoute\Attribute\DeleteMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysSettingGroupRepository;
 use Illuminate\Http\JsonResponse;
 
@@ -19,17 +20,18 @@ use Illuminate\Http\JsonResponse;
 #[Query, Create, Update]
 class SysSettingGroupController extends BaseController
 {
-    public function __construct(SysSettingGroupModel $model, SysSettingGroupRepository $repository)
+    protected function repository(): RepositoryInterface
     {
-        $this->model = $model;
-        $this->repository = $repository;
+        return app(SysSettingGroupRepository::class);
     }
 
     /** 删除设置 */
     #[DeleteMapping('/{id}', 'delete')]
     public function delete($id): JsonResponse
     {
-        $this->repository->delete($id);
-        return $this->success('ok');
+        if($this->repository()->delete($id)) {
+            return $this->success('删除成功');
+        }
+        return $this->error('删除失败');
     }
 }

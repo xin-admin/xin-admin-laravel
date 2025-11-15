@@ -8,13 +8,15 @@ use App\Models\UserModel;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\PostMapping;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 #[RequestMapping('/api', authGuard: 'users')]
-class IndexController extends BaseController
+class IndexController
 {
+    use RequestJson;
     // 权限验证白名单
     protected array $noPermission = ['index', 'login', 'register', 'mail'];
 

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Support\Trait\RequestJson;
 
-abstract class Service
+abstract class BaseService
 {
     use RequestJson;
 

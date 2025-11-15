@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Providers\AnnoRoute\Attribute\Create;
@@ -8,6 +8,7 @@ use App\Providers\AnnoRoute\Attribute\Delete;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysFileGroupRepository;
 
 /**
@@ -17,8 +18,8 @@ use App\Repositories\Sys\SysFileGroupRepository;
 #[Query, Create, Update, Delete]
 class SysFileGroupController extends BaseController
 {
-    public function __construct(SysFileGroupRepository $repository)
+    protected function repository(): RepositoryInterface
     {
-        $this->repository = $repository;
+        return app(SysFileGroupRepository::class);
     }
 }

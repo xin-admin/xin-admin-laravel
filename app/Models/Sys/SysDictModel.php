@@ -35,10 +35,9 @@ class SysDictModel extends Model
      * 获取字典子项
      * @return array
      */
-    public function getDictItems(): array
+    public static function getDictItems(): array
     {
-        return $this->query()
-            ->with('dictItems')
+        return static::with('dictItems')
             ->get()
             ->map(function ($dict) {
                 return [

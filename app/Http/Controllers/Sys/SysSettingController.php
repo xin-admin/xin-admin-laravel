@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysSettingModel;
@@ -11,6 +11,7 @@ use App\Providers\AnnoRoute\Attribute\PutMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysSettingRepository;
 use App\Services\SysSettingService;
 use Illuminate\Http\JsonResponse;
@@ -22,10 +23,12 @@ use Illuminate\Http\JsonResponse;
 #[Query, Create, Update, Delete]
 class SysSettingController extends BaseController
 {
-    public function __construct(SysSettingModel $model, SysSettingRepository $repository) {
-        $this->model = $model;
-        $this->repository = $repository;
+
+    protected function repository(): RepositoryInterface
+    {
+        return app(SysSettingRepository::class);
     }
+
 
     /** 保存设置 */
     #[PutMapping('/save/{id}', 'save')]
@@ -33,7 +36,7 @@ class SysSettingController extends BaseController
     {
         $value = request()->all();
         foreach ($value as $k => $v) {
-            $model = $this->model->where('key', $k)->where('group_id', $id)->first();
+            $model = SysSettingModel::where('key', $k)->where('group_id', $id)->first();
             if ($model) {
                 $model->values = $v;
                 $model->save();

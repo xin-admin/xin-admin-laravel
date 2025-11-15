@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Sys;
+namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Providers\AnnoRoute\Attribute\Create;
 use App\Providers\AnnoRoute\Attribute\Delete;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
 use App\Providers\AnnoRoute\Attribute\PutMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
-use App\Repositories\Sys\SysDeptRepository;
-use App\Repositories\Sys\SysRoleRepository;
+use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysUserRepository;
-use App\Services\SysUserService;
+use App\Services\Sys\SysUserDeptService;
+use App\Services\Sys\SysUserRoleService;
+use App\Services\Sys\SysUserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,30 +25,31 @@ use Illuminate\Http\Request;
 #[Create, Update, Delete, Query]
 class SysUserListController extends BaseController
 {
-    public function __construct(SysUserRepository $repository, SysUserService $service)
+
+    protected function repository(): RepositoryInterface
     {
-        $this->repository = $repository;
-        $this->service = $service;
+        return app(SysUserRepository::class);
     }
+
 
     /** 重置用户密码 */
     #[PutMapping('/reset/password', 'resetPassword')]
-    public function resetPassword(Request $request): JsonResponse
+    public function resetPassword(Request $request, SysUserService $service): JsonResponse
     {
-        return $this->service->resetPassword($request);
+        return $service->resetPassword($request);
     }
 
     /** 获取用户角色选项栏数据 */
     #[GetMapping('/role', 'getRole')]
-    public function role(SysRoleRepository $repository): JsonResponse
+    public function role(SysUserRoleService $service): JsonResponse
     {
-        return $this->success($repository->getRoleFields());
+        return $this->success($service->getRoleFields());
     }
 
     /** 获取用户部门选项栏数据 */
     #[GetMapping('/dept', 'getDept')]
-    public function dept(SysDeptRepository $repository): JsonResponse
+    public function dept(SysUserDeptService $service): JsonResponse
     {
-        return $this->success($repository->getDeptField());
+        return $this->success($service->getDeptField());
     }
 }

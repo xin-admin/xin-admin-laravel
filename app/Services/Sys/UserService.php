@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Sys;
 
 use App\Models\UserModel;
+use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UserService extends Service
+class UserService extends BaseService
 {
     /**
      * 重置用户密码
