@@ -49,9 +49,6 @@ abstract class BaseRepository implements RepositoryInterface
     /** 验证数据 */
     protected function validation(array $data): array
     {
-        if (empty($this->rules)) {
-            return [];
-        }
         $validator = Validator::make($data, $this->rules(), $this->messages())->stopOnFirstFailure();
         if ($validator->fails()) {
             throw new RepositoryException('Validation failed: ' . $validator->errors()->first());
