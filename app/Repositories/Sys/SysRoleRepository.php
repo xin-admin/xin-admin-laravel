@@ -38,6 +38,7 @@ class SysRoleRepository extends BaseRepository
                 'status' => 'required|integer|in:0,1'
             ];
         } else {
+            $id = request()->route('id');
             return [
                 'name' => [
                     'required',
