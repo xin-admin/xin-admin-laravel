@@ -2,11 +2,12 @@
 
 namespace App\Services\Sys;
 
-use App\Models\Sys\SysRoleModel;
 use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Sys\SysUserRepository;
 use App\Services\BaseService;
+use App\Services\SysFileService;
+use App\Support\Enum\FileType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -167,6 +168,19 @@ class SysUserService extends BaseService
             return $this->error(__('user.user_not_exist'));
         }
         return $this->success($model->update($data));
+    }
+
+    /**
+     * 更新用户头像
+     */
+    public function uploadAvatar(): JsonResponse
+    {
+        $service = new SysFileService();
+        $data = $service->upload(FileType::IMAGE, 0, 'public');
+        $user = SysUserModel::find(Auth::id());
+        $user->avatar_id = $data['id'];
+        $user->save();
+        return $this->success($data);
     }
 
     /**

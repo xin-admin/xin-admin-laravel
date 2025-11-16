@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
@@ -45,13 +46,14 @@ class SysUserModel extends User
         'dept_id' => 'integer'
     ];
 
-    protected $appends = ['role_id', 'dept_name'];
+    protected $appends = ['role_id', 'dept_name', 'avatar_url'];
 
     protected $hidden = [
         'dept',
+        'avatar',
         'password',
         'remember_token',
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -92,6 +94,27 @@ class SysUserModel extends User
     {
         return $this->hasMany(SysLoginRecordModel::class, 'user_id', 'id');
     }
+
+    /**
+     * 关联用户头像
+     * @return HasOne
+     */
+    public function avatar(): HasOne
+    {
+        return $this->hasOne(SysFileModel::class, 'id', 'avatar_id');
+    }
+
+    /**
+     * 获取用户角色列表
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if($this->avatar) {
+            return $this->avatar->preview_url;
+        }
+        return null;
+    }
+
 
 
 }
