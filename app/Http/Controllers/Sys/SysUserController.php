@@ -36,7 +36,6 @@ class SysUserController
     #[PostMapping('/logout')]
     public function logout(Request $request): JsonResponse
     {
-        Auth::logout();
         $request->user()->currentAccessToken()->delete();
         return $this->success(__('user.logout_success'));
     }
@@ -68,11 +67,9 @@ class SysUserController
 
     /** 上传头像 */
     #[PostMapping('/avatar')]
-    public function uploadAvatar(): JsonResponse
+    public function uploadAvatar(SysUserService $service): JsonResponse
     {
-        $service = new SysFileService();
-        $data = $service->upload(FileType::IMAGE, 1, 'public');
-        return $this->success($data);
+        return $service->uploadAvatar();
     }
 
     /** 获取管理员登录日志 */
