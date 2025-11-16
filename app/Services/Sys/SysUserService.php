@@ -2,6 +2,7 @@
 
 namespace App\Services\Sys;
 
+use App\Models\Sys\SysRoleModel;
 use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
 use App\Repositories\Sys\SysUserRepository;
@@ -52,12 +53,12 @@ class SysUserService extends BaseService
 
     /**
      * 获取管理员信息
-     * @param int $userID
+     * @param int $id
      * @return array
      */
-    public function getAdminMenus(int $userID): array
+    public function getAdminMenus(int $id): array
     {
-        if($userID == 1) {
+        if($id == 1) {
             $menus = SysRuleModel::query()
                 ->where('status', 1)
                 ->whereIn('type', ['menu','route','nested-route'])
@@ -66,7 +67,7 @@ class SysUserService extends BaseService
         } else {
             $roles = SysUserModel::with(['roles.rules' => function ($query) {
                 $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
-            }])->find($userID)->roles->toArray();
+            }])->find($id)->roles->toArray();
 
             $menus = collect($roles)
                 ->map(fn ($item) => $item['rules'])
@@ -171,7 +172,7 @@ class SysUserService extends BaseService
     /**
      * 获取用户的所有权限 KEY
      */
-    public function ruleKeys($id): array
+    public function ruleKeys(int $id): array
     {
         if($id == 1) {
             return SysRuleModel::query()

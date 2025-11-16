@@ -36,7 +36,7 @@ class SysUserController
     #[PostMapping('/logout')]
     public function logout(Request $request): JsonResponse
     {
-        Auth::guard('sys_users')->logout();
+        Auth::logout();
         $request->user()->currentAccessToken()->delete();
         return $this->success(__('user.logout_success'));
     }
@@ -45,8 +45,8 @@ class SysUserController
     #[GetMapping('/info')]
     public function info(SysUserService $service): JsonResponse
     {
-        $info = auth()->user();
-        $id = auth()->id();
+        $info = Auth::user();
+        $id = Auth::id();
         $access = $service->ruleKeys($id);
         $menus = $service->getAdminMenus($id);
         return $this->success(compact('access', 'menus', 'info'));
@@ -79,7 +79,7 @@ class SysUserController
     #[GetMapping('/login/record')]
     public function get(SysLoginRecordService $service): JsonResponse
     {
-        $id = auth()->id();
+        $id = Auth::id();
         $data = $service->getRecordByID($id);
         return $this->success($data);
     }
