@@ -754,35 +754,17 @@ class SysUserSeeder extends Seeder
                             [
                                 'order' => 7,
                                 'type' => 'rule',
-                                'name' => '上传图片',
-                                'key' => 'sys.file.list.upload.image'
-                            ],
-                            [
-                                'order' => 8,
-                                'type' => 'rule',
-                                'name' => '上传视频',
-                                'key' => 'sys.file.list.upload.video'
-                            ],
-                            [
-                                'order' => 9,
-                                'type' => 'rule',
-                                'name' => '上传音频',
-                                'key' => 'sys.file.list.upload.audio'
-                            ],
-                            [
-                                'order' => 10,
-                                'type' => 'rule',
-                                'name' => '上传其他文件',
-                                'key' => 'sys.file.list.upload.file'
-                            ],
-                            [
-                                'order' => 11,
-                                'type' => 'rule',
                                 'name' => '永久删除文件',
                                 'key' => 'sys.file.list.force-delete'
                             ],
                             [
-                                'order' => 12,
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '上传文件',
+                                'key' => 'sys.file.list.upload'
+                            ],
+                            [
+                                'order' => 9,
                                 'type' => 'rule',
                                 'name' => '下载文件',
                                 'key' => 'sys.file.list.download'

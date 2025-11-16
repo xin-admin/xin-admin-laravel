@@ -33,7 +33,7 @@ class SysFileController extends BaseController
     /**
      * 上传图片
      */
-    #[PostMapping('/upload/image', 'upload.image')]
+    #[PostMapping('/upload/image', 'upload')]
     public function uploadImage(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
@@ -45,7 +45,7 @@ class SysFileController extends BaseController
     /**
      * 上传视频
      */
-    #[PostMapping('/upload/video', 'upload.video')]
+    #[PostMapping('/upload/video', 'upload')]
     public function uploadVideo(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
@@ -57,7 +57,7 @@ class SysFileController extends BaseController
     /**
      * 上传音频
      */
-    #[PostMapping('/upload/audio', 'upload.audio')]
+    #[PostMapping('/upload/audio', 'upload')]
     public function uploadAudio(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
@@ -69,7 +69,7 @@ class SysFileController extends BaseController
     /**
      * 上传压缩包
      */
-    #[PostMapping('/upload/zip', 'upload.zip')]
+    #[PostMapping('/upload/zip', 'upload')]
     public function uploadZip(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
@@ -81,7 +81,7 @@ class SysFileController extends BaseController
     /**
      * 上传其他文件
      */
-    #[PostMapping('/upload/file', 'upload.file')]
+    #[PostMapping('/upload/file', 'upload')]
     public function uploadFile(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
