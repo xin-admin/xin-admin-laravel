@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件列表
  */
-#[RequestMapping('/sys/file/list', 'file.list')]
+#[RequestMapping('/sys/file/list', 'sys.file.list')]
 #[Query, Delete]
 class SysFileController extends BaseController
 {
@@ -33,103 +33,89 @@ class SysFileController extends BaseController
     /**
      * 上传图片
      */
-    #[PostMapping('/upload/image')]
+    #[PostMapping('/upload/image', 'upload.image')]
     public function uploadImage(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
         $disk = request('disk', 'public');
-        
         $result = $fileService->upload(FileType::IMAGE, $group_id, $disk);
-        
         return $this->success($result);
     }
 
     /**
      * 上传视频
      */
-    #[PostMapping('/upload/video')]
+    #[PostMapping('/upload/video', 'upload.video')]
     public function uploadVideo(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
         $disk = request('disk', 'public');
-        
         $result = $fileService->upload(FileType::VIDEO, $group_id, $disk);
-        
         return $this->success($result);
     }
 
     /**
      * 上传音频
      */
-    #[PostMapping('/upload/audio')]
+    #[PostMapping('/upload/audio', 'upload.audio')]
     public function uploadAudio(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
         $disk = request('disk', 'public');
-        
         $result = $fileService->upload(FileType::AUDIO, $group_id, $disk);
-        
         return $this->success($result);
     }
 
     /**
      * 上传压缩包
      */
-    #[PostMapping('/upload/zip')]
+    #[PostMapping('/upload/zip', 'upload.zip')]
     public function uploadZip(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
         $disk = request('disk', 'public');
-        
         $result = $fileService->upload(FileType::ZIP, $group_id, $disk);
-        
         return $this->success($result);
     }
 
     /**
      * 上传其他文件
      */
-    #[PostMapping('/upload/file')]
+    #[PostMapping('/upload/file', 'upload.file')]
     public function uploadFile(SysFileService $fileService): JsonResponse
     {
         $group_id = request('group_id', 0);
         $disk = request('disk', 'public');
-        
         $result = $fileService->upload(FileType::ANNEX, $group_id, $disk);
-        
         return $this->success($result);
     }
 
     /**
      * 删除文件
      */
-    #[DeleteMapping]
+    #[DeleteMapping(authorize: 'delete')]
     public function delete(int $id): JsonResponse
     {
-        $recycle = request('recycle', true);
-        
         $fileService = new SysFileService;
-        $fileService->delete($id, $recycle);
-        
-        return $this->success([], __('system.file.delete_success'));
+        $fileService->delete($id);
+        return $this->success();
     }
 
     /**
      * 永久删除文件
      */
-    #[DeleteMapping('/force-delete/{id}')]
+    #[DeleteMapping('/force-delete/{id}', 'force-delete')]
     public function forceDelete(int $id): JsonResponse
     {
         $fileService = new SysFileService;
         $fileService->delete($id, false);
-        
-        return $this->success([], __('system.file.force_delete_success'));
+        return $this->success();
     }
 
     /**
      * 下载文件
      */
-    #[GetMapping('/download/{id}')]
+    #[GetMapping('/download/{id}', 'download')]
     public function download(int $id): StreamedResponse
     {
         $fileService = new SysFileService;

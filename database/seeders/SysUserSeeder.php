@@ -708,6 +708,89 @@ class SysUserSeeder extends Seeder
                     ],
                     [
                         'order' => 2,
+                        'type' => "route",
+                        'name' => "文件管理",
+                        'local' => "menu.system.file",
+                        'key' => "system.file",
+                        'path' => "/system/file",
+                        'elementPath' => "/system/file",
+                        'children' => [
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '获取文件夹',
+                                'key' => 'sys.file.group.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '新增文件夹',
+                                'key' => 'sys.file.group.create'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '编辑文件夹',
+                                'key' => 'sys.file.group.update'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '删除文件夹',
+                                'key' => 'sys.file.group.delete'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '查询文件列表',
+                                'key' => 'sys.file.list.query'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '删除文件',
+                                'key' => 'sys.file.list.delete'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '上传图片',
+                                'key' => 'sys.file.list.upload.image'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '上传视频',
+                                'key' => 'sys.file.list.upload.video'
+                            ],
+                            [
+                                'order' => 9,
+                                'type' => 'rule',
+                                'name' => '上传音频',
+                                'key' => 'sys.file.list.upload.audio'
+                            ],
+                            [
+                                'order' => 10,
+                                'type' => 'rule',
+                                'name' => '上传其他文件',
+                                'key' => 'sys.file.list.upload.file'
+                            ],
+                            [
+                                'order' => 11,
+                                'type' => 'rule',
+                                'name' => '永久删除文件',
+                                'key' => 'sys.file.list.force-delete'
+                            ],
+                            [
+                                'order' => 12,
+                                'type' => 'rule',
+                                'name' => '下载文件',
+                                'key' => 'sys.file.list.download'
+                            ]
+                        ],
+                    ],
+                    [
+                        'order' => 3,
                         'type' => "menu",
                         'name' => "系统日志",
                         'local' => "menu.system.watcher",
