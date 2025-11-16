@@ -25,14 +25,6 @@ class SysWatcherController
         return $this->success($storage->get($options));
     }
 
-    #[GetMapping('/auth', 'auth')]
-    public function auth(Request $request, EntriesRepository $storage): JsonResponse
-    {
-        $options = EntryQueryOptions::fromRequest($request);
-        $options->type('auth');
-        return $this->success($storage->get($options));
-    }
-
     #[GetMapping('/query', 'query')]
     public function queryLog(Request $request, EntriesRepository $storage): JsonResponse
     {
