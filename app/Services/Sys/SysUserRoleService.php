@@ -41,7 +41,7 @@ class SysUserRoleService extends BaseService
     /** 获取角色选择项 */
     public function getRoleFields(): array
     {
-        return SysRoleModel::where('status', 0)
+        return SysRoleModel::where('status', 1)
             ->get(['id as role_id', 'name'])
             ->toArray();
     }
