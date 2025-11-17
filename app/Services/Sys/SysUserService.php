@@ -36,12 +36,18 @@ class SysUserService extends BaseService
             'password' => 'required|min:4|alphaDash',
         ]);
 
-        if (Auth::attempt($credentials, true)) {
+        if (Auth::attempt($credentials)) {
             $userID = auth()->id();
             $access = $this->ruleKeys($userID);
+            if($request->get('remember', false)) {
+                $expiration = null;
+            } else {
+                $expiration = now()->addDays(3);
+            }
             $data = $request->user()
-                ->createToken($credentials['username'], $access)
+                ->createToken($credentials['username'], $access, $expiration)
                 ->toArray();
+
             // 记录登录 IP 与 时间
             SysUserModel::query()->where('id', $userID)->update([
                 'login_time' => now(),
