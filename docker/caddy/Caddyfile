@@ -4,15 +4,12 @@
 	}
 }
 
-localhost {
-    root * /app/public
+http://x.cc {
+
+    root /app/public
 
     # 压缩设置
     encode zstd br gzip
-
-    handle {
-        try_files {path} /index.php
-    }
 
 	php_server {
 		root /app/public
