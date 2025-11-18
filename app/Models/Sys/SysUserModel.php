@@ -48,6 +48,8 @@ class SysUserModel extends User
 
     protected $appends = ['role_id', 'dept_name', 'avatar_url'];
 
+    protected $with = ['dept', 'avatar'];
+
     protected $hidden = [
         'dept',
         'avatar',
