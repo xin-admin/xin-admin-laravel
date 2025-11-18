@@ -4,9 +4,7 @@ namespace App\Services\Sys;
 
 use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
-use App\Repositories\Sys\SysUserRepository;
 use App\Services\BaseService;
-use App\Services\SysFileService;
 use App\Support\Enum\FileType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,13 +14,6 @@ use Illuminate\Validation\Rule;
 
 class SysUserService extends BaseService
 {
-    protected SysUserRepository $repository;
-    protected SysUserModel $model;
-
-    public function __construct(SysUserRepository $repository, SysUserModel $model) {
-        $this->repository = $repository;
-        $this->model = $model;
-    }
 
     /**
      * 系统用户登录
@@ -99,7 +90,7 @@ class SysUserService extends BaseService
             'rePassword' => 'required|same:newPassword',
         ]);
         $user_id = auth()->id();
-        $user = $this->model->find($user_id);
+        $user = SysUserModel::find($user_id);
         if (! password_verify($validated['oldPassword'], $user->password)) {
             return $this->error(__('user.old_password_error'));
         }

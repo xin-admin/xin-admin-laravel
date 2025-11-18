@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Sys;
 
 use App\Exceptions\HttpResponseException;
 use App\Models\Sys\SysFileModel;

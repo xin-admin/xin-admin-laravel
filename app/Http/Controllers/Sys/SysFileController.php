@@ -11,7 +11,7 @@ use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysFileRepository;
-use App\Services\SysFileService;
+use App\Services\Sys\SysFileService;
 use App\Support\Enum\FileType;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;

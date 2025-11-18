@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
