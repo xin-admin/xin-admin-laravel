@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/doc', function () {
-    return view('swagger');
+Route::get('/', function () {
+    return "Hello, thank you for using XinAdmin. ";
 });

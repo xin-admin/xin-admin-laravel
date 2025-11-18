@@ -9,12 +9,14 @@ use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\PostMapping;
 use App\Providers\AnnoRoute\Attribute\PutMapping;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 #[RequestMapping('/api/user', authGuard: 'users')]
-class UserController extends BaseController
+class UserController
 {
+    use RequestJson;
     protected array $noPermission = ['refreshToken'];
 
     #[GetMapping]

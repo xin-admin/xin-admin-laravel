@@ -91,7 +91,11 @@ class AnnoRoute
             $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
             $this->middleware = $this->registerMiddleware($routeInstance->middleware);
             // 不需要权限校验
-            $this->noPermission = $classRef->getProperty('noPermission')->getDefaultValue();
+            try {
+                $this->noPermission = $classRef->getProperty('noPermission')->getDefaultValue();
+            } catch (ReflectionException) {
+                $this->noPermission = [];
+            }
 
             $this->registerCRUD($classAttr);
 

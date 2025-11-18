@@ -4,22 +4,11 @@ namespace App\Repositories\Sys;
 
 use App\Exceptions\RepositoryException;
 use App\Models\Sys\SysSettingGroupModel;
-use App\Repositories\Repository;
+use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 
-class SysSettingGroupRepository extends Repository
+class SysSettingGroupRepository extends BaseRepository
 {
-    protected array $validation = [
-        'key' => 'required',
-        'title' => 'required',
-        'remark' => 'sometimes|required',
-    ];
-
-    protected array $messages = [
-        'key.required' => '键名字段是必填的',
-        'title.required' => '标题字段是必填的',
-        'remark.required' => '备注字段是必填的',
-    ];
 
     protected array $searchField = [
         'id' => '=',
@@ -32,6 +21,24 @@ class SysSettingGroupRepository extends Repository
     protected function model(): Builder
     {
         return SysSettingGroupModel::query();
+    }
+
+    protected function rules(): array
+    {
+       return [
+           'key' => 'required',
+           'title' => 'required',
+           'remark' => 'sometimes|required',
+       ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'key.required' => '键名字段是必填的',
+            'title.required' => '标题字段是必填的',
+            'remark.required' => '备注字段是必填的',
+        ];
     }
 
     public function delete(int $id): bool

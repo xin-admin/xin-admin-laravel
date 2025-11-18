@@ -23,9 +23,10 @@ class SysRoleModel extends Model
 
     protected $casts = [
         'sort' => 'integer',
-        'status' => 'integer',
-        'rules' => 'array'
+        'status' => 'integer'
     ];
+
+    protected $appends = ['countUser', 'ruleIds'];
 
     /**
      * 角色用户关联
@@ -41,5 +42,20 @@ class SysRoleModel extends Model
     public function rules(): BelongsToMany
     {
         return $this->belongsToMany(SysRuleModel::class, 'sys_role_rule', 'role_id', 'rule_id');
+    }
+
+    /** 用户总数 */
+    public function getCountUserAttribute(): int
+    {
+        return $this->users()->count();
+    }
+
+    /** 拥有的权限ID */
+    public function getRuleIdsAttribute(): array
+    {
+        if(!empty($this->id) && $this->id == 1) {
+            return SysRuleModel::query()->pluck('id')->toArray();
+        }
+        return $this->rules()->pluck('id')->toArray();
     }
 }

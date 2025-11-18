@@ -6,7 +6,7 @@ use App\Models\UserModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UserService extends Service
+class UserService extends BaseService
 {
     /**
      * 重置用户密码

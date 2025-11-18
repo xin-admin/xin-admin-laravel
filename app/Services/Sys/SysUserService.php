@@ -1,23 +1,19 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Sys;
 
+use App\Models\Sys\SysRuleModel;
 use App\Models\Sys\SysUserModel;
-use App\Repositories\Sys\SysUserRepository;
+use App\Services\BaseService;
+use App\Support\Enum\FileType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
-class SysUserService extends Service
+class SysUserService extends BaseService
 {
-    protected SysUserRepository $repository;
-    protected SysUserModel $model;
-
-    public function __construct(SysUserRepository $repository, SysUserModel $model) {
-        $this->repository = $repository;
-        $this->model = $model;
-    }
 
     /**
      * 系统用户登录
@@ -31,12 +27,18 @@ class SysUserService extends Service
             'password' => 'required|min:4|alphaDash',
         ]);
 
-        if (Auth::attempt($credentials, true)) {
+        if (Auth::attempt($credentials)) {
             $userID = auth()->id();
-            $access = $this->repository->ruleKeys($userID);
+            $access = $this->ruleKeys($userID);
+            if($request->get('remember', false)) {
+                $expiration = null;
+            } else {
+                $expiration = now()->addDays(3);
+            }
             $data = $request->user()
-                ->createToken($credentials['username'], $access)
+                ->createToken($credentials['username'], $access, $expiration)
                 ->toArray();
+
             // 记录登录 IP 与 时间
             SysUserModel::query()->where('id', $userID)->update([
                 'login_time' => now(),
@@ -49,33 +51,30 @@ class SysUserService extends Service
 
     /**
      * 获取管理员信息
-     * @param int $userID
+     * @param int $id
      * @return array
      */
-    public function getAdminMenus(int $userID): array
+    public function getAdminMenus(int $id): array
     {
-        $menus = $this->repository->menus($userID);
-        return $this->getMenuTree($menus);
-    }
+        if($id == 1) {
+            $menus = SysRuleModel::query()
+                ->where('status', 1)
+                ->whereIn('type', ['menu','route','nested-route'])
+                ->get()
+                ->toArray();
+        } else {
+            $roles = SysUserModel::with(['roles.rules' => function ($query) {
+                $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
+            }])->find($id)->roles->toArray();
 
-    /**
-     * 构建树
-     * @param array $list
-     * @param int $pid
-     * @return array
-     */
-    protected function getMenuTree(array &$list, int $pid = 0): array
-    {
-        $data = [];
-        foreach ($list as $k => $item) {
-            if ($item['pid'] == $pid) {
-                $children = $this->getMenuTree($list, $item['id']);
-                ! empty($children) && $item['children'] = $children;
-                $data[] = $item;
-                unset($list[$k]);
-            }
+            $menus = collect($roles)
+                ->map(fn ($item) => $item['rules'])
+                ->collapse()
+                ->map(fn ($item) => collect($item)->forget(['pivot', 'updated_at', 'created_at', 'status']) )
+                ->unique('id')
+                ->toArray();
         }
-        return $data;
+        return $this->getTreeData($menus);
     }
 
     /**
@@ -91,7 +90,7 @@ class SysUserService extends Service
             'rePassword' => 'required|same:newPassword',
         ]);
         $user_id = auth()->id();
-        $user = $this->model->find($user_id);
+        $user = SysUserModel::find($user_id);
         if (! password_verify($validated['oldPassword'], $user->password)) {
             return $this->error(__('user.old_password_error'));
         }
@@ -130,22 +129,6 @@ class SysUserService extends Service
     }
 
     /**
-     * 修改管理员用户状态
-     * @param $id
-     * @return JsonResponse
-     */
-    public function resetStatus($id): JsonResponse
-    {
-        $user = SysUserModel::find($id);
-        if (!$user) {
-            return $this->error(__('user.user_not_exist'));
-        }
-        $user->status = $user->status == 0 ? 1 : 0;
-        $user->save();
-        return $this->success('ok');
-    }
-
-    /**
      * 更新用户信息
      * @param int $id 用户ID
      * @param Request $request 请求
@@ -154,14 +137,25 @@ class SysUserService extends Service
     public function updateInfo(int $id, Request $request): JsonResponse
     {
         $data = $request->validate([
-            'nickname' => 'required',
+            'nickname' => [
+                'required',
+                Rule::unique('sys_user', 'username')->ignore($id)
+            ],
             'sex' => 'required|in:0,1',
-            'mobile' => 'required',
-            'email' => 'required|email|unique:sys_user,email',
+            'bio' => 'sometimes|max:255',
+            'mobile' => [
+                'required',
+                Rule::unique('sys_user', 'mobile')->ignore($id)
+            ],
+            'email' => [
+                'required',
+                Rule::unique('sys_user', 'email')->ignore($id)
+            ],
         ], [
             'nickname.required' => '昵称不能为空',
             'sex.required' => '性别不能为空',
             'sex.in' => '性别格式错误',
+            'bio.max' => '个人简介最大不能超过255个字符',
             'mobile.required' => '手机号不能为空',
             'email.required' => '邮箱不能为空',
             'email.email' => '邮箱格式错误'
@@ -171,6 +165,42 @@ class SysUserService extends Service
             return $this->error(__('user.user_not_exist'));
         }
         return $this->success($model->update($data));
+    }
+
+    /**
+     * 更新用户头像
+     */
+    public function uploadAvatar(): JsonResponse
+    {
+        $service = new SysFileService();
+        $data = $service->upload(FileType::IMAGE, 0, 'public');
+        $user = SysUserModel::find(Auth::id());
+        $user->avatar_id = $data['id'];
+        $user->save();
+        return $this->success($data);
+    }
+
+    /**
+     * 获取用户的所有权限 KEY
+     */
+    public function ruleKeys(int $id): array
+    {
+        if($id == 1) {
+            return SysRuleModel::query()
+                ->where('status', 1)
+                ->pluck('key')
+                ->toArray();
+        }
+        $roles = SysUserModel::with(['roles.rules' => function ($query) {
+            $query->where('status', 1); // 只获取启用的权限
+        }])->find($id)->roles->toArray();
+
+        return collect($roles)
+            ->map(fn ($item) => $item['rules'] )
+            ->collapse()
+            ->map(fn ($item) => $item['key'] )
+            ->unique()
+            ->toArray();
     }
 
 }

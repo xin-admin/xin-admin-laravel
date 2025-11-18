@@ -17,17 +17,32 @@ class SysUserSeeder extends Seeder
     {
         $date = date('Y-m-d H:i:s');
         DB::table('sys_user')->insert([
-            'id' => 1,
-            'username' => 'admin',
-            'nickname' => 'admin',
-            'email' => Str::random(10).'@example.com',
-            'password' => Hash::make('123456'),
-            'dept_id' => 1,
-            'avatar_id' => 1,
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-            'created_at' => $date,
-            'updated_at' => $date,
+            [
+                'id' => 1,
+                'username' => 'admin',
+                'nickname' => '管理员',
+                'email' => Str::random(10).'@example.com',
+                'password' => Hash::make('123456'),
+                'dept_id' => 1,
+                'avatar_id' => 1,
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ],
+            [
+                'id' => 2,
+                'username' => 'user',
+                'nickname' => '财务',
+                'email' => Str::random(10).'@example.com',
+                'password' => Hash::make('123456'),
+                'dept_id' => 2,
+                'avatar_id' => 1,
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]
         ]);
         DB::table('sys_role')->insert([
             ['id' => 1, 'name' => '超级管理员', 'created_at' => $date, 'updated_at' => $date],
@@ -36,10 +51,76 @@ class SysUserSeeder extends Seeder
             ['id' => 4, 'name' => '市场运营', 'created_at' => $date, 'updated_at' => $date],
         ]);
         DB::table('sys_dept')->insert([
-            ['id' => 1, 'name' => '网络科技有限公司', 'parent_id' => 0, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'name' => '洛阳分公司', 'parent_id' => 1, 'sort' => 0, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'name' => '郑州分公司', 'parent_id' => 1, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'name' => '南阳分公司', 'parent_id' => 1, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            [
+                'id' => 1,
+                'name' => '新时代股份有限公司',
+                'code' => 'A01',
+                'type' => 0,
+                'parent_id' => 0,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '北京市海淀区某某街道103号',
+                'remark' => '总公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 2,
+                'name' => '新时代软件技术（洛阳）有限公司',
+                'code' => 'A01-B01',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省洛阳市龙门区某某街道99号',
+                'remark' => '洛阳市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 3,
+                'name' => '新时代智能科技（郑州）有限公司',
+                'code' => 'A01-B02',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 0,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省郑州市二七区某某街道69号',
+                'remark' => '郑州市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 4,
+                'name' => '新征程科技（南阳）有限公司',
+                'code' => 'A01-B03',
+                'type' => 0,
+                'parent_id' => 1,
+                'sort' => 2,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '河南省南阳市卧龙区某某街道77号',
+                'remark' => '南阳市分公司',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
+            [
+                'id' => 5,
+                'name' => '新时代投资发展有限公司',
+                'code' => 'B01',
+                'type' => 0,
+                'parent_id' => 0,
+                'sort' => 2,
+                'phone' => '19999999999',
+                'email' => Str::random(10).'@example.com',
+                'address' => '北京市海淀区人民路666号',
+                'remark' => '我们坚信，卓越的投资在于发现价值，而卓越的投资管理在于创造价值。我们立志成为科技创业者身边最懂业务、最能赋能、最长情的资本伙伴，共同将创新的火种，转化为引领行业的参天大树。',
+                'created_at' => $date,
+                'updated_at' => $date
+            ],
         ]);
 
         $rules = [
@@ -330,63 +411,277 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
-                'order' => 6,
-                'type' => 'menu',
-                'name' => '个人中心',
-                'local' => "menu.user",
-                'icon' => "UserOutlined",
-                'key' => 'user',
+                'order' => 7,
+                'type' => 'route',
+                'name' => '用户设置',
+                'local' => "menu.user.setting",
+                'icon' => "UserSwitchOutlined",
+                'key' => 'user.setting',
+                'path' => '/user/setting',
+                'elementPath' => '/user/setting/index',
                 'children' => [
                     [
                         'order' => 0,
-                        'type' => 'route',
-                        'name' => '个人中心',
-                        'local' => "menu.user.index",
-                        'icon' => "UserOutlined",
-                        'key' => 'user.info',
-                        'path' => '/user/index',
-                        'elementPath' => '/user/index',
+                        'type' => 'nested-route',
+                        'name' => '基本信息',
+                        'key' => 'user.setting.info',
+                        'path' => '/user/setting',
+                        'elementPath' => '/user/setting/info',
                     ],
                     [
                         'order' => 1,
-                        'type' => 'route',
-                        'name' => '用户设置',
-                        'local' => "menu.user.setting",
-                        'icon' => "UserSwitchOutlined",
-                        'key' => 'user.setting',
-                        'path' => '/user/setting',
-                        'elementPath' => '/user/setting/index',
-                        'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'nested-route',
-                                'name' => '基本信息',
-                                'key' => 'user.setting.info',
-                                'path' => '/user/setting',
-                                'elementPath' => '/user/setting/info',
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'nested-route',
-                                'name' => '安全设置',
-                                'key' => 'user.setting.security',
-                                'path' => '/user/setting/security',
-                                'elementPath' => '/user/setting/security',
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'nested-route',
-                                'name' => '实名认证',
-                                'key' => 'user.setting.verification',
-                                'path' => '/user/setting/verification',
-                                'elementPath' => '/user/setting/verification',
-                            ]
-                        ]
+                        'type' => 'nested-route',
+                        'name' => '安全设置',
+                        'key' => 'user.setting.security',
+                        'path' => '/user/setting/security',
+                        'elementPath' => '/user/setting/security',
+                    ],
+                    [
+                        'order' => 2,
+                        'type' => 'nested-route',
+                        'name' => '实名认证',
+                        'key' => 'user.setting.verification',
+                        'path' => '/user/setting/verification',
+                        'elementPath' => '/user/setting/verification',
+                    ],
+                    [
+                        'order' => 3,
+                        'type' => 'nested-route',
+                        'name' => '登录日志',
+                        'key' => 'user.setting.loginlog',
+                        'path' => '/user/setting/loginlog',
+                        'elementPath' => '/user/setting/loginlog',
                     ]
                 ]
             ],
             [
-                'order' => 7,
+                'order' => 8,
+                'type' => 'menu',
+                'name' => '系统用户',
+                'local' => "menu.sys-user",
+                'icon' => "UserOutlined",
+                'key' => 'sys-user',
+                'children' => [
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.list",
+                        'name' => "用户列表",
+                        'path' => "/sys-user/list",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/list",
+                        'order' => 1,
+                        'local' => "menu.sys-user.list",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '查询列表',
+                                'key' => 'sys-user.list.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '新增用户',
+                                'key' => 'sys-user.list.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '修改用户',
+                                'key' => 'sys-user.list.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除用户',
+                                'key' => 'sys-user.list.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '重置用户密码',
+                                'key' => 'sys-user.list.resetPassword'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '修改用户状态',
+                                'key' => 'sys-user.list.resetStatus'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '获取角色选项',
+                                'key' => 'sys-user.list.getRole'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '获取部门选项',
+                                'key' => 'sys-user.list.getDept'
+                            ],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.dept",
+                        'name' => "用户部门",
+                        'path' => "/sys-user/dept",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/dept",
+                        'order' => 1,
+                        'local' => "menu.sys-user.dept",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '获取部门列表',
+                                'key' => 'sys-user.dept.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '新建部门',
+                                'key' => 'sys-user.dept.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新部门信息',
+                                'key' => 'sys-user.dept.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除部门',
+                                'key' => 'sys-user.dept.delete'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '获取部门用户',
+                                'key' => 'sys-user.dept.users'
+                            ],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.role",
+                        'name' => "用户角色",
+                        'path' => "/sys-user/role",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/role",
+                        'order' => 1,
+                        'local' => "menu.sys-user.role",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '新增角色',
+                                'key' => 'sys-user.role.create'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '查询角色列表',
+                                'key' => 'sys-user.role.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新角色信息',
+                                'key' => 'sys-user.role.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除角色',
+                                'key' => 'sys-user.role.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '设置角色权限',
+                                'key' => 'sys-user.role.rule'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '获取权限选项',
+                                'key' => 'sys-user.role.rule.list'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '设置启用状态',
+                                'key' => 'sys-user.role.rule.status'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '获取角色用户',
+                                'key' => 'sys-user.role.rule.users'
+                            ],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "sys-user.rule",
+                        'name' => "用户权限",
+                        'path' => "/sys-user/rule",
+                        'icon' => "",
+                        'elementPath' => "/sys-user/rule",
+                        'order' => 1,
+                        'local' => "menu.sys-user.rule",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'rule',
+                                'name' => '获取权限列表',
+                                'key' => 'sys-user.rule.query'
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '创建权限规则',
+                                'key' => 'sys-user.rule.create'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '更新权限规则',
+                                'key' => 'sys-user.rule.update'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除权限规则',
+                                'key' => 'sys-user.rule.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '获取父级权限',
+                                'key' => 'sys-user.rule.parentQuery'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '设置显示状态',
+                                'key' => 'sys-user.rule.show'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '设置启用状态',
+                                'key' => 'sys-user.rule.status'
+                            ],
+                        ]
+                    ],
+                ]
+            ],
+            [
+                'order' => 9,
                 'type' => "menu",
                 'name' => "系统设置",
                 'local' => "menu.system",
@@ -414,43 +709,118 @@ class SysUserSeeder extends Seeder
                     [
                         'order' => 2,
                         'type' => "route",
-                        'name' => "菜单权限",
-                        'local' => "menu.system.rule",
-                        'key' => "system.rule",
-                        'path' => "/system/rule",
-                        'elementPath' => "/system/rule",
+                        'name' => "文件管理",
+                        'local' => "menu.system.file",
+                        'key' => "system.file",
+                        'path' => "/system/file",
+                        'elementPath' => "/system/file",
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '菜单权限查询',
-                                'key' => 'system.rule.query',
-                            ],
                             [
                                 'order' => 1,
                                 'type' => 'rule',
-                                'name' => '菜单权限新增',
-                                'key' => 'system.rule.create',
+                                'name' => '获取文件夹',
+                                'key' => 'sys.file.group.query'
                             ],
                             [
                                 'order' => 2,
                                 'type' => 'rule',
-                                'name' => '菜单权限编辑',
-                                'key' => 'system.rule.update',
+                                'name' => '新增文件夹',
+                                'key' => 'sys.file.group.create'
                             ],
                             [
                                 'order' => 3,
                                 'type' => 'rule',
-                                'name' => '菜单权限删除',
-                                'key' => 'system.rule.delete',
+                                'name' => '编辑文件夹',
+                                'key' => 'sys.file.group.update'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '删除文件夹',
+                                'key' => 'sys.file.group.delete'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '查询文件列表',
+                                'key' => 'sys.file.list.query'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '删除文件',
+                                'key' => 'sys.file.list.delete'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '永久删除文件',
+                                'key' => 'sys.file.list.force-delete'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '上传文件',
+                                'key' => 'sys.file.list.upload'
+                            ],
+                            [
+                                'order' => 9,
+                                'type' => 'rule',
+                                'name' => '下载文件',
+                                'key' => 'sys.file.list.download'
+                            ]
+                        ],
+                    ],
+                    [
+                        'order' => 3,
+                        'type' => "menu",
+                        'name' => "系统日志",
+                        'local' => "menu.system.watcher",
+                        'key' => "system.watcher",
+                        'children' => [
+                            [
+                                'order' => 0,
+                                'type' => 'route',
+                                'name' => '请求记录',
+                                'local' => "menu.system.watcher.request",
+                                'key' => "system.watcher.request",
+                                'elementPath' => "/system/watcher/request",
+                                'path' => "/system/watcher/request",
+                            ],
+                            [
+                                'order' => 1,
+                                'type' => 'route',
+                                'name' => 'SQL记录',
+                                'local' => "menu.system.watcher.query",
+                                'key' => "system.watcher.query",
+                                'elementPath' => "/system/watcher/query",
+                                'path' => "/system/watcher/query",
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'route',
+                                'name' => '缓存记录',
+                                'local' => "menu.system.watcher.cache",
+                                'key' => "system.watcher.cache",
+                                'elementPath' => "/system/watcher/cache",
+                                'path' => "/system/watcher/cache",
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'route',
+                                'name' => 'Redis记录',
+                                'local' => "menu.system.watcher.redis",
+                                'key' => "system.watcher.redis",
+                                'elementPath' => "/system/watcher/redis",
+                                'path' => "/system/watcher/redis",
                             ],
                         ]
                     ]
                 ]
             ],
             [
-                'order' => 8,
-                'type' => 'menu',
+                'order' => 10,
+                'type' => 'route',
                 'name' => 'XinAdmin',
                 'local' => "menu.xin-admin",
                 'key' => "xin-admin",
@@ -470,10 +840,14 @@ class SysUserSeeder extends Seeder
         );
 
         DB::table('sys_user_role')->insert([
-            'user_id' => 1,
-            'role_id' => 1,
-            'created_at' => $date,
-            'updated_at' => $date
+            [
+                'user_id' => 1,
+                'role_id' => 1,
+            ],
+            [
+                'user_id' => 2,
+                'role_id' => 2,
+            ]
         ]);
     }
 
@@ -490,7 +864,7 @@ class SysUserSeeder extends Seeder
         foreach ($rules as $rule) {
             // 准备插入数据
             $insertData = [
-                'pid' => $pid,
+                'parent_id' => $pid,
                 'type' => $rule['type'],
                 'key' => $rule['key'],
                 'name' => $rule['name'],
