@@ -27,7 +27,7 @@ class SysUserService extends BaseService
             'password' => 'required|min:4|alphaDash',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('sys_users')->attempt($credentials)) {
             $userID = auth()->id();
             $access = $this->ruleKeys($userID);
             if($request->get('remember', false)) {
