@@ -51,6 +51,9 @@ class SysFileService
             if (! $path) {
                 throw new HttpResponseException(['success' => false, 'msg' => __('system.file.upload_failed')]);
             }
+            if (Auth::check()) {
+                $user_id = Auth::id();
+            }
             
             $data = [
                 'disk' => $disk, // 磁盘
@@ -61,7 +64,7 @@ class SysFileService
                 'file_path' => $path, // 地址
                 'file_size' => $file->getSize(), // 大小
                 'file_ext' => $file_ext, // 扩展名
-                'uploader_id' =>  Auth::id(), // 上传用户ID
+                'uploader_id' => $user_id ?? null, // 上传用户ID
             ];
             
             $fileData = SysFileModel::create($data);
