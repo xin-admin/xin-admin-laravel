@@ -773,6 +773,65 @@ class SysUserSeeder extends Seeder
                     ],
                     [
                         'order' => 3,
+                        'type' => "route",
+                        'name' => "系统字典",
+                        'local' => "menu.system.dict",
+                        'key' => "system.dict",
+                        'path' => "/system/dict",
+                        'elementPath' => "/system/dict",
+                        'children' => [
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '字典列表',
+                                'key' => 'system.dict.list.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '新增字典',
+                                'key' => 'system.dict.list.create'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '删除字典',
+                                'key' => 'system.dict.list.delete'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '更新字典',
+                                'key' => 'system.dict.list.update'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '字典项列表',
+                                'key' => 'system.dict.item.query'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '字典项新增',
+                                'key' => 'system.dict.item.create'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '字典项编辑',
+                                'key' => 'system.dict.item.update'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '字典项删除',
+                                'key' => 'system.dict.item.delete'
+                            ]
+                        ]
+                    ],
+                    [
+                        'order' => 4,
                         'type' => "menu",
                         'name' => "系统日志",
                         'local' => "menu.system.watcher",
