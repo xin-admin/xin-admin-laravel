@@ -719,55 +719,55 @@ class SysUserSeeder extends Seeder
                                 'order' => 1,
                                 'type' => 'rule',
                                 'name' => '获取文件夹',
-                                'key' => 'sys.file.group.query'
+                                'key' => 'system.file.group.query'
                             ],
                             [
                                 'order' => 2,
                                 'type' => 'rule',
                                 'name' => '新增文件夹',
-                                'key' => 'sys.file.group.create'
+                                'key' => 'system.file.group.create'
                             ],
                             [
                                 'order' => 3,
                                 'type' => 'rule',
                                 'name' => '编辑文件夹',
-                                'key' => 'sys.file.group.update'
+                                'key' => 'system.file.group.update'
                             ],
                             [
                                 'order' => 4,
                                 'type' => 'rule',
                                 'name' => '删除文件夹',
-                                'key' => 'sys.file.group.delete'
+                                'key' => 'system.file.group.delete'
                             ],
                             [
                                 'order' => 5,
                                 'type' => 'rule',
                                 'name' => '查询文件列表',
-                                'key' => 'sys.file.list.query'
+                                'key' => 'system.file.list.query'
                             ],
                             [
                                 'order' => 6,
                                 'type' => 'rule',
                                 'name' => '删除文件',
-                                'key' => 'sys.file.list.delete'
+                                'key' => 'system.file.list.delete'
                             ],
                             [
                                 'order' => 7,
                                 'type' => 'rule',
                                 'name' => '永久删除文件',
-                                'key' => 'sys.file.list.force-delete'
+                                'key' => 'system.file.list.force-delete'
                             ],
                             [
                                 'order' => 8,
                                 'type' => 'rule',
                                 'name' => '上传文件',
-                                'key' => 'sys.file.list.upload'
+                                'key' => 'system.file.list.upload'
                             ],
                             [
                                 'order' => 9,
                                 'type' => 'rule',
                                 'name' => '下载文件',
-                                'key' => 'sys.file.list.download'
+                                'key' => 'system.file.list.download'
                             ]
                         ],
                     ],

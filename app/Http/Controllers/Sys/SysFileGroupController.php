@@ -16,7 +16,7 @@ use Illuminate\Http\JsonResponse;
 /**
  * 文件分组控制器
  */
-#[RequestMapping('/sys/file/group', 'sys.file.group')]
+#[RequestMapping('/sys/file/group', 'system.file.group')]
 #[Create, Update, Delete]
 class SysFileGroupController extends BaseController
 {

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件列表
  */
-#[RequestMapping('/sys/file/list', 'sys.file.list')]
+#[RequestMapping('/sys/file/list', 'system.file.list')]
 #[Query, Delete]
 class SysFileController extends BaseController
 {
