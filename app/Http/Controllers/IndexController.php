@@ -20,6 +20,6 @@ class IndexController
     {
         $web_setting = setting('web');
 
-        return $this->success(compact('web_setting'));
+        return $this->success($web_setting);
     }
 }
