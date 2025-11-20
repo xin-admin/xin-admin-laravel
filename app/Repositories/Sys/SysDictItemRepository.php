@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SysDictItemRepository extends BaseRepository
 {
+    protected array $searchField = [
+        'dict_id' => '='
+    ];
 
     /** @var array|string[] 快速搜索字段 */
     protected array $quickSearchField = ['label', 'value'];
