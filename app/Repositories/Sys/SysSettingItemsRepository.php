@@ -3,11 +3,11 @@
 namespace App\Repositories\Sys;
 
 use App\Exceptions\RepositoryException;
-use App\Models\Sys\SysSettingModel;
+use App\Models\Sys\SysSettingItemsModel;
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Builder;
 
-class SysSettingRepository extends BaseRepository
+class SysSettingItemsRepository extends BaseRepository
 {
 
     protected array $searchField = [ 'group_id' => '=' ];
@@ -69,6 +69,17 @@ class SysSettingRepository extends BaseRepository
      */
     protected function model(): Builder
     {
-        return SysSettingModel::query();
+        return SysSettingItemsModel::query();
+    }
+
+    public function list(array $params): array
+    {
+        if(empty($params['group_id'])) {
+            throw new RepositoryException('请选择设置分组');
+        }
+        return $this->model()
+            ->where('group_id', $params['group_id'])
+            ->get()
+            ->toArray();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sys;
 use App\Http\Controllers\BaseController;
 use App\Models\Sys\SysSettingGroupModel;
 use App\Providers\AnnoRoute\Attribute\Create;
+use App\Providers\AnnoRoute\Attribute\Delete;
 use App\Providers\AnnoRoute\Attribute\DeleteMapping;
 use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
@@ -17,21 +18,11 @@ use Illuminate\Http\JsonResponse;
  * 设置分组控制器
  */
 #[RequestMapping('/system/setting/group', 'system.setting.group')]
-#[Query, Create, Update]
+#[Query, Create, Update, Delete]
 class SysSettingGroupController extends BaseController
 {
     protected function repository(): RepositoryInterface
     {
         return app(SysSettingGroupRepository::class);
-    }
-
-    /** 删除设置 */
-    #[DeleteMapping('/{id}', 'delete')]
-    public function delete($id): JsonResponse
-    {
-        if($this->repository()->delete($id)) {
-            return $this->success('删除成功');
-        }
-        return $this->error('删除失败');
     }
 }

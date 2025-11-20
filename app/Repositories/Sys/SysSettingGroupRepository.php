@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 class SysSettingGroupRepository extends BaseRepository
 {
 
-    protected array $searchField = [
-        'id' => '=',
-        'key' => '=',
-    ];
-
     /**
      * @inheritDoc
      */
@@ -39,6 +34,24 @@ class SysSettingGroupRepository extends BaseRepository
             'title.required' => '标题字段是必填的',
             'remark.required' => '备注字段是必填的',
         ];
+    }
+
+    public function list(array $params): array
+    {
+        if(empty($params['keywordSearch'])){
+            return $this->model()
+                ->get()
+                ->toArray();
+        }else {
+            return $this->model()
+                ->whereAny(
+                    ['title', 'remark', 'key'],
+                    'like',
+                    '%'.str_replace('%', '\%', $params['keywordSearch']).'%'
+                )
+                ->get()
+                ->toArray();
+        }
     }
 
     public function delete(int $id): bool

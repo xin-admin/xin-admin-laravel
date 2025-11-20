@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Sys\SysSettingModel;
+use App\Models\Sys\SysSettingItemsModel;
 use App\Providers\AnnoRoute\Attribute\Create;
 use App\Providers\AnnoRoute\Attribute\Delete;
 use App\Providers\AnnoRoute\Attribute\PostMapping;
@@ -12,35 +12,32 @@ use App\Providers\AnnoRoute\Attribute\Query;
 use App\Providers\AnnoRoute\Attribute\RequestMapping;
 use App\Providers\AnnoRoute\Attribute\Update;
 use App\Repositories\RepositoryInterface;
-use App\Repositories\Sys\SysSettingRepository;
+use App\Repositories\Sys\SysSettingItemsRepository;
 use App\Services\SysSettingService;
 use Illuminate\Http\JsonResponse;
 
 /**
  * 系统设置
  */
-#[RequestMapping('/system/setting', 'system.setting')]
+#[RequestMapping('/system/setting/items', 'system.setting')]
 #[Query, Create, Update, Delete]
-class SysSettingController extends BaseController
+class SysSettingItemsController extends BaseController
 {
 
     protected function repository(): RepositoryInterface
     {
-        return app(SysSettingRepository::class);
+        return app(SysSettingItemsRepository::class);
     }
-
 
     /** 保存设置 */
     #[PutMapping('/save/{id}', 'save')]
     public function save(int $id): JsonResponse
     {
-        $value = request()->all();
-        foreach ($value as $k => $v) {
-            $model = SysSettingModel::where('key', $k)->where('group_id', $id)->first();
-            if ($model) {
-                $model->values = $v;
-                $model->save();
-            }
+        $model = SysSettingItemsModel::find($id);
+        $values = request()->input('values');
+        if ($model && $values) {
+            $model->values = $values;
+            $model->save();
         }
         return $this->success('保存成功');
     }
