@@ -31,14 +31,13 @@ class SysSettingItemsController extends BaseController
 
     /** 保存设置 */
     #[PutMapping('/save/{id}', 'save')]
-    public function save(int $id): JsonResponse
+    public function save(int $id, SysSettingService $service): JsonResponse
     {
-        $model = SysSettingItemsModel::find($id);
         $values = request()->input('values');
-        if ($model && $values) {
-            $model->values = $values;
-            $model->save();
+        if (is_null($values)) {
+            return $this->error('请提供设置值');
         }
+        $service->setSetting($id, $values);
         return $this->success('保存成功');
     }
 
