@@ -698,15 +698,6 @@ class SysUserSeeder extends Seeder
                         'elementPath' => "/system/info",
                     ],
                     [
-                        'order' => 1,
-                        'type' => "route",
-                        'name' => "系统监控",
-                        'local' => "menu.system.monitor",
-                        'key' => "system.monitor",
-                        'path' => "/system/monitor",
-                        'elementPath' => "/system/monitor",
-                    ],
-                    [
                         'order' => 2,
                         'type' => "route",
                         'name' => "文件管理",
