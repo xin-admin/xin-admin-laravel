@@ -1,6 +1,6 @@
 services:
   php:
-    build: /
+    build: ./
     container_name: xin-admin
     # 如果要在生产环境中运行，请取消注释以下行
     # restart: always
