@@ -14,7 +14,7 @@ use App\Repositories\Sys\SysDictItemRepository;
 /**
  * 字典项控制器
  */
-#[RequestMapping('/system/dict/item')]
+#[RequestMapping('/sys/dict/item', 'system.dict.item')]
 #[Query, Create, Update, Delete]
 class SysDictItemController extends BaseController
 {

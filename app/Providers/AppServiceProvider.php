@@ -3,10 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Sanctum\PersonalAccessToken;
+use App\Models\Sys\SysSettingItemsModel;
+use App\Observers\SysSettingObserver;
 use App\Services\LengthAwarePaginatorService;
 use App\Services\SysSettingService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 
@@ -39,8 +40,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        
+        // 注册系统设置观察者，自动刷新缓存
+        SysSettingItemsModel::observe(SysSettingObserver::class);
+        
+        // 只在非控制台环境且缓存不存在时才刷新配置
+        // 避免每次请求都刷新，提升性能
         if (!$this->app->runningInConsole()) {
-            SysSettingService::refreshSettings();
+            $cacheKey = env('SETTING_CACHE_KEY', 'app_settings');
+            if (!cache()->has($cacheKey)) {
+                SysSettingService::refreshSettings();
+            }
         }
     }
 }

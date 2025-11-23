@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('sys_setting')) {
-            Schema::create('sys_setting', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_setting_items')) {
+            Schema::create('sys_setting_items', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('key', 50)->comment('设置项标示');
                 $table->string('title', 50)->comment('设置标题');
@@ -45,7 +45,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sys_setting');
+        Schema::dropIfExists('sys_setting_items');
         Schema::dropIfExists('sys_setting_group');
     }
 };

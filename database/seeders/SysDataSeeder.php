@@ -17,11 +17,11 @@ class SysDataSeeder extends Seeder
         DB::table('sys_setting_group')->insert([
              ['id' => 1, 'title' => '网站设置', 'key' => 'web', 'remark' => '网站基础设置', 'created_at' => $date, 'updated_at' => $date]
         ]);
-        DB::table('sys_setting')->insert([
-            ['id' => 1, 'group_id' => 1, 'key' => 'title', 'title' => '网站标题', 'describe' => '网站标题，用于展示在网站logo旁边和登录页面以及网页title中', 'values' => 'Xin Admin', 'type' => 'input', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 2, 'group_id' => 1, 'key' => 'logo', 'title' => '网站LOGO', 'describe' => '网站的LOGO，用于标识网站', 'values' => 'https://file.xinadmin.cn/file/favicons.ico', 'type' => 'input', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 3, 'group_id' => 1, 'key' => 'subtitle', 'title' => '网站副标题', 'describe' => '网站副标题，展示在登录页面标题的下面', 'values' => 'Xin Admin 快速开发框架', 'type' => 'input', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 4, 'group_id' => 1, 'key' => 'describe', 'title' => '网站描述', 'describe' => '网站的基本描述', 'values' => '没有描述', 'type' => 'textarea', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date,],
+        DB::table('sys_setting_items')->insert([
+            ['id' => 1, 'group_id' => 1, 'key' => 'title', 'title' => '网站标题', 'describe' => '网站标题，用于展示在网站logo旁边和登录页面以及网页title中', 'values' => 'Xin Admin', 'type' => 'Input', 'sort' => 0, 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 2, 'group_id' => 1, 'key' => 'logo', 'title' => '网站LOGO', 'describe' => '网站的LOGO，用于标识网站', 'values' => 'https://file.xinadmin.cn/file/favicons.ico', 'type' => 'Input', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 3, 'group_id' => 1, 'key' => 'subtitle', 'title' => '网站副标题', 'describe' => '网站副标题，展示在登录页面标题的下面', 'values' => 'Xin Admin 快速开发框架', 'type' => 'Input', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 4, 'group_id' => 1, 'key' => 'describe', 'title' => '网站描述', 'describe' => '网站的基本描述', 'values' => '没有描述', 'type' => 'TextArea', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date,],
         ]);
         // 字典初始数据
         DB::table('sys_dict')->insert([

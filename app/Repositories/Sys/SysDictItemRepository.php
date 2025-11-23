@@ -4,16 +4,13 @@ namespace App\Repositories\Sys;
 
 use App\Models\Sys\SysDictItemModel;
 use App\Repositories\BaseRepository;
+use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 
 class SysDictItemRepository extends BaseRepository
 {
-
-    /** @var array|string[] 搜索字段 */
     protected array $searchField = [
-        'dict_id' => '=',
-        'switch' => '=',
-        'status' => '='
+        'dict_id' => '='
     ];
 
     /** @var array|string[] 快速搜索字段 */
@@ -29,13 +26,29 @@ class SysDictItemRepository extends BaseRepository
 
     protected function rules(): array
     {
-        return [
-            'dict_id' => 'required|exists:sys_dict,id',
-            'label' => 'required',
-            'value' => 'required',
-            'switch' => 'required|in:0,1',
-            'status' => 'required|in:default,success,error,processing,warning'
-        ];
+        if($this->isUpdate()) {
+            $request = request()->all();
+            return [
+                'dict_id' => 'required|exists:sys_dict,id',
+                'label' => 'required',
+                'value' => [
+                    Rule::unique('sys_dict_item')->where(function ($query) use ($request) {
+                        return $query->where('dict_id', $request['dict_id'] ?? null);
+                    })
+                ],
+                'switch' => 'required|int|in:0,1',
+                'status' => 'required|in:default,success,error,processing,warning'
+            ];
+        } else {
+            return [
+                'dict_id' => 'required|exists:sys_dict,id',
+                'label' => 'required',
+                'value' => 'required',
+                'switch' => 'required|in:0,1',
+                'status' => 'required|in:default,success,error,processing,warning'
+            ];
+        }
+
     }
 
     protected function messages(): array

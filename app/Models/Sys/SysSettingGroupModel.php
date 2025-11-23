@@ -23,7 +23,7 @@ class SysSettingGroupModel extends Model
      */
     public function settings(): HasMany
     {
-        return $this->hasMany(SysSettingModel::class ,'group_id', 'id');
+        return $this->hasMany(SysSettingItemsModel::class ,'group_id', 'id');
     }
 
 }
