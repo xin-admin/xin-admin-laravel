@@ -7,9 +7,6 @@ RUN if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
     sed -i "s|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g" /etc/apt/sources.list; \
     fi
 
-ENV FRANKENPHP_CONFIG="worker /app/public/index.php"
-ENV SERVER_NAME=:8000
-
 # 在此处添加其他扩展：
 RUN install-php-extensions \
     pdo_mysql  \
@@ -20,3 +17,5 @@ RUN install-php-extensions \
     bcmath  \
     pcntl  \
     redis
+
+CMD ["frankenphp", "run", "--watch", "--config", "/app/Caddyfile", "--adapter","caddyfile"]

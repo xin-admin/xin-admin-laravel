@@ -5,7 +5,9 @@ services:
     # 如果要在生产环境中运行，请取消注释以下行
     # restart: always
     ports:
-      - "8000:8000"
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "443:443/udp" # HTTP/3
     volumes:
       - ./:/app
       - caddy_data:/data

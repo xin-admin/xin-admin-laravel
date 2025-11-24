@@ -1,0 +1,16 @@
+{
+    frankenphp {
+
+    }
+}
+
+{APP_URL} {
+
+    root /app/public
+
+    encode zstd br gzip
+
+    php_server {
+            worker /app/public/index.php
+    }
+}
