@@ -873,6 +873,77 @@ class SysUserSeeder extends Seeder
                     ],
                     [
                         'order' => 4,
+                        'type' => "route",
+                        'name' => "系统配置",
+                        'local' => "menu.system.setting",
+                        'key' => "system.setting",
+                        'path' => "/system/setting",
+                        'elementPath' => "/system/setting",
+                        'children' => [
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '配置列表',
+                                'key' => 'system.setting.items.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '新增配置',
+                                'key' => 'system.setting.items.create'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '编辑配置',
+                                'key' => 'system.setting.items.update'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '删除配置',
+                                'key' => 'system.setting.items.delete'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '保存配置',
+                                'key' => 'system.setting.items.save'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '刷新配置',
+                                'key' => 'system.setting.items.refresh'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '配置组编辑',
+                                'key' => 'system.setting.group.update'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '配置组删除',
+                                'key' => 'system.setting.items.item.delete'
+                            ],
+                            [
+                                'order' => 9,
+                                'type' => 'rule',
+                                'name' => '配置组列表',
+                                'key' => 'system.setting.group.query'
+                            ],
+                            [
+                                'order' => 10,
+                                'type' => 'rule',
+                                'name' => '配置组新增',
+                                'key' => 'system.setting.group.create'
+                            ]
+                        ]
+                    ],
+                    [
+                        'order' => 5,
                         'type' => "menu",
                         'name' => "系统日志",
                         'local' => "menu.system.watcher",
