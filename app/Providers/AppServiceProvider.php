@@ -6,6 +6,7 @@ use App\Models\Sanctum\PersonalAccessToken;
 use App\Models\Sys\SysSettingItemsModel;
 use App\Observers\SysSettingObserver;
 use App\Services\LengthAwarePaginatorService;
+use App\Services\MailConfigService;
 use App\Services\SysSettingService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +52,9 @@ class AppServiceProvider extends ServiceProvider
             if (!cache()->has($cacheKey)) {
                 SysSettingService::refreshSettings();
             }
+            
+            // 从系统设置初始化邮件配置
+            MailConfigService::initFromSettings();
         }
     }
 }
