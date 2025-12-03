@@ -22,10 +22,14 @@ class SysSettingItemsRepository extends BaseRepository
             'describe' => 'sometimes|string',
             'options' => [
                 'sometimes',
+                'nullable',
+                'string',
                 'regex:/^(?:[^=\n]+=[^=\n]+)(?:\n[^=\n]+=[^=\n]+)*$/',
             ],
             'props' => [
                 'sometimes',
+                'nullable',
+                'string',
                 'regex:/^(?:[^=\n]+=[^=\n]+)(?:\n[^=\n]+=[^=\n]+)*$/',
             ],
             'sort' => 'sometimes|integer',
