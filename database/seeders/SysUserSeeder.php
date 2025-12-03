@@ -411,6 +411,56 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
+                'type' => 'menu',
+                'key' => "example",
+                'name' => "组件示例",
+                'path' => "",
+                'icon' => "AppstoreOutlined",
+                'elementPath' => "",
+                'order' => 5,
+                'local' => "menu.example",
+                'hidden' => 1,
+                'link' => 0,
+                'children' => [
+                    [
+                        'type' => "route",
+                        'key' => "example.user-selector",
+                        'name' => "用户选择器",
+                        'path' => "/example/user-selector",
+                        'icon' => "AppstoreOutlined",
+                        'elementPath' => "/example/user-selector",
+                        'order' => 0,
+                        'local' => "menu.example.user-selector",
+                        'hidden' => 1,
+                        'link' => 0
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "example.icon-selector",
+                        'name' => "图标",
+                        'path' => "/example/icon-selector",
+                        'icon' => "AppstoreOutlined",
+                        'elementPath' => "/example/icon-selector",
+                        'order' => 1,
+                        'local' => "menu.example.icon-selector",
+                        'hidden' => 1,
+                        'link' => 0
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "example.image-uploader",
+                        'name' => "图片上传器",
+                        'path' => "/example/image-uploader",
+                        'icon' => "PictureOutlined",
+                        'elementPath' => "/example/image-uploader",
+                        'order' => 2,
+                        'local' => "menu.example.image-uploader",
+                        'hidden' => 1,
+                        'link' => 0 
+                    ]
+                ]
+            ],
+            [
                 'order' => 7,
                 'type' => 'route',
                 'name' => '用户设置',
