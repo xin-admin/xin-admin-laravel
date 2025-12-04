@@ -7,6 +7,7 @@ use App\Models\Sys\SysSettingItemsModel;
 use App\Observers\SysSettingObserver;
 use App\Services\LengthAwarePaginatorService;
 use App\Services\MailConfigService;
+use App\Services\StorageConfigService;
 use App\Services\SysSettingService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
 use Illuminate\Support\ServiceProvider;
@@ -55,6 +56,9 @@ class AppServiceProvider extends ServiceProvider
             
             // 从系统设置初始化邮件配置
             MailConfigService::initFromSettings();
+            
+            // 从系统设置初始化存储配置
+            StorageConfigService::initFromSettings();
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Sys;
 
 use App\Exceptions\HttpResponseException;
 use App\Models\Sys\SysFileModel;
+use App\Services\StorageConfigService;
 use App\Support\Enum\FileType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -16,13 +17,18 @@ class SysFileService
      * 上传文件
      * @param FileType $fileType
      * @param int $group_id
-     * @param string $disk
+     * @param string|null $disk 存储磁盘，为null时使用系统设置中的默认磁盘
      * @param int $channel
      * @return array
      */
-    public function upload(FileType $fileType, int $group_id, string $disk, int $channel = 10): array
+    public function upload(FileType $fileType, int $group_id, ?string $disk = null, int $channel = 10): array
     {
         try {
+            // 如果未指定磁盘，从系统设置获取默认磁盘
+            if ($disk === null) {
+                $disk = StorageConfigService::getDefaultDisk();
+            }
+            
             $file = request()->file('file');
             if (!$file) {
                 throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
@@ -156,5 +162,44 @@ class SysFileService
             // 其他异常转换为HttpResponseException
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.download_failed')]);
         }
+    }
+
+    /**
+     * 获取文件访问URL
+     * @param int $fileId
+     * @return string|null
+     */
+    public function getUrl(int $fileId): ?string
+    {
+        try {
+            $file = SysFileModel::where('id', $fileId)->first();
+            if (!$file) {
+                return null;
+            }
+            
+            return Storage::disk($file->disk)->url($file->file_path);
+            
+        } catch (\Exception $e) {
+            Log::error('Get file URL failed: ' . $e->getMessage(), [
+                'file_id' => $fileId,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * 根据文件路径获取访问URL
+     * @param string $path 文件路径
+     * @param string|null $disk 存储磁盘，为null时使用系统设置中的默认磁盘
+     * @return string
+     */
+    public function getUrlByPath(string $path, ?string $disk = null): string
+    {
+        if ($disk === null) {
+            $disk = StorageConfigService::getDefaultDisk();
+        }
+        
+        return Storage::disk($disk)->url($path);
     }
 }

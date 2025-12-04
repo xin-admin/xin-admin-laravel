@@ -36,8 +36,8 @@ class SysFileController extends BaseController
     #[PostMapping('/upload/image', 'upload')]
     public function uploadImage(SysFileService $fileService): JsonResponse
     {
-        $group_id = request('group_id', 0);
-        $disk = request('disk', 'public');
+        $group_id = (int) request('group_id', 0);
+        $disk = request('disk'); // 为null时使用系统设置中的默认磁盘
         $result = $fileService->upload(FileType::IMAGE, $group_id, $disk);
         return $this->success($result);
     }
@@ -48,8 +48,8 @@ class SysFileController extends BaseController
     #[PostMapping('/upload/video', 'upload')]
     public function uploadVideo(SysFileService $fileService): JsonResponse
     {
-        $group_id = request('group_id', 0);
-        $disk = request('disk', 'public');
+        $group_id = (int) request('group_id', 0);
+        $disk = request('disk');
         $result = $fileService->upload(FileType::VIDEO, $group_id, $disk);
         return $this->success($result);
     }
@@ -60,8 +60,8 @@ class SysFileController extends BaseController
     #[PostMapping('/upload/audio', 'upload')]
     public function uploadAudio(SysFileService $fileService): JsonResponse
     {
-        $group_id = request('group_id', 0);
-        $disk = request('disk', 'public');
+        $group_id = (int) request('group_id', 0);
+        $disk = request('disk');
         $result = $fileService->upload(FileType::AUDIO, $group_id, $disk);
         return $this->success($result);
     }
@@ -72,8 +72,8 @@ class SysFileController extends BaseController
     #[PostMapping('/upload/zip', 'upload')]
     public function uploadZip(SysFileService $fileService): JsonResponse
     {
-        $group_id = request('group_id', 0);
-        $disk = request('disk', 'public');
+        $group_id = (int) request('group_id', 0);
+        $disk = request('disk');
         $result = $fileService->upload(FileType::ZIP, $group_id, $disk);
         return $this->success($result);
     }
@@ -84,8 +84,8 @@ class SysFileController extends BaseController
     #[PostMapping('/upload/file', 'upload')]
     public function uploadFile(SysFileService $fileService): JsonResponse
     {
-        $group_id = request('group_id', 0);
-        $disk = request('disk', 'public');
+        $group_id = (int) request('group_id', 0);
+        $disk = request('disk');
         $result = $fileService->upload(FileType::ANNEX, $group_id, $disk);
         return $this->success($result);
     }
