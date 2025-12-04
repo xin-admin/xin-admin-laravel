@@ -12,6 +12,7 @@ use App\Services\SysSettingService;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,17 +47,11 @@ class AppServiceProvider extends ServiceProvider
         // 注册系统设置观察者，自动刷新缓存
         SysSettingItemsModel::observe(SysSettingObserver::class);
         
-        // 只在非控制台环境且缓存不存在时才刷新配置
-        // 避免每次请求都刷新，提升性能
-        if (!$this->app->runningInConsole()) {
-            $cacheKey = env('SETTING_CACHE_KEY', 'app_settings');
-            if (!cache()->has($cacheKey)) {
-                SysSettingService::refreshSettings();
-            }
-            
+        if (Schema::hasTable('sys_setting_items')) {
+            // 刷新系统设置缓存
+            SysSettingService::refreshSettings();
             // 从系统设置初始化邮件配置
             MailConfigService::initFromSettings();
-            
             // 从系统设置初始化存储配置
             StorageConfigService::initFromSettings();
         }
