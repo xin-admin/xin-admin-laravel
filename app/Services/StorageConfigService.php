@@ -27,7 +27,7 @@ class StorageConfigService
             }
             
             // 获取存储驱动类型
-            $disk = $storageSettings['disk'] ?? 'public';
+            $disk = $storageSettings['disk'] ?? 'local';
             
             // 设置默认存储驱动
             Config::set('filesystems.default', $disk);
@@ -90,7 +90,6 @@ class StorageConfigService
             'default' => Config::get('filesystems.default'),
             'disks' => [
                 'local' => Config::get('filesystems.disks.local'),
-                'public' => Config::get('filesystems.disks.public'),
                 's3' => Config::get('filesystems.disks.s3'),
             ],
         ];
@@ -108,10 +107,10 @@ class StorageConfigService
             return false;
         }
         
-        $disk = $storageSettings['disk'] ?? 'public';
+        $disk = $storageSettings['disk'] ?? 'local';
         
         // 本地存储始终可用
-        if ($disk === 'local' || $disk === 'public') {
+        if ($disk === 'local') {
             return true;
         }
         
@@ -150,7 +149,7 @@ class StorageConfigService
      */
     public static function getDefaultDisk(): string
     {
-        return Config::get('filesystems.default', 'public');
+        return Config::get('filesystems.default', 'local');
     }
 
     /**

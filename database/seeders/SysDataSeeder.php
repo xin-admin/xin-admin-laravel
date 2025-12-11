@@ -34,7 +34,7 @@ class SysDataSeeder extends Seeder
             ['id' => 11, 'group_id' => 2, 'key' => 'from_address', 'title' => '发件人邮箱', 'describe' => '发送邮件时显示的发件人邮箱地址', 'values' => '', 'type' => 'Input','options' => "", 'sort' => 6, 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 12, 'group_id' => 2, 'key' => 'from_name', 'title' => '发件人名称', 'describe' => '发送邮件时显示的发件人名称', 'values' => 'Xin Admin', 'type' => 'Input','options' => "", 'sort' => 7, 'created_at' => $date, 'updated_at' => $date,],
             // 存储配置项
-            ['id' => 13, 'group_id' => 3, 'key' => 'disk', 'title' => '存储驱动', 'describe' => '默认文件存储驱动，local(本地私有)、public(本地公开)、s3(对象存储)', 'values' => 'public', 'type' => 'Radio', 'options' => "local=本地私有\npublic=本地公开\ns3=对象存储(S3)", 'sort' => 0, 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 13, 'group_id' => 3, 'key' => 'disk', 'title' => '存储驱动', 'describe' => '默认文件存储驱动，local(本地)、s3(对象存储)', 'values' => 'public', 'type' => 'Radio', 'options' => "local=本地\ns3=对象存储(S3)", 'sort' => 0, 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 14, 'group_id' => 3, 'key' => 's3_key', 'title' => 'Access Key ID', 'describe' => 'S3兼容存储的Access Key ID（阿里云OSS、腾讯COS、七牛、MinIO等）', 'values' => '', 'type' => 'Input', 'options' => '', 'sort' => 1, 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 15, 'group_id' => 3, 'key' => 's3_secret', 'title' => 'Secret Access Key', 'describe' => 'S3兼容存储的Secret Access Key', 'values' => '', 'type' => 'Input', 'options' => '', 'sort' => 2, 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 16, 'group_id' => 3, 'key' => 's3_region', 'title' => '存储区域', 'describe' => '存储区域，如：us-east-1、oss-cn-hangzhou、ap-guangzhou', 'values' => '', 'type' => 'Input', 'options' => '', 'sort' => 3, 'created_at' => $date, 'updated_at' => $date,],
@@ -60,7 +60,13 @@ class SysDataSeeder extends Seeder
         ]);
         // 文件初始化数据
         DB::table('sys_file_group')->insert([
-            ['id' => 1, 'name' => '默认分组', 'sort' => 0, 'describe' => '默认分组', 'created_at' => $date, 'updated_at' => $date]
+            ['id' => 1, 'name' => '默认分组', 'sort' => 0, 'describe' => '默认分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '用户头像', 'sort' => 1, 'describe' => '用户头像分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '系统图片', 'sort' => 2, 'describe' => '系统图片分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '用户上传', 'sort' => 3, 'describe' => '用户上传分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 5, 'name' => '系统附件', 'sort' => 4, 'describe' => '系统附件分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 6, 'name' => '其他文件', 'sort' => 5, 'describe' => '其他文件分组', 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 7, 'name' => '临时文件', 'sort' => 6, 'describe' => '临时文件分组，用于存放临时上传的文件', 'created_at' => $date, 'updated_at' => $date],
         ]);
     }
 }

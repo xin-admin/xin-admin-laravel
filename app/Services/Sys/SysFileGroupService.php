@@ -12,7 +12,18 @@ class SysFileGroupService extends BaseService
      */
     public function list(): array
     {
-        $group = SysFileGroupModel::query()->get()->toArray();
-        return $this->getTreeData($group);
+        $query = SysFileGroupModel::query()->orderBy('sort', 'asc');
+        $keywordSearch = request()->input('keywordSearch', '');
+        // 快速搜索
+        if (isset($keywordSearch) && $keywordSearch != '') {
+            $query->whereAny(
+                ['name'],
+                'like',
+                '%'.str_replace('%', '\%', $keywordSearch).'%'
+            );
+            return $query->get()->toArray();
+        }
+        $group = $query->get()->toArray();
+        return $this->getTreeData($group);;
     }
 }

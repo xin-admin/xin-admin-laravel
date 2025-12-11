@@ -16,6 +16,10 @@ return [
         'size_limit' => 'The file size exceeds the limit',
         'ext_limit' => 'The file extension is not allowed :ext',
         'upload_failed' => 'Upload failed',
+        'not_found' => 'File not found',
+        'delete_failed' => 'Delete failed',
+        'download_failed' => 'Download failed',
+        'invalid_visibility' => 'Invalid visibility setting',
     ],
     'error' => [
         'no_permission' => 'Sorry, you do not have this permission at the moment, please contact the administrator',

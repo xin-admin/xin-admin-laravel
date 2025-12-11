@@ -39,7 +39,7 @@ class SysFileModel extends Model
         'uploader_id',
     ];
 
-    protected $appends = ['preview_url'];
+    protected $appends = ['preview_url', 'file_url'];
 
     /**
      * 获取文件所属分组
@@ -67,13 +67,38 @@ class SysFileModel extends Model
     {
         return new Attribute(
             get: function ($value, array $data) {
-                // 图片的预览图直接使用外链
-                if ($data['file_type'] == FileType::IMAGE->value) {
-                    return Storage::disk($data['disk'])->url($data['file_path']);
+                try {
+                    $fileType = FileType::tryFrom($data['file_type']);
+                    
+                    // 图片类型：直接返回图片URL作为预览
+                    if ($fileType === FileType::IMAGE) {
+                        return Storage::disk($data['disk'])->url($data['file_path']);
+                    }
+                    
+                    // 其他类型：返回默认类型图标
+                    $previewPath = $fileType?->previewPath() ?? FileType::ANNEX->previewPath();
+                    return config('app.url') . '/' . $previewPath;
+                    
+                } catch (\Throwable $e) {
+                    // 发生异常时返回默认图标
+                    return config('app.url') . '/' . FileType::ANNEX->previewPath();
                 }
-                // 生成默认的预览图
-                $previewPath = FileType::from($data['file_type'])->previewPath();
-                return config('app.url').$previewPath;
+            }
+        );
+    }
+
+    /**
+     * 获取文件访问URL
+     */
+    protected function fileUrl(): Attribute
+    {
+        return new Attribute(
+            get: function ($value, array $data) {
+                try {
+                    return Storage::disk($data['disk'])->url($data['file_path']);
+                } catch (\Throwable $e) {
+                    return null;
+                }
             }
         );
     }
