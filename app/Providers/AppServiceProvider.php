@@ -9,7 +9,9 @@ use App\Services\LengthAwarePaginatorService;
 use App\Services\MailConfigService;
 use App\Services\StorageConfigService;
 use App\Services\SysSettingService;
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Schema;
@@ -46,14 +48,19 @@ class AppServiceProvider extends ServiceProvider
         
         // 注册系统设置观察者，自动刷新缓存
         SysSettingItemsModel::observe(SysSettingObserver::class);
-        
-        if (Schema::hasTable('sys_setting_items')) {
-            // 刷新系统设置缓存
-            SysSettingService::refreshSettings();
-            // 从系统设置初始化邮件配置
-            MailConfigService::initFromSettings();
-            // 从系统设置初始化存储配置
-            StorageConfigService::initFromSettings();
+
+        try {
+            DB::connection()->getPDO();
+            if (Schema::hasTable('sys_setting_items')) {
+                // 刷新系统设置缓存
+                SysSettingService::refreshSettings();
+                // 从系统设置初始化邮件配置
+                MailConfigService::initFromSettings();
+                // 从系统设置初始化存储配置
+                StorageConfigService::initFromSettings();
+            }
+        } catch (Exception $e) {
+
         }
     }
 }
