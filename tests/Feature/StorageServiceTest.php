@@ -51,7 +51,7 @@ class StorageServiceTest extends TestCase
         
         // 验证返回的是有效的磁盘名称
         $this->assertIsString($disk);
-        $this->assertContains($disk, ['local', 'public', 's3']);
+        $this->assertContains($disk, ['local', 's3']);
     }
 
     /**

@@ -819,47 +819,35 @@ class SysUserSeeder extends Seeder
                             [
                                 'order' => 11,
                                 'type' => 'rule',
-                                'name' => '批量恢复文件',
-                                'key' => 'system.file.list.restore'
-                            ],
-                            [
-                                'order' => 12,
-                                'type' => 'rule',
                                 'name' => '查看回收站',
                                 'key' => 'system.file.list.trashed'
                             ],
                             [
-                                'order' => 13,
+                                'order' => 12,
                                 'type' => 'rule',
                                 'name' => '清空回收站',
                                 'key' => 'system.file.list.clean-trashed'
                             ],
                             [
-                                'order' => 14,
+                                'order' => 13,
                                 'type' => 'rule',
                                 'name' => '复制文件',
                                 'key' => 'system.file.list.copy'
                             ],
                             [
-                                'order' => 15,
+                                'order' => 14,
                                 'type' => 'rule',
                                 'name' => '移动文件',
                                 'key' => 'system.file.list.move'
                             ],
                             [
-                                'order' => 16,
+                                'order' => 15,
                                 'type' => 'rule',
                                 'name' => '重命名文件',
                                 'key' => 'system.file.list.rename'
                             ],
                             [
-                                'order' => 17,
-                                'type' => 'rule',
-                                'name' => '更新文件分组',
-                                'key' => 'system.file.list.group'
-                            ],
-                            [
-                                'order' => 18,
+                                'order' => 16,
                                 'type' => 'rule',
                                 'name' => '磁盘使用统计',
                                 'key' => 'system.file.list.disk-usage'

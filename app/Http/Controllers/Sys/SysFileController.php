@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
-use App\Providers\AnnoRoute\Attribute\Delete;
+use App\Http\Requests\Sys\SysFileMoveOrCopyRequest;
 use App\Providers\AnnoRoute\Attribute\DeleteMapping;
 use App\Providers\AnnoRoute\Attribute\GetMapping;
 use App\Providers\AnnoRoute\Attribute\PostMapping;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * 文件列表
  */
 #[RequestMapping('/sys/file/list', 'system.file.list')]
-#[Query, Delete]
+#[Query]
 class SysFileController extends BaseController
 {
     public function __construct(protected SysFileService $fileService) {}
@@ -98,6 +98,17 @@ class SysFileController extends BaseController
     }
 
     /**
+     * 批量删除文件
+     */
+    #[DeleteMapping('/batch-delete', 'delete')]
+    public function batchDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        $count = $this->fileService->batchDelete($ids);
+        return $this->success(['count' => $count]);
+    }
+
+    /**
      * 删除文件（软删除）
      */
     #[DeleteMapping(authorize: 'delete')]
@@ -115,17 +126,6 @@ class SysFileController extends BaseController
     {
         $this->fileService->forceDelete($id);
         return $this->success();
-    }
-
-    /**
-     * 批量删除文件
-     */
-    #[DeleteMapping('/batch-delete', 'delete')]
-    public function batchDelete(Request $request): JsonResponse
-    {
-        $ids = $request->input('ids', []);
-        $count = $this->fileService->batchDelete($ids);
-        return $this->success(['count' => $count]);
     }
 
     /**
@@ -163,24 +163,30 @@ class SysFileController extends BaseController
     /**
      * 复制文件
      */
-    #[PostMapping('/copy/{id}', 'copy')]
-    public function copy(int $id, Request $request): JsonResponse
+    #[PostMapping('/copy', 'copy')]
+    public function copy(SysFileMoveOrCopyRequest $request): JsonResponse
     {
-        $targetGroupId = (int) $request->input('group_id', 0);
-        $targetDisk = $request->input('disk');
-        $result = $this->fileService->copy($id, $targetGroupId, $targetDisk);
+        $data = $request->validated();
+        if(! is_array($data['ids'])) {
+            $result = $this->fileService->copy($data['ids'], $data['group_id']);
+        } else {
+            $result = $this->fileService->batchCopy($data['ids'], $data['group_id']);
+        }
         return $this->success($result);
     }
 
     /**
      * 移动文件
      */
-    #[PostMapping('/move/{id}', 'move')]
-    public function move(int $id, Request $request): JsonResponse
+    #[PostMapping('/move', 'move')]
+    public function move(SysFileMoveOrCopyRequest $request): JsonResponse
     {
-        $targetGroupId = (int) $request->input('group_id', 0);
-        $targetDisk = $request->input('disk');
-        $result = $this->fileService->move($id, $targetGroupId, $targetDisk);
+        $data = $request->validated();
+        if(! is_array($data['ids'])) {
+            $result = $this->fileService->move($data['ids'], $data['group_id']);
+        } else {
+            $result = $this->fileService->batchMove($data['ids'], $data['group_id']);
+        }
         return $this->success($result);
     }
 
@@ -193,29 +199,6 @@ class SysFileController extends BaseController
         $newName = $request->input('name');
         $this->fileService->rename($id, $newName);
         return $this->success();
-    }
-
-    /**
-     * 更新文件分组
-     */
-    #[PutMapping('/group/{id}', 'group')]
-    public function updateGroup(int $id, Request $request): JsonResponse
-    {
-        $groupId = (int) $request->input('group_id', 0);
-        $this->fileService->updateGroup($id, $groupId);
-        return $this->success();
-    }
-
-    /**
-     * 批量更新文件分组
-     */
-    #[PutMapping('/batch-group', 'group')]
-    public function batchUpdateGroup(Request $request): JsonResponse
-    {
-        $ids = $request->input('ids', []);
-        $groupId = (int) $request->input('group_id', 0);
-        $count = $this->fileService->batchUpdateGroup($ids, $groupId);
-        return $this->success(['count' => $count]);
     }
 
     /**

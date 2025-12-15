@@ -34,11 +34,9 @@ class SysFileService
     /**
      * 生成存储路径（结合分组ID）
      */
-    protected function generateStoragePath(int $groupId, string $extension): string
+    protected function generateStoragePath(string $extension): string
     {
-        $directory = $groupId > 0 ? "file/{$groupId}" : 'file';
-        $filename = date('Ymd') . '/' . uniqid() . '.' . $extension;
-        return $directory . '/' . $filename;
+        return date('Ymd') . '/' . uniqid() . '.' . $extension;
     }
 
     /**
@@ -60,7 +58,7 @@ class SysFileService
         $this->validateFile($file, $fileType);
 
         $fileExt = strtolower($file->getClientOriginalExtension()) ?: $file->extension();
-        $storagePath = $this->generateStoragePath($groupId, $fileExt);
+        $storagePath = $this->generateStoragePath($fileExt);
         
         // 存储文件并设置可见性
         $stored = $this->disk($disk)->put($storagePath, $file->getContent(), 'public');
@@ -96,7 +94,7 @@ class SysFileService
         $groupId = $groupId ?? 0;
 
         $fileExt = pathinfo($filename, PATHINFO_EXTENSION) ?: 'bin';
-        $storagePath = $this->generateStoragePath($groupId, $fileExt);
+        $storagePath = $this->generateStoragePath($fileExt);
         
         $stored = $this->disk($disk)->put($storagePath, $content, 'public');
         if (!$stored) {
@@ -326,28 +324,20 @@ class SysFileService
     /**
      * 复制文件
      */
-    public function copy(int $fileId, int $targetGroupId = 0, ?string $targetDisk = null): array
+    public function copy(int $fileId, int $targetGroupId = 0): array
     {
         $file = SysFileModel::find($fileId);
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
-        $targetDisk = $targetDisk ?? $file->disk;
-        $newPath = $this->generateStoragePath($targetGroupId, $file->file_ext);
-        
-        // 同磁盘复制
-        if ($targetDisk === $file->disk) {
-            $this->disk($file->disk)->copy($file->file_path, $newPath);
-        } else {
-            // 跨磁盘复制
-            $content = $this->disk($file->disk)->get($file->file_path);
-            $this->disk($targetDisk)->put($newPath, $content, 'public');
-        }
+
+        $newPath = $this->generateStoragePath($file->file_ext);
+
+        $this->disk($file->disk)->copy($file->file_path, $newPath);
         
         // 创建新的文件记录
         $newFile = SysFileModel::create([
-            'disk' => $targetDisk,
+            'disk' => $file->disk,
             'group_id' => $targetGroupId,
             'channel' => $file->channel,
             'file_name' => $file->file_name,
@@ -362,44 +352,51 @@ class SysFileService
     }
 
     /**
+     * 批量复制文件
+     */
+    public function batchCopy(array $fileIds, int $targetGroupId = 0): bool
+    {
+        $files = SysFileModel::whereIn('id', $fileIds)->get();
+        $fileArray = [];
+
+        foreach ($files as $file) {
+
+            $newPath = $this->generateStoragePath($file->file_ext);
+
+            $this->disk($file->disk)->copy($file->file_path, $newPath);
+
+            $fileArray[] =[
+                'disk' => $file->disk,
+                'group_id' => $targetGroupId,
+                'channel' => $file->channel,
+                'file_name' => $file->file_name,
+                'file_type' => $file->file_type,
+                'file_path' => $newPath,
+                'file_size' => $file->file_size,
+                'file_ext' => $file->file_ext,
+                'uploader_id' => Auth::id(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        return SysFileModel::insert($fileArray);
+    }
+
+    /**
      * 移动文件
      */
-    public function move(int $fileId, int $targetGroupId = 0, ?string $targetDisk = null): array
+    public function move(int $fileId, int $groupId): bool
     {
         $file = SysFileModel::find($fileId);
-        if (!$file) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
-        }
-        
-        $targetDisk = $targetDisk ?? $file->disk;
-        $oldPath = $file->file_path;
-        $oldDisk = $file->disk;
-        
-        // 同磁盘同分组，无需移动
-        if ($targetDisk === $file->disk && $targetGroupId === $file->group_id) {
-            return $file->toArray();
-        }
-        
-        $newPath = $this->generateStoragePath($targetGroupId, $file->file_ext);
-        
-        // 同磁盘移动
-        if ($targetDisk === $file->disk) {
-            $this->disk($file->disk)->move($oldPath, $newPath);
-        } else {
-            // 跨磁盘移动
-            $content = $this->disk($oldDisk)->get($oldPath);
-            $this->disk($targetDisk)->put($newPath, $content, 'public');
-            $this->disk($oldDisk)->delete($oldPath);
-        }
-        
-        // 更新文件记录
-        $file->update([
-            'disk' => $targetDisk,
-            'group_id' => $targetGroupId,
-            'file_path' => $newPath,
-        ]);
-        
-        return $file->fresh()->toArray();
+        return $file->update(['group_id' => $groupId]);
+    }
+
+    /**
+     * 批量移动
+     */
+    public function batchMove(array $fileIds, int $groupId): int
+    {
+        return SysFileModel::whereIn('id', $fileIds)->update(['group_id' => $groupId]);
     }
 
     /**
@@ -413,27 +410,6 @@ class SysFileService
         }
         
         return $file->update(['file_name' => $newName]);
-    }
-
-    /**
-     * 更新文件分组
-     */
-    public function updateGroup(int $fileId, int $groupId): bool
-    {
-        $file = SysFileModel::find($fileId);
-        if (!$file) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
-        }
-        
-        return $file->update(['group_id' => $groupId]);
-    }
-
-    /**
-     * 批量更新文件分组
-     */
-    public function batchUpdateGroup(array $fileIds, int $groupId): int
-    {
-        return SysFileModel::whereIn('id', $fileIds)->update(['group_id' => $groupId]);
     }
 
     /**

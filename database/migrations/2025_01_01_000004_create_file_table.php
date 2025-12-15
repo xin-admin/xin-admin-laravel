@@ -16,7 +16,7 @@ return new class extends Migration
             Schema::create('sys_file', function (Blueprint $table) {
                 $table->increments('id')->comment('文件ID');
                 $table->integer('group_id')->default(0)->comment('文件分组ID');
-                $table->integer('channel')->comment('上传来源(10:系统用户 20:App用户端)');
+                $table->integer('channel')->default(10)->comment('上传来源(10:系统用户 20:App用户端)');
                 $table->string('disk', 10)->comment('存储方式');
                 $table->integer('file_type')->comment('文件类型');
                 $table->string('file_name', 255)->comment('文件名称');
