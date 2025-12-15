@@ -807,77 +807,59 @@ class SysUserSeeder extends Seeder
                             [
                                 'order' => 9,
                                 'type' => 'rule',
-                                'name' => '批量删除文件',
-                                'key' => 'system.file.list.delete'
-                            ],
-                            [
-                                'order' => 10,
-                                'type' => 'rule',
                                 'name' => '永久删除文件',
                                 'key' => 'system.file.list.force-delete'
                             ],
                             [
-                                'order' => 11,
-                                'type' => 'rule',
-                                'name' => '批量永久删除',
-                                'key' => 'system.file.list.force-delete'
-                            ],
-                            [
-                                'order' => 12,
+                                'order' => 10,
                                 'type' => 'rule',
                                 'name' => '恢复文件',
                                 'key' => 'system.file.list.restore'
                             ],
                             [
-                                'order' => 13,
+                                'order' => 11,
                                 'type' => 'rule',
                                 'name' => '批量恢复文件',
                                 'key' => 'system.file.list.restore'
                             ],
                             [
-                                'order' => 14,
+                                'order' => 12,
                                 'type' => 'rule',
                                 'name' => '查看回收站',
                                 'key' => 'system.file.list.trashed'
                             ],
                             [
-                                'order' => 15,
+                                'order' => 13,
                                 'type' => 'rule',
                                 'name' => '清空回收站',
                                 'key' => 'system.file.list.clean-trashed'
                             ],
                             [
-                                'order' => 16,
+                                'order' => 14,
                                 'type' => 'rule',
                                 'name' => '复制文件',
                                 'key' => 'system.file.list.copy'
                             ],
                             [
-                                'order' => 17,
+                                'order' => 15,
                                 'type' => 'rule',
                                 'name' => '移动文件',
                                 'key' => 'system.file.list.move'
                             ],
                             [
-                                'order' => 18,
+                                'order' => 16,
                                 'type' => 'rule',
                                 'name' => '重命名文件',
                                 'key' => 'system.file.list.rename'
                             ],
                             [
-                                'order' => 19,
+                                'order' => 17,
                                 'type' => 'rule',
                                 'name' => '更新文件分组',
                                 'key' => 'system.file.list.group'
                             ],
                             [
-                                'order' => 20,
-                                'type' => 'rule',
-                                'name' => '批量更新分组',
-                                'key' => 'system.file.list.group'
-                            ],
-                            [
-                                'order' => 21,
+                                'order' => 18,
                                 'type' => 'rule',
                                 'name' => '磁盘使用统计',
                                 'key' => 'system.file.list.disk-usage'
