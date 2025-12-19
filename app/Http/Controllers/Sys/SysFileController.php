@@ -57,7 +57,7 @@ class SysFileController extends BaseController
     /**
      * 删除文件（软删除）
      */
-    #[DeleteMapping('/{id}', authorize: 'delete')]
+    #[DeleteMapping('/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
     public function delete(int $id): JsonResponse
     {
         $this->fileService->delete($id);
@@ -78,7 +78,7 @@ class SysFileController extends BaseController
     /**
      * 彻底删除文件
      */
-    #[DeleteMapping('/force-delete/{id}', 'force-delete')]
+    #[DeleteMapping('/force-delete/{id}', 'force-delete', where: ['id' => '[0-9]+'])]
     public function forceDelete(int $id): JsonResponse
     {
         $this->fileService->forceDelete($id);
@@ -99,7 +99,7 @@ class SysFileController extends BaseController
     /**
      * 恢复文件
      */
-    #[PostMapping('/restore/{id}', 'restore')]
+    #[PostMapping('/restore/{id}', 'restore', where: ['id' => '[0-9]+'])]
     public function restore(int $id): JsonResponse
     {
         $this->fileService->restore($id);
@@ -150,7 +150,7 @@ class SysFileController extends BaseController
     /**
      * 重命名文件
      */
-    #[PutMapping('/rename/{id}', 'rename')]
+    #[PutMapping('/rename/{id}', 'rename', where: ['id' => '[0-9]+'])]
     public function rename(int $id, Request $request): JsonResponse
     {
         $newName = $request->input('name');
@@ -161,7 +161,7 @@ class SysFileController extends BaseController
     /**
      * 下载文件
      */
-    #[GetMapping('/download/{id}', 'download')]
+    #[GetMapping('/download/{id}', 'download', where: ['id' => '[0-9]+'])]
     public function download(int $id): StreamedResponse
     {
         return $this->fileService->download($id);
