@@ -35,55 +35,12 @@ class SysFileController extends BaseController
     /**
      * 上传图片
      */
-    #[PostMapping('/upload/image', 'upload')]
+    #[PostMapping('/upload', 'upload')]
     public function uploadImage(): JsonResponse
     {
+        $fileType = request()->filled('file_type') ? (int) request('file_type') : 10;
         $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::IMAGE, $groupId);
-        return $this->success($result);
-    }
-
-    /**
-     * 上传视频
-     */
-    #[PostMapping('/upload/video', 'upload')]
-    public function uploadVideo(): JsonResponse
-    {
-        $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::VIDEO, $groupId);
-        return $this->success($result);
-    }
-
-    /**
-     * 上传音频
-     */
-    #[PostMapping('/upload/audio', 'upload')]
-    public function uploadAudio(): JsonResponse
-    {
-        $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::AUDIO, $groupId);
-        return $this->success($result);
-    }
-
-    /**
-     * 上传压缩包
-     */
-    #[PostMapping('/upload/zip', 'upload')]
-    public function uploadZip(): JsonResponse
-    {
-        $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::ZIP, $groupId);
-        return $this->success($result);
-    }
-
-    /**
-     * 上传其他文件
-     */
-    #[PostMapping('/upload/file', 'upload')]
-    public function uploadFile(): JsonResponse
-    {
-        $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::ANNEX, $groupId);
+        $result = $this->fileService->upload(FileType::from($fileType), $groupId);
         return $this->success($result);
     }
 
