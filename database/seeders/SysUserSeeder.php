@@ -411,6 +411,56 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
+                'type' => 'menu',
+                'key' => "example",
+                'name' => "组件示例",
+                'path' => "",
+                'icon' => "AppstoreOutlined",
+                'elementPath' => "",
+                'order' => 5,
+                'local' => "menu.example",
+                'hidden' => 1,
+                'link' => 0,
+                'children' => [
+                    [
+                        'type' => "route",
+                        'key' => "example.user-selector",
+                        'name' => "用户选择器",
+                        'path' => "/example/user-selector",
+                        'icon' => "AppstoreOutlined",
+                        'elementPath' => "/example/user-selector",
+                        'order' => 0,
+                        'local' => "menu.example.user-selector",
+                        'hidden' => 1,
+                        'link' => 0
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "example.icon-selector",
+                        'name' => "图标",
+                        'path' => "/example/icon-selector",
+                        'icon' => "AppstoreOutlined",
+                        'elementPath' => "/example/icon-selector",
+                        'order' => 1,
+                        'local' => "menu.example.icon-selector",
+                        'hidden' => 1,
+                        'link' => 0
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "example.image-uploader",
+                        'name' => "图片上传器",
+                        'path' => "/example/image-uploader",
+                        'icon' => "PictureOutlined",
+                        'elementPath' => "/example/image-uploader",
+                        'order' => 2,
+                        'local' => "menu.example.image-uploader",
+                        'hidden' => 1,
+                        'link' => 0 
+                    ]
+                ]
+            ],
+            [
                 'order' => 7,
                 'type' => 'route',
                 'name' => '用户设置',
@@ -739,26 +789,62 @@ class SysUserSeeder extends Seeder
                             [
                                 'order' => 6,
                                 'type' => 'rule',
+                                'name' => '上传文件',
+                                'key' => 'system.file.list.upload'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '下载文件',
+                                'key' => 'system.file.list.download'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
                                 'name' => '删除文件',
                                 'key' => 'system.file.list.delete'
                             ],
                             [
-                                'order' => 7,
+                                'order' => 9,
                                 'type' => 'rule',
                                 'name' => '永久删除文件',
                                 'key' => 'system.file.list.force-delete'
                             ],
                             [
-                                'order' => 8,
+                                'order' => 10,
                                 'type' => 'rule',
-                                'name' => '上传文件',
-                                'key' => 'system.file.list.upload'
+                                'name' => '恢复文件',
+                                'key' => 'system.file.list.restore'
                             ],
                             [
-                                'order' => 9,
+                                'order' => 11,
                                 'type' => 'rule',
-                                'name' => '下载文件',
-                                'key' => 'system.file.list.download'
+                                'name' => '查看回收站',
+                                'key' => 'system.file.list.trashed'
+                            ],
+                            [
+                                'order' => 12,
+                                'type' => 'rule',
+                                'name' => '清空回收站',
+                                'key' => 'system.file.list.clean-trashed'
+                            ],
+                            [
+                                'order' => 13,
+                                'type' => 'rule',
+                                'name' => '复制文件',
+                                'key' => 'system.file.list.copy'
+                            ],
+                            [
+                                'order' => 14,
+                                'type' => 'rule',
+                                'name' => '移动文件',
+                                'key' => 'system.file.list.move'
+                            ],
+                            [
+                                'order' => 15,
+                                'type' => 'rule',
+                                'name' => '重命名文件',
+                                'key' => 'system.file.list.rename'
                             ]
                         ],
                     ],
@@ -823,6 +909,77 @@ class SysUserSeeder extends Seeder
                     ],
                     [
                         'order' => 4,
+                        'type' => "route",
+                        'name' => "系统配置",
+                        'local' => "menu.system.setting",
+                        'key' => "system.setting",
+                        'path' => "/system/setting",
+                        'elementPath' => "/system/setting",
+                        'children' => [
+                            [
+                                'order' => 1,
+                                'type' => 'rule',
+                                'name' => '配置列表',
+                                'key' => 'system.setting.items.query'
+                            ],
+                            [
+                                'order' => 2,
+                                'type' => 'rule',
+                                'name' => '新增配置',
+                                'key' => 'system.setting.items.create'
+                            ],
+                            [
+                                'order' => 3,
+                                'type' => 'rule',
+                                'name' => '编辑配置',
+                                'key' => 'system.setting.items.update'
+                            ],
+                            [
+                                'order' => 4,
+                                'type' => 'rule',
+                                'name' => '删除配置',
+                                'key' => 'system.setting.items.delete'
+                            ],
+                            [
+                                'order' => 5,
+                                'type' => 'rule',
+                                'name' => '保存配置',
+                                'key' => 'system.setting.items.save'
+                            ],
+                            [
+                                'order' => 6,
+                                'type' => 'rule',
+                                'name' => '刷新配置',
+                                'key' => 'system.setting.items.refresh'
+                            ],
+                            [
+                                'order' => 7,
+                                'type' => 'rule',
+                                'name' => '配置组编辑',
+                                'key' => 'system.setting.group.update'
+                            ],
+                            [
+                                'order' => 8,
+                                'type' => 'rule',
+                                'name' => '配置组删除',
+                                'key' => 'system.setting.items.item.delete'
+                            ],
+                            [
+                                'order' => 9,
+                                'type' => 'rule',
+                                'name' => '配置组列表',
+                                'key' => 'system.setting.group.query'
+                            ],
+                            [
+                                'order' => 10,
+                                'type' => 'rule',
+                                'name' => '配置组新增',
+                                'key' => 'system.setting.group.create'
+                            ]
+                        ]
+                    ],
+                    [
+                        'order' => 5,
                         'type' => "menu",
                         'name' => "系统日志",
                         'local' => "menu.system.watcher",

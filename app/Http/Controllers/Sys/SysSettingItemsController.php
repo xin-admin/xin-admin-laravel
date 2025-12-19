@@ -19,7 +19,7 @@ use Illuminate\Http\JsonResponse;
 /**
  * 系统设置
  */
-#[RequestMapping('/system/setting/items', 'system.setting')]
+#[RequestMapping('/system/setting/items', 'system.setting.items')]
 #[Query, Create, Update, Delete]
 class SysSettingItemsController extends BaseController
 {

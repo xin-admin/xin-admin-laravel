@@ -16,6 +16,10 @@ return [
         'size_limit' => '文件大小超出限制',
         'ext_limit' => '文件扩展名不允许 :ext',
         'upload_failed' => '上传失败',
+        'not_found' => '文件不存在',
+        'delete_failed' => '删除失败',
+        'download_failed' => '下载失败',
+        'invalid_visibility' => '无效的可见性设置',
     ],
     'error' => [
         'no_permission' => '对不起，你暂时没有该权限，请联系管理员',

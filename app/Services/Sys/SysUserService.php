@@ -173,7 +173,7 @@ class SysUserService extends BaseService
     public function uploadAvatar(): JsonResponse
     {
         $service = new SysFileService();
-        $data = $service->upload(FileType::IMAGE, 0, 'public');
+        $data = $service->upload(FileType::IMAGE, 0); // 使用系统设置中的默认存储
         $user = SysUserModel::find(Auth::id());
         $user->avatar_id = $data['id'];
         $user->save();

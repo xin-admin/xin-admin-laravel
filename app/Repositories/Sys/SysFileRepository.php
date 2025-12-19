@@ -76,4 +76,13 @@ class SysFileRepository extends BaseRepository
             'uploader_id.integer' => '上传者用户ID必须是整数',
         ];
     }
+
+    public function getTrashedList(array $params = []): array
+    {
+        $pageSize = $params['pageSize'] ?? 10;
+        return $this->model()
+            ->onlyTrashed()
+            ->paginate($pageSize)
+            ->toArray();
+    }
 }

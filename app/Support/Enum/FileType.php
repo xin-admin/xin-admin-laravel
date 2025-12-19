@@ -43,11 +43,11 @@ enum FileType: int
     public function previewPath(): string
     {
         return match ($this) {
-            self::IMAGE => 'static/image.png',
-            self::AUDIO => 'static/audio.png',
-            self::VIDEO => 'static/video.png',
-            self::ZIP => 'static/zip.png',
-            self::ANNEX => 'static/annex.png',
+            self::IMAGE => 'static/image.svg',
+            self::AUDIO => 'static/audio.svg',
+            self::VIDEO => 'static/video.svg',
+            self::ZIP => 'static/zip.svg',
+            self::ANNEX => 'static/annex.svg',
         };
     }
 
