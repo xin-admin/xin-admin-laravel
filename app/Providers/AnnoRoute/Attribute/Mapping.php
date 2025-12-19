@@ -47,4 +47,14 @@ abstract class Mapping
      * @var string
      */
     public string $authorize = 'create';
+
+    /**
+     * 路由参数约束，该属性用于指定路由参数的正则约束，例如：['id' => '[0-9]+']
+     *
+     * Route parameter constraints, this attribute is used to specify regex constraints for route parameters,
+     * for example: ['id' => '[0-9]+']
+     *
+     * @var array
+     */
+    public array $where = [];
 }

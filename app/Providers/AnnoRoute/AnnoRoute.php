@@ -141,10 +141,15 @@ class AnnoRoute
         }
 
         $middleware = array_merge($middleware, $this->registerMiddleware($instance->middleware), $this->middleware);
-        Route::{Str::lower($instance->httpMethod)}(
+        $route = Route::{Str::lower($instance->httpMethod)}(
             $this->routePrefix . $instance->route,
             [$this->className, $method]
         )->middleware(array_unique($middleware));
+
+        // 应用路由参数约束
+        if (!empty($instance->where)) {
+            $route->where($instance->where);
+        }
     }
 
     /**

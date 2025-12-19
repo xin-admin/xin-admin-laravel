@@ -13,6 +13,7 @@ class PutMapping extends Mapping
         public string $route = '',
         public string $authorize = '',
         public string | array $middleware = '',
+        public array $where = [],
     )
     {
     }
