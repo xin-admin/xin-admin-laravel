@@ -98,9 +98,19 @@ class SysFileController extends BaseController
     }
 
     /**
+     * 删除文件（软删除）
+     */
+    #[DeleteMapping('/{id}', authorize: 'delete')]
+    public function delete(int $id): JsonResponse
+    {
+        $this->fileService->delete($id);
+        return $this->success();
+    }
+
+    /**
      * 批量删除文件
      */
-    #[DeleteMapping('/batch-delete', 'delete')]
+    #[DeleteMapping('/batch/delete', 'delete')]
     public function batchDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -109,17 +119,7 @@ class SysFileController extends BaseController
     }
 
     /**
-     * 删除文件（软删除）
-     */
-    #[DeleteMapping(authorize: 'delete')]
-    public function delete(int $id): JsonResponse
-    {
-        $this->fileService->delete($id);
-        return $this->success();
-    }
-
-    /**
-     * 永久删除文件
+     * 彻底删除文件
      */
     #[DeleteMapping('/force-delete/{id}', 'force-delete')]
     public function forceDelete(int $id): JsonResponse
@@ -129,9 +129,9 @@ class SysFileController extends BaseController
     }
 
     /**
-     * 批量永久删除文件
+     * 批量彻底删除文件
      */
-    #[DeleteMapping('/batch-force-delete', 'force-delete')]
+    #[DeleteMapping('/batch/force-delete', 'force-delete')]
     public function batchForceDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -152,7 +152,7 @@ class SysFileController extends BaseController
     /**
      * 批量恢复文件
      */
-    #[PostMapping('/batch-restore', 'restore')]
+    #[PostMapping('/batch/restore', 'restore')]
     public function batchRestore(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -211,20 +211,9 @@ class SysFileController extends BaseController
     }
 
     /**
-     * 获取磁盘使用统计
-     */
-    #[GetMapping('/disk-usage', 'disk-usage')]
-    public function getDiskUsage(Request $request): JsonResponse
-    {
-        $disk = $request->input('disk');
-        $usage = $this->fileService->getDiskUsage($disk);
-        return $this->success($usage);
-    }
-
-    /**
      * 清空回收站文件
      */
-    #[DeleteMapping('/clean-trashed', 'clean-trashed')]
+    #[DeleteMapping('/clean/trashed', 'clean-trashed')]
     public function cleanTrashed(Request $request): JsonResponse
     {
         $count = $this->fileService->cleanTrashed();

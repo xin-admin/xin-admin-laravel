@@ -845,12 +845,6 @@ class SysUserSeeder extends Seeder
                                 'type' => 'rule',
                                 'name' => '重命名文件',
                                 'key' => 'system.file.list.rename'
-                            ],
-                            [
-                                'order' => 16,
-                                'type' => 'rule',
-                                'name' => '磁盘使用统计',
-                                'key' => 'system.file.list.disk-usage'
                             ]
                         ],
                     ],

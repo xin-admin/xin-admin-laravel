@@ -499,25 +499,4 @@ class SysFileService
         return $count;
     }
 
-    /**
-     * 获取磁盘使用统计
-     */
-    public function getDiskUsage(?string $disk = null): array
-    {
-        $query = SysFileModel::query();
-        
-        if ($disk) {
-            $query->where('disk', $disk);
-        }
-        
-        return [
-            'total_files' => $query->count(),
-            'total_size' => $query->sum('file_size'),
-            'by_type' => $query->selectRaw('file_type, COUNT(*) as count, SUM(file_size) as size')
-                ->groupBy('file_type')
-                ->get()
-                ->keyBy('file_type')
-                ->toArray(),
-        ];
-    }
 }
