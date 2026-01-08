@@ -5,15 +5,12 @@ services:
     # 如果要在生产环境中运行，请取消注释以下行
     # restart: always
     ports:
-      - "80:80" # HTTP
-      - "443:443" # HTTPS
-      - "443:443/udp" # HTTP/3
+      - "8081:80" # HTTP
     volumes:
-      - ./:/app
       - caddy_data:/data
       - caddy_config:/config
     # 在生产环境中注释以下行，它允许在 dev 中使用清晰可读日志
-    tty: true
+    # tty: true
 volumes:
   caddy_data:
   caddy_config:

@@ -7,6 +7,8 @@ RUN if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
     sed -i "s|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g" /etc/apt/sources.list; \
     fi
 
+ENV SERVER_NAME=:80
+
 # 在此处添加其他扩展：
 RUN install-php-extensions \
     pdo_mysql  \
@@ -18,4 +20,4 @@ RUN install-php-extensions \
     pcntl  \
     redis
 
-CMD ["frankenphp", "run", "--watch", "--config", "/app/Caddyfile", "--adapter","caddyfile"]
+COPY . /app
