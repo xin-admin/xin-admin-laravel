@@ -7,6 +7,7 @@ services:
     ports:
       - "8081:80" # HTTP
     volumes:
+      - ./:/app
       - caddy_data:/data
       - caddy_config:/config
     # 在生产环境中注释以下行，它允许在 dev 中使用清晰可读日志
