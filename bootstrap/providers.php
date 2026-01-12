@@ -1,6 +1,6 @@
 <?php
 
-use App\Providers\AnnoRoute\RouteServiceProvider;
+use App\Providers\RouteServiceProvider;
 use App\Providers\Telescope\TelescopeServiceProvider;
 
 return [
