@@ -166,7 +166,7 @@ abstract class BaseRepository implements RepositoryInterface
      * @param array $params
      * @return array
      */
-    public function list(array $params): array
+    public function query(array $params): array
     {
         $pageSize = $params['pageSize'] ?? 10;
         $query = $this->model();

@@ -35,7 +35,7 @@ abstract class BaseController extends Controller
     /** 列表响应 */
     public function query(Request $request): JsonResponse
     {
-        $list = $this->repository()->list($request->query());
+        $list = $this->repository()->query($request->query());
         return $this->success($list);
     }
 
