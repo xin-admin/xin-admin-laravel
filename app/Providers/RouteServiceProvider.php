@@ -1,6 +1,8 @@
 <?php
-namespace App\Providers\AnnoRoute;
+namespace App\Providers;
 
+
+use App\Providers\AnnoRoute\AnnoRoute;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
