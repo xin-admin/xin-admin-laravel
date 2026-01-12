@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Sys\SysFileMoveOrCopyRequest;
-use App\Providers\AnnoRoute\Attribute\DeleteMapping;
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
-use App\Providers\AnnoRoute\Attribute\PutMapping;
-use App\Providers\AnnoRoute\Attribute\Query;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\Crud\Query;
+use App\Providers\AnnoRoute\RequestAttribute;
+use App\Providers\AnnoRoute\Route\DeleteRoute;
+use App\Providers\AnnoRoute\Route\GetRoute;
+use App\Providers\AnnoRoute\Route\PostRoute;
+use App\Providers\AnnoRoute\Route\PutRoute;
 use App\Repositories\RepositoryInterface;
 use App\Repositories\Sys\SysFileRepository;
 use App\Services\Sys\SysFileService;
@@ -21,21 +21,18 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件列表
  */
-#[RequestMapping('/sys/file/list', 'system.file.list')]
+#[RequestAttribute('/sys/file/list', 'system.file.list')]
 #[Query]
 class SysFileController extends BaseController
 {
     public function __construct(protected SysFileService $fileService) {}
 
-    protected function repository(): RepositoryInterface
-    {
-        return app(SysFileRepository::class);
-    }
+    protected string $repository = SysFileRepository::class;
 
     /**
      * 上传图片
      */
-    #[PostMapping('/upload', 'upload')]
+    #[PostRoute('/upload', 'upload')]
     public function uploadImage(): JsonResponse
     {
         $fileType = request()->filled('file_type') ? (int) request('file_type') : 10;
@@ -47,7 +44,7 @@ class SysFileController extends BaseController
     /**
      * 获取回收站文件列表
      */
-    #[GetMapping('/trashed', 'system.file.list.trashed')]
+    #[GetRoute('/trashed', 'system.file.list.trashed')]
     public function trashed(SysFileRepository $repository): JsonResponse
     {
         $list = $repository->getTrashedList(request()->all());
@@ -57,7 +54,7 @@ class SysFileController extends BaseController
     /**
      * 删除文件（软删除）
      */
-    #[DeleteMapping('/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
+    #[DeleteRoute('/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
     public function delete(int $id): JsonResponse
     {
         $this->fileService->delete($id);
@@ -67,7 +64,7 @@ class SysFileController extends BaseController
     /**
      * 批量删除文件
      */
-    #[DeleteMapping('/batch/delete', 'delete')]
+    #[DeleteRoute('/batch/delete', 'delete')]
     public function batchDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -78,7 +75,7 @@ class SysFileController extends BaseController
     /**
      * 彻底删除文件
      */
-    #[DeleteMapping('/force-delete/{id}', 'force-delete', where: ['id' => '[0-9]+'])]
+    #[DeleteRoute('/force-delete/{id}', 'force-delete', where: ['id' => '[0-9]+'])]
     public function forceDelete(int $id): JsonResponse
     {
         $this->fileService->forceDelete($id);
@@ -88,7 +85,7 @@ class SysFileController extends BaseController
     /**
      * 批量彻底删除文件
      */
-    #[DeleteMapping('/batch/force-delete', 'force-delete')]
+    #[DeleteRoute('/batch/force-delete', 'force-delete')]
     public function batchForceDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -99,7 +96,7 @@ class SysFileController extends BaseController
     /**
      * 恢复文件
      */
-    #[PostMapping('/restore/{id}', 'restore', where: ['id' => '[0-9]+'])]
+    #[PostRoute('/restore/{id}', 'restore', where: ['id' => '[0-9]+'])]
     public function restore(int $id): JsonResponse
     {
         $this->fileService->restore($id);
@@ -109,7 +106,7 @@ class SysFileController extends BaseController
     /**
      * 批量恢复文件
      */
-    #[PostMapping('/batch/restore', 'restore')]
+    #[PostRoute('/batch/restore', 'restore')]
     public function batchRestore(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
@@ -120,7 +117,7 @@ class SysFileController extends BaseController
     /**
      * 复制文件
      */
-    #[PostMapping('/copy', 'copy')]
+    #[PostRoute('/copy', 'copy')]
     public function copy(SysFileMoveOrCopyRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -135,7 +132,7 @@ class SysFileController extends BaseController
     /**
      * 移动文件
      */
-    #[PostMapping('/move', 'move')]
+    #[PostRoute('/move', 'move')]
     public function move(SysFileMoveOrCopyRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -150,7 +147,7 @@ class SysFileController extends BaseController
     /**
      * 重命名文件
      */
-    #[PutMapping('/rename/{id}', 'rename', where: ['id' => '[0-9]+'])]
+    #[PutRoute('/rename/{id}', 'rename', where: ['id' => '[0-9]+'])]
     public function rename(int $id, Request $request): JsonResponse
     {
         $newName = $request->input('name');
@@ -161,7 +158,7 @@ class SysFileController extends BaseController
     /**
      * 下载文件
      */
-    #[GetMapping('/download/{id}', 'download', where: ['id' => '[0-9]+'])]
+    #[GetRoute('/download/{id}', 'download', where: ['id' => '[0-9]+'])]
     public function download(int $id): StreamedResponse
     {
         return $this->fileService->download($id);
@@ -170,7 +167,7 @@ class SysFileController extends BaseController
     /**
      * 清空回收站文件
      */
-    #[DeleteMapping('/clean/trashed', 'clean-trashed')]
+    #[DeleteRoute('/clean/trashed', 'clean-trashed')]
     public function cleanTrashed(Request $request): JsonResponse
     {
         $count = $this->fileService->cleanTrashed();

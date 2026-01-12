@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\RequestAttribute;
+use App\Providers\AnnoRoute\Route\GetRoute;
 use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 
-#[RequestMapping]
+#[RequestAttribute]
 class IndexController
 {
     use RequestJson;
 
-    protected array $noPermission = ['index'];
-
     /** 获取首页信息 */
-    #[GetMapping('/index')]
+    #[GetRoute('/index')]
     public function index(): JsonResponse
     {
         $web_setting = setting('web');
