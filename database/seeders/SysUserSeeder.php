@@ -977,51 +977,6 @@ class SysUserSeeder extends Seeder
                                 'key' => 'system.setting.group.create'
                             ]
                         ]
-                    ],
-                    [
-                        'order' => 5,
-                        'type' => "menu",
-                        'name' => "系统日志",
-                        'local' => "menu.system.watcher",
-                        'key' => "system.watcher",
-                        'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'route',
-                                'name' => '请求记录',
-                                'local' => "menu.system.watcher.request",
-                                'key' => "system.watcher.request",
-                                'elementPath' => "/system/watcher/request",
-                                'path' => "/system/watcher/request",
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'route',
-                                'name' => 'SQL记录',
-                                'local' => "menu.system.watcher.query",
-                                'key' => "system.watcher.query",
-                                'elementPath' => "/system/watcher/query",
-                                'path' => "/system/watcher/query",
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'route',
-                                'name' => '缓存记录',
-                                'local' => "menu.system.watcher.cache",
-                                'key' => "system.watcher.cache",
-                                'elementPath' => "/system/watcher/cache",
-                                'path' => "/system/watcher/cache",
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'route',
-                                'name' => 'Redis记录',
-                                'local' => "menu.system.watcher.redis",
-                                'key' => "system.watcher.redis",
-                                'elementPath' => "/system/watcher/redis",
-                                'path' => "/system/watcher/redis",
-                            ],
-                        ]
                     ]
                 ]
             ],
