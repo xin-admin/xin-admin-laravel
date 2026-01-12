@@ -4,8 +4,8 @@ namespace App\Repositories\Sys;
 
 use App\Models\Sys\SysDictItemModel;
 use App\Repositories\BaseRepository;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 class SysDictItemRepository extends BaseRepository
 {
@@ -27,23 +27,31 @@ class SysDictItemRepository extends BaseRepository
     protected function rules(): array
     {
         if($this->isUpdate()) {
-            $request = request()->all();
+            $id = request()->route('id');
+            $dict_id = request('dict_id');
             return [
                 'dict_id' => 'required|exists:sys_dict,id',
                 'label' => 'required',
                 'value' => [
-                    Rule::unique('sys_dict_item')->where(function ($query) use ($request) {
-                        return $query->where('dict_id', $request['dict_id'] ?? null);
-                    })
+                    'required',
+                    Rule::unique('sys_dict_item')->where(function ($query) use ($dict_id) {
+                        return $query->where('dict_id', $dict_id);
+                    })->ignore($id)
                 ],
                 'switch' => 'required|int|in:0,1',
                 'status' => 'required|in:default,success,error,processing,warning'
             ];
         } else {
+            $dict_id = request('dict_id');
             return [
                 'dict_id' => 'required|exists:sys_dict,id',
                 'label' => 'required',
-                'value' => 'required',
+                'value' => [
+                    'required',
+                    Rule::unique('sys_dict_item')->where(function ($query) use ($dict_id) {
+                        return $query->where('dict_id', $dict_id);
+                    })
+                ],
                 'switch' => 'required|in:0,1',
                 'status' => 'required|in:default,success,error,processing,warning'
             ];
