@@ -16,7 +16,7 @@ interface RepositoryInterface
      * @param array $params
      * @return array
      */
-    public function list(array $params): array;
+    public function query(array $params): array;
 
     /**
      * 新增操作
