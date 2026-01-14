@@ -38,13 +38,19 @@ class SysUserService extends BaseService
             $data = $request->user()
                 ->createToken($credentials['username'], $access, $expiration)
                 ->toArray();
+            if(empty($data['plainTextToken'])) {
+                return $this->error(__('user.login_error'));
+            }
+            $response = [
+                'token' => $data['plainTextToken']
+            ];
 
             // 记录登录 IP 与 时间
             SysUserModel::query()->where('id', $userID)->update([
                 'login_time' => now(),
                 'login_ip' => $request->ip(),
             ]);
-            return $this->success($data, __('user.login_success'));
+            return $this->success($response, __('user.login_success'));
         }
         return $this->error(__('user.login_error'));
     }

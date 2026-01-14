@@ -13,7 +13,7 @@ class IndexController
     use RequestJson;
 
     /** 获取首页信息 */
-    #[GetRoute('/index')]
+    #[GetRoute('/index', false)]
     public function index(): JsonResponse
     {
         $web_setting = setting('web');

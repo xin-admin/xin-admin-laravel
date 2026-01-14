@@ -22,7 +22,7 @@ class SysUserController
     use RequestJson;
 
     /** 用户登录 */
-    #[PostRoute('/login', middleware: 'login_log')]
+    #[PostRoute('/login', false, 'login_log')]
     public function login(Request $request, SysUserService $service): JsonResponse
     {
         return $service->login($request);
@@ -43,8 +43,16 @@ class SysUserController
         $info = Auth::user();
         $id = Auth::id();
         $access = $service->ruleKeys($id);
+        return $this->success(compact('access','info'));
+    }
+
+    /** 获取菜单信息 */
+    #[GetRoute('/menu')]
+    public function menu(SysUserService $service): JsonResponse
+    {
+        $id = Auth::id();
         $menus = $service->getAdminMenus($id);
-        return $this->success(compact('access', 'menus', 'info'));
+        return $this->success(compact('menus'));
     }
 
     /** 更新管理员信息 */
