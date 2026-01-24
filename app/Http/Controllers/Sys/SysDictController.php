@@ -19,5 +19,4 @@ use App\Repositories\Sys\SysDictRepository;
 class SysDictController extends BaseController
 {
     protected string $repository = SysDictRepository::class;
-
 }

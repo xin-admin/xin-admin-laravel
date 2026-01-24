@@ -12,13 +12,17 @@ use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 return Application::configure(basePath: dirname(__DIR__))
-    ->withRouting(
-        web: __DIR__.'/../routes/web.php'
-    )
     ->withMiddleware(function (Middleware $middleware) {
         // 全局跨域中间件
         $middleware->append(AllowCrossDomainMiddleware::class);
         $middleware->append(LanguageMiddleware::class);
+        $middleware->append([
+            Illuminate\Cookie\Middleware\EncryptCookies::class,
+            Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            Illuminate\Session\Middleware\StartSession::class,
+            Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        ]);
         $middleware->alias([
             'login_log' => LoginLogMiddleware::class,
             'abilities' => CheckAbilities::class,
@@ -27,10 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         // 未登录响应
         $middleware->redirectGuestsTo(function (Request $request) {
-            return response()->json([
-                'success' => false,
-                'msg' => __('user.not_login')
-            ], 401);
+            return redirect('/admin/login');
         });
     })
     ->withExceptions(function (Exceptions $exceptions) {})->create();

@@ -12,6 +12,8 @@ use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response;
 
 /**
  * 管理员用户控制器
@@ -20,6 +22,12 @@ use Illuminate\Support\Facades\Auth;
 class SysUserController
 {
     use RequestJson;
+
+    #[GetRoute('/login', false)]
+    public function edit(): Response
+    {
+        return Inertia::render('login');
+    }
 
     /** 用户登录 */
     #[PostRoute('/login', false, 'login_log')]

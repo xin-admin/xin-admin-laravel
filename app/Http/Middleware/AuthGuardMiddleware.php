@@ -37,9 +37,6 @@ class AuthGuardMiddleware
                 return $next($request);
             }
         }
-        return response()->json([
-            'msg' => __('user.not_login'),
-            'success' => false
-        ], 401);
+        return redirect('/admin/login');
     }
 }

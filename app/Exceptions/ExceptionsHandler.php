@@ -42,10 +42,7 @@ class ExceptionsHandler extends ExceptionHandler
                 );
             },
             AuthenticationException::class => function ($e) {
-                return response()->json([
-                    'msg' => __('user.not_login'),
-                    'success' => false
-                ], 401);
+                return redirect('/admin/login');
             },
             NotFoundHttpException::class => function ($e) {
                 return $this->notification(

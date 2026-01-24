@@ -10,6 +10,7 @@
         "ext-curl": "*",
         "ext-pdo": "*",
         "ext-redis": "*",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^v12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
@@ -40,8 +41,8 @@
     },
     "scripts": {
         "dev": [
-          "Composer\\Config::disableProcessTimeout",
-          "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" --names='server,queue'"
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
         ],
         "post-create-project-cmd": [
           "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

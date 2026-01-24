@@ -1,5 +1,7 @@
 /.phpunit.cache
-/node_modules
+node_modules
+dist
+dist-ssr
 /public/build
 /public/hot
 /public/storage
@@ -12,6 +14,8 @@
 /.phpunit.result.cache
 /.phpstorm.meta.php
 /_ide_helper.php
+/resources/js/actions
+/resources/js/routes
 Homestead.json
 Homestead.yaml
 auth.json

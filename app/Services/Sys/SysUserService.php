@@ -28,6 +28,7 @@ class SysUserService extends BaseService
         ]);
 
         if (Auth::guard('sys_users')->attempt($credentials)) {
+            $request->session()->regenerate();
             $userID = auth()->id();
             $access = $this->ruleKeys($userID);
             if($request->get('remember', false)) {
