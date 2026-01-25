@@ -29,29 +29,14 @@ class SysUserService extends BaseService
 
         if (Auth::guard('sys_users')->attempt($credentials)) {
             $request->session()->regenerate();
-            $userID = auth()->id();
-            $access = $this->ruleKeys($userID);
-            if($request->get('remember', false)) {
-                $expiration = null;
-            } else {
-                $expiration = now()->addDays(3);
-            }
-            $data = $request->user()
-                ->createToken($credentials['username'], $access, $expiration)
-                ->toArray();
-            if(empty($data['plainTextToken'])) {
-                return $this->error(__('user.login_error'));
-            }
-            $response = [
-                'token' => $data['plainTextToken']
-            ];
+            $permission = Auth::user()->ruleKeys();
 
             // 记录登录 IP 与 时间
-            SysUserModel::query()->where('id', $userID)->update([
+            SysUserModel::query()->where('id', Auth::id())->update([
                 'login_time' => now(),
                 'login_ip' => $request->ip(),
             ]);
-            return $this->success($response, __('user.login_success'));
+            return $this->success(compact('permission'), __('user.login_success'));
         }
         return $this->error(__('user.login_error'));
     }
@@ -190,7 +175,7 @@ class SysUserService extends BaseService
     /**
      * 获取用户的所有权限 KEY
      */
-    public function ruleKeys(int $id): array
+    public static function ruleKeys(int $id): array
     {
         if($id == 1) {
             return SysRuleModel::query()

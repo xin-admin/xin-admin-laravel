@@ -146,17 +146,15 @@ class AnnoRoute
         $middleware = [];
 
         if (!empty($authorize)) {
-
-            $middleware[] = 'auth:sanctum';
             if(! empty($this->authGuard) ) {
-                $middleware[] = 'authGuard:' . $this->authGuard;
+                $middleware[] = 'auth:' . $this->authGuard;
             } else {
-                $middleware[] = 'authGuard';
+                $middleware[] = 'auth:sys_users';
             }
             if (is_string($authorize) && !empty($this->abilitiesPrefix)) {
-                $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
-            } else {
-                $middleware[] = 'abilities:' . $authorize;
+                $middleware[] = 'hasPermission:' .  $this->abilitiesPrefix . '.' . $authorize;
+            } else if (is_string($authorize)) {
+                $middleware[] = 'hasPermission:' . $authorize;
             }
         }
 

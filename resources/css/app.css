@@ -1,1 +1,14 @@
+@layer theme, base, antd, components, utilities;
+
 @import 'tailwindcss';
+
+.grid-pattern {
+    background-image: url('/static/bg.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    min-width: 520px;
+    background-color: rgb(240, 242, 245);
+    transition: background-color 0.3s;
+}

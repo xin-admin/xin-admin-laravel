@@ -10,14 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 /**
  * 系统用户模型
  */
 class SysUserModel extends User
 {
-    use SoftDeletes, HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes, HasFactory, Notifiable;
 
     protected $table = 'sys_user';
     protected $primaryKey = 'id';
@@ -48,7 +47,7 @@ class SysUserModel extends User
 
     protected $appends = ['role_id', 'dept_name', 'avatar_url'];
 
-    protected $with = ['dept', 'avatar'];
+    protected $with = ['dept', 'avatar', 'roles.rules'];
 
     protected $hidden = [
         'dept',
@@ -81,12 +80,22 @@ class SysUserModel extends User
     }
 
     /**
-     * 获取用户角色列表
+     * 获取所有角色 ID
      */
-    public function getRoleIdAttribute()
+    public function rules()
     {
-        return $this->roles()
-            ->pluck('id')->toArray();
+        // 获取通过角色获得的权限
+        return $this->roles->flatMap(function ($role) {
+            return $role->rules;
+        });
+    }
+
+    /**
+     * 获取用户所有权限
+     */
+    public function ruleKeys(): array
+    {
+        return $this->rules()->pluck('key')->toArray();
     }
 
     /**

@@ -1,5 +1,5 @@
 import '../css/app.css';
-
+import { StyleProvider } from '@ant-design/cssinjs';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
@@ -19,7 +19,9 @@ createInertiaApp({
 
     root.render(
       <StrictMode>
-        <App {...props} />
+        <StyleProvider layer>
+          <App {...props} />
+        </StyleProvider>
       </StrictMode>,
     );
   },

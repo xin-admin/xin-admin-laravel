@@ -11,6 +11,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@ant-design/cssinjs": "^2.0.3",
         "@ant-design/icons": "~6.0.0",
         "@inertiajs/react": "^2.3.10",
         "antd": "^6.2.0",
