@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models\Sanctum;
+namespace App\Models\Sys;
 
-use App\Models\Sys\SysUserModel;
 use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
 
-class PersonalAccessToken extends SanctumPersonalAccessToken
+class SysAccessToken extends SanctumPersonalAccessToken
 {
+    protected $table = 'sys_access_token';
+
     public function can($ability): bool
     {
         if (

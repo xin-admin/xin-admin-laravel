@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         // token 表
-        if (! Schema::hasTable('password_reset_tokens')) {
-            Schema::create('personal_access_tokens', function (Blueprint $table) {
+        if (! Schema::hasTable('sys_access_token')) {
+            Schema::create('sys_access_token', function (Blueprint $table) {
                 $table->id();
                 $table->morphs('tokenable');
                 $table->string('name');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('sys_access_token');
     }
 };

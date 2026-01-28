@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Sanctum\PersonalAccessToken;
+use App\Models\Sys\SysAccessToken;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +22,7 @@ class AuthGuardMiddleware
             return response()->json(['msg' => 'Token not provided', 'success' => false], 401);
         }
         // 查找 token
-        $accessToken = PersonalAccessToken::findToken($token);
+        $accessToken = SysAccessToken::findToken($token);
         if (!$accessToken) {
             return response()->json(['msg' => 'Invalid token', 'success' => false], 401);
         }
