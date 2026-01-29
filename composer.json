@@ -40,14 +40,15 @@
     },
     "scripts": {
         "dev": [
-          "Composer\\Config::disableProcessTimeout",
-          "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" --names='server,queue'"
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan serve",
+            "@php artisan queue:listen --tries=1"
         ],
         "post-create-project-cmd": [
-          "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-          "@php artisan key:generate --ansi",
-          "@php artisan migrate --graceful --ansi",
-          "@php artisan db:seed --force"
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate --ansi",
+            "@php artisan migrate --graceful --ansi",
+            "@php artisan db:seed --force"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

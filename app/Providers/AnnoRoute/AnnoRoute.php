@@ -2,17 +2,17 @@
 
 namespace App\Providers\AnnoRoute;
 
-use App\Providers\AnnoRoute\Attribute\Create;
-use App\Providers\AnnoRoute\Attribute\Delete;
-use App\Providers\AnnoRoute\Attribute\DeleteMapping;
-use App\Providers\AnnoRoute\Attribute\Find;
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\Mapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
-use App\Providers\AnnoRoute\Attribute\PutMapping;
-use App\Providers\AnnoRoute\Attribute\Query;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
-use App\Providers\AnnoRoute\Attribute\Update;
+use App\Providers\AnnoRoute\Crud\Create;
+use App\Providers\AnnoRoute\Crud\Delete;
+use App\Providers\AnnoRoute\Crud\Find;
+use App\Providers\AnnoRoute\Crud\Query;
+use App\Providers\AnnoRoute\Crud\Update;
+use App\Providers\AnnoRoute\Route\DeleteRoute;
+use App\Providers\AnnoRoute\Route\GetRoute;
+use App\Providers\AnnoRoute\Route\PostRoute;
+use App\Providers\AnnoRoute\Route\PutRoute;
+use Closure;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -60,14 +60,10 @@ class AnnoRoute
      */
     private ?string $authGuard = null;
 
-    /**
-     * 不需要权限校验的方法
-     * Methods not permission verification
-     */
-    private array $noPermission = [];
+    private ?string $repository = null;
 
     /**
-     * register
+     * register 注册路由
      */
     public function register(string $className): void
     {
@@ -76,26 +72,26 @@ class AnnoRoute
 
             $classRef = new ReflectionClass($className);
 
+            try {
+                $this->repository = $classRef->getProperty('repository')->getDefaultValue() ?? null;
+            } catch (ReflectionException $e) {
+                $this->repository = null;
+            }
+
             $classAttr = collect($classRef->getAttributes());
             if($classAttr->isEmpty()) return;
 
             $classAttrName = $classAttr->map->getName();
-            if(! $classAttrName->contains(RequestMapping::class)) {
+            if(! $classAttrName->contains(RequestAttribute::class)) {
                 return;
             }
-            $requestMapping = $classAttr->first(fn ($item) => $item->getName() == RequestMapping::class);
+            $requestMapping = $classAttr->first(fn ($item) => $item->getName() == RequestAttribute::class);
             $routeInstance = $requestMapping->newInstance();
             // 默认参数
             $this->routePrefix = $routeInstance->routePrefix ?? '';
             $this->authGuard = $routeInstance->authGuard ?? null;
             $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
             $this->middleware = $this->registerMiddleware($routeInstance->middleware);
-            // 不需要权限校验
-            try {
-                $this->noPermission = $classRef->getProperty('noPermission')->getDefaultValue();
-            } catch (ReflectionException) {
-                $this->noPermission = [];
-            }
 
             $this->registerCRUD($classAttr);
 
@@ -114,56 +110,72 @@ class AnnoRoute
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function registerCRUD(Collection $classAttr): void
     {
         $CRUD = [ Create::class, Query::class, Find::class, Update::class, Delete::class ];
         $classAttr->filter(fn ($item) => in_array($item->getName(), $CRUD))->each(function ($item) {
+            if(empty($this->repository)) {
+                throw new Exception('控制器' . $this->className . '未定义仓储类，但是它使用了CRUD注解！');
+            }
             $instance = $item->newInstance();
-            $this->registerRoute($instance, $instance->handlerMethod);
+            $fun = $instance->store($this->repository);
+            $this->registerRoute($instance, $fun);
         });
     }
 
-    private function registerRoute(Mapping $instance, $method): void
+    /**
+     * @param array $attributes
+     * @param string $method
+     */
+    private function registerMapping(array $attributes, string $method): void
+    {
+        $mapping = [ GetRoute::class, PostRoute::class, PutRoute::class, DeleteRoute::class ];
+
+        collect($attributes)->filter(fn ($item) => in_array($item->getName(), $mapping))->each(function ($item) use ($method) {
+            $instance = $item->newInstance();
+            $this->registerRoute($instance, $method);
+        });
+    }
+
+    private function registerRoute(BaseAttribute $instance, Closure | string $method): void
     {
         $authorize = $instance->authorize;
         $middleware = [];
 
-        if (empty($this->noPermission) || !in_array($method, $this->noPermission)) {
+        if (!empty($authorize)) {
+
             $middleware[] = 'auth:sanctum';
             if(! empty($this->authGuard) ) {
                 $middleware[] = 'authGuard:' . $this->authGuard;
             } else {
                 $middleware[] = 'authGuard';
             }
-            if (!empty($this->abilitiesPrefix) && !empty($authorize)) {
+            if (is_string($authorize) && !empty($this->abilitiesPrefix)) {
                 $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
+            } else {
+                $middleware[] = 'abilities:' . $authorize;
             }
         }
 
         $middleware = array_merge($middleware, $this->registerMiddleware($instance->middleware), $this->middleware);
-        $route = Route::{Str::lower($instance->httpMethod)}(
-            $this->routePrefix . $instance->route,
-            [$this->className, $method]
-        )->middleware(array_unique($middleware));
+        if(is_string($method)) {
+            $route = Route::{Str::lower($instance->httpMethod)}(
+                $this->routePrefix . $instance->route,
+                [$this->className, $method]
+            )->middleware(array_unique($middleware));
+        } else {
+            $route = Route::{Str::lower($instance->httpMethod)}(
+                $this->routePrefix . $instance->route,
+                $method
+            )->middleware(array_unique($middleware));
+        }
 
-        // 应用路由参数约束
         if (!empty($instance->where)) {
             $route->where($instance->where);
         }
-    }
-
-    /**
-     * @param array $attributes
-     * @param $method
-     */
-    private function registerMapping(array $attributes, $method): void
-    {
-        $mapping = [ GetMapping::class, PostMapping::class, PutMapping::class, DeleteMapping::class ];
-
-        collect($attributes)->filter(fn ($item) => in_array($item->getName(), $mapping))->each(function ($item) use ($method) {
-            $instance = $item->newInstance();
-            $this->registerRoute($instance, $method);
-        });
     }
 
     /**

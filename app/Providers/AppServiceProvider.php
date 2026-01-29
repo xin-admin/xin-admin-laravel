@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Sanctum\PersonalAccessToken;
+use App\Models\Sys\SysAccessToken;
 use App\Models\Sys\SysSettingItemsModel;
 use App\Observers\SysSettingObserver;
 use App\Services\LengthAwarePaginatorService;
@@ -12,9 +12,9 @@ use App\Services\SysSettingService;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        Sanctum::usePersonalAccessTokenModel(SysAccessToken::class);
         
         // 注册系统设置观察者，自动刷新缓存
         SysSettingItemsModel::observe(SysSettingObserver::class);

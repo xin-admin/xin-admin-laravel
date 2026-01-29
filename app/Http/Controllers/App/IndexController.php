@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Http\Controllers\BaseController;
 use App\Http\Requests\App\UserRegisterRequest;
 use App\Models\UserModel;
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\RequestAttribute;
+use App\Providers\AnnoRoute\Route\GetRoute;
+use App\Providers\AnnoRoute\Route\PostRoute;
 use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-#[RequestMapping('/api', authGuard: 'users')]
+#[RequestAttribute('/api', authGuard: 'users')]
 class IndexController
 {
     use RequestJson;
@@ -21,7 +20,7 @@ class IndexController
     protected array $noPermission = ['index', 'login', 'register', 'mail'];
 
     /** 获取首页信息 */
-    #[GetMapping('/index')]
+    #[GetRoute('/index')]
     public function index(): JsonResponse
     {
         $web_setting = setting('web');
@@ -30,7 +29,7 @@ class IndexController
     }
 
     /** 用户登录 */
-    #[PostMapping('/login')]
+    #[PostRoute('/login')]
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
@@ -47,7 +46,7 @@ class IndexController
     }
 
     /** 用户注册 */
-    #[PostMapping('/register')]
+    #[PostRoute('/register')]
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();

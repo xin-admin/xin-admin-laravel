@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Http\Controllers\BaseController;
 use App\Http\Requests\App\UserUpdateInfoRequest;
 use App\Models\UserModel;
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
-use App\Providers\AnnoRoute\Attribute\PutMapping;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\RequestAttribute;
+use App\Providers\AnnoRoute\Route\GetRoute;
+use App\Providers\AnnoRoute\Route\PostRoute;
+use App\Providers\AnnoRoute\Route\PutRoute;
 use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-#[RequestMapping('/api/user', authGuard: 'users')]
+#[RequestAttribute('/api/user', authGuard: 'users')]
 class UserController
 {
     use RequestJson;
     protected array $noPermission = ['refreshToken'];
 
-    #[GetMapping]
+    #[GetRoute]
     public function getUserInfo(): JsonResponse
     {
         $info = auth()->user();
         return $this->success(compact('info'));
     }
 
-    #[PostMapping('/logout')]
+    #[PostRoute('/logout')]
     public function logout(): JsonResponse
     {
         $user_id = auth('users')->id();
@@ -38,7 +37,7 @@ class UserController
         }
     }
 
-    #[PutMapping]
+    #[PutRoute]
     public function setUserInfo(UserUpdateInfoRequest $request): JsonResponse
     {
         UserModel::where('user_id', auth('user')->id())->update($request->validated());
@@ -46,7 +45,7 @@ class UserController
         return $this->error('更新成功');
     }
 
-    #[PostMapping('/setPwd')]
+    #[PostRoute('/setPwd')]
     public function setPassword(Request $request): JsonResponse
     {
         $data = $request->validate([

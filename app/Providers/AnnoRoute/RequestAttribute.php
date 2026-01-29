@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Providers\AnnoRoute\Attribute;
+namespace App\Providers\AnnoRoute;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class RequestMapping
+class RequestAttribute
 {
     /**
-     * @param string $routePrefix 路由
+     * @param string $routePrefix 路由前缀
      * @param string $abilitiesPrefix 权限前缀
-     * @param string | array $middleware 中间件
+     * @param string | array $middleware 控制器中间件
      * @param string | null $authGuard 用户提供程序
      */
     public function __construct(

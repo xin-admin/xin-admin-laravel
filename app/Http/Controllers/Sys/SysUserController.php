@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Sys;
 
-use App\Providers\AnnoRoute\Attribute\GetMapping;
-use App\Providers\AnnoRoute\Attribute\PostMapping;
-use App\Providers\AnnoRoute\Attribute\PutMapping;
-use App\Providers\AnnoRoute\Attribute\RequestMapping;
+use App\Providers\AnnoRoute\RequestAttribute;
+use App\Providers\AnnoRoute\Route\GetRoute;
+use App\Providers\AnnoRoute\Route\PostRoute;
+use App\Providers\AnnoRoute\Route\PutRoute;
 use App\Services\Sys\SysLoginRecordService;
 use App\Services\Sys\SysUserService;
 use App\Support\Trait\RequestJson;
@@ -16,22 +16,20 @@ use Illuminate\Support\Facades\Auth;
 /**
  * 管理员用户控制器
  */
-#[RequestMapping('/admin')]
+#[RequestAttribute('/admin')]
 class SysUserController
 {
     use RequestJson;
 
-    protected array $noPermission = ['refreshToken', 'login'];
-
     /** 用户登录 */
-    #[PostMapping('/login', middleware: 'login_log')]
+    #[PostRoute('/login', false, 'login_log')]
     public function login(Request $request, SysUserService $service): JsonResponse
     {
         return $service->login($request);
     }
 
     /** 退出登录 */
-    #[PostMapping('/logout')]
+    #[PostRoute('/logout')]
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
@@ -39,39 +37,47 @@ class SysUserController
     }
 
     /** 获取管理员信息 */
-    #[GetMapping('/info')]
+    #[GetRoute('/info')]
     public function info(SysUserService $service): JsonResponse
     {
         $info = Auth::user();
         $id = Auth::id();
         $access = $service->ruleKeys($id);
+        return $this->success(compact('access','info'));
+    }
+
+    /** 获取菜单信息 */
+    #[GetRoute('/menu')]
+    public function menu(SysUserService $service): JsonResponse
+    {
+        $id = Auth::id();
         $menus = $service->getAdminMenus($id);
-        return $this->success(compact('access', 'menus', 'info'));
+        return $this->success(compact('menus'));
     }
 
     /** 更新管理员信息 */
-    #[PutMapping]
+    #[PutRoute]
     public function updateInfo(Request $request, SysUserService $service): JsonResponse
     {
         return $service->updateInfo(Auth::id(), $request);
     }
 
     /** 修改密码 */
-    #[PutMapping('/updatePassword')]
+    #[PutRoute('/updatePassword')]
     public function updatePassword(Request $request, SysUserService $service): JsonResponse
     {
         return $service->updatePassword($request);
     }
 
     /** 上传头像 */
-    #[PostMapping('/avatar')]
+    #[PostRoute('/avatar')]
     public function uploadAvatar(SysUserService $service): JsonResponse
     {
         return $service->uploadAvatar();
     }
 
     /** 获取管理员登录日志 */
-    #[GetMapping('/login/record')]
+    #[GetRoute('/login/record')]
     public function get(SysLoginRecordService $service): JsonResponse
     {
         $id = Auth::id();
