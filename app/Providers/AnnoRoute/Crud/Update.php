@@ -2,11 +2,13 @@
 
 namespace App\Providers\AnnoRoute\Crud;
 
+use App\Providers\AnnoRoute\BaseAttribute;
+use App\Providers\AnnoRoute\CrudInterface;
 use Attribute;
 use Illuminate\Http\Request;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class Update extends BaseCRUD
+class Update extends BaseAttribute implements CrudInterface
 {
 
     /** @var string 路由地址 */

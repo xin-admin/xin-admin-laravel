@@ -2,6 +2,9 @@
 
 namespace App\Providers\AnnoRoute;
 
+use App\Support\Enum\ShowType as ShopTypeEnum;
+use Illuminate\Http\JsonResponse;
+
 abstract class BaseAttribute
 {
     /**
@@ -57,4 +60,25 @@ abstract class BaseAttribute
      * @var array
      */
     public array $where = [];
+
+    /**
+     * 成功响应
+     * @param $msg array|string
+     * @return JsonResponse
+     */
+    protected static function success(array|string $msg = ''): JsonResponse
+    {
+        if (is_array($msg)) {
+            $data = $msg;
+            $msg = '';
+        } else {
+            $data = [];
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'showType' => ShopTypeEnum::SUCCESS_MESSAGE->value,
+            'msg' => $msg,
+        ]);
+    }
 }
