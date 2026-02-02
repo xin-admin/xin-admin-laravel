@@ -2,10 +2,12 @@
 
 namespace App\Providers\AnnoRoute\Crud;
 
+use App\Providers\AnnoRoute\BaseAttribute;
+use App\Providers\AnnoRoute\CrudInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class Delete extends BaseCRUD
+class Delete extends BaseAttribute implements CrudInterface
 {
 
     /** @var string 路由地址 */
