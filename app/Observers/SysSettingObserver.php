@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Sys\SysSettingItemsModel;
+use App\Models\System\SysSettingItemsModel;
 use App\Services\SysSettingService;
 use Illuminate\Support\Facades\Log;
 

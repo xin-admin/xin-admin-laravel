@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Sys\SysSettingGroupModel;
-use App\Models\Sys\SysSettingItemsModel;
+use App\Models\System\SysSettingGroupModel;
+use App\Models\System\SysSettingItemsModel;
 use App\Support\Enum\SettingType;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;

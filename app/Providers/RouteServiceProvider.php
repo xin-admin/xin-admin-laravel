@@ -2,22 +2,18 @@
 namespace App\Providers;
 
 
-use App\Providers\AnnoRoute\AnnoRoute;
+use App\Services\AnnoRoute\AnnoRouteService;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->app->singleton(AnnoRoute::class, AnnoRoute::class);
-    }
 
-    public function boot(AnnoRoute $annoRoute): void
+    public function boot(AnnoRouteService $annoRoute): void
     {
         // 获取所有控制器
-        $dir = app_path();
+        $dir = app_path('Controllers');
         $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
         foreach ($controllers as $controller) {
             if (! $controller->isFile()) {

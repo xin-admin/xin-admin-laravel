@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Controllers\System;
+
+use App\Controllers\BaseController;
+use App\Repositories\System\SysRoleRepository;
+use App\Services\AnnoRoute\Crud\Create;
+use App\Services\AnnoRoute\Crud\Delete;
+use App\Services\AnnoRoute\Crud\Query;
+use App\Services\AnnoRoute\Crud\Update;
+use App\Services\AnnoRoute\RequestAttribute;
+use App\Services\AnnoRoute\Route\GetRoute;
+use App\Services\AnnoRoute\Route\PostRoute;
+use App\Services\AnnoRoute\Route\PutRoute;
+use App\Services\System\SysUserRoleService;
+use App\Services\System\SysUserRuleService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+/**
+ * 角色管理控制器
+ */
+#[RequestAttribute('/sys-user/role', 'sys-user.role')]
+#[Query, Create, Update, Delete]
+class SysUserRoleController extends BaseController
+{
+    protected string $repository = SysRoleRepository::class;
+
+    /** 获取角色用户列表 */
+    #[GetRoute('/users/{id}', 'users')]
+    public function users(int $id, SysUserRoleService $service): JsonResponse
+    {
+        return $this->success($service->users($id));
+    }
+
+    /** 设置启用状态 */
+    #[PutRoute('/status/{id}', authorize: 'status')]
+    public function status(int $id, SysUserRoleService $service): JsonResponse
+    {
+        return $service->setStatus($id);
+    }
+
+    /** 设置角色权限 */
+    #[PostRoute('/rule', 'rule')]
+    public function setRoleRule(Request $request, SysUserRoleService $service): JsonResponse
+    {
+        $service->setRule($request);
+        return $this->success();
+    }
+
+    /** 获取权限选项 */
+    #[GetRoute('/rule/list', 'rule.list')]
+    public function ruleList(SysUserRuleService $service): JsonResponse
+    {
+        return $service->getRuleFields();
+    }
+}

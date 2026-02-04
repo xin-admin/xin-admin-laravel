@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Middleware\AllowCrossDomainMiddleware;
-use App\Http\Middleware\AuthGuardMiddleware;
-use App\Http\Middleware\LanguageMiddleware;
-use App\Http\Middleware\LoginLogMiddleware;
+use App\Middleware\AllowCrossDomainMiddleware;
+use App\Middleware\AuthGuardMiddleware;
+use App\Middleware\LanguageMiddleware;
+use App\Middleware\LoginLogMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

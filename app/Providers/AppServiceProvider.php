@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Sys\SysAccessToken;
-use App\Models\Sys\SysSettingItemsModel;
+use App\Models\System\SysAccessToken;
+use App\Models\System\SysSettingItemsModel;
 use App\Observers\SysSettingObserver;
 use App\Services\LengthAwarePaginatorService;
 use App\Services\MailConfigService;
