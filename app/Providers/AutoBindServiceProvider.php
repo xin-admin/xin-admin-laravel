@@ -84,6 +84,10 @@ class AutoBindServiceProvider extends ServiceProvider
             return false;
         }
 
+        if (!str_contains($className, 'Service') && !str_contains($className, 'Repository')) {
+            return false;
+        }
+
         // 排除基类
         foreach ($this->excludeClasses as $exclude) {
             if (str_contains($className, $exclude) || class_basename($className) === $exclude) {
