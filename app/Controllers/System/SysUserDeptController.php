@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 /**
  * 部门管理控制器
  */
-#[RequestAttribute('/sys-user/dept', 'sys-user.dept')]
+#[RequestAttribute('/system/user/dept', 'sys-user.dept')]
 #[Create, Update]
 class SysUserDeptController extends BaseController
 {

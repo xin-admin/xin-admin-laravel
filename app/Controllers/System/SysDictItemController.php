@@ -13,7 +13,7 @@ use App\Services\System\SysDictService;
 /**
  * 字典项控制器
  */
-#[RequestAttribute('/sys/dict/item', 'system.dict.item')]
+#[RequestAttribute('/system/dict/item', 'system.dict.item')]
 #[Query, Create, Update, Delete]
 class SysDictItemController extends BaseController
 {

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * 管理员用户控制器
  */
-#[RequestAttribute('/admin')]
+#[RequestAttribute('/system/user')]
 class SysUserController extends BaseController
 {
 

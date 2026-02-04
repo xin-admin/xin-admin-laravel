@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件列表
  */
-#[RequestAttribute('/sys/file/list', 'system.file.list')]
+#[RequestAttribute('/system/file/list', 'system.file.list')]
 #[Query]
 class SysFileController extends BaseController
 {
