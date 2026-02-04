@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysUserRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Delete;
 use App\Services\AnnoRoute\Crud\Query;
@@ -24,14 +23,15 @@ use Illuminate\Http\Request;
 #[Create, Update, Delete, Query]
 class SysUserListController extends BaseController
 {
-    protected string $repository = SysUserRepository::class;
-
+    public function __construct(
+        protected SysUserService $service
+    ) {}
 
     /** 重置用户密码 */
     #[PutRoute('/reset/password', 'resetPassword')]
-    public function resetPassword(Request $request, SysUserService $service): JsonResponse
+    public function resetPassword(Request $request): JsonResponse
     {
-        return $service->resetPassword($request);
+        return $this->service->resetPassword($request);
     }
 
     /** 获取用户角色选项栏数据 */

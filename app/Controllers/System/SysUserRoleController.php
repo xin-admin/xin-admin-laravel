@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysRoleRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Delete;
 use App\Services\AnnoRoute\Crud\Query;
@@ -24,27 +23,30 @@ use Illuminate\Http\Request;
 #[Query, Create, Update, Delete]
 class SysUserRoleController extends BaseController
 {
-    protected string $repository = SysRoleRepository::class;
+
+    public function __construct(
+        protected SysUserRoleService $service
+    ) {}
 
     /** 获取角色用户列表 */
     #[GetRoute('/users/{id}', 'users')]
-    public function users(int $id, SysUserRoleService $service): JsonResponse
+    public function users(int $id): JsonResponse
     {
-        return $this->success($service->users($id));
+        return $this->success($this->service->users($id));
     }
 
     /** 设置启用状态 */
     #[PutRoute('/status/{id}', authorize: 'status')]
-    public function status(int $id, SysUserRoleService $service): JsonResponse
+    public function status(int $id): JsonResponse
     {
-        return $service->setStatus($id);
+        return $this->service->setStatus($id);
     }
 
     /** 设置角色权限 */
     #[PostRoute('/rule', 'rule')]
-    public function setRoleRule(Request $request, SysUserRoleService $service): JsonResponse
+    public function setRoleRule(Request $request): JsonResponse
     {
-        $service->setRule($request);
+        $this->service->setRule($request);
         return $this->success();
     }
 

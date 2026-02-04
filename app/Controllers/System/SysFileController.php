@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysFileRepository;
 use App\Requests\System\SysFileMoveOrCopyRequest;
 use App\Services\AnnoRoute\Crud\Query;
 use App\Services\AnnoRoute\RequestAttribute;
@@ -24,9 +23,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 #[Query]
 class SysFileController extends BaseController
 {
-    public function __construct(protected SysFileService $fileService) {}
 
-    protected string $repository = SysFileRepository::class;
+    public function __construct(
+        protected SysFileService $service
+    ) {}
 
     /**
      * 上传图片
@@ -36,7 +36,7 @@ class SysFileController extends BaseController
     {
         $fileType = request()->filled('file_type') ? (int) request('file_type') : 10;
         $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->fileService->upload(FileType::from($fileType), $groupId);
+        $result = $this->service->upload(FileType::from($fileType), $groupId);
         return $this->success($result);
     }
 
@@ -44,9 +44,9 @@ class SysFileController extends BaseController
      * 获取回收站文件列表
      */
     #[GetRoute('/trashed', 'system.file.list.trashed')]
-    public function trashed(SysFileRepository $repository): JsonResponse
+    public function trashed(): JsonResponse
     {
-        $list = $repository->getTrashedList(request()->all());
+        $list = $this->service->getTrashedList(request()->all());
         return $this->success($list);
     }
 
@@ -56,7 +56,7 @@ class SysFileController extends BaseController
     #[DeleteRoute('/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
     public function delete(int $id): JsonResponse
     {
-        $this->fileService->delete($id);
+        $this->service->delete($id);
         return $this->success();
     }
 
@@ -67,7 +67,7 @@ class SysFileController extends BaseController
     public function batchDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
-        $count = $this->fileService->batchDelete($ids);
+        $count = $this->service->batchDelete($ids);
         return $this->success(['count' => $count]);
     }
 
@@ -77,7 +77,7 @@ class SysFileController extends BaseController
     #[DeleteRoute('/force-delete/{id}', 'force-delete', where: ['id' => '[0-9]+'])]
     public function forceDelete(int $id): JsonResponse
     {
-        $this->fileService->forceDelete($id);
+        $this->service->forceDelete($id);
         return $this->success();
     }
 
@@ -88,7 +88,7 @@ class SysFileController extends BaseController
     public function batchForceDelete(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
-        $count = $this->fileService->batchForceDelete($ids);
+        $count = $this->service->batchForceDelete($ids);
         return $this->success(['count' => $count]);
     }
 
@@ -98,7 +98,7 @@ class SysFileController extends BaseController
     #[PostRoute('/restore/{id}', 'restore', where: ['id' => '[0-9]+'])]
     public function restore(int $id): JsonResponse
     {
-        $this->fileService->restore($id);
+        $this->service->restore($id);
         return $this->success();
     }
 
@@ -109,7 +109,7 @@ class SysFileController extends BaseController
     public function batchRestore(Request $request): JsonResponse
     {
         $ids = $request->input('ids', []);
-        $count = $this->fileService->batchRestore($ids);
+        $count = $this->service->batchRestore($ids);
         return $this->success(['count' => $count]);
     }
 
@@ -121,9 +121,9 @@ class SysFileController extends BaseController
     {
         $data = $request->validated();
         if(! is_array($data['ids'])) {
-            $result = $this->fileService->copy($data['ids'], $data['group_id']);
+            $result = $this->service->copy($data['ids'], $data['group_id']);
         } else {
-            $result = $this->fileService->batchCopy($data['ids'], $data['group_id']);
+            $result = $this->service->batchCopy($data['ids'], $data['group_id']);
         }
         return $this->success($result);
     }
@@ -136,9 +136,9 @@ class SysFileController extends BaseController
     {
         $data = $request->validated();
         if(! is_array($data['ids'])) {
-            $result = $this->fileService->move($data['ids'], $data['group_id']);
+            $result = $this->service->move($data['ids'], $data['group_id']);
         } else {
-            $result = $this->fileService->batchMove($data['ids'], $data['group_id']);
+            $result = $this->service->batchMove($data['ids'], $data['group_id']);
         }
         return $this->success($result);
     }
@@ -150,7 +150,7 @@ class SysFileController extends BaseController
     public function rename(int $id, Request $request): JsonResponse
     {
         $newName = $request->input('name');
-        $this->fileService->rename($id, $newName);
+        $this->service->rename($id, $newName);
         return $this->success();
     }
 
@@ -160,7 +160,7 @@ class SysFileController extends BaseController
     #[GetRoute('/download/{id}', 'download', where: ['id' => '[0-9]+'])]
     public function download(int $id): StreamedResponse
     {
-        return $this->fileService->download($id);
+        return $this->service->download($id);
     }
 
     /**
@@ -169,7 +169,7 @@ class SysFileController extends BaseController
     #[DeleteRoute('/clean/trashed', 'clean-trashed')]
     public function cleanTrashed(Request $request): JsonResponse
     {
-        $count = $this->fileService->cleanTrashed();
+        $count = $this->service->cleanTrashed();
         return $this->success(['count' => $count]);
     }
 }

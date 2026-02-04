@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Support\Trait;
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-abstract class BaseRepository implements RepositoryInterface
+/**
+ * @property Builder $model
+ */
+trait Crud
 {
     /**
      * 验证规则
@@ -43,9 +47,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     protected array $quickSearchField = [];
 
-    /** 获取模型 */
-    abstract protected function model(): Builder;
-
     /** 验证数据 */
     protected function validation(array $data): array
     {
@@ -61,7 +62,7 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /** 构建查询方法 */
-    protected function buildSearch(array $params, Builder $model): Builder
+    protected function buildSearch(array $params, Builder | Model $model): Builder | Model
     {
         // 构建筛选
         if (isset($params['filter']) && $params['filter'] != '') {
@@ -154,7 +155,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function find(int $id): array
     {
-        $model = $this->model()->find($id);
+        $model = $this->model::find($id);
         if (empty($model)) {
             throw new RepositoryException("Model not found");
         }
@@ -169,7 +170,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function query(array $params): array
     {
         $pageSize = $params['pageSize'] ?? 10;
-        $query = $this->model();
+        $query = $this->model;
         return $this->buildSearch($params, $query)
             ->paginate($pageSize)
             ->toArray();
@@ -186,7 +187,7 @@ abstract class BaseRepository implements RepositoryInterface
         if(empty($data)) {
             throw new RepositoryException('Validation failed: empty data');
         }
-        $model = $this->model()->create($data);
+        $model = $this->model::create($data);
         return !!$model;
     }
 
@@ -199,7 +200,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function update(int $id, array $data): bool
     {
         $validated = $this->validation($data);
-        $model = $this->model()->find($id);
+        $model = $this->model::find($id);
         if (empty($model)) {
             throw new RepositoryException('Model not found');
         }
@@ -213,7 +214,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function delete(int $id): bool
     {
-        $model = $this->model()->find($id);
+        $model = $this->model::find($id);
         if (empty($model)) {
             throw new RepositoryException('Model not found');
         }
@@ -228,4 +229,5 @@ abstract class BaseRepository implements RepositoryInterface
     {
         return request()->method() == 'PUT' && request()->route('id');
     }
+
 }

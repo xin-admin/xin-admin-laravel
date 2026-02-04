@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysRuleRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Delete;
 use App\Services\AnnoRoute\Crud\Update;
@@ -21,33 +20,35 @@ use Illuminate\Http\Request;
 #[Create, Update, Delete]
 class SysUserRuleController extends BaseController
 {
-    protected string $repository = SysRuleRepository::class;
+    public function __construct(
+        protected SysUserRuleService $service
+    ) {}
 
     /** 获取权限列表 */
     #[GetRoute(authorize: 'query')]
     public function query(Request $request): JsonResponse
     {
-        return (new SysUserRuleService)->getList();
+        return $this->service->getList();
     }
 
     /** 获取父级权限 */
     #[GetRoute('/parent', authorize: 'parentQuery')]
-    public function getRulesParent(SysUserRuleService $service): JsonResponse
+    public function getRulesParent(): JsonResponse
     {
-        return $service->getRuleParent();
+        return $this->service->getRuleParent();
     }
 
     /** 设置显示状态 */
     #[PutRoute('/show/{id}', authorize: 'show')]
-    public function show($id, SysUserRuleService $service): JsonResponse
+    public function show($id): JsonResponse
     {
-        return $service->setShow($id);
+        return $this->service->setShow($id);
     }
 
     /** 设置启用状态 */
     #[PutRoute('/status/{id}', authorize: 'status')]
-    public function status($id, SysUserRuleService $service): JsonResponse
+    public function status($id): JsonResponse
     {
-        return $service->setStatus($id);
+        return $this->service->setStatus($id);
     }
 }

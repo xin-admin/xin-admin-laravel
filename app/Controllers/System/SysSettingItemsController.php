@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysSettingItemsRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Delete;
 use App\Services\AnnoRoute\Crud\Query;
@@ -12,6 +11,7 @@ use App\Services\AnnoRoute\RequestAttribute;
 use App\Services\AnnoRoute\Route\PostRoute;
 use App\Services\AnnoRoute\Route\PutRoute;
 use App\Services\SysSettingService;
+use App\Services\System\SysSettingItemsService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -21,7 +21,9 @@ use Illuminate\Http\JsonResponse;
 #[Query, Create, Update, Delete]
 class SysSettingItemsController extends BaseController
 {
-    protected string $repository = SysSettingItemsRepository::class;
+    public function __construct(
+        protected SysSettingItemsService $service
+    ) {}
 
     /** 保存设置 */
     #[PutRoute('/save/{id}', 'save')]

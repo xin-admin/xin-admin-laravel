@@ -1,28 +1,18 @@
 <?php
 
-namespace App\Repositories\System;
+namespace App\Services\System;
 
 use App\Models\System\SysDictItemModel;
-use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 
-class SysDictItemRepository extends BaseRepository
+class SysDictItemService extends BaseService
 {
+    protected SysDictItemModel $model;
+    protected array $quickSearchField = ['label', 'value'];
     protected array $searchField = [
         'dict_id' => '='
     ];
-
-    /** @var array|string[] 快速搜索字段 */
-    protected array $quickSearchField = ['label', 'value'];
-
-    /**
-     * @inheritDoc
-     */
-    protected function model(): Builder
-    {
-        return SysDictItemModel::query();
-    }
 
     protected function rules(): array
     {

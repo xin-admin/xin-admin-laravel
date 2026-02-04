@@ -9,32 +9,22 @@ use RegexIterator;
 
 class AutoBindServiceProvider extends ServiceProvider
 {
-    /**
-     * 要扫描的目录配置
-     */
-    protected array $scanConfig = [
-        'Repositories' => 'App\\Repositories',
-        'Services' => 'App\\Services',
-    ];
 
     /**
      * 要排除的基类
      */
     protected array $excludeClasses = [
-        'App\\Repositories\\BaseRepository', // 仓储基类
         'App\\Services\\BaseService',    // 服务基类
     ];
 
     public function register(): void
     {
-        foreach ($this->scanConfig as $directory => $namespace) {
-            $classes = $this->scanClasses($directory, $namespace);
+        $classes = $this->scanClasses();
 
-            foreach ($classes as $class) {
-                if ($this->shouldBind($class)) {
-                    $this->app->bind($class, $class);
-                    // 如果需要单例模式，使用：$this->app->singleton($class, $class);
-                }
+        foreach ($classes as $class) {
+            if ($this->shouldBind($class)) {
+                $this->app->bind($class, $class);
+                // 如果需要单例模式，使用：$this->app->singleton($class, $class);
             }
         }
     }
@@ -42,9 +32,9 @@ class AutoBindServiceProvider extends ServiceProvider
     /**
      * 扫描目录获取所有类
      */
-    protected function scanClasses(string $directory, string $namespace): array
+    protected function scanClasses(): array
     {
-        $absolutePath = app_path($directory);
+        $absolutePath = app_path('Services');
 
         if (!is_dir($absolutePath)) {
             return [];
@@ -63,7 +53,7 @@ class AutoBindServiceProvider extends ServiceProvider
             $className = str_replace(
                 DIRECTORY_SEPARATOR,
                 '\\',
-                $namespace . '\\' . $relativePath
+                'App\\Services\\' . $relativePath
             );
 
             if (class_exists($className)) {

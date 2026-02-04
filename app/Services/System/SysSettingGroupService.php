@@ -1,22 +1,14 @@
 <?php
 
-namespace App\Repositories\System;
+namespace App\Services\System;
 
 use App\Exceptions\RepositoryException;
 use App\Models\System\SysSettingGroupModel;
-use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\BaseService;
 
-class SysSettingGroupRepository extends BaseRepository
+class SysSettingGroupService extends BaseService
 {
-
-    /**
-     * @inheritDoc
-     */
-    protected function model(): Builder
-    {
-        return SysSettingGroupModel::query();
-    }
+    protected SysSettingGroupModel $model;
 
     protected function rules(): array
     {
@@ -39,11 +31,11 @@ class SysSettingGroupRepository extends BaseRepository
     public function list(array $params): array
     {
         if(empty($params['keywordSearch'])){
-            return $this->model()
+            return $this->model
                 ->get()
                 ->toArray();
         }else {
-            return $this->model()
+            return $this->model
                 ->whereAny(
                     ['title', 'remark', 'key'],
                     'like',
@@ -56,7 +48,7 @@ class SysSettingGroupRepository extends BaseRepository
 
     public function delete(int $id): bool
     {
-        $model = $this->model()->find($id);
+        $model = $this->model->find($id);
         if (empty($model)) {
             throw new RepositoryException('Model not found');
         }

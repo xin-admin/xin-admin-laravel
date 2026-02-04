@@ -3,12 +3,12 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysDeptRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Update;
 use App\Services\AnnoRoute\RequestAttribute;
 use App\Services\AnnoRoute\Route\DeleteRoute;
 use App\Services\AnnoRoute\Route\GetRoute;
+use App\Services\System\SysSettingGroupService;
 use App\Services\System\SysUserDeptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +21,9 @@ use Illuminate\Http\Request;
 class SysUserDeptController extends BaseController
 {
 
-    protected string $repository = SysDeptRepository::class;
+    public function __construct(
+        protected SysSettingGroupService $service
+    ) {}
 
 
     /** 部门列表 */
@@ -35,7 +37,7 @@ class SysUserDeptController extends BaseController
     #[DeleteRoute(authorize: 'delete')]
     public function deleteDept(Request $request, SysUserDeptService $service): JsonResponse
     {
-        return $service->delete($request);
+        return $service->batchDelete($request);
     }
 
     /** 获取部门用户列表 */

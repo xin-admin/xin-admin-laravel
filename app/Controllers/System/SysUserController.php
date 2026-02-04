@@ -2,13 +2,13 @@
 
 namespace App\Controllers\System;
 
+use App\Controllers\BaseController;
 use App\Services\AnnoRoute\RequestAttribute;
 use App\Services\AnnoRoute\Route\GetRoute;
 use App\Services\AnnoRoute\Route\PostRoute;
 use App\Services\AnnoRoute\Route\PutRoute;
 use App\Services\System\SysLoginRecordService;
 use App\Services\System\SysUserService;
-use App\Support\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Auth;
  * 管理员用户控制器
  */
 #[RequestAttribute('/admin')]
-class SysUserController
+class SysUserController extends BaseController
 {
-    use RequestJson;
 
     /** 用户登录 */
     #[PostRoute('/login', false, 'login_log')]

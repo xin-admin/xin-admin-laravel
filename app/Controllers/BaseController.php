@@ -9,5 +9,5 @@ abstract class BaseController extends Controller
 {
     use RequestJson;
 
-    protected string $repository;
+
 }

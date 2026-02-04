@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Repositories\System;
+namespace App\Services\System;
 
 use App\Exceptions\RepositoryException;
 use App\Models\System\SysSettingItemsModel;
-use App\Repositories\BaseRepository;
+use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Builder;
 
-class SysSettingItemsRepository extends BaseRepository
+class SysSettingItemsService extends BaseService
 {
+    protected SysSettingItemsModel $model;
 
     protected array $searchField = [ 'group_id' => '=' ];
 

@@ -1,26 +1,16 @@
 <?php
 
-namespace App\Repositories\System;
+namespace App\Services\System;
 
 use App\Exceptions\RepositoryException;
 use App\Models\System\SysDictModel;
-use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 
-class SysDictRepository extends BaseRepository
+class SysDictService extends BaseService
 {
-
-    /** @var array|string[] 快速搜索字段 */
+    protected SysDictModel $model;
     protected array $quickSearchField = ['name', 'code', 'describe'];
-
-    /**
-     * @inheritDoc
-     */
-    protected function model(): Builder
-    {
-        return SysDictModel::query();
-    }
 
     protected function rules(): array
     {
@@ -58,7 +48,7 @@ class SysDictRepository extends BaseRepository
 
     public function delete(int $id): bool
     {
-        $model = $this->model()->find($id);
+        $model = $this->model::find($id);
         $count = $model->dictItems()->count();
         if ($count > 0) {
             throw new RepositoryException("字典包含子项！");

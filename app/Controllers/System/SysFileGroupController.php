@@ -3,7 +3,6 @@
 namespace App\Controllers\System;
 
 use App\Controllers\BaseController;
-use App\Repositories\System\SysFileGroupRepository;
 use App\Services\AnnoRoute\Crud\Create;
 use App\Services\AnnoRoute\Crud\Delete;
 use App\Services\AnnoRoute\Crud\Update;
@@ -19,14 +18,18 @@ use Illuminate\Http\JsonResponse;
 #[Create, Update, Delete]
 class SysFileGroupController extends BaseController
 {
-    protected string $repository = SysFileGroupRepository::class;
+
+    public function __construct(
+        protected SysFileGroupService $service
+    ) {}
 
     /**
      * 获取文件分组列表
      */
     #[GetRoute( authorize: "query")]
-    public function list(SysFileGroupService $service): JsonResponse
+    public function list(): JsonResponse
     {
-        return $this->success($service->list());
+        $data = $this->service->list();
+        return $this->success($data);
     }
 }

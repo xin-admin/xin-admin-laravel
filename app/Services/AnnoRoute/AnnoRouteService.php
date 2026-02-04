@@ -60,7 +60,7 @@ class AnnoRouteService
      */
     private ?string $authGuard = null;
 
-    private ?string $repository = null;
+    private ?string $service = null;
 
     /**
      * register 注册路由
@@ -73,9 +73,9 @@ class AnnoRouteService
             $classRef = new ReflectionClass($className);
 
             try {
-                $this->repository = $classRef->getProperty('repository')->getDefaultValue() ?? null;
+                $this->service = $classRef->getProperty('service')->getType() ?? null;
             } catch (ReflectionException $e) {
-                $this->repository = null;
+                $this->service = null;
             }
 
             $classAttr = collect($classRef->getAttributes());
@@ -117,11 +117,11 @@ class AnnoRouteService
     {
         $CRUD = [ Create::class, Query::class, Find::class, Update::class, Delete::class ];
         $classAttr->filter(fn ($item) => in_array($item->getName(), $CRUD))->each(function ($item) {
-            if(empty($this->repository)) {
+            if(empty($this->service)) {
                 throw new Exception('控制器' . $this->className . '未定义仓储类，但是它使用了CRUD注解！');
             }
             $instance = $item->newInstance();
-            $fun = $instance->store($this->repository);
+            $fun = $instance->store($this->service);
             $this->registerRoute($instance, $fun);
         });
     }
