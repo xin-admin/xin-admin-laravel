@@ -5,7 +5,7 @@ import React, {lazy, Suspense} from "react";
 import type {IMenus} from "@/domain/iSysRule";
 import defaultRoute from "@/router/default";
 
-const modules = import.meta.glob('/src/pages/**/*')
+const modules = import.meta.glob('/web/pages/**/*')
 
 function lazyLoad(path: string): React.ReactNode {
   if (modules[path]) {
@@ -32,7 +32,7 @@ function buildRoute(menuData: IMenus[]): DataRouteObject[] {
           const parentRoute: DataRouteObject = {
             id: node.key!,
             path: node.path,
-            element: lazyLoad(`/src/pages${node.elementPath}.tsx`),
+            element: lazyLoad(`/web/pages${node.elementPath}.tsx`),
             children: []
           };
           // 添加 nested-route 子路由
@@ -41,13 +41,13 @@ function buildRoute(menuData: IMenus[]): DataRouteObject[] {
               parentRoute.children!.push({
                 id: child.key,
                 index: true,
-                element: lazyLoad(`/src/pages${child.elementPath}.tsx`)
+                element: lazyLoad(`/web/pages${child.elementPath}.tsx`)
               });
             } else {
               parentRoute.children!.push({
                 id: child.key,
                 path: child.path,
-                element: lazyLoad(`/src/pages${child.elementPath}.tsx`)
+                element: lazyLoad(`/web/pages${child.elementPath}.tsx`)
               });
             }
           });
@@ -57,7 +57,7 @@ function buildRoute(menuData: IMenus[]): DataRouteObject[] {
           routes.push({
             id: node.key!,
             path: node.path,
-            element: lazyLoad(`/src/pages${node.elementPath}.tsx`)
+            element: lazyLoad(`/web/pages${node.elementPath}.tsx`)
           });
         }
       }
@@ -85,7 +85,7 @@ export default function createRouter(rules?: IMenus[]) {
         ...routes,
         {
           path: "*",
-          element: lazyLoad(`/src/pages/result/404.tsx`)
+          element: lazyLoad(`/web/pages/result/404.tsx`)
         }
       ],
     },

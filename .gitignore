@@ -8,6 +8,7 @@
 /public/storage
 /storage/*.key
 
+hot
 .env
 *.log
 *.local

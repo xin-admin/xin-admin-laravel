@@ -6,6 +6,7 @@ const {useToken} = theme
 const Monitor = () => {
   const {token} = useToken();
   const { t } = useTranslation();
+  const imageUrl = import.meta.env.VITE_BASE_URL + '/static';
   const data = [
     {
       title: '3号楼2层走廊灯不亮，需检查线路并更换灯泡。',
@@ -49,7 +50,7 @@ const Monitor = () => {
             <Col xxl={6} lg={12} xs={24}>
               <div className={"flex items-center"}>
                 <div className={"size-14 rounded-full p-3"} style={{background: token.colorPrimaryBg }}>
-                  <img src="/帮办代办.png" alt="1"/>
+                  <img src={imageUrl + '/帮办代办.png'} alt="1"/>
                 </div>
                 <div className={"ml-5"}>
                   <div style={{color: token.colorTextDescription}}>{t('dashboard.monitor.helpService')}</div>
@@ -61,7 +62,7 @@ const Monitor = () => {
             <Col xxl={6} lg={12} xs={24}>
               <div className={"flex items-center"}>
                 <div className={"size-14 rounded-full p-3"} style={{background: token.colorPrimaryBg }}>
-                  <img src="/购房.png" alt="1"/>
+                  <img src={imageUrl + '/购房.png'} alt="1"/>
                 </div>
                 <div className={"ml-5"}>
                   <div style={{color: token.colorTextDescription}}>{t('dashboard.monitor.propertyFee')}</div>
@@ -73,7 +74,7 @@ const Monitor = () => {
             <Col xxl={6} lg={12} xs={24}>
               <div className={"flex items-center"}>
                 <div className={"size-14 rounded-full p-3"} style={{background: token.colorPrimaryBg }}>
-                  <img src="/报警.png" alt="1"/>
+                  <img src={imageUrl + '/购房.png'} alt="1"/>
                 </div>
                 <div className={"ml-5"}>
                   <div style={{color: token.colorTextDescription}}>{t('dashboard.monitor.alarmEvents')}</div>
@@ -85,7 +86,7 @@ const Monitor = () => {
             <Col xxl={6} lg={12} xs={24}>
               <div className={"flex items-center"}>
                 <div className={"size-14 rounded-full p-3"} style={{background: token.colorPrimaryBg }}>
-                  <img src="/更多服务.png" alt="1"/>
+                  <img src={imageUrl + '/购房.png'} alt="1"/>
                 </div>
                 <div className={"ml-5"}>
                   <div style={{color: token.colorTextDescription}}>{t('dashboard.monitor.otherEvents')}</div>
@@ -125,10 +126,10 @@ const Monitor = () => {
       </Col>
       <Col xxl={6} lg={8} xs={24}>
         <Card variant={"borderless"} style={{ marginBottom: 20 }}>
-          <img src="/group65.png" alt="1"/>
+          <img src={imageUrl + '/group65.png'} alt="1"/>
         </Card>
         <Card variant={"borderless"} styles={{body: {padding: 0, borderRadius: token.borderRadius, overflow: 'hidden'}}}>
-          <img src="/group57.png" alt="1"/>
+          <img src={imageUrl + '/group57.png'} alt="1"/>
         </Card>
       </Col>
     </Row>
