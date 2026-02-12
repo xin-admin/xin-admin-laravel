@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 /**
  * 角色管理控制器
  */
-#[RequestAttribute('/system/user/role', 'sys-user.role')]
+#[RequestAttribute('/system/user/role', 'system.user.role')]
 #[Query, Create, Update, Delete]
 class SysUserRoleController extends BaseController
 {

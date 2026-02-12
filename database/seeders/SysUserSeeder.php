@@ -270,30 +270,10 @@ class SysUserSeeder extends Seeder
                         'path' => '/auth/button',
                         'elementPath' => '/auth/button',
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '新增权限',
-                                'key' => 'auth.button.create'
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '编辑权限',
-                                'key' => 'auth.button.update'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '删除权限',
-                                'key' => 'auth.button.delete'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '查询权限',
-                                'key' => 'auth.button.query'
-                            ]
+                            ['order' => 0, 'type' => 'rule', 'name' => '新增权限', 'key' => 'auth.button.create'],
+                            ['order' => 1, 'type' => 'rule', 'name' => '编辑权限', 'key' => 'auth.button.update'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '删除权限', 'key' => 'auth.button.delete'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '查询权限', 'key' => 'auth.button.query']
                         ]
                     ],
                 ]
@@ -520,54 +500,14 @@ class SysUserSeeder extends Seeder
                         'order' => 1,
                         'local' => "menu.sys-user.list",
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '查询列表',
-                                'key' => 'sys-user.list.query'
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '新增用户',
-                                'key' => 'sys-user.list.create'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '修改用户',
-                                'key' => 'sys-user.list.update'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '删除用户',
-                                'key' => 'sys-user.list.delete'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '重置用户密码',
-                                'key' => 'sys-user.list.resetPassword'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '修改用户状态',
-                                'key' => 'sys-user.list.resetStatus'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '获取角色选项',
-                                'key' => 'sys-user.list.getRole'
-                            ],
-                            [
-                                'order' => 7,
-                                'type' => 'rule',
-                                'name' => '获取部门选项',
-                                'key' => 'sys-user.list.getDept'
-                            ],
+                            ['order' => 0, 'type' => 'rule', 'name' => '查询列表', 'key' => 'sys-user.list.query'],
+                            ['order' => 1, 'type' => 'rule', 'name' => '新增用户', 'key' => 'sys-user.list.create'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '修改用户', 'key' => 'sys-user.list.update'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '删除用户', 'key' => 'sys-user.list.delete'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '重置用户密码', 'key' => 'sys-user.list.resetPassword'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '修改用户状态', 'key' => 'sys-user.list.resetStatus'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '获取角色选项', 'key' => 'sys-user.list.getRole'],
+                            ['order' => 7, 'type' => 'rule', 'name' => '获取部门选项', 'key' => 'sys-user.list.getDept'],
                         ]
                     ],
                     [
@@ -579,36 +519,11 @@ class SysUserSeeder extends Seeder
                         'order' => 1,
                         'local' => "menu.sys-user.dept",
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '获取部门列表',
-                                'key' => 'sys-user.dept.query'
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '新建部门',
-                                'key' => 'sys-user.dept.create'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '更新部门信息',
-                                'key' => 'sys-user.dept.update'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '删除部门',
-                                'key' => 'sys-user.dept.delete'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '获取部门用户',
-                                'key' => 'sys-user.dept.users'
-                            ],
+                            ['order' => 0, 'type' => 'rule', 'name' => '获取部门列表', 'key' => 'sys-user.dept.query'],
+                            ['order' => 1, 'type' => 'rule', 'name' => '新建部门', 'key' => 'sys-user.dept.create'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '更新部门信息', 'key' => 'sys-user.dept.update'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '删除部门', 'key' => 'sys-user.dept.delete'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '获取部门用户', 'key' => 'sys-user.dept.users'],
                         ]
                     ],
                     [
@@ -620,54 +535,14 @@ class SysUserSeeder extends Seeder
                         'order' => 1,
                         'local' => "menu.sys-user.role",
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '新增角色',
-                                'key' => 'sys-user.role.create'
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '查询角色列表',
-                                'key' => 'sys-user.role.query'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '更新角色信息',
-                                'key' => 'sys-user.role.update'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '删除角色',
-                                'key' => 'sys-user.role.delete'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '设置角色权限',
-                                'key' => 'sys-user.role.rule'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '获取权限选项',
-                                'key' => 'sys-user.role.rule.list'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '设置启用状态',
-                                'key' => 'sys-user.role.rule.status'
-                            ],
-                            [
-                                'order' => 7,
-                                'type' => 'rule',
-                                'name' => '获取角色用户',
-                                'key' => 'sys-user.role.rule.users'
-                            ],
+                            ['order' => 0, 'type' => 'rule', 'name' => '新增角色', 'key' => 'sys-user.role.create'],
+                            ['order' => 1, 'type' => 'rule', 'name' => '查询角色列表', 'key' => 'sys-user.role.query'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '更新角色信息', 'key' => 'sys-user.role.update'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '删除角色', 'key' => 'sys-user.role.delete'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '设置角色权限', 'key' => 'sys-user.role.rule'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '获取权限选项', 'key' => 'sys-user.role.rule.list'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '设置启用状态', 'key' => 'sys-user.role.rule.status'],
+                            ['order' => 7, 'type' => 'rule', 'name' => '获取角色用户', 'key' => 'sys-user.role.rule.users'],
                         ]
                     ],
                     [
@@ -679,48 +554,13 @@ class SysUserSeeder extends Seeder
                         'order' => 1,
                         'local' => "menu.sys-user.rule",
                         'children' => [
-                            [
-                                'order' => 0,
-                                'type' => 'rule',
-                                'name' => '获取权限列表',
-                                'key' => 'sys-user.rule.query'
-                            ],
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '创建权限规则',
-                                'key' => 'sys-user.rule.create'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '更新权限规则',
-                                'key' => 'sys-user.rule.update'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '删除权限规则',
-                                'key' => 'sys-user.rule.delete'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '获取父级权限',
-                                'key' => 'sys-user.rule.parentQuery'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '设置显示状态',
-                                'key' => 'sys-user.rule.show'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '设置启用状态',
-                                'key' => 'sys-user.rule.status'
-                            ],
+                            ['order' => 0, 'type' => 'rule', 'name' => '获取权限列表', 'key' => 'sys-user.rule.query'],
+                            ['order' => 1, 'type' => 'rule', 'name' => '创建权限规则', 'key' => 'sys-user.rule.create'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '更新权限规则', 'key' => 'sys-user.rule.update'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '删除权限规则', 'key' => 'sys-user.rule.delete'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '获取父级权限', 'key' => 'sys-user.rule.parentQuery'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '设置显示状态', 'key' => 'sys-user.rule.show'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '设置启用状态', 'key' => 'sys-user.rule.status'],
                         ]
                     ],
                 ]
@@ -751,96 +591,21 @@ class SysUserSeeder extends Seeder
                         'path' => "/system/file",
                         'elementPath' => "/system/file",
                         'children' => [
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '获取文件夹',
-                                'key' => 'system.file.group.query'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '新增文件夹',
-                                'key' => 'system.file.group.create'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '编辑文件夹',
-                                'key' => 'system.file.group.update'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '删除文件夹',
-                                'key' => 'system.file.group.delete'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '查询文件列表',
-                                'key' => 'system.file.list.query'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '上传文件',
-                                'key' => 'system.file.list.upload'
-                            ],
-                            [
-                                'order' => 7,
-                                'type' => 'rule',
-                                'name' => '下载文件',
-                                'key' => 'system.file.list.download'
-                            ],
-                            [
-                                'order' => 8,
-                                'type' => 'rule',
-                                'name' => '删除文件',
-                                'key' => 'system.file.list.delete'
-                            ],
-                            [
-                                'order' => 9,
-                                'type' => 'rule',
-                                'name' => '永久删除文件',
-                                'key' => 'system.file.list.force-delete'
-                            ],
-                            [
-                                'order' => 10,
-                                'type' => 'rule',
-                                'name' => '恢复文件',
-                                'key' => 'system.file.list.restore'
-                            ],
-                            [
-                                'order' => 11,
-                                'type' => 'rule',
-                                'name' => '查看回收站',
-                                'key' => 'system.file.list.trashed'
-                            ],
-                            [
-                                'order' => 12,
-                                'type' => 'rule',
-                                'name' => '清空回收站',
-                                'key' => 'system.file.list.clean-trashed'
-                            ],
-                            [
-                                'order' => 13,
-                                'type' => 'rule',
-                                'name' => '复制文件',
-                                'key' => 'system.file.list.copy'
-                            ],
-                            [
-                                'order' => 14,
-                                'type' => 'rule',
-                                'name' => '移动文件',
-                                'key' => 'system.file.list.move'
-                            ],
-                            [
-                                'order' => 15,
-                                'type' => 'rule',
-                                'name' => '重命名文件',
-                                'key' => 'system.file.list.rename'
-                            ]
+                            ['order' => 1, 'type' => 'rule', 'name' => '获取文件夹', 'key' => 'system.file.group.query'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '新增文件夹', 'key' => 'system.file.group.create'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '编辑文件夹', 'key' => 'system.file.group.update'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '删除文件夹', 'key' => 'system.file.group.delete'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '查询文件列表', 'key' => 'system.file.list.query'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '上传文件', 'key' => 'system.file.list.upload'],
+                            ['order' => 7, 'type' => 'rule', 'name' => '下载文件', 'key' => 'system.file.list.download'],
+                            ['order' => 8, 'type' => 'rule', 'name' => '删除文件', 'key' => 'system.file.list.delete'],
+                            ['order' => 9, 'type' => 'rule', 'name' => '永久删除文件', 'key' => 'system.file.list.force-delete'],
+                            ['order' => 10, 'type' => 'rule', 'name' => '恢复文件', 'key' => 'system.file.list.restore'],
+                            ['order' => 11, 'type' => 'rule', 'name' => '查看回收站', 'key' => 'system.file.list.trashed'],
+                            ['order' => 12, 'type' => 'rule', 'name' => '清空回收站', 'key' => 'system.file.list.clean-trashed'],
+                            ['order' => 13, 'type' => 'rule', 'name' => '复制文件', 'key' => 'system.file.list.copy'],
+                            ['order' => 14, 'type' => 'rule', 'name' => '移动文件', 'key' => 'system.file.list.move'],
+                            ['order' => 15, 'type' => 'rule', 'name' => '重命名文件', 'key' => 'system.file.list.rename']
                         ],
                     ],
                     [
@@ -852,54 +617,14 @@ class SysUserSeeder extends Seeder
                         'path' => "/system/dict",
                         'elementPath' => "/system/dict",
                         'children' => [
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '字典列表',
-                                'key' => 'system.dict.list.query'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '新增字典',
-                                'key' => 'system.dict.list.create'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '删除字典',
-                                'key' => 'system.dict.list.delete'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '更新字典',
-                                'key' => 'system.dict.list.update'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '字典项列表',
-                                'key' => 'system.dict.item.query'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '字典项新增',
-                                'key' => 'system.dict.item.create'
-                            ],
-                            [
-                                'order' => 7,
-                                'type' => 'rule',
-                                'name' => '字典项编辑',
-                                'key' => 'system.dict.item.update'
-                            ],
-                            [
-                                'order' => 8,
-                                'type' => 'rule',
-                                'name' => '字典项删除',
-                                'key' => 'system.dict.item.delete'
-                            ]
+                            ['order' => 1, 'type' => 'rule', 'name' => '字典列表', 'key' => 'system.dict.list.query'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '新增字典', 'key' => 'system.dict.list.create'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '删除字典', 'key' => 'system.dict.list.delete'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '更新字典', 'key' => 'system.dict.list.update'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '字典项列表', 'key' => 'system.dict.item.query'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '字典项新增', 'key' => 'system.dict.item.create'],
+                            ['order' => 7, 'type' => 'rule', 'name' => '字典项编辑', 'key' => 'system.dict.item.update'],
+                            ['order' => 8, 'type' => 'rule', 'name' => '字典项删除', 'key' => 'system.dict.item.delete'],
                         ]
                     ],
                     [
@@ -911,66 +636,16 @@ class SysUserSeeder extends Seeder
                         'path' => "/system/setting",
                         'elementPath' => "/system/setting",
                         'children' => [
-                            [
-                                'order' => 1,
-                                'type' => 'rule',
-                                'name' => '配置列表',
-                                'key' => 'system.setting.items.query'
-                            ],
-                            [
-                                'order' => 2,
-                                'type' => 'rule',
-                                'name' => '新增配置',
-                                'key' => 'system.setting.items.create'
-                            ],
-                            [
-                                'order' => 3,
-                                'type' => 'rule',
-                                'name' => '编辑配置',
-                                'key' => 'system.setting.items.update'
-                            ],
-                            [
-                                'order' => 4,
-                                'type' => 'rule',
-                                'name' => '删除配置',
-                                'key' => 'system.setting.items.delete'
-                            ],
-                            [
-                                'order' => 5,
-                                'type' => 'rule',
-                                'name' => '保存配置',
-                                'key' => 'system.setting.items.save'
-                            ],
-                            [
-                                'order' => 6,
-                                'type' => 'rule',
-                                'name' => '刷新配置',
-                                'key' => 'system.setting.items.refresh'
-                            ],
-                            [
-                                'order' => 7,
-                                'type' => 'rule',
-                                'name' => '配置组编辑',
-                                'key' => 'system.setting.group.update'
-                            ],
-                            [
-                                'order' => 8,
-                                'type' => 'rule',
-                                'name' => '配置组删除',
-                                'key' => 'system.setting.items.item.delete'
-                            ],
-                            [
-                                'order' => 9,
-                                'type' => 'rule',
-                                'name' => '配置组列表',
-                                'key' => 'system.setting.group.query'
-                            ],
-                            [
-                                'order' => 10,
-                                'type' => 'rule',
-                                'name' => '配置组新增',
-                                'key' => 'system.setting.group.create'
-                            ]
+                            ['order' => 1, 'type' => 'rule', 'name' => '配置列表', 'key' => 'system.setting.items.query'],
+                            ['order' => 2, 'type' => 'rule', 'name' => '新增配置', 'key' => 'system.setting.items.create'],
+                            ['order' => 3, 'type' => 'rule', 'name' => '编辑配置', 'key' => 'system.setting.items.update'],
+                            ['order' => 4, 'type' => 'rule', 'name' => '删除配置', 'key' => 'system.setting.items.delete'],
+                            ['order' => 5, 'type' => 'rule', 'name' => '保存配置', 'key' => 'system.setting.items.save'],
+                            ['order' => 6, 'type' => 'rule', 'name' => '刷新配置', 'key' => 'system.setting.items.refresh'],
+                            ['order' => 7, 'type' => 'rule', 'name' => '配置组编辑', 'key' => 'system.setting.group.update'],
+                            ['order' => 8, 'type' => 'rule', 'name' => '配置组删除', 'key' => 'system.setting.items.item.delete'],
+                            ['order' => 9, 'type' => 'rule', 'name' => '配置组列表', 'key' => 'system.setting.group.query'],
+                            ['order' => 10, 'type' => 'rule', 'name' => '配置组新增', 'key' => 'system.setting.group.create'],
                         ]
                     ]
                 ]

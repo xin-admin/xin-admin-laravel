@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 /**
  * 系统用户列表控制器
  */
-#[RequestAttribute('/system/user/list', 'sys-user.list')]
+#[RequestAttribute('/system/user/list', 'system.user.list')]
 #[Create, Update, Delete, Query]
 class SysUserListController extends BaseController
 {
