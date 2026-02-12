@@ -1,7 +1,9 @@
 <?php
 
+use App\Common\Providers\{AppServiceProvider, AutoBindServiceProvider, RouteServiceProvider};
+
 return [
-    \App\Common\Providers\AppServiceProvider::class,
-    \App\Common\Providers\AutoBindServiceProvider::class,
-    \App\Common\Providers\RouteServiceProvider::class,
+    AppServiceProvider::class,
+    AutoBindServiceProvider::class,
+    RouteServiceProvider::class,
 ];

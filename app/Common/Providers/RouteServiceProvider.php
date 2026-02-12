@@ -9,24 +9,37 @@ use RecursiveIteratorIterator;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    /**
+     * 要扫描的控制器目录
+     */
+    protected array $scanDirectories = [
+        'Admin/Controllers',
+        'Api/Controllers',
+        'Common/Controllers',
+    ];
 
     public function boot(AnnoRouteService $annoRoute): void
     {
-        // 获取所有控制器
-        $dir = app_path('Controllers');
-        $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
-        foreach ($controllers as $controller) {
-            if (! $controller->isFile()) {
+        foreach ($this->scanDirectories as $directory) {
+            $dir = app_path($directory);
+            if (!is_dir($dir)) {
                 continue;
             }
-            if (! str_contains($controller->getFilename(), 'Controller')) {
-                continue;
+
+            $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+            foreach ($controllers as $controller) {
+                if (! $controller->isFile()) {
+                    continue;
+                }
+                if (! str_contains($controller->getFilename(), 'Controller')) {
+                    continue;
+                }
+                if ($controller->getFilename() === 'BaseController.php') {
+                    continue;
+                }
+                $className = static::getClassName($controller);
+                $annoRoute->register($className);
             }
-            if ($controller->getFilename() === 'BaseController.php') {
-                continue;
-            }
-            $className = static::getClassName($controller);
-            $annoRoute->register($className);
         }
     }
 

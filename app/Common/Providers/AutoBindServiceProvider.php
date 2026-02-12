@@ -14,7 +14,16 @@ class AutoBindServiceProvider extends ServiceProvider
      * 要排除的基类
      */
     protected array $excludeClasses = [
-        'App\\Applications\\Common\\Services\\BaseService',    // 服务基类
+        'App\\Common\\Services\\BaseService',    // 服务基类
+    ];
+
+    /**
+     * 要扫描的服务目录
+     */
+    protected array $scanDirectories = [
+        'Common/Services',
+        'Admin/Services',
+        'Api/Services',
     ];
 
     public function register(): void
@@ -34,34 +43,49 @@ class AutoBindServiceProvider extends ServiceProvider
      */
     protected function scanClasses(): array
     {
-        $absolutePath = app_path('Services');
-
-        if (!is_dir($absolutePath)) {
-            return [];
-        }
-
         $classes = [];
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($absolutePath));
 
-        $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
+        foreach ($this->scanDirectories as $absolutePath) {
+            $path = app_path($absolutePath);
+            if (!is_dir($path)) {
+                continue;
+            }
 
-        foreach ($regex as $file) {
-            $filePath = $file[0];
-            $relativePath = str_replace([$absolutePath, '.php'], '', $filePath);
-            $relativePath = trim($relativePath, DIRECTORY_SEPARATOR);
+            $namespace = $this->getNamespaceFromPath($path);
 
-            $className = str_replace(
-                DIRECTORY_SEPARATOR,
-                '\\',
-                'App\\Services\\' . $relativePath
-            );
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+            $regex = new RegexIterator($iterator, '/^.+\.php$/i', RegexIterator::GET_MATCH);
 
-            if (class_exists($className)) {
-                $classes[] = $className;
+            foreach ($regex as $file) {
+                $filePath = $file[0];
+                $relativePath = str_replace([$path, '.php'], '', $filePath);
+                $relativePath = trim($relativePath, DIRECTORY_SEPARATOR);
+
+                $className = str_replace(
+                    DIRECTORY_SEPARATOR,
+                    '\\',
+                    $namespace . $relativePath
+                );
+
+                if (class_exists($className)) {
+                    $classes[] = $className;
+                }
             }
         }
 
         return $classes;
+    }
+
+    /**
+     * 根据路径获取命名空间
+     */
+    protected function getNamespaceFromPath(string $path): string
+    {
+        $basePath = app_path();
+        $relativePath = str_replace([$basePath, '\\'], ['', '/'], $path);
+        $relativePath = trim($relativePath, '/');
+
+        return 'App\\' . str_replace('/', '\\', $relativePath) . '\\';
     }
 
     /**
@@ -74,7 +98,7 @@ class AutoBindServiceProvider extends ServiceProvider
             return false;
         }
 
-        if (!str_contains($className, 'Service') && !str_contains($className, 'Repository')) {
+        if (!str_contains($className, 'Service')) {
             return false;
         }
 
@@ -86,24 +110,5 @@ class AutoBindServiceProvider extends ServiceProvider
         }
 
         return true;
-    }
-
-    /**
-     * 获取已绑定的类列表（用于调试）
-     */
-    public function getBoundClasses(): array
-    {
-        $boundClasses = [];
-
-        foreach ($this->scanConfig as $directory => $namespace) {
-            $classes = $this->scanClasses($directory, $namespace);
-            foreach ($classes as $class) {
-                if ($this->shouldBind($class)) {
-                    $boundClasses[] = $class;
-                }
-            }
-        }
-
-        return $boundClasses;
     }
 }

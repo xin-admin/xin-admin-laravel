@@ -35,6 +35,7 @@
     "@types/react-dom": "^19.1.6",
     "@types/react-transition-group": "^4.4.12",
     "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.1",
     "eslint": "^9.31.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
