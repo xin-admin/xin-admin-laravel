@@ -1,0 +1,16 @@
+export default {
+  "xin-table.deleteSuccess": "删除成功！",
+  "xin-table.finishSuccess": "提交成功！",
+  "xin-table.options": "操作",
+  "xin-table.editButton": "编辑",
+  "xin-table.deleteButton.ok": "确认",
+  "xin-table.deleteButton.cancel": "取消",
+  "xin-table.deleteButton.title": "删除数据",
+  "xin-table.deleteButton.description": "你确定要删除这条数据吗？",
+  "xin-table.deleteButton": "删除",
+  "xin-table.createButton": "新增",
+  "xin-table.searchText": "查询",
+  "xin-table.resetText": "重置",
+  "xin-table.collapse.open": "展开",
+  "xin-table.collapse.clock": "收起",
+}

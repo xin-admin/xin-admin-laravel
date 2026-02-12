@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Services\MailConfigService;
-use App\Services\SysSettingService;
-use App\Support\Mail\VerificationCodeMail;
-use Illuminate\Support\Facades\Config;
+use App\Common\Mail\VerificationCodeMail;
+use App\Common\Services\MailConfigService;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 

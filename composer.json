@@ -26,11 +26,12 @@
     },
     "autoload": {
         "psr-4": {
+            "": "web/",
             "App\\": "app/",
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-          "app/Support/helpers.php"
+          "app/Common/helpers.php"
         ]
     },
     "autoload-dev": {

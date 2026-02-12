@@ -1,7 +1,7 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\AutoBindServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
+    \App\Common\Providers\AppServiceProvider::class,
+    \App\Common\Providers\AutoBindServiceProvider::class,
+    \App\Common\Providers\RouteServiceProvider::class,
 ];

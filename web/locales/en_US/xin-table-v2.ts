@@ -1,0 +1,35 @@
+export default {
+  // XinTableV2 Component
+  'xinTableV2.queryTable': 'Query Table',
+  'xinTableV2.keywordPlaceholder': 'Enter keyword',
+  'xinTableV2.keywordEmpty': 'Please enter search content',
+  'xinTableV2.add': 'Add',
+  'xinTableV2.refresh': 'Refresh',
+  'xinTableV2.columnSettings': 'Column Settings',
+  'xinTableV2.showBorder': 'Show Border',
+  'xinTableV2.hideBorder': 'Hide Border',
+  'xinTableV2.density.default': 'Default',
+  'xinTableV2.density.middle': 'Middle',
+  'xinTableV2.density.compact': 'Compact',
+  'xinTableV2.total': 'Total {{total}} items',
+  // Operate Column
+  'xinTableV2.operate': 'Actions',
+  'xinTableV2.edit': 'Edit',
+  'xinTableV2.delete': 'Delete',
+  'xinTableV2.deleteConfirm': 'Are you sure to delete record {{id}}?',
+  'xinTableV2.deleteOk': 'Confirm Delete',
+  'xinTableV2.deleteCancel': 'Cancel',
+  'xinTableV2.deleteSuccess': 'Deleted successfully',
+  // FormModal
+  'xinTableV2.form.createTitle': 'Create',
+  'xinTableV2.form.editTitle': 'Edit',
+  'xinTableV2.form.close': 'Close',
+  'xinTableV2.form.createSuccess': 'Created successfully!',
+  'xinTableV2.form.updateSuccess': 'Updated successfully!',
+  'xinTableV2.form.updateKeyUndefined': 'Primary key for update is undefined!',
+  // SearchForm
+  'xinTableV2.search.search': 'Search',
+  'xinTableV2.search.reset': 'Reset',
+  'xinTableV2.search.expand': 'Expand',
+  'xinTableV2.search.collapse': 'Collapse',
+};

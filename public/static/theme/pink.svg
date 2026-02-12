@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="80px" viewBox="0 0 120 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形 + 矩形备份蒙版备份 3</title>
+    <defs>
+        <polygon id="path-1" points="0 0 120 0 120 80 0 80"></polygon>
+        <path d="M35.3833112,20 L124.616689,20 C129.965801,20 131.905519,20.5569537 133.861074,21.6027962 C135.81663,22.6486388 137.351361,24.1833702 138.397204,26.1389258 C139.443046,28.0944813 140,30.0341988 140,35.3833112 L140,84.6166888 C140,89.9658012 139.443046,91.9055187 138.397204,93.8610742 C137.351361,95.8166298 135.81663,97.3513612 133.861074,98.3972038 C131.905519,99.4430463 129.965801,100 124.616689,100 L35.3833112,100 C30.0341988,100 28.0944813,99.4430463 26.1389258,98.3972038 C24.1833702,97.3513612 22.6486388,95.8166298 21.6027962,93.8610742 C20.5569537,91.9055187 20,89.9658012 20,84.6166888 L20,35.3833112 C20,30.0341988 20.5569537,28.0944813 21.6027962,26.1389258 C22.6486388,24.1833702 24.1833702,22.6486388 26.1389258,21.6027962 C28.0944813,20.5569537 30.0341988,20 35.3833112,20 Z" id="path-3"></path>
+        <filter x="-7.5%" y="-10.0%" width="115.0%" height="122.5%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.02 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMorphology radius="0.5" operator="erode" in="SourceAlpha" result="shadowSpreadOuter2"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter2" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.02 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter3"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter3" result="shadowBlurOuter3"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.03 0" type="matrix" in="shadowBlurOuter3" result="shadowMatrixOuter3"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter3"></feMergeNode>
+            </feMerge>
+        </filter>
+        <path d="M71.3833112,40 L160.616689,40 C165.965801,40 167.905519,40.5569537 169.861074,41.6027962 C171.81663,42.6486388 173.351361,44.1833702 174.397204,46.1389258 C175.443046,48.0944813 176,50.0341988 176,55.3833112 L176,104.616689 C176,109.965801 175.443046,111.905519 174.397204,113.861074 C173.351361,115.81663 171.81663,117.351361 169.861074,118.397204 C167.905519,119.443046 165.965801,120 160.616689,120 L71.3833112,120 C66.0341988,120 64.0944813,119.443046 62.1389258,118.397204 C60.1833702,117.351361 58.6486388,115.81663 57.6027962,113.861074 C56.5569537,111.905519 56,109.965801 56,104.616689 L56,55.3833112 C56,50.0341988 56.5569537,48.0944813 57.6027962,46.1389258 C58.6486388,44.1833702 60.1833702,42.6486388 62.1389258,41.6027962 C64.0944813,40.5569537 66.0341988,40 71.3833112,40 Z" id="path-5"></path>
+        <filter x="-4.2%" y="-5.0%" width="108.3%" height="112.5%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.227270154   0 0 0 0 0.0898254103   0 0 0 0 0.0898254103  0 0 0 0.210473121 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="正式版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Ant-Design-5.0-官网-PC" transform="translate(-1022.000000, -1542.000000)">
+            <g id="编组-28" transform="translate(506.000000, 1542.000000)">
+                <g id="矩形-+-矩形备份蒙版备份-3" transform="translate(516.000000, 0.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="蒙版" fill="#FFEFF0" xlink:href="#path-1"></use>
+                    <g id="矩形" mask="url(#mask-2)">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="#FFDAD7" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                    <g id="矩形备份" mask="url(#mask-2)">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
