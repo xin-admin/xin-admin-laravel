@@ -16,11 +16,8 @@
     <a href="https://react.dev/" target="_blank">
         <img src="https://img.shields.io/badge/React->=18.1-brightgreen" alt="React">
     </a>
-    <a href="https://umijs.org/" target="_blank">
-        <img src="https://img.shields.io/badge/UmiJs->=4.0-brightgreen" alt="UmiJs">
-    </a>
     <a href="https://mysql.org/" target="_blank">
-        <img src="https://img.shields.io/badge/mysql->=5.7-brightgreen" alt="UmiJs">
+        <img src="https://img.shields.io/badge/mysql->=5.7-brightgreen" alt="">
     </a>
     <a href="https://gitee.com/wonderful-code/buildadmin/blob/master/LICENSE" target="_blank">
         <img src="https://img.shields.io/badge/Apache2.0-license-brightgreen" alt="license">
@@ -28,7 +25,7 @@
 </p>
 
 
-基于 PHP8.2 + Laravel12 + Mysql + React + TypeScript + UmiJs + Ant Design 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、系统配置、文件管理系统、AI模块等便捷开发，
+基于 PHP8.2 + Laravel12 + Mysql + React + TypeScript + Ant Design 等前沿技术栈开发的全栈开发框架，提供按钮级权限验证、动态菜单、用户分组权限、数据字典、系统配置、文件管理系统、AI模块等便捷开发，
 遵循 Apache License 无需授权即可免费商用.
 
 <img src="https://file.xinadmin.cn/file/demo.png" alt=""/>
@@ -39,7 +36,7 @@
 采用Api接口规范，前后端分离开发模式，后端不必考虑视图UI功能，前端web目录不包含任何后端代码。
 
 ### 🎨 React 技术栈
-阿里 Umi Js 以及 AntdPro 组件库，不仅简单易用，并且可以是你的技术更上一层楼，带你体验技术的革新，站在巨人肩膀上享受开发的便捷和乐趣。
+不仅简单易用，并且可以是你的技术更上一层楼，带你体验技术的革新，站在巨人肩膀上享受开发的便捷和乐趣。
 
 ### 📟 权限控制系统
 我们提供了完善的权限验证系统，支持客户端、管理端，双动态菜单，页面按钮级权限控制，使用PHP8注解验证精确控制接口请求，支持分组权限禁用继承。
