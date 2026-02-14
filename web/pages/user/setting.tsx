@@ -252,7 +252,7 @@ const UserSettingPage = () => {
       <Tabs
         activeKey={activeTab}
         onChange={setActiveTab}
-        tabPlacement="top"
+        tabPlacement="start"
         className="min-h-[500px] w-full"
         items={tabsList}
       />
