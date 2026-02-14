@@ -417,41 +417,12 @@ class SysUserSeeder extends Seeder
             ],
             [
                 'order' => 7,
-                'type' => 'menu',
+                'type' => 'route',
                 'name' => '用户设置',
                 'local' => "menu.user.setting",
                 'icon' => "UserSwitchOutlined",
                 'key' => 'user.setting',
-                'children' => [
-                    [
-                        'order' => 0,
-                        'type' => 'route',
-                        'name' => '基本信息',
-                        'key' => 'user.setting.info',
-                        'path' => '/user/setting/info',
-                    ],
-                    [
-                        'order' => 1,
-                        'type' => 'route',
-                        'name' => '安全设置',
-                        'key' => 'user.setting.security',
-                        'path' => '/user/setting/security',
-                    ],
-                    [
-                        'order' => 2,
-                        'type' => 'route',
-                        'name' => '实名认证',
-                        'key' => 'user.setting.verification',
-                        'path' => '/user/setting/verification',
-                    ],
-                    [
-                        'order' => 3,
-                        'type' => 'route',
-                        'name' => '登录日志',
-                        'key' => 'user.setting.loginlog',
-                        'path' => '/user/setting/loginlog',
-                    ]
-                ]
+                'path' => '/user/setting',
             ],
             [
                 'order' => 8,

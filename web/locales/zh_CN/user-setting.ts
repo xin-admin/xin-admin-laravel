@@ -2,10 +2,11 @@ export default {
   "userSetting.title": "用户设置",
   "userSetting.baseInfo": "基本信息",
   "userSetting.changePassword": "修改密码",
-  "userSetting.userVerification": "实名认证",
   "userSetting.loginLog": "登录日志",
   "userSetting.baseInfo.updateAvatar": "更换头像",
   "userSetting.baseInfo.updateAvatarDesc": "支持 JPG/PNG 格式，大小不超过 2MB",
+  "userSetting.baseInfo.avatarSuccess": "头像上传成功",
+  "userSetting.baseInfo.success": "更新用户信息成功",
   "userSetting.baseInfo.username": "用户名",
   "userSetting.baseInfo.username.message": "请输入用户名!",
   "userSetting.baseInfo.nickname": "昵称",
@@ -31,4 +32,5 @@ export default {
   "userSetting.changePassword.success": "更新成功",
   "userSetting.loginLog.success": "登录成功",
   "userSetting.loginLog.error": "登录失败",
+  "userSetting.loginLog.empty": "暂无登录日志数据",
 }

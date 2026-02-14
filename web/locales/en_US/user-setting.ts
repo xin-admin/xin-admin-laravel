@@ -2,10 +2,11 @@ export default {
   "userSetting.title": "User Settings",
   "userSetting.baseInfo": "Basic Information",
   "userSetting.changePassword": "Change Password",
-  "userSetting.userVerification": "Identity Verification",
   "userSetting.loginLog": "Login Log",
   "userSetting.baseInfo.updateAvatar": "Update Avatar",
   "userSetting.baseInfo.updateAvatarDesc": "Supports JPG/PNG format, maximum 2MB",
+  "userSetting.baseInfo.avatarSuccess": "Avatar uploaded successfully",
+  "userSetting.baseInfo.success": "User information updated successfully",
   "userSetting.baseInfo.username": "Username",
   "userSetting.baseInfo.username.message": "Please enter username!",
   "userSetting.baseInfo.nickname": "Nickname",
@@ -30,5 +31,6 @@ export default {
   "userSetting.changePassword.submit": "Change Password",
   "userSetting.changePassword.success": "Update Successful",
   "userSetting.loginLog.success": "Login Successful",
-  "userSetting.loginLog.error": "Login Failed"
+  "userSetting.loginLog.error": "Login Failed",
+  "userSetting.loginLog.empty": "No login logs available",
 }
