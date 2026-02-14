@@ -177,7 +177,7 @@ const Rule =  () => {
       dataIndex: 'order',
       hideInForm: true,
       hideInSearch: true,
-      render: (value: number) => <Tag bordered={false} color={'purple'}>{value}</Tag>,
+      render: (value: number) => <Tag variant="filled" color={'purple'}>{value}</Tag>,
     },
     {
       title: t("sysUserRule.key"),
@@ -186,7 +186,7 @@ const Rule =  () => {
       hideInForm: true,
       hideInSearch: true,
       width: 220,
-      render: (value: string) => <Tag bordered={false} color={'geekblue'}>{value}</Tag>,
+      render: (value: string) => <Tag variant="filled" color={'geekblue'}>{value}</Tag>,
     },
     {
       title: t("sysUserRule.hidden"),

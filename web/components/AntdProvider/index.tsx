@@ -1,6 +1,5 @@
 import {App, ConfigProvider, type ThemeConfig} from 'antd';
 import {type PropsWithChildren, useMemo} from 'react';
-import '@ant-design/v5-patch-for-react-19';
 import algorithm from "@/layout/algorithm.ts";
 import useGlobalStore from "@/stores/global";
 import useLanguage from '@/hooks/useLanguage';
@@ -51,7 +50,7 @@ const AppProvider = ({ children }: PropsWithChildren) => {
   }), [themeConfig])
 
   return (
-    <ConfigProvider theme={{...theme, cssVar: true}} locale={antdLocale}>
+    <ConfigProvider theme={theme} locale={antdLocale}>
       <App>
         <ContextHolder />
         {children}

@@ -54,7 +54,7 @@ const Role = () => {
       render: (value: any, record: ISysRole) => (
         <>
           <Tooltip title={record.description}>
-            <Tag bordered={false} color="blue">{value}</Tag>
+            <Tag variant="filled" color="blue">{value}</Tag>
           </Tooltip>
         </>
       ),
@@ -68,7 +68,7 @@ const Role = () => {
       width: 80,
       required: true,
       rules: [{ required: true, message: t('sysUserRole.table.sort.required') }],
-      render: (value: number) => <Tag bordered={false} color="purple">{value}</Tag>,
+      render: (value: number) => <Tag variant="filled" color="purple">{value}</Tag>,
     },
     {
       title: t('sysUserRole.table.userCount'),
