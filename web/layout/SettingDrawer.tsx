@@ -10,6 +10,7 @@ import {useThemeTransition} from '@/hooks/useThemeTransition';
 
 const {useToken} = theme;
 
+
 // 主题配置项
 const THEME_CONFIGS = [
   {key: 'colorPrimary', label: 'layout.colorPrimary'},
@@ -40,8 +41,8 @@ const STYLE_CONFIGS = [
 
 // 预设主题列表
 const THEME_LIST = [
-  {background: '/theme/default.svg', name: 'light', title: 'layout.themeLight'},
-  {background: '/theme/dark.svg', name: 'dark', title: 'layout.themeDark'},
+  {background: import.meta.env.VITE_BASE_URL + '/static/theme/default.svg', name: 'light', title: 'layout.themeLight'},
+  {background: import.meta.env.VITE_BASE_URL + '/static/theme/dark.svg', name: 'dark', title: 'layout.themeDark'},
 ];
 
 // 布局配置
@@ -96,10 +97,10 @@ const SettingDrawer: React.FC = () => {
   const themeConfig = useGlobalStore(state => state.themeConfig);
   const layout = useGlobalStore(state => state.layout);
   const setLayout = useGlobalStore(state => state.setLayout);
-  
+
   // 主题过渡动画 Hook
   const { transitionTheme, transitionThemeWithCircle, isTransitioning } = useThemeTransition();
-  
+
   // 翻译后的算法选项
   const translatedAlgorithmOptions = algorithmOptions?.map(option => ({
     ...option,
