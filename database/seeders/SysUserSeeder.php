@@ -295,7 +295,7 @@ class SysUserSeeder extends Seeder
                                 'name' => '三级页面',
                                 'local' => "menu.multi-menu.two.second",
                                 'key' => 'multi-menu.two.second',
-                                'path' => '/multi-menu/two/second',
+                                'path' => '/multi-menu/second',
                             ],
                             [
                                 'order' => 1,
@@ -310,7 +310,7 @@ class SysUserSeeder extends Seeder
                                         'name' => '四级页面',
                                         'local' => "menu.multi-menu.two.three.third",
                                         'key' => 'multi-menu.two.three.third',
-                                        'path' => '/multi-menu/two/three/third',
+                                        'path' => '/multi-menu/third',
                                     ]
                                 ]
                             ]
@@ -391,7 +391,7 @@ class SysUserSeeder extends Seeder
                         'order' => 2,
                         'local' => "menu.example.image-uploader",
                         'hidden' => 1,
-                        'link' => 0 
+                        'link' => 0
                     ],
                     [
                         'type' => "route",
