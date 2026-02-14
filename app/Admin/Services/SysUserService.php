@@ -186,12 +186,12 @@ class SysUserService extends BaseService
         if($id == 1) {
             $menus = SysRuleModel::query()
                 ->where('status', 1)
-                ->whereIn('type', ['menu','route','nested-route'])
+                ->whereIn('type', ['menu','route'])
                 ->get()
                 ->toArray();
         } else {
             $roles = SysUserModel::with(['roles.rules' => function ($query) {
-                $query->where('status', 1)->whereIn('type', ['menu','route','nested-route']);
+                $query->where('status', 1)->whereIn('type', ['menu','route']);
             }])->find($id)->roles->toArray();
 
             $menus = collect($roles)

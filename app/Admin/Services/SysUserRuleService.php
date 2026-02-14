@@ -26,7 +26,7 @@ class SysUserRuleService extends BaseService
         if (empty($type)) {
             throw new RepositoryException('权限类型为必填项！');
         }
-        if (!in_array($type, ['menu', 'route', 'nested-route', 'rule'])) {
+        if (!in_array($type, ['menu', 'route', 'rule'])) {
             throw new RepositoryException('权限类型错误！');
         }
         $rules = [
@@ -63,13 +63,6 @@ class SysUserRuleService extends BaseService
                 'local' => 'nullable|string',
                 'icon' => 'nullable|string',
                 'link' => 'required|integer|numeric|in:0,1',
-                'elementPath' => 'sometimes|required|string',
-            ];
-        } else if ($type == 'nested-route') {
-            $rules += [
-                'type' => 'required|string|in:nested-route',
-                'path' => 'required|string',
-                'elementPath' => 'required|string',
             ];
         } else {
             $rules += [
@@ -145,7 +138,7 @@ class SysUserRuleService extends BaseService
     public function getRuleParent(): JsonResponse
     {
         $data = SysRuleModel::query()
-            ->whereIn('type', ['menu', 'route', 'nested-route'])
+            ->whereIn('type', ['menu', 'route'])
             ->get(['name', 'id', 'parent_id'])
             ->toArray();
         $data = $this->getTreeData($data);

@@ -1,5 +1,5 @@
 /** 规则类型 */
-export type IRuleType = 'menu' | 'route' | 'nested-route' | 'rule';
+export type IRuleType = 'menu' | 'route' | 'rule';
 
 /** 菜单路由规则数据类型 */
 export interface ISysRule {
@@ -17,8 +17,6 @@ export interface ISysRule {
   name?: string;
   /** 菜单的路径，menu 的路径会被当作前缀路由 */
   path?: string;
-  /** 路由组件的路径，当类型值为 route 时该配置有效 */
-  elementPath?: string | null;
   /** 路由的图标 */
   icon?: string;
   /** 多语言 */

@@ -139,7 +139,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.analysis",
                         'key' => 'dashboard.analysis',
                         'path' => '/dashboard/analysis',
-                        'elementPath' => '/dashboard/analysis',
                     ],
                     [
                         'order' => 1,
@@ -148,7 +147,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.monitor",
                         'key' => 'dashboard.monitor',
                         'path' => '/dashboard/monitor',
-                        'elementPath' => '/dashboard/monitor',
                     ],
                     [
                         'order' => 1,
@@ -157,7 +155,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.workplace",
                         'key' => 'dashboard.workplace',
                         'path' => '/dashboard/workplace',
-                        'elementPath' => '/dashboard/workplace',
                     ]
                 ]
             ],
@@ -176,7 +173,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.result.success",
                         'key' => 'result.success',
                         'path' => '/result/success',
-                        'elementPath' => '/result/success',
                     ],
                     [
                         'order' => 1,
@@ -185,7 +181,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.result.fail",
                         'key' => 'result.fail',
                         'path' => '/result/fail',
-                        'elementPath' => '/result/fail',
                     ],
                     [
                         'order' => 2,
@@ -194,7 +189,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.result.warning",
                         'key' => 'result.warning',
                         'path' => '/result/warning',
-                        'elementPath' => '/result/warning',
                     ],
                     [
                         'order' => 3,
@@ -203,7 +197,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.result.info",
                         'key' => 'result.info',
                         'path' => '/result/info',
-                        'elementPath' => '/result/info',
                     ]
                 ]
             ],
@@ -222,7 +215,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.exception.403",
                         'key' => 'exception.403',
                         'path' => '/exception/403',
-                        'elementPath' => '/exception/403',
                     ],
                     [
                         'order' => 1,
@@ -231,7 +223,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.exception.404",
                         'key' => 'exception.404',
                         'path' => '/exception/404',
-                        'elementPath' => '/exception/404',
                     ],
                     [
                         'order' => 2,
@@ -240,7 +231,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.exception.500",
                         'key' => 'exception.500',
                         'path' => '/exception/500',
-                        'elementPath' => '/exception/500',
                     ]
                 ]
             ],
@@ -259,7 +249,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.auth.page",
                         'key' => 'auth.page',
                         'path' => '/auth/page',
-                        'elementPath' => '/auth/page',
                     ],
                     [
                         'order' => 1,
@@ -268,7 +257,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.auth.button",
                         'key' => 'auth.button',
                         'path' => '/auth/button',
-                        'elementPath' => '/auth/button',
                         'children' => [
                             ['order' => 0, 'type' => 'rule', 'name' => '新增权限', 'key' => 'auth.button.create'],
                             ['order' => 1, 'type' => 'rule', 'name' => '编辑权限', 'key' => 'auth.button.update'],
@@ -293,7 +281,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.multi-menu.first",
                         'key' => 'multi-menu.first',
                         'path' => '/multi-menu/first',
-                        'elementPath' => '/multi-menu/first',
                     ],
                     [
                         'order' => 1,
@@ -309,7 +296,6 @@ class SysUserSeeder extends Seeder
                                 'local' => "menu.multi-menu.two.second",
                                 'key' => 'multi-menu.two.second',
                                 'path' => '/multi-menu/two/second',
-                                'elementPath' => '/multi-menu/second',
                             ],
                             [
                                 'order' => 1,
@@ -325,7 +311,6 @@ class SysUserSeeder extends Seeder
                                         'local' => "menu.multi-menu.two.three.third",
                                         'key' => 'multi-menu.two.three.third',
                                         'path' => '/multi-menu/two/three/third',
-                                        'elementPath' => '/multi-menu/third',
                                     ]
                                 ]
                             ]
@@ -348,7 +333,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.page-layout.base-layout",
                         'key' => 'page-layout.base-layout',
                         'path' => '/page-layout/base-layout',
-                        'elementPath' => '/page-layout/base-layout',
                     ],
                     [
                         'order' => 1,
@@ -357,7 +341,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.page-layout.fix-header",
                         'key' => 'page-layout.fix-header',
                         'path' => '/page-layout/fix-header',
-                        'elementPath' => '/page-layout/fix-header',
                     ],
                     [
                         'order' => 2,
@@ -366,7 +349,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.page-layout.descriptions",
                         'key' => 'page-layout.descriptions',
                         'path' => '/page-layout/descriptions',
-                        'elementPath' => '/page-layout/descriptions',
                     ]
                 ]
             ],
@@ -376,7 +358,6 @@ class SysUserSeeder extends Seeder
                 'name' => "组件示例",
                 'path' => "",
                 'icon' => "AppstoreOutlined",
-                'elementPath' => "",
                 'order' => 5,
                 'local' => "menu.example",
                 'hidden' => 1,
@@ -387,7 +368,6 @@ class SysUserSeeder extends Seeder
                         'key' => "example.user-selector",
                         'name' => "用户选择器",
                         'path' => "/example/user-selector",
-                        'elementPath' => "/example/user-selector",
                         'order' => 0,
                         'local' => "menu.example.user-selector",
                         'hidden' => 1,
@@ -398,7 +378,6 @@ class SysUserSeeder extends Seeder
                         'key' => "example.icon-selector",
                         'name' => "图标",
                         'path' => "/example/icon-selector",
-                        'elementPath' => "/example/icon-selector",
                         'order' => 1,
                         'local' => "menu.example.icon-selector",
                         'hidden' => 1,
@@ -409,7 +388,6 @@ class SysUserSeeder extends Seeder
                         'key' => "example.image-uploader",
                         'name' => "图片上传器",
                         'path' => "/example/image-uploader",
-                        'elementPath' => "/example/image-uploader",
                         'order' => 2,
                         'local' => "menu.example.image-uploader",
                         'hidden' => 1,
@@ -420,7 +398,6 @@ class SysUserSeeder extends Seeder
                         'key' => "example.xin-form",
                         'name' => "XinForm 表单",
                         'path' => "/example/xin-form",
-                        'elementPath' => "/example/xin-form",
                         'order' => 3,
                         'local' => "menu.example.xin-form",
                         'hidden' => 1,
@@ -431,7 +408,6 @@ class SysUserSeeder extends Seeder
                         'key' => "example.xin-table",
                         'name' => "XinTable 表格",
                         'path' => "/example/xin-table",
-                        'elementPath' => "/example/xin-table",
                         'order' => 4,
                         'local' => "menu.example.xin-table",
                         'hidden' => 1,
@@ -441,45 +417,39 @@ class SysUserSeeder extends Seeder
             ],
             [
                 'order' => 7,
-                'type' => 'route',
+                'type' => 'menu',
                 'name' => '用户设置',
                 'local' => "menu.user.setting",
                 'icon' => "UserSwitchOutlined",
                 'key' => 'user.setting',
-                'path' => '/user/setting',
-                'elementPath' => '/user/setting/index',
                 'children' => [
                     [
                         'order' => 0,
-                        'type' => 'nested-route',
+                        'type' => 'route',
                         'name' => '基本信息',
                         'key' => 'user.setting.info',
-                        'path' => '/user/setting',
-                        'elementPath' => '/user/setting/info',
+                        'path' => '/user/setting/info',
                     ],
                     [
                         'order' => 1,
-                        'type' => 'nested-route',
+                        'type' => 'route',
                         'name' => '安全设置',
                         'key' => 'user.setting.security',
                         'path' => '/user/setting/security',
-                        'elementPath' => '/user/setting/security',
                     ],
                     [
                         'order' => 2,
-                        'type' => 'nested-route',
+                        'type' => 'route',
                         'name' => '实名认证',
                         'key' => 'user.setting.verification',
                         'path' => '/user/setting/verification',
-                        'elementPath' => '/user/setting/verification',
                     ],
                     [
                         'order' => 3,
-                        'type' => 'nested-route',
+                        'type' => 'route',
                         'name' => '登录日志',
                         'key' => 'user.setting.loginlog',
                         'path' => '/user/setting/loginlog',
-                        'elementPath' => '/user/setting/loginlog',
                     ]
                 ]
             ],
@@ -496,7 +466,6 @@ class SysUserSeeder extends Seeder
                         'key' => "sys-user.list",
                         'name' => "用户列表",
                         'path' => "/sys-user/list",
-                        'elementPath' => "/sys-user/list",
                         'order' => 1,
                         'local' => "menu.sys-user.list",
                         'children' => [
@@ -515,7 +484,6 @@ class SysUserSeeder extends Seeder
                         'key' => "sys-user.dept",
                         'name' => "用户部门",
                         'path' => "/sys-user/dept",
-                        'elementPath' => "/sys-user/dept",
                         'order' => 1,
                         'local' => "menu.sys-user.dept",
                         'children' => [
@@ -531,7 +499,6 @@ class SysUserSeeder extends Seeder
                         'key' => "sys-user.role",
                         'name' => "用户角色",
                         'path' => "/sys-user/role",
-                        'elementPath' => "/sys-user/role",
                         'order' => 1,
                         'local' => "menu.sys-user.role",
                         'children' => [
@@ -550,7 +517,6 @@ class SysUserSeeder extends Seeder
                         'key' => "sys-user.rule",
                         'name' => "用户权限",
                         'path' => "/sys-user/rule",
-                        'elementPath' => "/sys-user/rule",
                         'order' => 1,
                         'local' => "menu.sys-user.rule",
                         'children' => [
@@ -580,7 +546,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.system.info",
                         'key' => "system.info",
                         'path' => "/system/info",
-                        'elementPath' => "/system/info",
                     ],
                     [
                         'order' => 2,
@@ -589,7 +554,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.system.file",
                         'key' => "system.file",
                         'path' => "/system/file",
-                        'elementPath' => "/system/file",
                         'children' => [
                             ['order' => 1, 'type' => 'rule', 'name' => '获取文件夹', 'key' => 'system.file.group.query'],
                             ['order' => 2, 'type' => 'rule', 'name' => '新增文件夹', 'key' => 'system.file.group.create'],
@@ -615,7 +579,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.system.dict",
                         'key' => "system.dict",
                         'path' => "/system/dict",
-                        'elementPath' => "/system/dict",
                         'children' => [
                             ['order' => 1, 'type' => 'rule', 'name' => '字典列表', 'key' => 'system.dict.list.query'],
                             ['order' => 2, 'type' => 'rule', 'name' => '新增字典', 'key' => 'system.dict.list.create'],
@@ -634,7 +597,6 @@ class SysUserSeeder extends Seeder
                         'local' => "menu.system.setting",
                         'key' => "system.setting",
                         'path' => "/system/setting",
-                        'elementPath' => "/system/setting",
                         'children' => [
                             ['order' => 1, 'type' => 'rule', 'name' => '配置列表', 'key' => 'system.setting.items.query'],
                             ['order' => 2, 'type' => 'rule', 'name' => '新增配置', 'key' => 'system.setting.items.create'],
@@ -702,7 +664,6 @@ class SysUserSeeder extends Seeder
                 'name' => $rule['name'],
                 'path' => $rule['path'] ?? '',
                 'icon' => $rule['icon'] ?? '',
-                'elementPath' => $rule['elementPath'] ?? '',
                 'order' => $rule['order'] ?? 0,
                 'local' => $rule['local'] ?? '',
                 'status' => 1,

@@ -2,82 +2,59 @@ import {createBrowserRouter, type DataRouteObject, Navigate} from "react-router"
 import Layout from "@/layout";
 import Login from "@/pages/login";
 import React, {lazy, Suspense} from "react";
-import type {IMenus} from "@/domain/iSysRule";
-import defaultRoute from "@/router/default";
 
-const modules = import.meta.glob('/web/pages/**/*')
+const modules = import.meta.glob('/web/pages/**/*.tsx');
 
-function lazyLoad(path: string): React.ReactNode {
-  if (modules[path]) {
-    const Component = lazy(modules[path] as () => Promise<{ default: React.ComponentType }>);
-    return (
-      <Suspense fallback={null}>
-        <Component />
-      </Suspense>
-    )
-  }
-  return null;
+// 排除的路径（不需要在 Layout 内渲染的页面）
+const excludePaths = ['/login'];
+
+/**
+ * 懒加载组件
+ */
+function lazyLoad(moduleFn: () => Promise<{ default: React.ComponentType }>): React.ReactNode {
+  const Component = lazy(moduleFn as () => Promise<{ default: React.ComponentType }>);
+  return (
+    <Suspense fallback={null}>
+      <Component />
+    </Suspense>
+  );
 }
 
-function buildRoute(menuData: IMenus[]): DataRouteObject[] {
+/**
+ * 基于文件系统构建路由
+ */
+function buildRoutesFromFiles(): DataRouteObject[] {
   const routes: DataRouteObject[] = [];
-  function traverse(nodes: IMenus[]) {
-    for (const node of nodes) {
-      // 处理 route 类型
-      if (node.type === 'route' && !node.link) {
-        // 检查是否有 nested-route 子节点
-        const nestedChildren = node.children?.filter(child => child.type === 'nested-route') || [];
-        if (nestedChildren.length > 0) {
-          // 创建父路由
-          const parentRoute: DataRouteObject = {
-            id: node.key!,
-            path: node.path,
-            element: lazyLoad(`/web/pages${node.elementPath}.tsx`),
-            children: []
-          };
-          // 添加 nested-route 子路由
-          nestedChildren.forEach((child, index) => {
-            if (index === 0) {
-              parentRoute.children!.push({
-                id: child.key,
-                index: true,
-                element: lazyLoad(`/web/pages${child.elementPath}.tsx`)
-              });
-            } else {
-              parentRoute.children!.push({
-                id: child.key,
-                path: child.path,
-                element: lazyLoad(`/web/pages${child.elementPath}.tsx`)
-              });
-            }
-          });
-          routes.push(parentRoute);
-        } else {
-          // 普通路由
-          routes.push({
-            id: node.key!,
-            path: node.path,
-            element: lazyLoad(`/web/pages${node.elementPath}.tsx`)
-          });
-        }
-      }
-      // 递归处理子节点
-      if (node.children && node.children.length > 0) {
-        traverse(node.children);
-      }
+
+  for (const path in modules) {
+    // 转换路径
+    let routePath = path
+      .replace('/web/pages', '')
+      .replace(/\.tsx$/, '')
+      .replace(/\/index$/, '');  // index.tsx 映射到父路径
+
+    // 空路径设为根路径
+    if (!routePath) {
+      routePath = '/';
     }
+
+    // 跳过排除的路径
+    if (excludePaths.includes(routePath)) {
+      continue;
+    }
+
+    routes.push({
+      id: routePath,
+      path: routePath,
+      element: lazyLoad(modules[path] as () => Promise<{ default: React.ComponentType }>)
+    });
   }
-  traverse(menuData);
+
   return routes;
 }
 
-export default function createRouter(rules?: IMenus[]) {
-  let routes: DataRouteObject[];
-  if(rules) {
-    routes = buildRoute(rules);
-  } else {
-    routes = buildRoute(defaultRoute);
-  }
+export default function createRouter() {
+  const routes = buildRoutesFromFiles();
   return createBrowserRouter([
     {
       Component: Layout,
@@ -85,7 +62,7 @@ export default function createRouter(rules?: IMenus[]) {
         ...routes,
         {
           path: "*",
-          element: lazyLoad(`/web/pages/result/404.tsx`)
+          element: lazyLoad(modules['/web/pages/result/404.tsx'] as () => Promise<{ default: React.ComponentType }>)
         }
       ],
     },
@@ -97,5 +74,5 @@ export default function createRouter(rules?: IMenus[]) {
       path: "login",
       element: <Login />
     },
-  ])
+  ]);
 }

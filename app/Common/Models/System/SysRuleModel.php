@@ -25,7 +25,6 @@ class SysRuleModel extends Model
         'icon',
         'local',
         'link',
-        'elementPath'
     ];
 
     protected $casts = [

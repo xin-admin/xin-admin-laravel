@@ -60,7 +60,6 @@ const Rule =  () => {
         options: [
           { value: 'menu', label: t("sysUserRule.type.menu") },
           { value: 'route', label: t("sysUserRule.type.route") },
-          { value: 'nested-route', label: t("sysUserRule.type.nested-route") },
           { value: 'rule', label: t("sysUserRule.type.rule") },
         ],
       },
@@ -124,13 +123,6 @@ const Rule =  () => {
       hideInTable: true,
       hideInSearch: true,
     },
-    {
-      title: t("sysUserRule.elementPath"),
-      dataIndex: 'elementPath',
-      valueType: 'text',
-      hideInTable: true,
-      hideInSearch: true,
-    },
     /** ------------------ 表格使用的 Column ---------------- */
     {
       title: t("sysUserRule.name"),
@@ -168,13 +160,12 @@ const Rule =  () => {
       hideInSearch: true,
       render: (value: string, record: ISysRule) => (
         <>
-          { value === 'menu' && <Tag color={'processing'}>{t("sysUserRule.type.menu")}</Tag> }
+                  { value === 'menu' && <Tag color={'processing'}>{t("sysUserRule.type.menu")}</Tag> }
           { value === 'route' && (
             <Tooltip title={t("sysUserRule.routePath.showTooltip", {path: record.path})}>
               <Tag color={'success'}>{t("sysUserRule.type.route")}</Tag>
             </Tooltip>
           )}
-          { value === 'nested-route' && <Tag color={'success'}>{t("sysUserRule.type.nested-route")}</Tag> }
           { value === 'rule' && <Tag>{t("sysUserRule.type.rule")}</Tag> }
         </>
       )
@@ -205,7 +196,7 @@ const Rule =  () => {
       hideInSearch: true,
       tooltip: t("sysUserRule.hidden.tooltip"),
       render: (_, data: ISysRule) => {
-        if (data.type === 'rule' || data.type === 'nested-route') { return '-' }
+        if (data.type === 'rule') { return '-' }
         return (
           <Switch
             defaultValue={data.hidden === 1}

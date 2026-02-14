@@ -84,12 +84,11 @@ return new class extends Migration
             Schema::create('sys_rule', function (Blueprint $table) {
                 $table->increments('id')->comment('权限ID');
                 $table->integer('parent_id')->default(0)->comment('父级ID');
-                $table->string('type', 20)->comment("类型：'menu' | 'route' | 'nested-route' | 'rule'");
+                $table->string('type', 20)->comment("类型：'menu' | 'route' | 'rule'");
                 $table->string('key', 100)->unique()->comment('唯一标识');
                 $table->string('name', 100)->comment('名称');
                 $table->string('path', 100)->nullable()->comment('路径');
                 $table->string('icon', 100)->nullable()->comment('图标');
-                $table->string('elementPath', 255)->nullable()->comment('路由组件的路径，当类型值为 route 时该配置有效');
                 $table->integer('order')->default(0)->comment('排序');
                 $table->string('local', 100)->nullable()->comment('语言包');
                 $table->integer('status')->default(1)->comment('状态：1、正常，0、禁用');
@@ -126,6 +125,21 @@ return new class extends Migration
                 $table->comment('系统用户登录日志表');
             });
         }
+
+        // token 表
+        if (! Schema::hasTable('sys_access_token')) {
+            Schema::create('sys_access_token', function (Blueprint $table) {
+                $table->id();
+                $table->morphs('tokenable');
+                $table->string('name');
+                $table->string('token', 64)->unique();
+                $table->text('abilities')->nullable();
+                $table->timestamp('last_used_at')->nullable();
+                $table->timestamp('expires_at')->nullable();
+                $table->timestamps();
+                $table->comment('token table');
+            });
+        }
     }
 
     /**
@@ -140,5 +154,6 @@ return new class extends Migration
         Schema::dropIfExists('sys_user_role');
         Schema::dropIfExists('sys_role_rule');
         Schema::dropIfExists('sys_login_record');
+        Schema::dropIfExists('sys_access_token');
     }
 };
