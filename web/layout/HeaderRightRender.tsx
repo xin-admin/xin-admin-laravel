@@ -53,9 +53,9 @@ const HeaderLeftRender = () => {
   const userItems: MenuProps['items'] = [
     {
       key: '1',
-      label: t('layout.userSetting'),
+      label: t('layout.profile'),
       icon: <UserOutlined/> ,
-      onClick: () => navigate('/user/setting')
+      onClick: () => navigate('/user/profile')
     },
     {
       key: '2',
@@ -77,10 +77,9 @@ const HeaderLeftRender = () => {
       <Modal
         closable={false}
         open={searchOpen}
-        maskClosable
         footer={null}
-        style={{top: 40}}
-        styles={{content: {padding: 0, width: 600, maxHeight: '80vh'}}}
+        style={{top: 40, width: 600}}
+        styles={{body: {maxHeight: '80vh'}, container: {padding: 0}}}
         onCancel={() => setSearch(false)}
       >
         <div className={'p-5'}>

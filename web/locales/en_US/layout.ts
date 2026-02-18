@@ -41,9 +41,9 @@ export default {
   "layout.bodyPadding": "Body Padding",
   "layout.systemConfig": "System Configuration",
   "layout.localRoute": "Local Route",
-  
+
   // Header Right
-  "layout.userSetting": "User Settings",
+  "layout.profile": "User Settings",
   "layout.logout": "Logout",
   "layout.logoutSuccess": "Logout successful, redirecting",
   "layout.logoutFailed": "Logout failed",

@@ -41,9 +41,9 @@ export default {
   "layout.bodyPadding": "内容区域内边距",
   "layout.systemConfig": "系统配置",
   "layout.localRoute": "本地菜单路由",
-  
+
   // 头部右侧
-  "layout.userSetting": "用户设置",
+  "layout.profile": "用户设置",
   "layout.logout": "退出登录",
   "layout.logoutSuccess": "退出成功，正在跳转",
   "layout.logoutFailed": "退出登录失败",
