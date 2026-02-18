@@ -28,9 +28,10 @@ class SysDictController extends BaseController
      * 获取所有字典数据
      */
     #[GetRoute('/all', false)]
-    public function all(): array
+    public function all(): JsonResponse
     {
-        return $this->service->getAllDict();
+        $data = $this->service->getAllDict();
+        return $this->success($data);
     }
 
     /**
