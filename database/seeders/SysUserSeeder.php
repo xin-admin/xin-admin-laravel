@@ -354,100 +354,75 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
-                'type' => 'route',
-                'name' => '用户设置',
-                'local' => "menu.user.setting",
-                'icon' => "UserSwitchOutlined",
-                'key' => 'user.setting',
-                'path' => '/user/setting',
-            ],
-            [
-                'type' => 'menu',
-                'name' => '系统用户',
-                'local' => "menu.sys-user",
-                'icon' => "UserOutlined",
-                'key' => 'sys-user',
-                'children' => [
-                    [
-                        'type' => "route",
-                        'key' => "sys-user.list",
-                        'name' => "用户列表",
-                        'path' => "/sys-user/list",
-                        'local' => "menu.sys-user.list",
-                        'children' => [
-                            ['type' => 'rule', 'name' => '查询列表', 'key' => 'sys-user.list.query'],
-                            ['type' => 'rule', 'name' => '新增用户', 'key' => 'sys-user.list.create'],
-                            ['type' => 'rule', 'name' => '修改用户', 'key' => 'sys-user.list.update'],
-                            ['type' => 'rule', 'name' => '删除用户', 'key' => 'sys-user.list.delete'],
-                            ['type' => 'rule', 'name' => '重置用户密码', 'key' => 'sys-user.list.resetPassword'],
-                            ['type' => 'rule', 'name' => '修改用户状态', 'key' => 'sys-user.list.resetStatus'],
-                            ['type' => 'rule', 'name' => '获取角色选项', 'key' => 'sys-user.list.getRole'],
-                            ['type' => 'rule', 'name' => '获取部门选项', 'key' => 'sys-user.list.getDept'],
-                        ]
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "sys-user.dept",
-                        'name' => "用户部门",
-                        'path' => "/sys-user/dept",
-                        'local' => "menu.sys-user.dept",
-                        'children' => [
-                            ['type' => 'rule', 'name' => '获取部门列表', 'key' => 'sys-user.dept.query'],
-                            ['type' => 'rule', 'name' => '新建部门', 'key' => 'sys-user.dept.create'],
-                            ['type' => 'rule', 'name' => '更新部门信息', 'key' => 'sys-user.dept.update'],
-                            ['type' => 'rule', 'name' => '删除部门', 'key' => 'sys-user.dept.delete'],
-                            ['type' => 'rule', 'name' => '获取部门用户', 'key' => 'sys-user.dept.users'],
-                        ]
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "sys-user.role",
-                        'name' => "用户角色",
-                        'path' => "/sys-user/role",
-                        'local' => "menu.sys-user.role",
-                        'children' => [
-                            ['type' => 'rule', 'name' => '新增角色', 'key' => 'sys-user.role.create'],
-                            ['type' => 'rule', 'name' => '查询角色列表', 'key' => 'sys-user.role.query'],
-                            ['type' => 'rule', 'name' => '更新角色信息', 'key' => 'sys-user.role.update'],
-                            ['type' => 'rule', 'name' => '删除角色', 'key' => 'sys-user.role.delete'],
-                            ['type' => 'rule', 'name' => '设置角色权限', 'key' => 'sys-user.role.rule'],
-                            ['type' => 'rule', 'name' => '获取权限选项', 'key' => 'sys-user.role.rule.list'],
-                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'sys-user.role.rule.status'],
-                            ['type' => 'rule', 'name' => '获取角色用户', 'key' => 'sys-user.role.rule.users'],
-                        ]
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "sys-user.rule",
-                        'name' => "用户权限",
-                        'path' => "/sys-user/rule",
-                        'local' => "menu.sys-user.rule",
-                        'children' => [
-                            ['type' => 'rule', 'name' => '获取权限列表', 'key' => 'sys-user.rule.query'],
-                            ['type' => 'rule', 'name' => '创建权限规则', 'key' => 'sys-user.rule.create'],
-                            ['type' => 'rule', 'name' => '更新权限规则', 'key' => 'sys-user.rule.update'],
-                            ['type' => 'rule', 'name' => '删除权限规则', 'key' => 'sys-user.rule.delete'],
-                            ['type' => 'rule', 'name' => '获取父级权限', 'key' => 'sys-user.rule.parentQuery'],
-                            ['type' => 'rule', 'name' => '设置显示状态', 'key' => 'sys-user.rule.show'],
-                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'sys-user.rule.status'],
-                        ]
-                    ],
-                ]
-            ],
-            [
-
                 'type' => "menu",
-                'name' => "系统设置",
+                'name' => "系统管理",
                 'local' => "menu.system",
                 'icon' => "SettingOutlined",
                 'key' => "system",
                 'children' => [
                     [
                         'type' => "route",
-                        'name' => "系统信息",
-                        'local' => "menu.system.info",
-                        'key' => "system.info",
-                        'path' => "/system/info",
+                        'key' => "system.user",
+                        'name' => "用户管理",
+                        'path' => "/system/user",
+                        'local' => "menu.system.user",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '查询列表', 'key' => 'system.user.query'],
+                            ['type' => 'rule', 'name' => '新增用户', 'key' => 'system.user.create'],
+                            ['type' => 'rule', 'name' => '修改用户', 'key' => 'system.user.update'],
+                            ['type' => 'rule', 'name' => '删除用户', 'key' => 'system.user.delete'],
+                            ['type' => 'rule', 'name' => '重置用户密码', 'key' => 'system.user.resetPassword'],
+                            ['type' => 'rule', 'name' => '修改用户状态', 'key' => 'system.user.resetStatus'],
+                            ['type' => 'rule', 'name' => '获取角色选项', 'key' => 'system.user.getRole'],
+                            ['type' => 'rule', 'name' => '获取部门选项', 'key' => 'system.user.getDept'],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "system.dept",
+                        'name' => "部门管理",
+                        'path' => "/system/dept",
+                        'local' => "menu.system.dept",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '获取部门列表', 'key' => 'system.dept.query'],
+                            ['type' => 'rule', 'name' => '新建部门', 'key' => 'system.dept.create'],
+                            ['type' => 'rule', 'name' => '更新部门信息', 'key' => 'system.dept.update'],
+                            ['type' => 'rule', 'name' => '删除部门', 'key' => 'system.dept.delete'],
+                            ['type' => 'rule', 'name' => '获取部门用户', 'key' => 'system.dept.users'],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "system.role",
+                        'name' => "角色管理",
+                        'path' => "/system/role",
+                        'local' => "menu.system.role",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '新增角色', 'key' => 'system.role.create'],
+                            ['type' => 'rule', 'name' => '查询角色列表', 'key' => 'system.role.query'],
+                            ['type' => 'rule', 'name' => '更新角色信息', 'key' => 'system.role.update'],
+                            ['type' => 'rule', 'name' => '删除角色', 'key' => 'system.role.delete'],
+                            ['type' => 'rule', 'name' => '设置角色权限', 'key' => 'system.role.rule'],
+                            ['type' => 'rule', 'name' => '获取权限选项', 'key' => 'system.role.rule.list'],
+                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'system.role.rule.status'],
+                            ['type' => 'rule', 'name' => '获取角色用户', 'key' => 'system.role.rule.users'],
+                        ]
+                    ],
+                    [
+                        'type' => "route",
+                        'key' => "system.rule",
+                        'name' => "菜单管理",
+                        'path' => "/system/rule",
+                        'local' => "menu.system.rule",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '获取权限列表', 'key' => 'system.rule.query'],
+                            ['type' => 'rule', 'name' => '创建权限规则', 'key' => 'system.rule.create'],
+                            ['type' => 'rule', 'name' => '更新权限规则', 'key' => 'system.rule.update'],
+                            ['type' => 'rule', 'name' => '删除权限规则', 'key' => 'system.rule.delete'],
+                            ['type' => 'rule', 'name' => '获取父级权限', 'key' => 'system.rule.parentQuery'],
+                            ['type' => 'rule', 'name' => '设置显示状态', 'key' => 'system.rule.show'],
+                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'system.rule.status'],
+                        ]
                     ],
                     [
                         'type' => "route",
@@ -508,6 +483,13 @@ class SysUserSeeder extends Seeder
                             ['type' => 'rule', 'name' => '配置组列表', 'key' => 'system.setting.group.query'],
                             ['type' => 'rule', 'name' => '配置组新增', 'key' => 'system.setting.group.create'],
                         ]
+                    ],
+                    [
+                        'type' => "route",
+                        'name' => "系统信息",
+                        'local' => "menu.system.info",
+                        'key' => "system.info",
+                        'path' => "/system/info",
                     ]
                 ]
             ],

@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Tabs, Card, Form, Input, Button, message, Radio, Upload, Avatar, List, Tag, Space, Typography } from 'antd';
 import { UserOutlined, LockOutlined, SnippetsOutlined, UploadOutlined, LaptopOutlined, EnvironmentOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from "react-i18next";
-import useMobile from '@/hooks/useMobile';
+import useMobile from '@/hooks/useMobile.ts';
 import useAuthStore from "@/stores/user";
-import { type InfoParams, updateInfo, type PasswordParams, updatePassword, loginRecord } from "@/api/system/sysUser";
-import type ISysLoginRecord from "@/domain/iSysLoginRecord";
+import { type InfoParams, updateInfo, type PasswordParams, updatePassword, loginRecord } from "@/api/system/sysUser.ts";
+import type ISysLoginRecord from "@/domain/iSysLoginRecord.ts";
 import type { UploadProps, FormProps } from 'antd';
 import dayjs from 'dayjs';
 

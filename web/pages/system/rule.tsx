@@ -1,13 +1,13 @@
 import type {ISysRule} from "@/domain/iSysRule.ts";
-import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sysUserRule";
+import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sysUserRule.ts";
 import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
 import XinTableV2 from "@/components/XinTableV2";
-import type {XinTableColumn, XinTableV2Ref} from "@/components/XinTableV2/typings";
+import type {XinTableColumn, XinTableV2Ref} from "@/components/XinTableV2/typings.ts";
 import {Button, message, Switch, Tag, Tooltip, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth.ts";
 import AuthButton from "@/components/AuthButton";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";

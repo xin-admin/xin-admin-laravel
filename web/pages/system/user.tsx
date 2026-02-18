@@ -1,11 +1,11 @@
 import {Avatar, Button, Form, Input, message, Modal, Tag, Tooltip} from 'antd';
 import React, {useEffect, useMemo, useState} from 'react';
 import XinTableV2 from '@/components/XinTableV2';
-import type {XinTableColumn, XinTableV2Props} from "@/components/XinTableV2/typings";
+import type {XinTableColumn, XinTableV2Props} from "@/components/XinTableV2/typings.ts";
 import type ISysUser from "@/domain/iSysUser.ts";
 import AuthButton from "@/components/AuthButton";
-import type {DeptFieldType, ResetPasswordType, RoleFieldType} from "@/api/system/sysUserList";
-import {deptField, resetPassword, roleField} from "@/api/system/sysUserList";
+import type {DeptFieldType, ResetPasswordType, RoleFieldType} from "@/api/system/sysUserList.ts";
+import {deptField, resetPassword, roleField} from "@/api/system/sysUserList.ts";
 import {RedoOutlined} from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
@@ -235,7 +235,7 @@ const Table: React.FC = () => {
   const beforeOperateRender: XinTableV2Props['beforeOperateRender'] = (record) => (
     <>
       {record.id !== 1 &&
-        <AuthButton auth={'system-user.list.resetPassword'}>
+        <AuthButton auth={'system.user.resetPassword'}>
           <Tooltip title={t("sysUserList.resetPassword")}>
             <Button
               variant={'solid'}
@@ -255,7 +255,7 @@ const Table: React.FC = () => {
     api: '/system/user/list',
     columns,
     rowKey: 'id',
-    accessName: 'system-user.list',
+    accessName: 'system.user',
     beforeOperateRender,
     scroll: { x: 1400 },
     editShow: (i) => i.id !== 1,

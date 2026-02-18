@@ -1,8 +1,8 @@
 import XinTableV2 from "@/components/XinTableV2";
-import type {XinTableColumn} from "@/components/XinTableV2/typings";
+import type {XinTableColumn} from "@/components/XinTableV2/typings.ts";
 import {Button, Card, type CardProps, Col, message, Row, Switch, Table, type TableProps, Tag, Tooltip, Tree, type TreeProps} from "antd";
-import {type RuleFieldsList, rulesList, saveRoleRules, statusRole, users as usersApi} from "@/api/system/sysUserRole";
-import type {ISysRole} from "@/domain/iSysRole";
+import {type RuleFieldsList, rulesList, saveRoleRules, statusRole, users as usersApi} from "@/api/system/sysUserRole.ts";
+import type {ISysRole} from "@/domain/iSysRole.ts";
 import React, {useEffect, useRef, useState} from "react";
 import type ISysUser from "@/domain/iSysUser.ts";
 import {KeyOutlined, SaveOutlined, SmileOutlined, TeamOutlined} from "@ant-design/icons";
@@ -305,7 +305,7 @@ const Role = () => {
       <Col xxl={12} lg={12} xs={24}>
         <XinTableV2<ISysRole>
           api="/system/user/role"
-          accessName="sys-user.role"
+          accessName="system.user.role"
           columns={roleColumns}
           rowKey="id"
           searchShow={false}

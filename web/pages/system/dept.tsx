@@ -13,15 +13,15 @@ import {
 } from "antd";
 import {BankOutlined, DeleteOutlined, PlusOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
-import {listDept, addDept, updateDept, deleteDept, deptUsers} from "@/api/system/sysUserDept";
+import {listDept, addDept, updateDept, deleteDept, deptUsers} from "@/api/system/sysUserDept.ts";
 import type {ISysDept} from "@/domain/iSysDept.ts";
 import {isArray, omit} from 'lodash';
-import type {FormColumn} from "@/components/XinFormField/FieldRender/typings";
+import type {FormColumn} from "@/components/XinFormField/FieldRender/typings.ts";
 import XinForm, {type XinFormRef} from "@/components/XinForm";
 import * as React from "react";
 import {useTranslation} from "react-i18next";
 import AuthButton from "@/components/AuthButton";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth.ts";
 import type ISysUser from "@/domain/iSysUser.ts";
 
 const deptMap = new Map<string, ISysDept>();
@@ -54,7 +54,7 @@ const Dept = () => {
     {
       key: 'users',
       label: t("sysUserDept.tab.users"),
-      disabled: !auth("system-user.dept.users")
+      disabled: !auth("system.dept.users")
     },
   ];
   /** 部门数据 */
@@ -323,7 +323,7 @@ const Dept = () => {
         <Card
           title={(
             <Space>
-              <AuthButton auth={"system-user.dept.create"}>
+              <AuthButton auth={"system.dept.create"}>
                 <Button
                   loading={loading}
                   children={t("sysUserDept.createButton")}
@@ -332,7 +332,7 @@ const Dept = () => {
                   onClick={() => addChange()}
                 />
               </AuthButton>
-              <AuthButton auth={"system-user.dept.create"}>
+              <AuthButton auth={"system.dept.create"}>
                 <Button
                   loading={loading}
                   children={t("sysUserDept.createChildrenButton")}
@@ -402,14 +402,14 @@ const Dept = () => {
             style={{ display: tabKey === 'info' ? "block" : "none" }}
             submitter={{
               render: (dom) => (
-                <AuthButton auth={"system-user.dept.update"}>
+                <AuthButton auth={"system.dept.update"}>
                   {dom['submit']}
                 </AuthButton>
               ),
               submitText: t("sysUserDept.saveInfo")
             }}
           />
-          <AuthButton auth={"system-user.dept.users"}>
+          <AuthButton auth={"system.dept.users"}>
             <Table<ISysUser>
               style={{ display: tabKey === 'users' ? "block" : "none" }}
               dataSource={users}
