@@ -5,25 +5,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 字典项模型
+ * 字典数据模型
  */
 class SysDictItemModel extends Model
 {
     protected $table = 'sys_dict_item';
 
-    protected $casts = [
-        'dict_id' => 'integer',
-        'switch' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime'
-    ];
-
     protected $fillable = [
         'dict_id',
         'label',
         'value',
-        'switch',
+        'color',
+        'is_default',
         'status',
+        'sort',
+    ];
+
+    protected $casts = [
+        'dict_id' => 'integer',
+        'is_default' => 'integer',
+        'status' => 'integer',
+        'sort' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     /**

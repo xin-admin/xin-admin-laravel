@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Services\SysDictService;
+use App\Admin\Services\SysDictItemService;
 use App\Common\Controllers\BaseController;
 use App\Common\Services\AnnoRoute\Crud\Create;
 use App\Common\Services\AnnoRoute\Crud\Delete;
@@ -19,7 +19,7 @@ class SysDictItemController extends BaseController
 {
 
     public function __construct(
-        protected SysDictService $service
+        protected SysDictItemService $service
     ) {}
 
 }

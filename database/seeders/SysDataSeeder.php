@@ -42,21 +42,29 @@ class SysDataSeeder extends Seeder
             ['id' => 18, 'group_id' => 3, 'key' => 's3_url', 'title' => 'CDN/访问地址', 'describe' => '文件访问URL前缀，如CDN地址或Bucket域名，例如：https://cdn.example.com', 'values' => '', 'type' => 'Input', 'options' => '', 'sort' => 5, 'created_at' => $date, 'updated_at' => $date,],
             ['id' => 19, 'group_id' => 3, 'key' => 's3_endpoint', 'title' => 'Endpoint端点', 'describe' => 'S3兼容存储端点，如：https://oss-cn-hangzhou.aliyuncs.com', 'values' => '', 'type' => 'Input', 'options' => '', 'sort' => 6, 'created_at' => $date, 'updated_at' => $date,],
         ]);
-        // 字典初始数据
+        // 字典类型初始数据
         DB::table('sys_dict')->insert([
-            ['id' => 1, 'name' => '性别', 'type' => 'default', 'describe' => '性别字典', 'code' => 'sex', 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 2, 'name' => '状态', 'type' => 'default', 'describe' => '状态字典', 'code' => 'status', 'created_at' => $date, 'updated_at' => $date,],
-            ['id' => 3, 'name' => '权限类型', 'type' => 'tag', 'describe' => '系统权限类型字典', 'code' => 'ruleType', 'created_at' => $date, 'updated_at' => $date,],
+            ['id' => 1, 'name' => '用户性别', 'code' => 'sys_user_sex', 'render_type' => 'text', 'describe' => '用户性别字典', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '菜单状态', 'code' => 'sys_show_hide', 'render_type' => 'tag', 'describe' => '菜单状态字典', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '系统开关', 'code' => 'sys_normal_disable', 'render_type' => 'badge', 'describe' => '系统开关字典', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '权限类型', 'code' => 'sys_rule_type', 'render_type' => 'tag', 'describe' => '系统权限类型字典', 'status' => 0, 'sort' => 4, 'created_at' => $date, 'updated_at' => $date],
         ]);
+        // 字典数据初始数据
         DB::table('sys_dict_item')->insert([
-            ['id' => 1, 'dict_id' => 1, 'label' => '男', 'value' => '0', 'switch' => '1', 'status' => 'default', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'dict_id' => 1, 'label' => '女', 'value' => '1', 'switch' => '1', 'status' => 'default', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'dict_id' => 1, 'label' => '其它', 'value' => '2', 'switch' => '1', 'status' => 'default', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'dict_id' => 2, 'label' => '开启', 'value' => '1', 'switch' => '1', 'status' => 'success', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 5, 'dict_id' => 2, 'label' => '关闭', 'value' => '0', 'switch' => '1', 'status' => 'error', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 6, 'dict_id' => 3, 'label' => '一级菜单', 'value' => '0', 'switch' => '1', 'status' => 'processing', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 7, 'dict_id' => 3, 'label' => '子菜单', 'value' => '1', 'switch' => '1', 'status' => 'success', 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 8, 'dict_id' => 3, 'label' => '按钮/API', 'value' => '2', 'switch' => '1', 'status' => 'default', 'created_at' => $date, 'updated_at' => $date],
+            // 用户性别
+            ['id' => 1, 'dict_id' => 1, 'label' => '男', 'value' => '0', 'color' => 'blue', 'is_default' => 1, 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'dict_id' => 1, 'label' => '女', 'value' => '1', 'color' => 'magenta', 'is_default' => 0, 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'dict_id' => 1, 'label' => '未知', 'value' => '2', 'color' => 'default', 'is_default' => 0, 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
+            // 菜单状态
+            ['id' => 4, 'dict_id' => 2, 'label' => '显示', 'value' => '0', 'color' => 'green', 'is_default' => 1, 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 5, 'dict_id' => 2, 'label' => '隐藏', 'value' => '1', 'color' => 'red', 'is_default' => 0, 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            // 系统开关
+            ['id' => 6, 'dict_id' => 3, 'label' => '正常', 'value' => '0', 'color' => 'green', 'is_default' => 1, 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 7, 'dict_id' => 3, 'label' => '停用', 'value' => '1', 'color' => 'red', 'is_default' => 0, 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            // 权限类型
+            ['id' => 8, 'dict_id' => 4, 'label' => '目录', 'value' => 'M', 'color' => 'blue', 'is_default' => 0, 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 9, 'dict_id' => 4, 'label' => '菜单', 'value' => 'C', 'color' => 'green', 'is_default' => 0, 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 10, 'dict_id' => 4, 'label' => '按钮', 'value' => 'F', 'color' => 'orange', 'is_default' => 0, 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
         ]);
         // 文件初始化数据
         DB::table('sys_file_group')->insert([
