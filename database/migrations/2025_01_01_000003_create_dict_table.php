@@ -17,7 +17,7 @@ return new class extends Migration
                 $table->increments('id');
                 $table->string('name', 100)->comment('字典名称');
                 $table->string('code', 100)->unique()->comment('字典编码');
-                $table->string('render_type', 20)->default('text')->comment('渲染类型：text纯文本,tag标签,badge徽标,switch开关');
+                $table->string('render_type', 20)->default('text')->comment('渲染类型：text纯文本,tag标签,badge徽标');
                 $table->string('describe', 500)->nullable()->comment('字典描述');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态：0正常 1停用');
                 $table->unsignedInteger('sort')->default(0)->comment('排序');
@@ -31,7 +31,7 @@ return new class extends Migration
                 $table->unsignedBigInteger('dict_id')->comment('字典ID');
                 $table->string('label', 100)->comment('字典标签');
                 $table->string('value', 100)->comment('字典键值');
-                $table->string('color', 50)->default('default')->comment('颜色（Tag/Badge）：default,blue,green,red,orange,purple,cyan等');
+                $table->string('color', 50)->default('default')->comment('颜色');
                 $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认：0否 1是');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态：0正常 1停用');
                 $table->unsignedInteger('sort')->default(0)->comment('排序');

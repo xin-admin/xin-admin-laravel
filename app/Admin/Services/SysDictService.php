@@ -27,7 +27,7 @@ class SysDictService extends BaseService
                     'max:100',
                     Rule::unique('sys_dict', 'code')->ignore($id)
                 ],
-                'render_type' => 'required|in:text,tag,badge,switch',
+                'render_type' => 'required|in:text,tag,badge',
                 'describe' => 'nullable|max:500',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
@@ -36,7 +36,7 @@ class SysDictService extends BaseService
             return [
                 'name' => 'required|max:100',
                 'code' => 'required|max:100|unique:sys_dict,code',
-                'render_type' => 'required|in:text,tag,badge,switch',
+                'render_type' => 'required|in:text,tag,badge',
                 'describe' => 'nullable|max:500',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
