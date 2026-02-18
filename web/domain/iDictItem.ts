@@ -7,10 +7,8 @@ export interface IDictItem {
     label?: string;
     /** 字典键值 */
     value?: string;
-    /** 颜色（Tag/Badge）：default,blue,green,red,orange,purple,cyan等 */
+    /** 颜色 */
     color?: string;
-    /** 是否默认：0否 1是 */
-    is_default?: number;
     /** 状态：0正常 1停用 */
     status?: number;
     /** 排序 */

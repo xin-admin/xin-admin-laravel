@@ -66,10 +66,6 @@ class SysDataSeeder extends Seeder
             ['id' => 8, 'dict_id' => 4, 'label' => '目录', 'value' => 'M', 'color' => 'blue', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
             ['id' => 9, 'dict_id' => 4, 'label' => '菜单', 'value' => 'C', 'color' => 'green', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
             ['id' => 10, 'dict_id' => 4, 'label' => '按钮', 'value' => 'F', 'color' => 'orange', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
-            // 字典类型
-            ['id' => 11, 'dict_id' => 5, 'label' => '文本', 'value' => 'text', 'color' => 'blue', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 12, 'dict_id' => 5, 'label' => '标签', 'value' => 'tag', 'color' => 'green', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 13, 'dict_id' => 5, 'label' => '徽标', 'value' => 'badge', 'color' => 'orange', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
         ]);
         // 文件初始化数据
         DB::table('sys_file_group')->insert([

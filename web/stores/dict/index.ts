@@ -1,11 +1,10 @@
 import {create, type StateCreator} from 'zustand';
 import {createJSONStorage, devtools, persist} from 'zustand/middleware';
-import type {DictData, DictMap, DictStore, DictStoreActions, DictStoreState} from './types';
+import type {DictMap, DictStore, DictStoreActions, DictStoreState} from './types';
 import {getAllDict} from '@/api/system/sysDict';
 
 const dictState: DictStoreState = {
-  dictMap: {},
-  dictData: []
+  dictMap: {}
 };
 
 const dictAction: StateCreator<DictStoreState, [], [], DictStoreActions> = (set, get) => ({
@@ -16,26 +15,23 @@ const dictAction: StateCreator<DictStoreState, [], [], DictStoreActions> = (set,
       if (data.data) {
         data.data.forEach((dict) => {
           if (dict.code && dict.dict_items) {
-            dictMap[dict.code] = dict;
+            dictMap[dict.code] = dict.dict_items;
           }
         });
       }
-      set({
-        dictMap: dictMap,
-        dictData: data.data || []
-      });
+      set({dictMap});
     } catch (error) {
       console.error('Failed to load dict data:', error);
     }
   },
 
-  getDict: (code: string): DictData => {
-    return get().dictMap[code] || [];
+  getDictItem: (code, value) => {
+    return (get().dictMap[code] || []).find(item => String(item.value) === String(value)) || null;
   },
 
   getOptions: (code: string): { label: string; value: string }[] => {
     const items = get().dictMap[code] || [];
-    return items.dict_items.map((item) => ({
+    return items.map((item) => ({
       label: item.label || '',
       value: item.value || '',
     }));

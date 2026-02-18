@@ -1,7 +1,7 @@
 import XinTable from '@/components/XinTable';
 import {Badge, Button, Tooltip} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
-import {type IDict, RENDER_TYPES} from '@/domain/iDict';
+import {type IDict} from '@/domain/iDict';
 import type {XinTableColumn} from '@/components/XinTable/typings';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router';
@@ -36,20 +36,6 @@ export default function DictPage() {
       valueType: 'text',
       colProps: {span: 12},
       rules: [{required: true, message: t('dict.code.required')}],
-    },
-    {
-      title: t('dict.renderType'),
-      dataIndex: 'render_type',
-      valueType: 'select',
-      colProps: {span: 12},
-      rules: [{required: true, message: t('dict.renderType.required')}],
-      fieldProps: {
-        options: RENDER_TYPES.map(item => ({label: item.label, value: item.value})),
-      },
-      render: (value: string) => {
-        const item = RENDER_TYPES.find(i => i.value === value);
-        return item?.label || value;
-      }
     },
     {
       title: t('dict.status'),
