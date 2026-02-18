@@ -48,7 +48,6 @@ class SysDataSeeder extends Seeder
             ['id' => 2, 'name' => '菜单状态', 'code' => 'sys_show_hide', 'describe' => '菜单状态字典', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
             ['id' => 3, 'name' => '系统开关', 'code' => 'sys_normal_disable', 'describe' => '系统开关字典', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
             ['id' => 4, 'name' => '权限类型', 'code' => 'sys_rule_type', 'describe' => '系统权限类型字典', 'status' => 0, 'sort' => 4, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 5, 'name' => '字典类型', 'code' => 'sys_dict_type', 'describe' => '字典类型', 'status' => 0, 'sort' => 5, 'created_at' => $date, 'updated_at' => $date],
         ]);
         // 字典数据初始数据
         DB::table('sys_dict_item')->insert([
@@ -63,9 +62,9 @@ class SysDataSeeder extends Seeder
             ['id' => 6, 'dict_id' => 3, 'label' => '正常', 'value' => '0', 'color' => 'green', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
             ['id' => 7, 'dict_id' => 3, 'label' => '停用', 'value' => '1', 'color' => 'red', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
             // 权限类型
-            ['id' => 8, 'dict_id' => 4, 'label' => '目录', 'value' => 'M', 'color' => 'blue', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 9, 'dict_id' => 4, 'label' => '菜单', 'value' => 'C', 'color' => 'green', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 10, 'dict_id' => 4, 'label' => '按钮', 'value' => 'F', 'color' => 'orange', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 8, 'dict_id' => 4, 'label' => '路由', 'value' => 'route', 'color' => 'blue', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 9, 'dict_id' => 4, 'label' => '菜单项', 'value' => 'menu', 'color' => 'green', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 10, 'dict_id' => 4, 'label' => '权限', 'value' => 'rule', 'color' => 'orange', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
         ]);
         // 文件初始化数据
         DB::table('sys_file_group')->insert([

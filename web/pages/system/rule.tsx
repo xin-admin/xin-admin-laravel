@@ -11,6 +11,8 @@ import useAuth from "@/hooks/useAuth.ts";
 import AuthButton from "@/components/AuthButton";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import useDictStore from "@/stores/dict";
+import DictTag from "@/components/DictTag";
 
 const { Title } = Typography;
 
@@ -27,6 +29,7 @@ const Rule =  () => {
   const {auth} = useAuth();
   const [parentOptions, setParentOptions] = useState<RuleParent[]>([]);
   const tableRef = useRef<XinTableRef>(undefined);
+  const getOptions = useDictStore(state => state.getOptions);
 
   // 加载父级选项
   useEffect(() => {
@@ -57,11 +60,7 @@ const Rule =  () => {
       colProps: { span: 24 },
       rules: [{ required: true, message: t("sysUserRule.type.required") }],
       fieldProps: {
-        options: [
-          { value: 'menu', label: t("sysUserRule.type.menu") },
-          { value: 'route', label: t("sysUserRule.type.route") },
-          { value: 'rule', label: t("sysUserRule.type.rule") },
-        ],
+        options: getOptions('sys_rule_type'),
       },
     },
     {
@@ -158,17 +157,7 @@ const Rule =  () => {
       width: 120,
       hideInForm: true,
       hideInSearch: true,
-      render: (value: string, record: ISysRule) => (
-        <>
-                  { value === 'menu' && <Tag color={'processing'}>{t("sysUserRule.type.menu")}</Tag> }
-          { value === 'route' && (
-            <Tooltip title={t("sysUserRule.routePath.showTooltip", {path: record.path})}>
-              <Tag color={'success'}>{t("sysUserRule.type.route")}</Tag>
-            </Tooltip>
-          )}
-          { value === 'rule' && <Tag>{t("sysUserRule.type.rule")}</Tag> }
-        </>
-      )
+      render: (value: string) => <DictTag value={value} renderType={'tag'} code={'sys_rule_type'}/>
     },
     {
       width: 120,
