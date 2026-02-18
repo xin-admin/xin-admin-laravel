@@ -44,11 +44,11 @@ class SysDataSeeder extends Seeder
         ]);
         // 字典类型初始数据
         DB::table('sys_dict')->insert([
-            ['id' => 1, 'name' => '用户性别', 'code' => 'sys_user_sex', 'render_type' => 'text', 'describe' => '用户性别字典', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 2, 'name' => '菜单状态', 'code' => 'sys_show_hide', 'render_type' => 'tag', 'describe' => '菜单状态字典', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 3, 'name' => '系统开关', 'code' => 'sys_normal_disable', 'render_type' => 'badge', 'describe' => '系统开关字典', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 4, 'name' => '权限类型', 'code' => 'sys_rule_type', 'render_type' => 'tag', 'describe' => '系统权限类型字典', 'status' => 0, 'sort' => 4, 'created_at' => $date, 'updated_at' => $date],
-            ['id' => 5, 'name' => '字典类型', 'code' => 'sys_dict_type', 'render_type' => 'tag', 'describe' => '字典类型', 'status' => 0, 'sort' => 5, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 1, 'name' => '用户性别', 'code' => 'sys_user_sex', 'describe' => '用户性别字典', 'status' => 0, 'sort' => 1, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 2, 'name' => '菜单状态', 'code' => 'sys_show_hide', 'describe' => '菜单状态字典', 'status' => 0, 'sort' => 2, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 3, 'name' => '系统开关', 'code' => 'sys_normal_disable', 'describe' => '系统开关字典', 'status' => 0, 'sort' => 3, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 4, 'name' => '权限类型', 'code' => 'sys_rule_type', 'describe' => '系统权限类型字典', 'status' => 0, 'sort' => 4, 'created_at' => $date, 'updated_at' => $date],
+            ['id' => 5, 'name' => '字典类型', 'code' => 'sys_dict_type', 'describe' => '字典类型', 'status' => 0, 'sort' => 5, 'created_at' => $date, 'updated_at' => $date],
         ]);
         // 字典数据初始数据
         DB::table('sys_dict_item')->insert([

@@ -14,7 +14,6 @@ class SysDictModel extends Model
     protected $fillable = [
         'name',
         'code',
-        'render_type',
         'describe',
         'status',
         'sort',
@@ -53,7 +52,6 @@ class SysDictModel extends Model
                     'id' => $dict->id,
                     'name' => $dict->name,
                     'code' => $dict->code,
-                    'render_type' => $dict->render_type,
                     'describe' => $dict->describe,
                     'status' => $dict->status,
                     'sort' => $dict->sort,
@@ -63,7 +61,6 @@ class SysDictModel extends Model
                             'label' => $item->label,
                             'value' => $item->value,
                             'color' => $item->color,
-                            'is_default' => $item->is_default,
                             'sort' => $item->sort,
                         ];
                     })->values()->toArray(),

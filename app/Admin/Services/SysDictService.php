@@ -27,7 +27,6 @@ class SysDictService extends BaseService
                     'max:100',
                     Rule::unique('sys_dict', 'code')->ignore($id)
                 ],
-                'render_type' => 'required|in:text,tag,badge',
                 'describe' => 'nullable|max:500',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
@@ -36,7 +35,6 @@ class SysDictService extends BaseService
             return [
                 'name' => 'required|max:100',
                 'code' => 'required|max:100|unique:sys_dict,code',
-                'render_type' => 'required|in:text,tag,badge',
                 'describe' => 'nullable|max:500',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
@@ -52,8 +50,6 @@ class SysDictService extends BaseService
             'code.required' => '字典编码不能为空',
             'code.max' => '字典编码不能超过100个字符',
             'code.unique' => '字典编码已存在',
-            'render_type.required' => '渲染类型不能为空',
-            'render_type.in' => '渲染类型格式错误',
             'status.required' => '状态不能为空',
             'status.in' => '状态格式错误',
             'sort.integer' => '排序必须为整数',

@@ -17,7 +17,6 @@ return new class extends Migration
                 $table->increments('id');
                 $table->string('name', 100)->comment('字典名称');
                 $table->string('code', 100)->unique()->comment('字典编码');
-                $table->string('render_type', 20)->default('text')->comment('渲染类型：text纯文本,tag标签,badge徽标');
                 $table->string('describe', 500)->nullable()->comment('字典描述');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态：0正常 1停用');
                 $table->unsignedInteger('sort')->default(0)->comment('排序');
