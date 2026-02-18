@@ -38,36 +38,6 @@ class SysDictModel extends Model
     }
 
     /**
-     * 根据字典编码获取字典项
-     * @param string $code
-     * @return array
-     */
-    public static function getItemsByCode(string $code): array
-    {
-        $dict = static::where('code', $code)
-            ->where('status', 0)
-            ->first();
-
-        if (!$dict) {
-            return [];
-        }
-
-        return $dict->dictItems()
-            ->where('status', 0)
-            ->get()
-            ->map(function ($item) use ($dict) {
-                return [
-                    'label' => $item->label,
-                    'value' => $item->value,
-                    'color' => $item->color,
-                    'is_default' => $item->is_default,
-                    'render_type' => $dict->render_type,
-                ];
-            })
-            ->toArray();
-    }
-
-    /**
      * 获取所有字典及其子项
      * @return array
      */

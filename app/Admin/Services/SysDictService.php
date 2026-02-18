@@ -16,12 +16,6 @@ class SysDictService extends BaseService
         'status' => '='
     ];
 
-    /**
-     * 字典缓存键
-     */
-    const CACHE_KEY = 'sys:dict:all';
-    const CACHE_TTL = 86400; // 24小时
-
     protected function rules(): array
     {
         if($this->isUpdate()) {
@@ -77,9 +71,7 @@ class SysDictService extends BaseService
         if ($count > 0) {
             throw new RepositoryException("字典包含子项，请先删除子项！");
         }
-        $result = $model->delete();
-        $this->clearCache();
-        return $result;
+        return $model->delete();
     }
 
     /**
@@ -87,43 +79,6 @@ class SysDictService extends BaseService
      */
     public function getAllDict(): array
     {
-        return Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
-            return SysDictModel::getAllDictWithItems();
-        });
-    }
-
-    /**
-     * 根据字典编码获取字典项（带缓存）
-     */
-    public function getItemsByCode(string $code): array
-    {
-        $cacheKey = "sys:dict:code:{$code}";
-        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($code) {
-            return SysDictModel::getItemsByCode($code);
-        });
-    }
-
-    /**
-     * 刷新字典缓存
-     */
-    public function refreshCache(): bool
-    {
-        $this->clearCache();
-        // 预热缓存
-        $this->getAllDict();
-        return true;
-    }
-
-    /**
-     * 清除字典缓存
-     */
-    public function clearCache(): void
-    {
-        Cache::forget(self::CACHE_KEY);
-        // 清除所有字典编码缓存
-        $dicts = SysDictModel::all('code');
-        foreach ($dicts as $dict) {
-            Cache::forget("sys:dict:code:{$dict->code}");
-        }
+        return SysDictModel::getAllDictWithItems();
     }
 }

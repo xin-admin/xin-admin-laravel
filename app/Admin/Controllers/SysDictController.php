@@ -33,14 +33,4 @@ class SysDictController extends BaseController
         $data = $this->service->getAllDict();
         return $this->success($data);
     }
-
-    /**
-     * 刷新字典缓存
-     */
-    #[PostRoute('/refresh', false)]
-    public function refresh(): JsonResponse
-    {
-        $this->service->refreshCache();
-        return $this->success('字典缓存刷新成功');
-    }
 }
