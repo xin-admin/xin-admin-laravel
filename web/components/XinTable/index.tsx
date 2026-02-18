@@ -15,7 +15,7 @@ import {
   type TableColumnType,
   type TreeProps,
 } from "antd";
-import type {XinTableV2Props, XinTableV2Ref, RequestParams, FormMode} from "./typings";
+import type {XinTableProps, XinTableRef, RequestParams, FormMode} from "./typings";
 import SearchForm from "./SearchForm";
 import XinForm, {type XinFormRef} from "@/components/XinForm";
 import {useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
@@ -40,7 +40,7 @@ const DEFAULT_PAGE_SIZE: number = 10;
 // 默认页数
 const DEFAULT_PAGE: number = 1;
 
-export default function XinTableV2<T extends Record<string, any> = any>(props: XinTableV2Props<T>) {
+export default function XinTable<T extends Record<string, any> = any>(props: XinTableProps<T>) {
   const {
     api,
     accessName,
@@ -93,7 +93,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
   const [formDefaultValues, setFormDefaultValues] = useState<T | undefined>(undefined);
 
   // 暴露表单方法
-  useImperativeHandle(tableRef, (): XinTableV2Ref => ({
+  useImperativeHandle(tableRef, (): XinTableRef => ({
     /** 刷新表格（保持当前页） */
     reload: () => { handleRequest() },
     /** 获取当前数据源 */
@@ -134,7 +134,6 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
 
   /** 处理表格变化 */
   const handleTableChange: TableProps<T>['onChange'] = async (newPagination, newFilters, newSorter) => {
-    console.log(newPagination, newFilters, newSorter)
     const params: RequestParams = {
       ...requestParams,
       page: newPagination.current ?? requestParams.page,
@@ -160,7 +159,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
   /** 快速搜索 */
   const handleKeywordSearch: SearchProps['onSearch'] = async (value: string) => {
     if( !value ) {
-      window.$message?.warning(t('xinTableV2.keywordEmpty'));
+      window.$message?.warning(t('xinTable.keywordEmpty'));
       return;
     }
     const params: RequestParams = {
@@ -177,7 +176,6 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
     if( !e.target.value ) {
       const { keywordSearch, ...params } = requestParams;
       setRequestParams(params);
-      console.log('keywordSearch: ' + keywordSearch);
     } else {
       setRequestParams({
         ...requestParams,
@@ -238,7 +236,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
     if (!operateShow) return [];
     return [
       {
-        title: t('xinTableV2.operate'),
+        title: t('xinTable.operate'),
         key: 'operate',
         align: 'center',
         ...operateProps,
@@ -247,7 +245,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
             {beforeOperateRender?.(record)}
             {(typeof editShow === 'function' ? editShow(record) : editShow) && (
               <AuthButton auth={props.accessName + '.update'} key={'update'}>
-                <Tooltip title={t('xinTableV2.edit')}>
+                <Tooltip title={t('xinTable.edit')}>
                   <Button
                     type="primary"
                     icon={<EditOutlined />}
@@ -259,7 +257,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
             )}
             {(typeof deleteShow === 'function' ? deleteShow(record) : deleteShow) !== false && (
               <AuthButton auth={props.accessName + '.delete'} key={'delete'}>
-                <Tooltip title={t('xinTableV2.delete')}>
+                <Tooltip title={t('xinTable.delete')}>
                   <Button
                     danger
                     type="primary"
@@ -314,12 +312,12 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
   /** 删除记录 */
   const handleDelete = async (record: T) => {
     window.$modal?.confirm({
-      title: t('xinTableV2.deleteConfirm', { id: record[rowKey] }),
-      okText: t('xinTableV2.deleteOk'),
-      cancelText: t('xinTableV2.deleteCancel'),
+      title: t('xinTable.deleteConfirm', { id: record[rowKey] }),
+      okText: t('xinTable.deleteOk'),
+      cancelText: t('xinTable.deleteCancel'),
       onOk: async () => {
         await Delete(api + `/${record[rowKey]}`);
-        window.$message?.success(t('xinTableV2.deleteSuccess'));
+        window.$message?.success(t('xinTable.deleteSuccess'));
         await handleRequest(requestParams);
       }
     })
@@ -340,13 +338,13 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
       }
       if (formMode === 'create') {
         await Create(api, values);
-        window.$message?.success(t('xinTableV2.form.createSuccess'));
+        window.$message?.success(t('xinTable.form.createSuccess'));
       } else {
         if (formDefaultValues && rowKey) {
           await Update(api + `/${formDefaultValues[rowKey]}`, values);
-          window.$message?.success(t('xinTableV2.form.updateSuccess'));
+          window.$message?.success(t('xinTable.form.updateSuccess'));
         } else {
-          window.$message?.error(t('xinTableV2.form.updateKeyUndefined'));
+          window.$message?.error(t('xinTable.form.updateKeyUndefined'));
           return false;
         }
       }
@@ -362,17 +360,17 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
     items: [
       {
         key: 'large',
-        label: t('xinTableV2.density.default'),
+        label: t('xinTable.density.default'),
         onClick: () => setDensity('large'),
       },
       {
         key: 'middle',
-        label: t('xinTableV2.density.middle'),
+        label: t('xinTable.density.middle'),
         onClick: () => setDensity('middle'),
       },
       {
         key: 'small',
-        label: t('xinTableV2.density.compact'),
+        label: t('xinTable.density.compact'),
         onClick: () => setDensity('small'),
       },
     ],
@@ -441,7 +439,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
   const paginationProps: TableProps['pagination'] = {
     showQuickJumper: true,
     showSizeChanger: true,
-    showTotal: (total) => t('xinTableV2.total', { total }),
+    showTotal: (total) => t('xinTable.total', { total }),
     pageSize: requestParams.pageSize,
     ...customPagination,
     current: requestParams.page,
@@ -466,14 +464,14 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
           {/* 操作栏 */}
           <Flex justify={'space-between'}>
             <Flex align={'center'}>
-              {titleRender || <Typography.Title level={5}>{t('xinTableV2.queryTable')}</Typography.Title>}
+              {titleRender || <Typography.Title level={5}>{t('xinTable.queryTable')}</Typography.Title>}
             </Flex>
             <Space>
               {/* 快速搜索 */}
               {keywordSearchShow && (
                 <Input.Search
                   onChange={keywordSearchChange}
-                  placeholder={t('xinTableV2.keywordPlaceholder')}
+                  placeholder={t('xinTable.keywordPlaceholder')}
                   style={{ width: 200 }}
                   value={requestParams.keywordSearch}
                   onSearch={handleKeywordSearch}
@@ -482,12 +480,12 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
               {toolBarRender.length > 0 && toolBarRender.map((item) => item)}
               {addShow && (
                 <AuthButton auth={accessName + '.create'} key={'create'}>
-                  <Button type="primary" onClick={handleCreate}>{t('xinTableV2.add')}</Button>
+                  <Button type="primary" onClick={handleCreate}>{t('xinTable.add')}</Button>
                 </AuthButton>
               )}
               <Space size={1}>
                 {/* 刷新表格 */}
-                <Tooltip title={t('xinTableV2.refresh')}>
+                <Tooltip title={t('xinTable.refresh')}>
                   <Button
                     type="text"
                     size={'small'}
@@ -500,7 +498,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
                   <Button type="text" size={'small'} icon={<ColumnHeightOutlined />} />
                 </Dropdown>
                 {/* 边框设置 */}
-                <Tooltip title={bordered ? t('xinTableV2.hideBorder') : t('xinTableV2.showBorder')}>
+                <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
                   <Button
                     type="text"
                     size={'small'}
@@ -524,9 +522,9 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
                   )}
                   trigger="click"
                   placement="bottomRight"
-                  title={t('xinTableV2.columnSettings')}
+                  title={t('xinTable.columnSettings')}
                 >
-                  <Tooltip title={t('xinTableV2.columnSettings')}>
+                  <Tooltip title={t('xinTable.columnSettings')}>
                     <Button type="text" size={'small'} icon={<SettingOutlined />} />
                   </Tooltip>
                 </Popover>
@@ -555,7 +553,7 @@ export default function XinTableV2<T extends Record<string, any> = any>(props: X
         formRef={formRef}
         layoutType="ModalForm"
         modalProps={{
-          title: formMode === 'update' ? t('xinTableV2.form.editTitle') : t('xinTableV2.form.createTitle'),
+          title: formMode === 'update' ? t('xinTable.form.editTitle') : t('xinTable.form.createTitle'),
           styles: { header: { marginBottom: 16 } },
           ...modalProps,
         }}

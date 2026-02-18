@@ -1,7 +1,7 @@
 import {Avatar, Button, Form, Input, message, Modal, Tag, Tooltip} from 'antd';
 import React, {useEffect, useMemo, useState} from 'react';
-import XinTableV2 from '@/components/XinTableV2';
-import type {XinTableColumn, XinTableV2Props} from "@/components/XinTableV2/typings.ts";
+import XinTable from '@/components/XinTable';
+import type {XinTableColumn, XinTableProps} from "@/components/XinTable/typings.ts";
 import type ISysUser from "@/domain/iSysUser.ts";
 import AuthButton from "@/components/AuthButton";
 import type {DeptFieldType, ResetPasswordType, RoleFieldType} from "@/api/system/sysUserList.ts";
@@ -232,7 +232,7 @@ const Table: React.FC = () => {
   }, []);
 
   /** 操作栏之后渲染 */
-  const beforeOperateRender: XinTableV2Props['beforeOperateRender'] = (record) => (
+  const beforeOperateRender: XinTableProps['beforeOperateRender'] = (record) => (
     <>
       {record.id !== 1 &&
         <AuthButton auth={'system.user.resetPassword'}>
@@ -251,7 +251,7 @@ const Table: React.FC = () => {
   );
 
   /** 表格配置 */
-  const tableProps: XinTableV2Props<ISysUser> = {
+  const tableProps: XinTableProps<ISysUser> = {
     api: '/system/user/list',
     columns,
     rowKey: 'id',
@@ -281,7 +281,7 @@ const Table: React.FC = () => {
 
   return (
     <>
-      <XinTableV2<ISysUser> {...tableProps} />
+      <XinTable<ISysUser> {...tableProps} />
       <Modal
         title={t("sysUserList.resetPassword")}
         closable={{'aria-label': 'Custom Close Button'}}

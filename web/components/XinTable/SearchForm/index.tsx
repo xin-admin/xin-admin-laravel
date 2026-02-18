@@ -83,8 +83,8 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
       </Form.Item>
     );
 
-    return grid ? <Col {...Object.assign(colProps, column.colProps)} key={key}>{formItemContent}</Col> : formItemContent;
-  }, [form, grid, colProps, pick]);
+    return grid ? <Col {...colProps} {...column.colProps} key={key}>{formItemContent}</Col> : formItemContent;
+  }, [form, grid, colProps]);
 
   // 渲染提交按钮
   const renderSubmitter = useMemo(() => {
@@ -96,7 +96,7 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
         onClick={() => form.submit()}
         {...submitter?.submitButtonProps}
       >
-        {submitter?.submitText || t('xinTableV2.search.search')}
+        {submitter?.submitText || t('xinTable.search.search')}
       </Button>
     );
 
@@ -105,7 +105,7 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
         onClick={() => form.resetFields()}
         {...submitter?.resetButtonProps}
       >
-        {submitter?.resetText || t('xinTableV2.search.reset')}
+        {submitter?.resetText || t('xinTable.search.reset')}
       </Button>
     );
 
@@ -113,14 +113,14 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
       if (collapsed) {
         return (
           <Space>
-            { t('xinTableV2.search.collapse') }
+            { t('xinTable.search.collapse') }
             <CaretUpOutlined />
           </Space>
         )
       } else {
         return (
           <Space>
-            { t('xinTableV2.search.expand') }
+            { t('xinTable.search.expand') }
             <CaretDownOutlined />
           </Space>
         )

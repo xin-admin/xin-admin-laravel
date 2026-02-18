@@ -1,8 +1,8 @@
-import XinTableV2 from '@/components/XinTableV2';
+import XinTable from '@/components/XinTable';
 import { Button, Col, Empty, Row, Tag } from 'antd';
 import type { IDict } from '@/domain/iDict';
 import type { IDictItem } from '@/domain/iDictItem';
-import type { XinTableColumn, XinTableV2Ref } from '@/components/XinTableV2/typings';
+import type { XinTableColumn, XinTableRef } from '@/components/XinTable/typings';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import createAxios from '@/utils/request';
@@ -162,7 +162,7 @@ export default () => {
 
   const [selectedRows, setSelectedRows] = useState<IDict>();
   const [refreshLoading, setRefreshLoading] = useState(false);
-  const tableRef = useRef<XinTableV2Ref<IDictItem>>(null!);
+  const tableRef = useRef<XinTableRef<IDictItem>>(null!);
 
   // 刷新字典缓存
   const handleRefreshCache = async () => {
@@ -190,7 +190,7 @@ export default () => {
   return (
     <Row gutter={20}>
       <Col span={14}>
-        <XinTableV2<IDict>
+        <XinTable<IDict>
           api={'/system/dict/list'}
           columns={columns}
           rowKey={'id'}
@@ -222,7 +222,7 @@ export default () => {
       </Col>
       <Col span={10}>
         {selectedRows ? (
-          <XinTableV2<IDictItem>
+          <XinTable<IDictItem>
             api={'/system/dict/item'}
             columns={itemColumns}
             rowKey={'id'}

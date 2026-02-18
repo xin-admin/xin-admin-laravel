@@ -1,7 +1,7 @@
 import { Button, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
-import type { XinTableColumn } from '@/components/XinTableV2/typings';
-import XinTableV2 from '@/components/XinTableV2';
+import type { XinTableColumn } from '@/components/XinTable/typings';
+import XinTable from '@/components/XinTable';
 
 // 模拟用户数据类型
 interface User {
@@ -28,7 +28,7 @@ const mockData: User[] = Array.from({ length: 50 }, (_, i) => ({
 }));
 
 /**
- * XinTableV2 示例页面
+ * XinTable 示例页面
  */
 const XinTableExample = () => {
 
@@ -126,7 +126,7 @@ const XinTableExample = () => {
   ];
 
   return (
-    <XinTableV2
+    <XinTable
       columns={columns}
       rowKey="id"
       dataSource={mockData}

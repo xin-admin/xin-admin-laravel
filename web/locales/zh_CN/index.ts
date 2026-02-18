@@ -14,7 +14,6 @@ import layout from "./layout";
 import login from "./login";
 import xinForm from "./xin-form";
 import xinCrud from "./xin-crud";
-import xinTableV2 from "./xin-table-v2";
 
 export default {
   ...xinTable,
@@ -34,5 +33,4 @@ export default {
   ...login,
   ...xinForm,
   ...xinCrud,
-  ...xinTableV2,
 };

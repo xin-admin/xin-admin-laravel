@@ -27,9 +27,9 @@ export type XinTableColumn<T = any> = Omit<TableColumnType<T>, 'dataIndex'> & {
 } & FormColumn<T>;
 
 /**
- * XinTableV2 实例方法
+ * XinTable 实例方法
  */
-export interface XinTableV2Ref<T = any> {
+export interface XinTableRef<T = any> {
   /** 刷新表格（保持当前页） */
   reload: () => void;
   /** 获取当前数据源 */
@@ -55,9 +55,9 @@ export interface RequestParams extends Record<string, any> {
 }
 
 /**
- * XinTableV2 组件属性
+ * XinTable 组件属性
  */
-export interface XinTableV2Props<T = any> extends Omit<TableProps<T>, 'columns' | 'rowKey' | 'onChange' | 'pagination'> {
+export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 'rowKey' | 'onChange' | 'pagination'> {
   /** API 地址 */
   api: string;
   /** 权限名称前缀 */
@@ -68,7 +68,7 @@ export interface XinTableV2Props<T = any> extends Omit<TableProps<T>, 'columns' 
   columns: XinTableColumn<T>[];
 
   /** 表格实例引用 */
-  tableRef?: RefObject<XinTableV2Ref<T>>;
+  tableRef?: RefObject<XinTableRef<T>>;
 
   /** 新增按钮显示 */
   addShow?: boolean;

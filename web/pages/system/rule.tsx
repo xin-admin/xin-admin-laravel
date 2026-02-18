@@ -2,8 +2,8 @@ import type {ISysRule} from "@/domain/iSysRule.ts";
 import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sysUserRule.ts";
 import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
-import XinTableV2 from "@/components/XinTableV2";
-import type {XinTableColumn, XinTableV2Ref} from "@/components/XinTableV2/typings.ts";
+import XinTable from "@/components/XinTable";
+import type {XinTableColumn, XinTableRef} from "@/components/XinTable/typings.ts";
 import {Button, message, Switch, Tag, Tooltip, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
@@ -26,7 +26,7 @@ const Rule =  () => {
   const {t} = useTranslation();
   const {auth} = useAuth();
   const [parentOptions, setParentOptions] = useState<RuleParent[]>([]);
-  const tableRef = useRef<XinTableV2Ref>(undefined);
+  const tableRef = useRef<XinTableRef>(undefined);
 
   // 加载父级选项
   useEffect(() => {
@@ -254,7 +254,7 @@ const Rule =  () => {
   ];
 
   return (
-    <XinTableV2<ISysRule>
+    <XinTable<ISysRule>
       handleRequest={async () => {
         const { data } = await listRule();
         return {

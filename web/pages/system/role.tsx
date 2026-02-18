@@ -1,5 +1,5 @@
-import XinTableV2 from "@/components/XinTableV2";
-import type {XinTableColumn} from "@/components/XinTableV2/typings.ts";
+import XinTable from "@/components/XinTable";
+import type {XinTableColumn} from "@/components/XinTable/typings.ts";
 import {Button, Card, type CardProps, Col, message, Row, Switch, Table, type TableProps, Tag, Tooltip, Tree, type TreeProps} from "antd";
 import {type RuleFieldsList, rulesList, saveRoleRules, statusRole, users as usersApi} from "@/api/system/sysUserRole.ts";
 import type {ISysRole} from "@/domain/iSysRole.ts";
@@ -303,7 +303,7 @@ const Role = () => {
     <Row gutter={[20, 20]}>
       {/* 角色列表 */}
       <Col xxl={12} lg={12} xs={24}>
-        <XinTableV2<ISysRole>
+        <XinTable<ISysRole>
           api="/system/user/role"
           accessName="system.user.role"
           columns={roleColumns}
