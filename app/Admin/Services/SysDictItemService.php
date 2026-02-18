@@ -31,7 +31,6 @@ class SysDictItemService extends BaseService
                     })->ignore($id)
                 ],
                 'color' => "nullable|string",
-                'is_default' => 'required|in:0,1',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
             ];
@@ -48,7 +47,6 @@ class SysDictItemService extends BaseService
                     })
                 ],
                 'color' => "nullable|string",
-                'is_default' => 'required|in:0,1',
                 'status' => 'required|in:0,1',
                 'sort' => 'nullable|integer|min:0',
             ];

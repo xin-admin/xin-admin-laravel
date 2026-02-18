@@ -16,14 +16,12 @@ class SysDictItemModel extends Model
         'label',
         'value',
         'color',
-        'is_default',
         'status',
         'sort',
     ];
 
     protected $casts = [
         'dict_id' => 'integer',
-        'is_default' => 'integer',
         'status' => 'integer',
         'sort' => 'integer',
         'created_at' => 'datetime',

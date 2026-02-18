@@ -32,7 +32,6 @@ return new class extends Migration
                 $table->string('label', 100)->comment('字典标签');
                 $table->string('value', 100)->comment('字典键值');
                 $table->string('color', 50)->default('default')->comment('颜色');
-                $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认：0否 1是');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态：0正常 1停用');
                 $table->unsignedInteger('sort')->default(0)->comment('排序');
                 $table->timestamps();
