@@ -11,13 +11,3 @@ export function getAllDict() {
         method: 'get',
     });
 }
-
-/**
- * 刷新字典缓存
- */
-export function refreshDictCache() {
-    return createAxios({
-        url: '/system/dict/list/refresh',
-        method: 'post',
-    });
-}

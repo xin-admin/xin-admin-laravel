@@ -5,14 +5,14 @@ import {type IDict, RENDER_TYPES} from '@/domain/iDict';
 import type {XinTableColumn} from '@/components/XinTable/typings';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router';
-import createAxios from '@/utils/request';
 import dayjs from 'dayjs';
-import {refreshDictCache} from "@/api/system/sysDict.ts";
+import useDictStore from '@/stores/dict';
 
 /** 字典类型管理 */
 export default function DictPage() {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const initDict = useDictStore(state => state.initDict);
 
   const columns: XinTableColumn<IDict>[] = [
     {
@@ -104,7 +104,7 @@ export default function DictPage() {
 
   // 刷新字典缓存
   const handleRefreshCache = async () => {
-    await refreshDictCache();
+    await initDict();
     window.$message?.success(t('dict.refreshSuccess'));
   };
 

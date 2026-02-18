@@ -5,8 +5,8 @@ export interface IDict {
     name?: string;
     /** 字典编码 */
     code?: string;
-    /** 渲染类型：text纯文本,tag标签,badge徽标,switch开关 */
-    render_type?: 'text' | 'tag' | 'badge' | 'switch';
+    /** 渲染类型：text纯文本,tag标签,badge徽标 */
+    render_type?: 'text' | 'tag' | 'badge';
     /** 字典描述 */
     describe?: string;
     /** 状态：0正常 1停用 */
@@ -24,5 +24,4 @@ export const RENDER_TYPES = [
     { label: '纯文本', value: 'text' },
     { label: '标签', value: 'tag' },
     { label: '徽标', value: 'badge' },
-    { label: '开关', value: 'switch' },
 ] as const;
