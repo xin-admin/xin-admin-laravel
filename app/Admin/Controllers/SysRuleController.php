@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
 /**
  * 管理员权限控制器
  */
-#[RequestAttribute('/system/user/rule', 'system.rule')]
+#[RequestAttribute('/system/rule', 'system.rule')]
 #[Create, Update, Delete]
-class SysUserRuleController extends BaseController
+class SysRuleController extends BaseController
 {
     public function __construct(
         protected SysUserRuleService $service
@@ -26,7 +26,7 @@ class SysUserRuleController extends BaseController
 
     /** 获取权限列表 */
     #[GetRoute(authorize: 'query')]
-    public function query(Request $request): JsonResponse
+    public function query(): JsonResponse
     {
         return $this->service->getList();
     }

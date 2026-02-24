@@ -4,7 +4,7 @@ import type {ISysRule} from "@/domain/iSysRule.ts";
 /** 获取权限列表 */
 export async function listRule() {
   return createAxios<ISysRule[]>({
-    url: '/system/user/rule',
+    url: '/system/rule',
     method: 'get',
   });
 }
@@ -12,7 +12,7 @@ export async function listRule() {
 /** 设置显示状态 */
 export async function ruleParent() {
   return createAxios<ISysRule[]>({
-    url: '/system/user/rule/parent',
+    url: '/system/rule/parent',
     method: 'get',
   });
 }
@@ -20,7 +20,7 @@ export async function ruleParent() {
 /** 设置显示状态 */
 export async function showRule(id: number) {
   return createAxios({
-    url: '/system/user/rule/show/' + id,
+    url: '/system/rule/show/' + id,
     method: 'put',
   });
 }
@@ -28,7 +28,7 @@ export async function showRule(id: number) {
 /** 设置启用状态 */
 export async function statusRule(id: number) {
   return createAxios({
-    url: '/system/user/rule/status/' + id,
+    url: '/system/rule/status/' + id,
     method: 'put',
   });
 }

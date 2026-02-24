@@ -1,10 +1,10 @@
 import type {ISysRule} from "@/domain/iSysRule.ts";
-import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sysUserRule.ts";
+import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sys_rule.ts";
 import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
 import XinTable from "@/components/XinTable";
 import type {XinTableColumn, XinTableRef} from "@/components/XinTable/typings.ts";
-import {Button, message, Switch, Tag, Tooltip, Typography} from "antd";
+import {Button, message, Switch, Tag, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
 import useAuth from "@/hooks/useAuth.ts";
@@ -13,8 +13,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useDictStore from "@/stores/dict";
 import DictTag from "@/components/DictTag";
-
-const { Title } = Typography;
 
 dayjs.extend(relativeTime);
 
@@ -28,7 +26,7 @@ const Rule =  () => {
   const {t} = useTranslation();
   const {auth} = useAuth();
   const [parentOptions, setParentOptions] = useState<RuleParent[]>([]);
-  const tableRef = useRef<XinTableRef>(undefined);
+  const tableRef = useRef<XinTableRef>(null);
   const getOptions = useDictStore(state => state.getOptions);
 
   // 加载父级选项
@@ -125,14 +123,12 @@ const Rule =  () => {
     /** ------------------ 表格使用的 Column ---------------- */
     {
       title: t("sysUserRule.name"),
-      width: 220,
       ellipsis: true,
       hideInForm: true,
       hideInSearch: true,
       dataIndex: 'name',
     },
     {
-      width: 220,
       ellipsis: true,
       align: 'center',
       title: t("sysUserRule.local.show"),
@@ -145,7 +141,6 @@ const Rule =  () => {
       title: t("sysUserRule.icon"),
       dataIndex: 'icon',
       align: 'center',
-      width: 120,
       hideInForm: true,
       hideInSearch: true,
       render: (data: string) => data ? <IconFont name={data} /> : '-'
@@ -154,13 +149,11 @@ const Rule =  () => {
       title: t("sysUserRule.type"),
       dataIndex: 'type',
       align: 'center',
-      width: 120,
       hideInForm: true,
       hideInSearch: true,
       render: (value: string) => <DictTag value={value} renderType={'tag'} code={'sys_rule_type'}/>
     },
     {
-      width: 120,
       title: t("sysUserRule.order"),
       align: 'center',
       dataIndex: 'order',
@@ -174,7 +167,6 @@ const Rule =  () => {
       dataIndex: 'key',
       hideInForm: true,
       hideInSearch: true,
-      width: 220,
       render: (value: string) => <Tag variant="filled" color={'geekblue'}>{value}</Tag>,
     },
     {
@@ -253,12 +245,10 @@ const Rule =  () => {
       }}
       tableRef={tableRef}
       searchShow={false}
-      titleRender={<Title level={5}>{t("sysUserRule.title")}</Title>}
+      titleRender={t("sysUserRule.title")}
       searchProps={false}
       paginationShow={false}
-      scroll={{x: 1800}}
-      bordered={true}
-      size={'small'}
+      scroll={{x: 1200}}
       beforeOperateRender={(data) => (
         <AuthButton auth={"system.rule.create"}>
           <Tooltip title={t("sysUserRule.addChildButton")}>
@@ -277,16 +267,13 @@ const Rule =  () => {
           </Tooltip>
         </AuthButton>
       )}
-      operateProps={{
-        fixed: 'right',
-      }}
       formProps={{
         grid: true,
         rowProps: {gutter: [20, 0]},
         colProps: {span: 6}
       }}
       columns={columns}
-      api={'/system/user/rule'}
+      api={'/system/rule'}
       rowKey={"id"}
       accessName={"system.rule"}
     />
