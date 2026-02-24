@@ -401,10 +401,10 @@ class SysUserSeeder extends Seeder
                             ['type' => 'rule', 'name' => '查询角色列表', 'key' => 'system.role.query'],
                             ['type' => 'rule', 'name' => '更新角色信息', 'key' => 'system.role.update'],
                             ['type' => 'rule', 'name' => '删除角色', 'key' => 'system.role.delete'],
-                            ['type' => 'rule', 'name' => '设置角色权限', 'key' => 'system.role.rule'],
-                            ['type' => 'rule', 'name' => '获取权限选项', 'key' => 'system.role.rule.list'],
-                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'system.role.rule.status'],
-                            ['type' => 'rule', 'name' => '获取角色用户', 'key' => 'system.role.rule.users'],
+                            ['type' => 'rule', 'name' => '设置启用状态', 'key' => 'system.role.status'],
+                            ['type' => 'rule', 'name' => '获取角色用户', 'key' => 'system.role.users'],
+                            ['type' => 'rule', 'name' => '设置角色权限', 'key' => 'system.role.setRule'],
+                            ['type' => 'rule', 'name' => '获取权限选项', 'key' => 'system.role.ruleList'],
                         ]
                     ],
                     [

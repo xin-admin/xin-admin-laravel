@@ -19,13 +19,14 @@ use Illuminate\Http\Request;
 /**
  * 角色管理控制器
  */
-#[RequestAttribute('/system/user/role', 'system.role')]
+#[RequestAttribute('/system/role', 'system.role')]
 #[Query, Create, Update, Delete]
-class SysUserRoleController extends BaseController
+class SysRoleController extends BaseController
 {
 
     public function __construct(
-        protected SysUserRoleService $service
+        protected SysUserRoleService $service,
+        protected SysUserRuleService  $ruleService,
     ) {}
 
     /** 获取角色用户列表 */
@@ -36,24 +37,24 @@ class SysUserRoleController extends BaseController
     }
 
     /** 设置启用状态 */
-    #[PutRoute('/status/{id}', authorize: 'status')]
+    #[PutRoute('/status/{id}', 'status')]
     public function status(int $id): JsonResponse
     {
         return $this->service->setStatus($id);
     }
 
+    /** 获取权限选项 */
+    #[GetRoute('/ruleList', 'ruleList')]
+    public function ruleList(): JsonResponse
+    {
+        return $this->ruleService->getRuleFields();
+    }
+
     /** 设置角色权限 */
-    #[PostRoute('/rule', 'rule')]
-    public function setRoleRule(Request $request): JsonResponse
+    #[PostRoute('/setRule', 'setRule')]
+    public function setRule(Request $request): JsonResponse
     {
         $this->service->setRule($request);
         return $this->success();
-    }
-
-    /** 获取权限选项 */
-    #[GetRoute('/rule/list', 'rule.list')]
-    public function ruleList(SysUserRuleService $service): JsonResponse
-    {
-        return $service->getRuleFields();
     }
 }

@@ -1,7 +1,7 @@
 import XinTable from "@/components/XinTable";
 import type {XinTableColumn} from "@/components/XinTable/typings.ts";
 import {Button, Card, type CardProps, Col, message, Row, Switch, Table, type TableProps, Tag, Tooltip, Tree, type TreeProps} from "antd";
-import {type RuleFieldsList, rulesList, saveRoleRules, statusRole, users as usersApi} from "@/api/system/sysUserRole.ts";
+import {type RuleFieldsList, rulesList, setRule, statusRole, users as usersApi} from "@/api/system/sys_role";
 import type {ISysRole} from "@/domain/iSysRole.ts";
 import React, {useEffect, useRef, useState} from "react";
 import type ISysUser from "@/domain/iSysUser.ts";
@@ -44,12 +44,19 @@ const Role = () => {
   // 角色表格列配置
   const roleColumns: XinTableColumn<ISysRole>[] = [
     {
+      title: 'id',
+      dataIndex: "id",
+      valueType: "text",
+      align: 'center',
+      width: 80,
+      hideInForm: true
+    },
+    {
       title: t('sysUserRole.table.roleName'),
       dataIndex: "name",
       valueType: "text",
       align: "center",
       required: true,
-      width: 120,
       rules: [{ required: true, message: t('sysUserRole.table.roleName.required') }],
       render: (value: any, record: ISysRole) => (
         <>
@@ -65,7 +72,6 @@ const Role = () => {
       valueType: "digit",
       hideInSearch: true,
       align: "center",
-      width: 80,
       required: true,
       rules: [{ required: true, message: t('sysUserRole.table.sort.required') }],
       render: (value: number) => <Tag variant="filled" color="purple">{value}</Tag>,
@@ -74,7 +80,6 @@ const Role = () => {
       title: t('sysUserRole.table.userCount'),
       dataIndex: "countUser",
       valueType: "text",
-      width: 80,
       hideInForm: true,
       align: "center",
       render: (value: number) => <a><u>{value}{t('sysUserRole.userTable.person')}</u></a>,
@@ -292,7 +297,7 @@ const Role = () => {
     setIsSavingRules(true);
     try {
       const ruleIds = checkedRuleKeys.map(key => Number(key));
-      await saveRoleRules(selectedRoleId, ruleIds);
+      await setRule(selectedRoleId, ruleIds);
       message.success(t('sysUserRole.message.rulesSaveSuccess'));
     } finally {
       setIsSavingRules(false);
@@ -302,9 +307,9 @@ const Role = () => {
   return (
     <Row gutter={[20, 20]}>
       {/* 角色列表 */}
-      <Col xxl={12} lg={12} xs={24}>
+      <Col xxl={14} lg={12} xs={24}>
         <XinTable<ISysRole>
-          api="/system/user/role"
+          api="/system/role"
           accessName="system.role"
           columns={roleColumns}
           rowKey="id"
@@ -334,7 +339,7 @@ const Role = () => {
       </Col>
 
       {/* 用户列表和权限管理 */}
-      <Col xxl={12} lg={12} xs={24}>
+      <Col xxl={10} lg={12} xs={24}>
         <Card
           tabList={tabList}
           onTabChange={setActiveTab}
