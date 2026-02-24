@@ -4,17 +4,17 @@ import React from "react";
 import type ISysUser from "@/domain/iSysUser.ts";
 
 /** 获取部门列表 */
-export async function listDept() {
+export async function queryDept() {
   return createAxios<ISysDept[]>({
-    url: '/system/user/dept',
+    url: '/system/dept',
     method: 'get',
   });
 }
 
 /** 新增部门 */
-export async function addDept(data: ISysDept) {
+export async function createDept(data: ISysDept) {
   return createAxios<ISysDept[]>({
-    url: '/system/user/dept',
+    url: '/system/dept',
     method: 'post',
     data: data
   });
@@ -23,7 +23,7 @@ export async function addDept(data: ISysDept) {
 /** 编辑部门信息 */
 export async function updateDept(id: number, data: ISysDept) {
   return createAxios<ISysDept[]>({
-    url: '/system/user/dept/' + id,
+    url: '/system/dept/' + id,
     method: 'put',
     data: data,
   });
@@ -32,7 +32,7 @@ export async function updateDept(id: number, data: ISysDept) {
 /** 批量删除部门 */
 export async function deleteDept(ids: React.Key[]) {
   return createAxios({
-    url: '/system/user/dept',
+    url: '/system/dept',
     method: 'delete',
     data: { ids },
   });
@@ -44,7 +44,7 @@ export async function deptUsers(id: number, params: {
   pageSize: number;
 } = { page: 1, pageSize: 10 }) {
   return createAxios<API.ListResponse<ISysUser>>({
-    url: '/system/user/dept/users/' + id,
+    url: '/system/dept/users/' + id,
     method: 'get',
     params: params
   });

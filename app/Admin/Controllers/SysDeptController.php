@@ -16,35 +16,34 @@ use Illuminate\Http\Request;
 /**
  * 部门管理控制器
  */
-#[RequestAttribute('/system/user/dept', 'system.dept')]
+#[RequestAttribute('/system/dept', 'system.dept')]
 #[Create, Update]
-class SysUserDeptController extends BaseController
+class SysDeptController extends BaseController
 {
 
     public function __construct(
-        protected SysSettingGroupService $service
+        protected SysUserDeptService $service
     ) {}
-
 
     /** 部门列表 */
     #[GetRoute(authorize: 'query')]
-    public function listDept(SysUserDeptService $service): JsonResponse
+    public function query(): JsonResponse
     {
-        return $service->list();
+        return $this->service->list();
     }
 
     /** 删除部门 */
     #[DeleteRoute(authorize: 'delete')]
-    public function deleteDept(Request $request, SysUserDeptService $service): JsonResponse
+    public function delete(Request $request): JsonResponse
     {
-        return $service->batchDelete($request);
+        return $this->service->batchDelete($request);
     }
 
     /** 获取部门用户列表 */
-    #[GetRoute('/users/{id}', authorize: 'users')]
-    public function deptUsers(int $id, SysUserDeptService $service): JsonResponse
+    #[GetRoute('/users/{id}', 'users')]
+    public function users(int $id): JsonResponse
     {
-        return $service->users($id);
+        return $this->service->users($id);
     }
 
 }

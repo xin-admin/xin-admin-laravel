@@ -13,7 +13,7 @@ import {
 } from "antd";
 import {BankOutlined, DeleteOutlined, PlusOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
-import {listDept, addDept, updateDept, deleteDept, deptUsers} from "@/api/system/sysUserDept.ts";
+import {queryDept, createDept, updateDept, deleteDept, deptUsers} from "@/api/system/sys_dept.ts";
 import type {ISysDept} from "@/domain/iSysDept.ts";
 import {isArray, omit} from 'lodash';
 import type {FormColumn} from "@/components/XinFormField/FieldRender/typings.ts";
@@ -97,7 +97,7 @@ const Dept = () => {
       });
     };
     try {
-      const res = await listDept();
+      const res = await queryDept();
       if(res.data.data && res.data.data.length > 0) {
         deptMap.clear();
         setDeptData(convertDeptToTreeData(res.data.data));
@@ -148,7 +148,7 @@ const Dept = () => {
     try {
       setLoading(true);
       if(!update) {
-        await addDept(data);
+        await createDept(data);
         message.success(t("sysUserDept.createSuccess"));
         modalFormRef.current?.close();
       }else {
@@ -356,7 +356,7 @@ const Dept = () => {
                   <Button size="small" type="primary" onClick={()=> setCheckedKeys([])}>
                     {t("sysUserDept.unselect")}
                   </Button>
-                  <AuthButton auth={"system-user.dept.delete"}>
+                  <AuthButton auth={"system.dept.delete"}>
                     <Popconfirm
                       okText={t("sysUserDept.delete.ok")}
                       cancelText={t("sysUserDept.delete.cancel")}
