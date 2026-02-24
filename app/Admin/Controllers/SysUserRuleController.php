@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 /**
  * 管理员权限控制器
  */
-#[RequestAttribute('/system/user/rule', 'system.user.rule')]
+#[RequestAttribute('/system/user/rule', 'system.rule')]
 #[Create, Update, Delete]
 class SysUserRuleController extends BaseController
 {

@@ -43,7 +43,7 @@ class SysFileController extends BaseController
     /**
      * 获取回收站文件列表
      */
-    #[GetRoute('/trashed', 'system.file.list.trashed')]
+    #[GetRoute('/trashed', 'trashed')]
     public function trashed(): JsonResponse
     {
         $list = $this->service->getTrashedList(request()->all());

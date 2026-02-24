@@ -104,7 +104,7 @@ const Dept = () => {
         if(!selectKey || !deptMap.has(selectKey)) {
           setSelectKey(res.data.data[0].id!.toString());
           formRef.current?.setFieldsValue(omit(res.data.data[0], 'children'));
-          if(auth("system-user.dept.users")) {
+          if(auth("system.dept.users")) {
             await selectUsers(res.data.data[0].id!);
           }
         }

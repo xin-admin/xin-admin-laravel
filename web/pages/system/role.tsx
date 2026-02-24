@@ -305,7 +305,7 @@ const Role = () => {
       <Col xxl={12} lg={12} xs={24}>
         <XinTable<ISysRole>
           api="/system/user/role"
-          accessName="system.user.role"
+          accessName="system.role"
           columns={roleColumns}
           rowKey="id"
           searchShow={false}

@@ -189,7 +189,7 @@ const Rule =  () => {
         return (
           <Switch
             defaultValue={data.hidden === 1}
-            disabled={!auth("system-user.rule.show")}
+            disabled={!auth("system.rule.show")}
             checkedChildren={t("sysUserRule.hidden.1")}
             unCheckedChildren={t("sysUserRule.hidden.0")}
             onChange={ async (_, event) => {
@@ -212,7 +212,7 @@ const Rule =  () => {
         return (
           <Switch
             defaultChecked={data.status === 1}
-            disabled={!auth("system-user.rule.status")}
+            disabled={!auth("system.rule.status")}
             checkedChildren={t("sysUserRule.status.1")}
             unCheckedChildren={t("sysUserRule.status.0")}
             onChange={async (_, event) => {
@@ -260,7 +260,7 @@ const Rule =  () => {
       bordered={true}
       size={'small'}
       beforeOperateRender={(data) => (
-        <AuthButton auth={"system-user.rule.create"}>
+        <AuthButton auth={"system.rule.create"}>
           <Tooltip title={t("sysUserRule.addChildButton")}>
             <Button
               color={'green'}
@@ -288,7 +288,7 @@ const Rule =  () => {
       columns={columns}
       api={'/system/user/rule'}
       rowKey={"id"}
-      accessName={"system-user.rule"}
+      accessName={"system.rule"}
     />
   )
 }
