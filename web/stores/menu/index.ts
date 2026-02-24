@@ -1,6 +1,6 @@
 import {create, type StateCreator} from 'zustand';
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
-import {menu} from "@/api/system/sysUser.ts";
+import {menu} from "@/api/system/sys_user";
 import type {IMenus} from "@/domain/iSysRule.ts";
 import type {MenuStore, MenuStoreState, MenuStoreActions, BreadcrumbItem} from "./types";
 

@@ -51,6 +51,57 @@ export interface PasswordParams {
   rePassword: string;
 }
 
+export interface RoleFieldType {
+  /** 角色ID */
+  role_id: number;
+  /** 角色名称 */
+  name: string;
+}
+
+export interface DeptFieldType {
+  /** 部门ID */
+  dept_id: number;
+  /** 部门名称 */
+  name: string;
+  /** 下级部门 */
+  children: DeptFieldType[];
+}
+
+export interface ResetPasswordType {
+  /** 用户ID */
+  id: number;
+  /** 密码 */
+  password: string;
+  /** 验证密码 */
+  rePassword: string;
+}
+
+/** 获取管理员角色选项栏数据 */
+export async function roleField() {
+  return createAxios<RoleFieldType[]>({
+    url: '/system/user/role',
+    method: 'get',
+  });
+}
+
+/** 获取管理员角色选项栏数据 */
+export async function deptField() {
+  return createAxios<DeptFieldType[]>({
+    url: '/system/user/dept',
+    method: 'get',
+  });
+}
+
+/** 获取管理员角色选项栏数据 */
+export async function resetPassword(data: ResetPasswordType) {
+  return createAxios({
+    url: '/system/user/resetPassword',
+    method: 'put',
+    data
+  });
+}
+
+
 /** 后台用户登录 */
 export async function login(data: LoginParams) {
   return createAxios<LoginResponse>({
@@ -87,7 +138,7 @@ export async function menu() {
 /** 更改管理员信息 */
 export async function updateInfo(info: InfoParams) {
   return createAxios({
-    url: '/system/user',
+    url: '/system/user/updateInfo',
     method: 'put',
     data: info,
   })
@@ -105,7 +156,7 @@ export async function updatePassword(data: PasswordParams) {
 /** 修改管理员头像 */
 export async function updateAvatar() {
   return createAxios({
-    url: '/system/user/avatar',
+    url: '/system/user/uploadAvatar',
     method: 'post',
   })
 }
@@ -113,6 +164,6 @@ export async function updateAvatar() {
 /** 获取管理员登录日志 */
 export async function loginRecord() {
   return createAxios<ISysLoginRecord[]>({
-    url: '/system/user/login/record',
+    url: '/system/user/loginRecord',
   })
 }

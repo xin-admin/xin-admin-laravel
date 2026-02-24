@@ -1,4 +1,4 @@
-import type {LoginParams} from "@/api/system/sysUser.ts";
+import type {LoginParams} from "@/api/system/sys_user";
 
 export interface AuthStoreState {
   userinfo: any;

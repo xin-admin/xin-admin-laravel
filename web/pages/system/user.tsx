@@ -4,17 +4,19 @@ import XinTable from '@/components/XinTable';
 import type {XinTableColumn, XinTableProps} from "@/components/XinTable/typings.ts";
 import type ISysUser from "@/domain/iSysUser.ts";
 import AuthButton from "@/components/AuthButton";
-import type {DeptFieldType, ResetPasswordType, RoleFieldType} from "@/api/system/sysUserList.ts";
-import {deptField, resetPassword, roleField} from "@/api/system/sysUserList.ts";
+import type {DeptFieldType, ResetPasswordType, RoleFieldType} from "@/api/system/sys_user";
+import {deptField, resetPassword, roleField} from "@/api/system/sys_user";
 import {RedoOutlined} from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import useAuth from "@/hooks/useAuth.ts";
 
 dayjs.extend(relativeTime);
 
 const Table: React.FC = () => {
   const {t} = useTranslation();
+  const { auth } = useAuth();
   /** 角色选项数据 */
   const [roles, setRoles] = useState<RoleFieldType[]>([]);
   /** 部门选项数据 */
@@ -227,8 +229,12 @@ const Table: React.FC = () => {
   };
 
   useEffect(() => {
-    deptField().then(res => setDepartments(res.data.data!));
-    roleField().then(res => setRoles(res.data.data!));
+    if(auth('system.user.dept')) {
+      deptField().then(res => setDepartments(res.data.data!));
+    }
+    if(auth('system.user.role')) {
+      roleField().then(res => setRoles(res.data.data!));
+    }
   }, []);
 
   /** 操作栏之后渲染 */
@@ -252,7 +258,7 @@ const Table: React.FC = () => {
 
   /** 表格配置 */
   const tableProps: XinTableProps<ISysUser> = {
-    api: '/system/user/list',
+    api: '/system/user',
     columns,
     rowKey: 'id',
     accessName: 'system.user',

@@ -372,9 +372,8 @@ class SysUserSeeder extends Seeder
                             ['type' => 'rule', 'name' => '修改用户', 'key' => 'system.user.update'],
                             ['type' => 'rule', 'name' => '删除用户', 'key' => 'system.user.delete'],
                             ['type' => 'rule', 'name' => '重置用户密码', 'key' => 'system.user.resetPassword'],
-                            ['type' => 'rule', 'name' => '修改用户状态', 'key' => 'system.user.resetStatus'],
-                            ['type' => 'rule', 'name' => '获取角色选项', 'key' => 'system.user.getRole'],
-                            ['type' => 'rule', 'name' => '获取部门选项', 'key' => 'system.user.getDept'],
+                            ['type' => 'rule', 'name' => '获取角色选项', 'key' => 'system.user.role'],
+                            ['type' => 'rule', 'name' => '获取部门选项', 'key' => 'system.user.dept'],
                         ]
                     ],
                     [

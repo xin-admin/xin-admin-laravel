@@ -1,7 +1,7 @@
 import {create, type StateCreator} from 'zustand';
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
-import {info, type InfoResponse, type LoginParams, logout} from "@/api/system/sysUser";
-import {login} from "@/api/system/sysUser";
+import {info, type InfoResponse, type LoginParams, logout} from "@/api/system/sys_user.ts";
+import {login} from "@/api/system/sys_user";
 import type {AuthStore, AuthStoreState, AuthStoreActions} from "./types";
 
 const authState: AuthStoreState = {

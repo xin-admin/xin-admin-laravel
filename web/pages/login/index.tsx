@@ -14,7 +14,7 @@ import React from 'react';
 import useGlobalStore from '@/stores/global';
 import useAuthStore from '@/stores/user';
 import {useNavigate} from "react-router";
-import type { LoginParams } from '@/api/system/sysUser';
+import type { LoginParams } from '@/api/system/sys_user';
 import { useTranslation } from 'react-i18next';
 import { darkColorTheme, defaultColorTheme } from '@/layout/theme';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
