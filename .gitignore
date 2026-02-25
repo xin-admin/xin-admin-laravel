@@ -7,6 +7,7 @@
 /node_modules
 /public/storage
 /storage/*.key
+/.claude
 
 hot
 .env
@@ -14,3 +15,4 @@ hot
 *.local
 composer.lock
 pnpm-lock.yaml
+CLAUDE.md
