@@ -15,7 +15,7 @@ import {
   type TableColumnType,
   type TreeProps,
 } from "antd";
-import type {XinTableProps, XinTableRef, RequestParams, FormMode} from "./typings";
+import type {XinTableProps, XinTableInstance, RequestParams, FormMode} from "./typings";
 import SearchForm from "./SearchForm";
 import XinForm, {type XinFormRef} from "@/components/XinForm";
 import {useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
@@ -74,52 +74,42 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
 
   const {t} = useTranslation();
   const formRef = useRef<XinFormRef<T>>(undefined);
+
+  // 内部状态
   const [loading, setLoading] = useState<boolean>(true);
-  const [searchRef] = Form.useForm<T>();
   const [dataSource, setDataSource] = useState<T[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [requestParams, setRequestParams] = useState<RequestParams>({
     page: DEFAULT_PAGE,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-  // 操作栏状态
   const [density, setDensity] = useState<TableProps['size']>();
   const [bordered, setBordered] = useState<boolean>();
+
+  const [searchRef] = Form.useForm<T>();
   const [columnsChecked, setColumnsChecked] = useState<any[]>([]);
   const [columnSorted, setColumnSorted] = useState<any[]>([]);
-  
+
   // 表单模式状态
   const [formMode, setFormMode] = useState<FormMode>('create');
   const [formDefaultValues, setFormDefaultValues] = useState<T | undefined>(undefined);
 
-  // 暴露表单方法
-  useImperativeHandle(tableRef, (): XinTableRef => ({
-    /** 刷新表格（保持当前页） */
-    reload: () => { handleRequest() },
-    /** 获取当前数据源 */
-    getDataSource: () => dataSource,
-    /** 表单 ref */
-    form: () => formRef.current!,
-    /** 搜索表单 ref */
-    searchForm: () => searchRef,
-  }));
-
   /** 表格请求 */
-  const handleRequest = async (params?: RequestParams) => {
+  const handleRequest = useCallback(async (params?: RequestParams) => {
     try {
       setLoading(true);
       const defaultParams: RequestParams = Object.assign({
         page: DEFAULT_PAGE,
         pageSize: DEFAULT_PAGE_SIZE,
-      }, params)
+      }, params);
       // 自定义参数处理
-      const requestParams: RequestParams = customRequestParams ? customRequestParams(defaultParams) : defaultParams;
+      const finalParams: RequestParams = customRequestParams ? customRequestParams(defaultParams) : defaultParams;
       // 自定义请求
       let listData: { data: T[]; total: number };
       if (customHandleRequest) {
-        listData = await customHandleRequest(requestParams);
+        listData = await customHandleRequest(finalParams);
       } else {
-        const { data } = await List<T>(api, requestParams);
+        const { data } = await List<T>(api, finalParams);
         listData = data.data!;
       }
       setDataSource(listData.data);
@@ -127,10 +117,50 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     } finally {
       setLoading(false);
     }
-  };
+  }, [api, customHandleRequest, customRequestParams]);
+
+  /** 新增按钮点击 */
+  const handleCreate = useCallback(() => {
+    setFormMode('create');
+    setFormDefaultValues(undefined);
+    formRef.current?.resetFields();
+    formRef.current?.open();
+  }, []);
+
+  /** 修改按钮点击 */
+  const handleUpdate = useCallback((record: T) => {
+    setFormMode('update');
+    setFormDefaultValues(record);
+    formRef.current?.setFieldsValue(record);
+    formRef.current?.open();
+  }, []);
+
+  // 暴露方法到 tableRef
+  useImperativeHandle(tableRef, (): XinTableInstance<T> => ({
+    reload: async () => { await handleRequest(); },
+    reset: async () => {
+      searchRef.resetFields();
+      setRequestParams({ page: 1, pageSize: 10 });
+      await handleRequest({ page: 1, pageSize: 10 });
+    },
+    getDataSource: () => dataSource,
+    setDataSource,
+    getTotal: () => total,
+    getLoading: () => loading,
+    setLoading,
+    setPageInfo: (page?, pageSize?) => {
+      setRequestParams(prev => ({
+        ...prev,
+        ...(page !== undefined && { page }),
+        ...(pageSize !== undefined && { pageSize }),
+      }));
+    },
+    getForm: () => formRef.current,
+    getSearchForm: () => searchRef,
+  }));
 
   /** 初始化 */
-  useEffect(() => { handleRequest() }, []);
+  useEffect(() => { void handleRequest(); }, []);
 
   /** 处理表格变化 */
   const handleTableChange: TableProps<T>['onChange'] = async (newPagination, newFilters, newSorter) => {
@@ -174,7 +204,8 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   /** 快速搜索 Change */
   const keywordSearchChange: SearchProps['onChange'] = (e) => {
     if( !e.target.value ) {
-      const { keywordSearch, ...params } = requestParams;
+      const params = { ...requestParams };
+      delete params.keywordSearch;
       setRequestParams(params);
     } else {
       setRequestParams({
@@ -273,41 +304,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
         ),
       },
     ];
-  }, [columns, operateShow, editShow, deleteShow, t]);
-
-  /** 最终表格列，计算排序以及显示状态 */
-  const tableColumns: TableColumnType<T>[] = useMemo(() => {
-    // 过滤出选中的列
-    const filteredColumns = defaultTableColumns.filter(column => 
-      columnsChecked.includes(column.dataIndex as any)
-    );
-    // 根据 columnSorted 的顺序排序
-    const sortedColumns = filteredColumns.sort((a, b) => {
-      const indexA = columnSorted.indexOf(a.dataIndex as any);
-      const indexB = columnSorted.indexOf(b.dataIndex as any);
-      // 如果不在排序列表中，放到最后
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
-    return [...sortedColumns, ...operate];
-  }, [defaultTableColumns, columnsChecked, columnSorted, operate]);
-
-  /** 新增按钮点击 */
-  const handleCreate = () => {
-    setFormMode('create');
-    setFormDefaultValues(undefined);
-    formRef.current?.resetFields();
-    formRef.current?.open();
-  }
-
-  /** 修改按钮点击 */
-  const handleUpdate = (record: T) => {
-    setFormMode('update');
-    setFormDefaultValues(record);
-    formRef.current?.setFieldsValue(record);
-    formRef.current?.open();
-  }
+  }, [columns, operateShow, editShow, deleteShow, t, beforeOperateRender, afterOperateRender, props.accessName, handleUpdate]);
 
   /** 删除记录 */
   const handleDelete = async (record: T) => {
@@ -345,7 +342,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
           window.$message?.success(t('xinTable.form.updateSuccess'));
         } else {
           window.$message?.error(t('xinTable.form.updateKeyUndefined'));
-          return false;
+          return;
         }
       }
       await handleRequest(requestParams);
@@ -430,10 +427,28 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
 
   /** 列设置选中改变 */
   const columnSettingCheck: TreeProps['onCheck'] = (keys) => {
-    if(isArray( keys)) {
+    if(isArray(keys)) {
       setColumnsChecked(keys);
     }
   }
+
+  /** 最终表格列，计算排序以及显示状态 */
+  const tableColumns: TableColumnType<T>[] = useMemo(() => {
+    // 过滤出选中的列
+    const filteredColumns = defaultTableColumns.filter(column =>
+      columnsChecked.includes(column.dataIndex as any)
+    );
+    // 根据 columnSorted 的顺序排序
+    const sortedColumns = filteredColumns.sort((a, b) => {
+      const indexA = columnSorted.indexOf(a.dataIndex as any);
+      const indexB = columnSorted.indexOf(b.dataIndex as any);
+      // 如果不在排序列表中，放到最后
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+    return [...sortedColumns, ...operate];
+  }, [defaultTableColumns, columnsChecked, columnSorted, operate]);
 
   /** 分页配置 */
   const paginationProps: TableProps['pagination'] = {

@@ -3,7 +3,7 @@ import {listRule, ruleParent, showRule, statusRule} from "@/api/system/sys_rule.
 import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
 import XinTable from "@/components/XinTable";
-import type {XinTableColumn, XinTableRef} from "@/components/XinTable/typings.ts";
+import type {XinTableColumn, XinTableInstance} from "@/components/XinTable/typings.ts";
 import {Button, message, Switch, Tag, Tooltip} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
@@ -26,7 +26,7 @@ const Rule =  () => {
   const {t} = useTranslation();
   const {auth} = useAuth();
   const [parentOptions, setParentOptions] = useState<RuleParent[]>([]);
-  const tableRef = useRef<XinTableRef>(null);
+  const tableRef = useRef<XinTableInstance<ISysRule>>(null);
   const getOptions = useDictStore(state => state.getOptions);
 
   // 加载父级选项
@@ -258,10 +258,10 @@ const Rule =  () => {
               icon={<PlusOutlined />}
               size={'small'}
               onClick={() => {
-                tableRef.current?.form?.()?.setFieldsValue({
-                  parent_id: data.id || 0,
+                tableRef.current?.getForm()?.setFieldsValue({
+                  pid: data.id || 0,
                 })
-                tableRef.current?.form?.()?.open();
+                tableRef.current?.getForm()?.open();
               }}
             />
           </Tooltip>

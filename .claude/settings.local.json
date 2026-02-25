@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(npm run lint 2>&1)"
     ]
   }
 }

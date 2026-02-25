@@ -2,9 +2,10 @@ import type {
   TableProps,
   TableColumnType,
   CardProps,
-  FormInstance, PaginationProps,
+  FormInstance,
+  PaginationProps,
 } from 'antd';
-import {type ReactNode, type RefObject} from 'react';
+import type {ReactNode, RefObject, Dispatch, SetStateAction} from 'react';
 import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
 import type { SearchFormProps } from './SearchForm';
 import type {XinFormProps, XinFormRef} from '@/components/XinForm/typings';
@@ -27,17 +28,29 @@ export type XinTableColumn<T = any> = Omit<TableColumnType<T>, 'dataIndex'> & {
 } & FormColumn<T>;
 
 /**
- * XinTable 实例方法
+ * XinTable 实例
  */
-export interface XinTableRef<T = any> {
+export interface XinTableInstance<T = any> {
   /** 刷新表格（保持当前页） */
-  reload: () => void;
+  reload: (resetPage?: boolean) => Promise<void>;
+  /** 重置表格到第一页并刷新 */
+  reset: () => Promise<void>;
   /** 获取当前数据源 */
   getDataSource: () => T[];
+  /** 设置数据源 */
+  setDataSource: Dispatch<SetStateAction<T[]>>;
+  /** 获取数据总数 */
+  getTotal: () => number;
+  /** 获取加载状态 */
+  getLoading: () => boolean;
+  /** 设置加载状态 */
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  /** 设置分页参数 */
+  setPageInfo: (page?: number, pageSize?: number) => void;
   /** 获取表单实例 */
-  form?: () => XinFormRef<T> | null;
+  getForm: () => XinFormRef<T> | null | undefined;
   /** 获取搜索表单实例 */
-  searchForm?: () => FormInstance<T> | undefined;
+  getSearchForm: () => FormInstance<T> | undefined;
 }
 
 export interface SorterParams {
@@ -67,8 +80,8 @@ export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 
   /** 列配置 */
   columns: XinTableColumn<T>[];
 
-  /** 表格实例引用 */
-  tableRef?: RefObject<XinTableRef<T>>;
+  /** 表格 ref */
+  tableRef?: RefObject<XinTableInstance<T> | null>;
 
   /** 新增按钮显示 */
   addShow?: boolean;
