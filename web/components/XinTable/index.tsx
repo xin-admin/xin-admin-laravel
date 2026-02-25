@@ -49,7 +49,9 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
 
     formProps,
     modalProps,
-    cardProps,
+    cardProps = {
+      variant: 'borderless'
+    },
     searchProps,
     operateProps,
 

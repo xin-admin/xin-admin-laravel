@@ -94,4 +94,6 @@ export default {
   "sysFile.ungrouped": "未分组",
   "sysFile.accessUrl": "访问链接",
   "sysFile.storageMethod": "存储方式",
+  "sysFile.page.title": "文件管理",
+  "sysFile.page.description": "管理系统文件，支持文件的上传、下载、删除、重命名等操作",
 }

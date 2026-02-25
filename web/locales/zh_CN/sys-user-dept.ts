@@ -1,4 +1,6 @@
 export default {
+  "sysUserDept.page.title": "部门管理",
+  "sysUserDept.page.description": "管理系统部门，配置部门层级，管理部门用户",
   "sysUserDept.tab.info": "基本信息",
   "sysUserDept.tab.users": "用户列表",
   "sysUserDept.unnamed": "未命名部门",

@@ -1,6 +1,6 @@
 import XinTable from "@/components/XinTable";
 import type {XinTableColumn} from "@/components/XinTable/typings.ts";
-import {Button, Card, type CardProps, Col, message, Row, Switch, Table, type TableProps, Tag, Tooltip, Tree, type TreeProps} from "antd";
+import {Button, Card, type CardProps, Col, message, Row, Switch, Table, type TableProps, Tag, Tooltip, Tree, type TreeProps, Typography} from "antd";
 import {type RuleFieldsList, rulesList, setRule, statusRole, users as usersApi} from "@/api/system/sys_role";
 import type {ISysRole} from "@/domain/iSysRole.ts";
 import React, {useEffect, useRef, useState} from "react";
@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
+
+const { Title, Text } = Typography;
 
 const Role = () => {
   const {t} = useTranslation();
@@ -305,108 +307,113 @@ const Role = () => {
   }
 
   return (
-    <Row gutter={[20, 20]}>
-      {/* 角色列表 */}
-      <Col xxl={14} lg={12} xs={24}>
-        <XinTable<ISysRole>
-          api="/system/role"
-          accessName="system.role"
-          columns={roleColumns}
-          rowKey="id"
-          searchShow={false}
-          titleRender={<span>{t('sysUserRole.table.headerTitle')}</span>}
-          searchProps={false}
-          scroll={{x: 800}}
-          editShow={(row) => row.id !== 1}
-          deleteShow={(row) => row.id !== 1}
-          formProps={{
-            grid: true,
-            rowProps: { gutter: [20, 0] },
-            colProps: { span: 12 },
-          }}
-          operateProps={{
-            fixed: 'right'
-          }}
-          rowSelection={{
-            type: 'radio',
-            selectedRowKeys: selectedRoleId ? [selectedRoleId] : [],
-            onChange: (_, rows) => handleRoleSelect(rows[0])
-          }}
-          onRow ={(record) => ({
-            onClick: () => handleRoleSelect(record)
-          })}
-        />
-      </Col>
+    <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t('sysUserRole.page.title')}</Title>
+        <Text type="secondary">{t('sysUserRole.page.description')}</Text>
+      </div>
+      <Row gutter={[20, 20]}>
+        {/* 角色列表 */}
+        <Col xxl={14} lg={12} xs={24}>
+          <XinTable<ISysRole>
+            api="/system/role"
+            accessName="system.role"
+            columns={roleColumns}
+            rowKey="id"
+            searchShow={false}
+            searchProps={false}
+            scroll={{x: 800}}
+            editShow={(row) => row.id !== 1}
+            deleteShow={(row) => row.id !== 1}
+            formProps={{
+              grid: true,
+              rowProps: { gutter: [20, 0] },
+              colProps: { span: 12 },
+            }}
+            operateProps={{
+              fixed: 'right'
+            }}
+            rowSelection={{
+              type: 'radio',
+              selectedRowKeys: selectedRoleId ? [selectedRoleId] : [],
+              onChange: (_, rows) => handleRoleSelect(rows[0])
+            }}
+            onRow ={(record) => ({
+              onClick: () => handleRoleSelect(record)
+            })}
+          />
+        </Col>
 
-      {/* 用户列表和权限管理 */}
-      <Col xxl={10} lg={12} xs={24}>
-        <Card
-          tabList={tabList}
-          onTabChange={setActiveTab}
-          activeTabKey={activeTab}
-          styles={{ body: { minHeight: '70vh' } }}
-        >
-          { selectedRoleId ? (
-            activeTab === 'users' ? (
-              <Table<ISysUser>
-                loading={isLoadingUsers}
-                dataSource={roleUsers}
-                bordered={true}
-                columns={userColumns}
-                size="small"
-                pagination={{
-                  total: roleUsersTotal,
-                  showSizeChanger: true,
-                  onChange: fetchRoleUsers
-                }}
-                scroll={{x: 600}}
-              />
+        {/* 用户列表和权限管理 */}
+        <Col xxl={10} lg={12} xs={24}>
+          <Card
+            tabList={tabList}
+            onTabChange={setActiveTab}
+            activeTabKey={activeTab}
+            styles={{ body: { minHeight: '70vh' } }}
+          >
+            { selectedRoleId ? (
+              activeTab === 'users' ? (
+                <Table<ISysUser>
+                  loading={isLoadingUsers}
+                  dataSource={roleUsers}
+                  bordered={true}
+                  columns={userColumns}
+                  size="small"
+                  pagination={{
+                    total: roleUsersTotal,
+                    showSizeChanger: true,
+                    onChange: fetchRoleUsers
+                  }}
+                  scroll={{x: 600}}
+                />
+              ) : (
+                <>
+                  <div style={{ height: '600px', overflow: 'auto', marginBottom: 12 }}>
+                    <Tree
+                      ref={treeRef}
+                      checkable
+                      treeData={ruleFields}
+                      checkedKeys={checkedRuleKeys}
+                      onCheck={handleRuleCheck}
+                      titleRender={renderRuleTreeNode}
+                      checkStrictly={true}
+                      expandedKeys={expandedKeys}
+                      onExpand={handleTreeExpand}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <span style={{ color: '#666', fontSize: 12 }}>
+                      {t('sysUserRole.permission.selectedCount', { count: checkedRuleKeys.length })}
+                    </span>
+                    <Button size="small" onClick={expandAll}>{t('sysUserRole.button.expandAll')}</Button>
+                    <Button size="small" onClick={collapseAll}>{t('sysUserRole.button.collapseAll')}</Button>
+                    <Button size="small" onClick={selectAll}>{t('sysUserRole.button.selectAll')}</Button>
+                    <Button size="small" onClick={deselectAll}>{t('sysUserRole.button.clearAll')}</Button>
+                    <Button size="small" onClick={invertSelection}>{t('sysUserRole.button.invertSelection')}</Button>
+                    <Button
+                      type="primary"
+                      icon={<SaveOutlined />}
+                      loading={isSavingRules}
+                      onClick={handleSaveRules}
+                      size="small"
+                      disabled={selectedRoleId === 1}
+                    >
+                      {t('sysUserRole.button.saveRules')}
+                    </Button>
+                  </div>
+                </>
+              )
             ) : (
-              <>
-                <div style={{ height: '600px', overflow: 'auto', marginBottom: 12 }}>
-                  <Tree
-                    ref={treeRef}
-                    checkable
-                    treeData={ruleFields}
-                    checkedKeys={checkedRuleKeys}
-                    onCheck={handleRuleCheck}
-                    titleRender={renderRuleTreeNode}
-                    checkStrictly={true}
-                    expandedKeys={expandedKeys}
-                    onExpand={handleTreeExpand}
-                  />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                  <span style={{ color: '#666', fontSize: 12 }}>
-                    {t('sysUserRole.permission.selectedCount', { count: checkedRuleKeys.length })}
-                  </span>
-                  <Button size="small" onClick={expandAll}>{t('sysUserRole.button.expandAll')}</Button>
-                  <Button size="small" onClick={collapseAll}>{t('sysUserRole.button.collapseAll')}</Button>
-                  <Button size="small" onClick={selectAll}>{t('sysUserRole.button.selectAll')}</Button>
-                  <Button size="small" onClick={deselectAll}>{t('sysUserRole.button.clearAll')}</Button>
-                  <Button size="small" onClick={invertSelection}>{t('sysUserRole.button.invertSelection')}</Button>
-                  <Button
-                    type="primary"
-                    icon={<SaveOutlined />}
-                    loading={isSavingRules}
-                    onClick={handleSaveRules}
-                    size="small"
-                    disabled={selectedRoleId === 1}
-                  >
-                    {t('sysUserRole.button.saveRules')}
-                  </Button>
-                </div>
-              </>
-            )
-          ) : (
-            <div style={{ textAlign: 'center', color: '#00000040' }}>
-              <SmileOutlined style={{ fontSize: 40, marginBottom: 12 }} />
-              <p>{t('sysUserRole.placeholder.selectRole')}</p>
-            </div>
-          )}
-        </Card>
-      </Col>
-    </Row>
+              <div style={{ textAlign: 'center', color: '#00000040' }}>
+                <SmileOutlined style={{ fontSize: 40, marginBottom: 12 }} />
+                <p>{t('sysUserRole.placeholder.selectRole')}</p>
+              </div>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 }
 

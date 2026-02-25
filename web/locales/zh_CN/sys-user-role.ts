@@ -1,4 +1,6 @@
 export default {
+  "sysUserRole.page.title": "角色管理",
+  "sysUserRole.page.description": "管理系统角色，配置角色权限，为用户分配角色",
   "sysUserRole.title": "角色管理",
   "sysUserRole.tab.users": "用户列表",
   "sysUserRole.tab.rules": "权限设置",

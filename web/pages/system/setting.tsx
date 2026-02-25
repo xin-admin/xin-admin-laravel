@@ -40,7 +40,7 @@ import {
 } from '@/api/system/sysSetting';
 
 const { TextArea } = Input;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const SettingManagement: React.FC = () => {
   const { t } = useTranslation();
@@ -466,8 +466,13 @@ const SettingManagement: React.FC = () => {
   ];
 
   return (
-    <Row gutter={[16, 16]}>
-      {/* 左侧设置组菜单 */}
+    <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t('setting.page.title')}</Title>
+        <Text type="secondary">{t('setting.page.description')}</Text>
+      </div>
+      <Row gutter={[16, 16]}>
+        {/* 左侧设置组菜单 */}
       <Col xs={24} lg={4}>
         <Card
           styles={{
@@ -619,6 +624,7 @@ const SettingManagement: React.FC = () => {
         trigger={<span style={{display: 'none'}} />}
       />
     </Row>
+  </>
   );
 };
 

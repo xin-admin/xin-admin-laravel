@@ -9,7 +9,7 @@ import {
   Row,
   Space, Table, type TableProps, Tag,
   Tree,
-  type TreeDataNode, type TreeProps
+  type TreeDataNode, type TreeProps, Typography
 } from "antd";
 import {BankOutlined, DeleteOutlined, PlusOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
@@ -304,7 +304,12 @@ const Dept = () => {
   useEffect(() => { refreshDept() }, []);
 
   return (
-    <Row gutter={[20, 20]}>
+    <>
+      <div className={'mb-5'}>
+        <Typography.Title level={3}>{t("sysUserDept.page.title")}</Typography.Title>
+        <Typography.Text type="secondary">{t("sysUserDept.page.description")}</Typography.Text>
+      </div>
+      <Row gutter={[20, 20]}>
       <Col xxl={12} lg={12} xs={24}>
         <XinForm<ISysDept>
           layoutType={'ModalForm'}
@@ -343,6 +348,7 @@ const Dept = () => {
               </AuthButton>
             </Space>
           )}
+          variant={'borderless'}
           loading={loading}
           styles={{ body: { minHeight: '70vh' } }}
         >
@@ -386,6 +392,7 @@ const Dept = () => {
       </Col>
       <Col xxl={12} lg={12} xs={24}>
         <Card
+          variant={'borderless'}
           tabList={tabList}
           tabProps={{ accessKey: tabKey }}
           onTabChange={setTabKey}
@@ -434,6 +441,7 @@ const Dept = () => {
         </Card>
       </Col>
     </Row>
+  </>
   );
 };
 

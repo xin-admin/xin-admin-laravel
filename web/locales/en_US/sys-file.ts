@@ -94,4 +94,6 @@ export default {
   "sysFile.ungrouped": "Ungrouped",
   "sysFile.accessUrl": "Access URL",
   "sysFile.storageMethod": "Storage Method",
+  "sysFile.page.title": "File Management",
+  "sysFile.page.description": "Manage system files, support upload, download, delete, rename, etc.",
 }

@@ -1,4 +1,4 @@
-import {Avatar, Button, Form, Input, message, Modal, Tag, Tooltip} from 'antd';
+import {Avatar, Button, Form, Input, message, Modal, Tag, Tooltip, Typography} from 'antd';
 import React, {useEffect, useMemo, useState} from 'react';
 import XinTable from '@/components/XinTable';
 import type {XinTableColumn, XinTableProps} from "@/components/XinTable/typings.ts";
@@ -11,7 +11,7 @@ import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useAuth from "@/hooks/useAuth.ts";
-
+const { Title, Text } = Typography;
 dayjs.extend(relativeTime);
 
 const Table: React.FC = () => {
@@ -287,6 +287,10 @@ const Table: React.FC = () => {
 
   return (
     <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t("sysUserList.page.title")}</Title>
+        <Text type="secondary">{t("sysUserList.page.description")}</Text>
+      </div>
       <XinTable<ISysUser> {...tableProps} />
       <Modal
         title={t("sysUserList.resetPassword")}

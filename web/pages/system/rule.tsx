@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
 import XinTable from "@/components/XinTable";
 import type {XinTableColumn, XinTableInstance} from "@/components/XinTable/typings.ts";
-import {Button, message, Switch, Tag, Tooltip} from "antd";
+import {Button, message, Switch, Tag, Tooltip, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useEffect, useRef, useState} from "react";
 import useAuth from "@/hooks/useAuth.ts";
@@ -13,6 +13,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useDictStore from "@/stores/dict";
 import DictTag from "@/components/DictTag";
+
+const { Title, Text } = Typography;
 
 dayjs.extend(relativeTime);
 
@@ -235,48 +237,53 @@ const Rule =  () => {
   ];
 
   return (
-    <XinTable<ISysRule>
-      handleRequest={async () => {
-        const { data } = await listRule();
-        return {
-          data: data.data || [],
-          total: data.data?.length || 0
-        };
-      }}
-      tableRef={tableRef}
-      searchShow={false}
-      titleRender={t("sysUserRule.title")}
-      searchProps={false}
-      paginationShow={false}
-      scroll={{x: 1200}}
-      beforeOperateRender={(data) => (
-        <AuthButton auth={"system.rule.create"}>
-          <Tooltip title={t("sysUserRule.addChildButton")}>
-            <Button
-              color={'green'}
-              variant={'solid'}
-              icon={<PlusOutlined />}
-              size={'small'}
-              onClick={() => {
-                tableRef.current?.getForm()?.setFieldsValue({
-                  pid: data.id || 0,
-                })
-                tableRef.current?.getForm()?.open();
-              }}
-            />
-          </Tooltip>
-        </AuthButton>
-      )}
-      formProps={{
-        grid: true,
-        rowProps: {gutter: [20, 0]},
-        colProps: {span: 6}
-      }}
-      columns={columns}
-      api={'/system/rule'}
-      rowKey={"id"}
-      accessName={"system.rule"}
-    />
+    <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t("sysUserRule.title")}</Title>
+        <Text type="secondary">{t("sysUserRule.description")}</Text>
+      </div>
+      <XinTable<ISysRule>
+        handleRequest={async () => {
+          const { data } = await listRule();
+          return {
+            data: data.data || [],
+            total: data.data?.length || 0
+          };
+        }}
+        tableRef={tableRef}
+        searchShow={false}
+        searchProps={false}
+        paginationShow={false}
+        scroll={{x: 1200}}
+        beforeOperateRender={(data) => (
+          <AuthButton auth={"system.rule.create"}>
+            <Tooltip title={t("sysUserRule.addChildButton")}>
+              <Button
+                color={'green'}
+                variant={'solid'}
+                icon={<PlusOutlined />}
+                size={'small'}
+                onClick={() => {
+                  tableRef.current?.getForm()?.setFieldsValue({
+                    pid: data.id || 0,
+                  })
+                  tableRef.current?.getForm()?.open();
+                }}
+              />
+            </Tooltip>
+          </AuthButton>
+        )}
+        formProps={{
+          grid: true,
+          rowProps: {gutter: [20, 0]},
+          colProps: {span: 6}
+        }}
+        columns={columns}
+        api={'/system/rule'}
+        rowKey={"id"}
+        accessName={"system.rule"}
+      />
+    </>
   )
 }
 

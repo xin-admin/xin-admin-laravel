@@ -1,4 +1,8 @@
 export default {
+  // 页面标题
+  'setting.page.title': '系统配置',
+  'setting.page.description': '管理系统配置项，支持动态配置系统参数',
+
   // 设置组
   'setting.group.title': '设置组',
   'setting.group.add': '新增',

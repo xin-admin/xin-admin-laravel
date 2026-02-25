@@ -26,6 +26,8 @@ import {
   type UploadFile,
   type ButtonProps, Descriptions, type TagProps
 } from 'antd';
+
+const { Title, Text } = Typography;
 import {useTranslation} from 'react-i18next';
 import type {TreeProps} from 'antd/es/tree';
 import {
@@ -751,8 +753,13 @@ const FileManagement: React.FC = () => {
   )
 
   return (
-    <Row gutter={[16, 16]}>
-      {/* 左侧文件夹树 */}
+    <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t('sysFile.page.title')}</Title>
+        <Text type="secondary">{t('sysFile.page.description')}</Text>
+      </div>
+      <Row gutter={[16, 16]}>
+        {/* 左侧文件夹树 */}
       <Col xs={24} lg={4}>
         <Card
           title={
@@ -772,7 +779,7 @@ const FileManagement: React.FC = () => {
             style={{marginBottom: 16}}
             onSearch={(value) => setGroupSearchKeyword(value)}
           />
-          <Spin spinning={fileGroupLoading} tip={t('sysFile.loading')} size="small">
+          <Spin spinning={fileGroupLoading} description={t('sysFile.loading')} size="small">
             <div style={{minHeight: 200}}>
               { fileGroups.length > 0 && (
                 <Tree
@@ -1079,6 +1086,7 @@ const FileManagement: React.FC = () => {
         )}
       </Drawer>
     </Row>
+  </>
   );
 };
 

@@ -1,4 +1,5 @@
 export default {
+  "sysUserRule.description": "管理系统菜单和权限，配置路由、权限项",
   "sysUserRule.routePath": "路由路径",
   "sysUserRule.routePath.required": "路由路径为必填项",
   "sysUserRule.routePath.tooltip": "路由页面访问地址，如为外部链接请直接填写完整URL",

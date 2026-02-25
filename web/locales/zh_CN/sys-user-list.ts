@@ -1,4 +1,6 @@
 export default {
+  "sysUserList.page.title": "用户列表",
+  "sysUserList.page.description": "通过管理员列表，能够方便的管理系统用户，为用户分配部门与角色",
   "sysUserList.id": "用户ID",
   "sysUserList.username": "用户名",
   "sysUserList.username.required": "用户名为必填项",

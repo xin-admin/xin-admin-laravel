@@ -1,6 +1,8 @@
 import XinTable from '@/components/XinTable';
-import {Badge, Button, Tooltip} from 'antd';
+import {Badge, Button, Tooltip, Typography} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
+
+const { Title, Text } = Typography;
 import {type IDict} from '@/domain/iDict';
 import type {XinTableColumn} from '@/components/XinTable/typings';
 import {useTranslation} from 'react-i18next';
@@ -100,7 +102,12 @@ export default function DictPage() {
   };
 
   return (
-    <XinTable<IDict>
+    <>
+      <div className={'mb-5'}>
+        <Title level={3}>{t('dict.page.title')}</Title>
+        <Text type="secondary">{t('dict.page.description')}</Text>
+      </div>
+      <XinTable<IDict>
       api={'/system/dict/list'}
       columns={columns}
       rowKey={'id'}
@@ -135,5 +142,6 @@ export default function DictPage() {
         </Tooltip>
       )}
     />
+  </>
   );
 }

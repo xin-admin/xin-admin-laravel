@@ -1,4 +1,6 @@
 export default {
+  "sysUserList.page.title": "User List",
+  "sysUserList.page.description": "Manage system users through the admin list, assign departments and roles to users.",
   "sysUserList.id": "User ID",
   "sysUserList.username": "Username",
   "sysUserList.username.required": "Username is required",

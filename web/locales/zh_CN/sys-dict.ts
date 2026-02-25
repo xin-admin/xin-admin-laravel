@@ -1,4 +1,8 @@
 export default {
+    // 页面标题
+    'dict.page.title': '字典管理',
+    'dict.page.description': '管理系统字典类型，配置数据字典项',
+
     // 字典类型表格
     'dict.id': 'ID',
     'dict.name': '字典名称',
