@@ -1,4 +1,7 @@
 export default {
+  // Page description
+  "sysUserRule.description": "Manage system menus and permissions, configure routes and permission items",
+
   "sysUserRule.routePath": "Route Path",
   "sysUserRule.routePath.required": "Route path is required",
   "sysUserRule.routePath.tooltip": "Access path for the route page. For external links, please provide the complete URL",

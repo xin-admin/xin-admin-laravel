@@ -1,4 +1,8 @@
 export default {
+  // Page title
+  "sysUserRole.page.title": "Role Management",
+  "sysUserRole.page.description": "Manage system roles, configure role permissions, assign roles to users",
+
   "sysUserRole.title": "Role Management",
   "sysUserRole.tab.users": "User List",
   "sysUserRole.tab.rules": "Permission Settings",

@@ -1,4 +1,8 @@
 export default {
+  // Page title
+  "sysFile.page.title": "File Management",
+  "sysFile.page.description": "Manage system files, support upload, download, delete, rename, etc.",
+
   "sysFile.fileFolder": "Folders",
   "sysFile.fileName": "File Name",
   "sysFile.fileType": "Type",
@@ -93,7 +97,5 @@ export default {
   "sysFile.fileGroup": "File Group",
   "sysFile.ungrouped": "Ungrouped",
   "sysFile.accessUrl": "Access URL",
-  "sysFile.storageMethod": "Storage Method",
-  "sysFile.page.title": "File Management",
-  "sysFile.page.description": "Manage system files, support upload, download, delete, rename, etc.",
+  "sysFile.storageMethod": "Storage Method"
 }

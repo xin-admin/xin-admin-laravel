@@ -1,4 +1,8 @@
 export default {
+  // Page title
+  "sysUserDept.page.title": "Department Management",
+  "sysUserDept.page.description": "Manage system departments, configure department hierarchy, manage department users",
+
   "sysUserDept.tab.info": "Basic Information",
   "sysUserDept.tab.users": "User List",
   "sysUserDept.unnamed": "Unnamed Department",

@@ -1,4 +1,8 @@
 export default {
+    // Page title
+    'dict.page.title': 'Dictionary Management',
+    'dict.page.description': 'Manage system dictionary types, configure data dictionary items',
+
     // Dictionary Type Table
     'dict.id': 'ID',
     'dict.name': 'Dict Name',

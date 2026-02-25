@@ -1,4 +1,8 @@
 export default {
+  // Page title
+  'setting.page.title': 'System Settings',
+  'setting.page.description': 'Manage system configuration items, support dynamic configuration of system parameters',
+
   // Setting group
   'setting.group.title': 'Setting Groups',
   'setting.group.add': 'Add',
