@@ -2,15 +2,15 @@ import React, { useRef } from 'react';
 import { Card, Space, Typography, message, Button, Divider, Input, Tag } from 'antd';
 import XinForm from '@/components/XinForm';
 import type { XinFormRef } from '@/components/XinForm';
-import type { XinColumn } from '@/components/XinFormField/FieldRender';
+import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
 
 const { Title, Paragraph, Text } = Typography;
 
 // 基础表单字段配置
-const basicColumns: XinColumn<any>[] = [
+const basicColumns: FormColumn<any>[] = [
   {
-    name: 'username',
-    label: '用户名',
+    dataIndex: 'username',
+    title: '用户名',
     valueType: 'text',
     rules: [{ required: true, message: '请输入用户名' }],
     fieldProps: {
@@ -18,8 +18,8 @@ const basicColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'password',
-    label: '密码',
+    dataIndex: 'password',
+    title: '密码',
     valueType: 'password',
     rules: [{ required: true, message: '请输入密码' }],
     fieldProps: {
@@ -27,8 +27,8 @@ const basicColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'email',
-    label: '邮箱',
+    dataIndex: 'email',
+    title: '邮箱',
     valueType: 'text',
     rules: [
       { required: true, message: '请输入邮箱' },
@@ -39,8 +39,8 @@ const basicColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'description',
-    label: '个人简介',
+    dataIndex: 'description',
+    title: '个人简介',
     valueType: 'textarea',
     fieldProps: {
       placeholder: '请输入个人简介',
@@ -50,25 +50,25 @@ const basicColumns: XinColumn<any>[] = [
 ];
 
 // Grid 布局表单字段配置
-const gridColumns: XinColumn<any>[] = [
+const gridColumns: FormColumn<any>[] = [
   {
-    name: 'name',
-    label: '姓名',
+    dataIndex: 'name',
+    title: '姓名',
     valueType: 'text',
     colProps: { span: 12 },
     rules: [{ required: true, message: '请输入姓名' }],
     fieldProps: { placeholder: '请输入姓名' },
   },
   {
-    name: 'age',
-    label: '年龄',
+    dataIndex: 'age',
+    title: '年龄',
     valueType: 'digit',
     colProps: { span: 12 },
     fieldProps: { placeholder: '请输入年龄', min: 0, max: 150, style: { width: '100%' } },
   },
   {
-    name: 'gender',
-    label: '性别',
+    dataIndex: 'gender',
+    title: '性别',
     valueType: 'radio',
     colProps: { span: 12 },
     fieldProps: {
@@ -79,22 +79,22 @@ const gridColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'status',
-    label: '状态',
+    dataIndex: 'status',
+    title: '状态',
     valueType: 'switch',
     colProps: { span: 12 },
     valuePropName: 'checked',
   },
   {
-    name: 'birthDate',
-    label: '出生日期',
+    dataIndex: 'birthDate',
+    title: '出生日期',
     valueType: 'date',
     colProps: { span: 12 },
     fieldProps: { style: { width: '100%' } },
   },
   {
-    name: 'salary',
-    label: '薪资',
+    dataIndex: 'salary',
+    title: '薪资',
     valueType: 'money',
     colProps: { span: 12 },
     fieldProps: { style: { width: '100%' }, placeholder: '请输入薪资' },
@@ -102,23 +102,23 @@ const gridColumns: XinColumn<any>[] = [
 ];
 
 // 完整表单字段配置 - 展示所有字段类型
-const fullColumns: XinColumn<any>[] = [
+const fullColumns: FormColumn<any>[] = [
   {
-    name: 'text',
-    label: '文本输入',
+    dataIndex: 'text',
+    title: '文本输入',
     valueType: 'text',
     tooltip: '这是一个帮助提示',
     fieldProps: { placeholder: '普通文本输入' },
   },
   {
-    name: 'password',
-    label: '密码输入',
+    dataIndex: 'password',
+    title: '密码输入',
     valueType: 'password',
     fieldProps: { placeholder: '密码输入' },
   },
   {
-    name: 'digit',
-    label: '数字输入',
+    dataIndex: 'digit',
+    title: '数字输入',
     valueType: 'digit',
     extra: '请输入0-100之间的数字',
     fieldProps: {
@@ -128,8 +128,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'money',
-    label: '金额输入',
+    dataIndex: 'money',
+    title: '金额输入',
     valueType: 'money',
     fieldProps: {
       placeholder: '金额输入',
@@ -137,8 +137,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'select',
-    label: '下拉选择',
+    dataIndex: 'select',
+    title: '下拉选择',
     valueType: 'select',
     fieldProps: {
       placeholder: '请选择',
@@ -150,8 +150,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'treeSelect',
-    label: '树形选择',
+    dataIndex: 'treeSelect',
+    title: '树形选择',
     valueType: 'treeSelect',
     fieldProps: {
       placeholder: '请选择',
@@ -165,8 +165,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'cascader',
-    label: '级联选择',
+    dataIndex: 'cascader',
+    title: '级联选择',
     valueType: 'cascader',
     fieldProps: {
       placeholder: '请选择',
@@ -183,8 +183,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'radio',
-    label: '单选框',
+    dataIndex: 'radio',
+    title: '单选框',
     valueType: 'radio',
     fieldProps: {
       options: [
@@ -195,8 +195,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'radioButton',
-    label: '单选按钮',
+    dataIndex: 'radioButton',
+    title: '单选按钮',
     valueType: 'radioButton',
     fieldProps: {
       options: [
@@ -207,8 +207,8 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'checkbox',
-    label: '多选框',
+    dataIndex: 'checkbox',
+    title: '多选框',
     valueType: 'checkbox',
     fieldProps: {
       options: [
@@ -219,88 +219,105 @@ const fullColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'switch',
-    label: '开关',
+    dataIndex: 'switch',
+    title: '开关',
     valueType: 'switch',
     valuePropName: 'checked',
   },
   {
-    name: 'rate',
-    label: '评分',
+    dataIndex: 'rate',
+    title: '评分',
     valueType: 'rate',
   },
   {
-    name: 'slider',
-    label: '滑动条',
+    dataIndex: 'slider',
+    title: '滑动条',
     valueType: 'slider',
   },
   {
-    name: 'date',
-    label: '日期选择',
+    dataIndex: 'date',
+    title: '日期选择',
     valueType: 'date',
   },
   {
-    name: 'dateTime',
-    label: '日期时间',
+    dataIndex: 'dateTime',
+    title: '日期时间',
     valueType: 'dateTime',
   },
   {
-    name: 'dateRange',
-    label: '日期范围',
+    dataIndex: 'dateRange',
+    title: '日期范围',
     valueType: 'dateRange',
   },
   {
-    name: 'time',
-    label: '时间选择',
+    dataIndex: 'time',
+    title: '时间选择',
     valueType: 'time',
   },
   {
-    name: 'color',
-    label: '颜色选择',
+    dataIndex: 'color',
+    title: '颜色选择',
     valueType: 'color',
   },
   {
-    name: 'icon',
-    label: '图标选择',
+    dataIndex: 'icon',
+    title: '图标选择',
     valueType: 'icon',
   },
   {
-    name: 'textarea',
-    label: '多行文本',
+    dataIndex: 'image',
+    title: '图片上传',
+    valueType: 'image',
+    fieldProps: {
+      action: '/file/upload', // 假设的上传接口
+      maxCount: 1,
+    }
+  },
+  {
+    dataIndex: 'user',
+    title: '用户选择',
+    valueType: 'user',
+    fieldProps: {
+      placeholder: '请选择用户',
+    }
+  },
+  {
+    dataIndex: 'textarea',
+    title: '多行文本',
     valueType: 'textarea',
     fieldProps: { placeholder: '请输入多行文本', rows: 3 },
   },
 ];
 
 // 字段分组配置
-const groupColumns: XinColumn<any>[] = [
+const groupColumns: FormColumn<any>[] = [
   {
-    valueType: 'divider',
-    label: '基本信息',
-    colProps: {span: 24}
+    valueType: 'text',
+    colProps: { span: 24 },
+    fieldRender: () => <Divider titlePlacement={'left'}>基本信息</Divider>
   },
   {
-    name: 'name',
-    label: '姓名',
+    dataIndex: 'name',
+    title: '姓名',
     valueType: 'text',
     colProps: { span: 12 },
     rules: [{ required: true, message: '请输入姓名' }],
   },
   {
-    name: 'phone',
-    label: '电话',
+    dataIndex: 'phone',
+    title: '电话',
     valueType: 'text',
     colProps: { span: 12 },
     tooltip: '请输入11位手机号',
   },
   {
-    valueType: 'divider',
-    label: '部门信息',
-    colProps: {span: 24}
+    valueType: 'text',
+    colProps: { span: 24 },
+    fieldRender: () => <Divider titlePlacement={'left'}>部门信息</Divider>
   },
   {
-    name: 'department',
-    label: '部门',
+    dataIndex: 'department',
+    title: '部门',
     valueType: 'select',
     colProps: { span: 12 },
     fieldProps: {
@@ -312,14 +329,14 @@ const groupColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'position',
-    label: '职位',
+    dataIndex: 'position',
+    title: '职位',
     valueType: 'text',
     colProps: { span: 12 },
   },
   {
-    name: 'remark',
-    label: '备注',
+    dataIndex: 'remark',
+    title: '备注',
     valueType: 'textarea',
     extra: '可选填写',
   },
@@ -333,17 +350,17 @@ interface DependencyFormData {
   subType: string;
 }
 
-const dependencyColumns: XinColumn<DependencyFormData>[] = [
+const dependencyColumns: FormColumn<DependencyFormData>[] = [
   {
-    name: 'hasDiscount',
-    label: '是否有折扣',
+    dataIndex: 'hasDiscount',
+    title: '是否有折扣',
     valueType: 'switch',
     valuePropName: 'checked',
     tooltip: '开启后可设置折扣比例',
   },
   {
-    name: 'discount',
-    label: '折扣比例',
+    dataIndex: 'discount',
+    title: '折扣比例',
     valueType: 'slider',
     dependency: {
       dependencies: ['hasDiscount'],
@@ -356,8 +373,8 @@ const dependencyColumns: XinColumn<DependencyFormData>[] = [
     },
   },
   {
-    name: 'productType',
-    label: '产品类型',
+    dataIndex: 'productType',
+    title: '产品类型',
     valueType: 'select',
     fieldProps: {
       placeholder: '请选择产品类型',
@@ -369,8 +386,8 @@ const dependencyColumns: XinColumn<DependencyFormData>[] = [
     },
   },
   {
-    name: 'subType',
-    label: '子类型',
+    dataIndex: 'subType',
+    title: '子类型',
     valueType: 'select',
     dependency: {
       dependencies: ['productType'],
@@ -404,21 +421,21 @@ const dependencyColumns: XinColumn<DependencyFormData>[] = [
 ];
 
 // 自定义渲染配置
-const customColumns: XinColumn<any>[] = [
+const customColumns: FormColumn<any>[] = [
   {
-    name: 'username',
-    label: '用户名',
+    dataIndex: 'username',
+    title: '用户名',
     valueType: 'text',
     rules: [{ required: true, message: '请输入用户名' }],
   },
   {
-    name: 'tags',
-    label: '标签',
+    dataIndex: 'tags',
+    title: '标签',
     valueType: 'text',
-    renderField: (_, form) => (
+    fieldRender: (form) => (
       <Space>
-        <Input 
-          placeholder="输入标签后按回车" 
+        <Input
+          placeholder="输入标签后按回车"
           onPressEnter={(e) => {
             const value = (e.target as HTMLInputElement).value;
             const tags = form.getFieldValue('tags') || [];
@@ -430,9 +447,9 @@ const customColumns: XinColumn<any>[] = [
         />
         <Space>
           {(form.getFieldValue('tags') || []).map((tag: string, index: number) => (
-            <Tag 
-              key={index} 
-              closable 
+            <Tag
+              key={index}
+              closable
               onClose={() => {
                 const tags = form.getFieldValue('tags') || [];
                 form.setFieldValue('tags', tags.filter((_: string, i: number) => i !== index));
@@ -446,25 +463,25 @@ const customColumns: XinColumn<any>[] = [
     ),
   },
   {
-    name: 'hiddenField',
-    label: '隐藏字段',
+    dataIndex: 'hiddenField',
+    title: '隐藏字段',
     valueType: 'text',
     hidden: true,
   },
 ];
 
 // Modal/Drawer 表单字段配置
-const modalColumns: XinColumn<any>[] = [
+const modalColumns: FormColumn<any>[] = [
   {
-    name: 'title',
-    label: '标题',
+    dataIndex: 'title',
+    title: '标题',
     valueType: 'text',
     rules: [{ required: true, message: '请输入标题' }],
     fieldProps: { placeholder: '请输入标题' },
   },
   {
-    name: 'type',
-    label: '类型',
+    dataIndex: 'type',
+    title: '类型',
     valueType: 'select',
     rules: [{ required: true, message: '请选择类型' }],
     fieldProps: {
@@ -476,8 +493,8 @@ const modalColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'priority',
-    label: '优先级',
+    dataIndex: 'priority',
+    title: '优先级',
     valueType: 'radioButton',
     fieldProps: {
       options: [
@@ -488,8 +505,8 @@ const modalColumns: XinColumn<any>[] = [
     },
   },
   {
-    name: 'content',
-    label: '内容',
+    dataIndex: 'content',
+    title: '内容',
     valueType: 'textarea',
     fieldProps: { placeholder: '请输入内容', rows: 4 },
   },
@@ -666,7 +683,7 @@ const XinFormExample: React.FC = () => {
           <Paragraph type="secondary">
             通过 submitter 配置项自定义提交按钮文本、样式，或完全自定义渲染。
           </Paragraph>
-          <Divider orientation="left">自定义按钮文本</Divider>
+          <Divider titlePlacement={'left'}>自定义按钮文本</Divider>
           <XinForm
             columns={basicColumns.slice(0, 2)}
             layout="vertical"
@@ -676,7 +693,7 @@ const XinFormExample: React.FC = () => {
               resetText: '清空表单',
             }}
           />
-          <Divider orientation="left">隐藏提交按钮</Divider>
+          <Divider titlePlacement={'left'}>隐藏提交按钮</Divider>
           <Text type="secondary">设置 submitter.render = false 隐藏提交按钮</Text>
           <XinForm
             columns={basicColumns.slice(0, 2)}
