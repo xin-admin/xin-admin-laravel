@@ -355,7 +355,7 @@ const Dept = () => {
           {checkedKeys.length > 0 && (
             <Alert
               style={{ marginBottom: 20 }}
-              message={t("sysUserDept.checkedMessage", {checked: checkedKeys.length})}
+              description={t("sysUserDept.checkedMessage", {checked: checkedKeys.length})}
               type="info"
               action={
                 <Space>
