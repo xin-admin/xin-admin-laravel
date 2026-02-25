@@ -16,14 +16,13 @@ export default function AnimatedOutlet() {
   // 获取所有嵌套路由的父级路径
   const nestedParentPaths = useMemo(() => {
     return Object.values(routeMap)
-      .filter(route => route.type === 'nested-route')
       .map(route => route.path)
       .filter(Boolean) as string[];
   }, [routeMap]);
 
   // 计算动画 key
   const animationKey = useMemo(() => {
-    const parentPath = nestedParentPaths.find(path => 
+    const parentPath = nestedParentPaths.find(path =>
       location.pathname.startsWith(path + '/') || location.pathname === path
     );
     return parentPath || location.pathname;
