@@ -51,8 +51,7 @@ const ColumnSiderRender: React.FC = () => {
   return (
     <ConfigProvider
       theme={{
-        token: { colorTextBase: themeConfig.siderColor },
-        cssVar: true
+        token: { colorTextBase: themeConfig.siderColor }
       }}
     >
       <Sider

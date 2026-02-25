@@ -28,7 +28,6 @@ const HeaderRender: React.FC = () => {
   const collapsed = useGlobalStore(state => state.collapsed);
   const setCollapsed = useGlobalStore(state => state.setCollapsed);
   const theme: ThemeConfig = {
-    cssVar: true,
     token: { colorTextBase: themeConfig.headerColor },
     components: {
       Menu: {
