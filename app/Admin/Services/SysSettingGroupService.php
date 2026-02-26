@@ -28,7 +28,7 @@ class SysSettingGroupService extends BaseService
         ];
     }
 
-    public function list(array $params): array
+    public function query(array $params): array
     {
         if(empty($params['keywordSearch'])){
             return $this->model

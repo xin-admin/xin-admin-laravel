@@ -77,7 +77,7 @@ class SysSettingItemsService extends BaseService
         return SysSettingItemsModel::query();
     }
 
-    public function list(array $params): array
+    public function query(array $params): array
     {
         if(empty($params['group_id'])) {
             throw new RepositoryException('请选择设置分组');
