@@ -111,7 +111,7 @@ type FormColumnMap<T> = {
   /** 唯一标识 */
   key?: Key;
   /** 字段名 */
-  dataIndex?: string;
+  dataIndex?: string | number | (string | number)[];
   /** 字段标签 */
   title?: string;
   /** 字段类型 */

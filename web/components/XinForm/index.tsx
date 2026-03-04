@@ -100,11 +100,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
     if (dependency) {
       // 有依赖时使用 Form.Item 的 shouldUpdate
       formItemContent = (
-        <Form.Item noStyle shouldUpdate={(prevValues, curValues) => {
-          return dependency.dependencies.some(
-            (dep) => prevValues[dep as string] !== curValues[dep as string]
-          );
-        }}>
+        <Form.Item noStyle shouldUpdate>
           {({getFieldsValue}) => {
             const values = getFieldsValue() as T;
             // 判断是否隐藏
@@ -133,7 +129,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
             return (
               <Form.Item
                 key={key}
-                name={key}
+                name={dataIndex}
                 label={column.title || column.label}
                 {...formItemProps as FormItemProps}
               >
@@ -156,7 +152,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
       formItemContent = (
         <Form.Item
           key={key}
-          name={key}
+          name={dataIndex}
           label={column.title || column.label}
           {...formItemProps as FormItemProps}
         >
