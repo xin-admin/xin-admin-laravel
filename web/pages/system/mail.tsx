@@ -71,25 +71,25 @@ const MailConfig: React.FC = () => {
   const [testing, setTesting] = useState(false);
 
   const driverOptions = [
-    { label: 'SMTP', value: 'smtp' },
-    { label: 'SES (Amazon)', value: 'ses' },
-    { label: 'Mailgun', value: 'mailgun' },
-    { label: 'Postmark', value: 'postmark' },
-    { label: 'Resend', value: 'resend' },
-    { label: 'Log (日志)', value: 'log' },
-    { label: 'Array (调试)', value: 'array' },
+    { label: t('mail.driver.smtp'), value: 'smtp' },
+    { label: t('mail.driver.ses'), value: 'ses' },
+    { label: t('mail.driver.mailgun'), value: 'mailgun' },
+    { label: t('mail.driver.postmark'), value: 'postmark' },
+    { label: t('mail.driver.resend'), value: 'resend' },
+    { label: t('mail.driver.log'), value: 'log' },
+    { label: t('mail.driver.array'), value: 'array' },
   ];
 
   const columns: FormColumn<MailResponse>[] = [
     {
       dataIndex: ['other', 'mode'],
       valueType: 'radio',
-      title: '模式切换',
+      title: t('mail.mode'),
       fieldProps: {
         options: [
-          { label: '单驱动', value: 'single'},
-          { label: '故障切换', value: 'failover'},
-          { label: '循环切换', value: 'roundrobin'},
+          { label: t('mail.mode.single'), value: 'single'},
+          { label: t('mail.mode.failover'), value: 'failover'},
+          { label: t('mail.mode.roundrobin'), value: 'roundrobin'},
         ]
       },
       required: true,
@@ -128,6 +128,9 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'from', 'address'],
       valueType: 'text',
       title: t('mail.from_address'),
+      fieldProps: {
+        placeholder: t('mail.from_address.placeholder'),
+      },
       required: true,
       colProps: {span: 12}
     },
@@ -135,11 +138,14 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'from', 'name'],
       valueType: 'text',
       title: t('mail.from_name'),
+      fieldProps: {
+        placeholder: t('mail.from_name.placeholder'),
+      },
       required: true,
       colProps: {span: 12}
     },
     {
-      fieldRender: () => <Divider>SMTP 配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.smtp.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -153,6 +159,9 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'mailers', 'smtp', 'host'],
       valueType: 'text',
       title: t('mail.host'),
+      fieldProps: {
+        placeholder: t('mail.host.placeholder'),
+      },
       required: true,
       colProps: {span: 16},
       dependency: {
@@ -166,6 +175,9 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'mailers', 'smtp', 'port'],
       valueType: 'digit',
       title: t('mail.port'),
+      fieldProps: {
+        placeholder: t('mail.port.placeholder'),
+      },
       required: true,
       colProps: {span: 8},
       dependency: {
@@ -179,6 +191,9 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'mailers', 'smtp', 'username'],
       valueType: 'text',
       title: t('mail.username'),
+      fieldProps: {
+        placeholder: t('mail.username.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -192,6 +207,9 @@ const MailConfig: React.FC = () => {
       dataIndex: ['mail', 'mailers', 'smtp', 'password'],
       valueType: 'password',
       title: t('mail.password'),
+      fieldProps: {
+        placeholder: t('mail.password.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -202,7 +220,7 @@ const MailConfig: React.FC = () => {
       }
     },
     {
-      fieldRender: () => <Divider>日志配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.log.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -215,7 +233,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['mail', 'mailers', 'log', 'channel'],
       valueType: 'text',
-      title: '日志驱动',
+      title: t('mail.log.channel'),
+      fieldProps: {
+        placeholder: t('mail.log.channel.placeholder'),
+      },
       required: true,
       colProps: {span: 24},
       dependency: {
@@ -226,7 +247,7 @@ const MailConfig: React.FC = () => {
       }
     },
     {
-      fieldRender: () => <Divider>Postmark 配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.postmark.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -239,7 +260,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'postmark', 'token'],
       valueType: 'text',
-      title: 'Postmark token',
+      title: t('mail.postmark.token'),
+      fieldProps: {
+        placeholder: t('mail.postmark.token.placeholder'),
+      },
       required: true,
       colProps: {span: 24},
       dependency: {
@@ -250,7 +274,7 @@ const MailConfig: React.FC = () => {
       }
     },
     {
-      fieldRender: () => <Divider>Resend 配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.resend.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -263,7 +287,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'resend', 'key'],
       valueType: 'text',
-      title: 'Resend KEY',
+      title: t('mail.resend.key'),
+      fieldProps: {
+        placeholder: t('mail.resend.key.placeholder'),
+      },
       required: true,
       colProps: {span: 24},
       dependency: {
@@ -274,7 +301,7 @@ const MailConfig: React.FC = () => {
       }
     },
     {
-      fieldRender: () => <Divider>Mailgun 配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.mailgun.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -287,7 +314,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'mailgun', 'domain'],
       valueType: 'text',
-      title: 'Mailgun Domain',
+      title: t('mail.mailgun.domain'),
+      fieldProps: {
+        placeholder: t('mail.mailgun.domain.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -300,7 +330,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'mailgun', 'secret'],
       valueType: 'text',
-      title: 'Mailgun Secret',
+      title: t('mail.mailgun.secret'),
+      fieldProps: {
+        placeholder: t('mail.mailgun.secret.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -313,7 +346,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'mailgun', 'endpoint'],
       valueType: 'text',
-      title: 'Mailgun Endpoint',
+      title: t('mail.mailgun.endpoint'),
+      fieldProps: {
+        placeholder: t('mail.mailgun.endpoint.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -324,7 +360,7 @@ const MailConfig: React.FC = () => {
       }
     },
     {
-      fieldRender: () => <Divider>SES (Amazon) 配置</Divider>,
+      fieldRender: () => <Divider>{t('mail.ses.title')}</Divider>,
       dependency: {
         dependencies: ['mail', 'other'],
         visible: (values) => {
@@ -337,7 +373,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'ses', 'key'],
       valueType: 'text',
-      title: 'SES KEY',
+      title: t('mail.ses.key'),
+      fieldProps: {
+        placeholder: t('mail.ses.key.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -350,7 +389,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'ses', 'secret'],
       valueType: 'text',
-      title: 'SES Secret',
+      title: t('mail.ses.secret'),
+      fieldProps: {
+        placeholder: t('mail.ses.secret.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -363,7 +405,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'ses', 'region'],
       valueType: 'text',
-      title: 'SES Region',
+      title: t('mail.ses.region'),
+      fieldProps: {
+        placeholder: t('mail.ses.region.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -376,7 +421,10 @@ const MailConfig: React.FC = () => {
     {
       dataIndex: ['services', 'ses', 'token'],
       valueType: 'text',
-      title: 'SES Token',
+      title: t('mail.ses.token'),
+      fieldProps: {
+        placeholder: t('mail.ses.token.placeholder'),
+      },
       required: true,
       colProps: {span: 12},
       dependency: {
@@ -417,8 +465,8 @@ const MailConfig: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>邮件设置</Title>
-        <Text type="secondary">邮件配置用于发送邮件，支持故障切换与循环切换</Text>
+        <Title level={3}>{t('mail.page.title')}</Title>
+        <Text type="secondary">{t('mail.page.description')}</Text>
       </div>
       <Row gutter={24}>
         <Col span={16}>
@@ -449,7 +497,7 @@ const MailConfig: React.FC = () => {
                 label={t('mail.test.to')}
                 rules={[{ required: true, type: 'email' }]}
               >
-                <Input placeholder="receiver@example.com" />
+                <Input placeholder={t('mail.test.to.placeholder')} />
               </Form.Item>
 
               <Button type="primary" htmlType="submit" block icon={<SendOutlined />} loading={testing}>
