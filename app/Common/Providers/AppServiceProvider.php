@@ -7,7 +7,6 @@ use App\Common\Models\System\SysSettingItemsModel;
 use App\Common\Observers\SysSettingObserver;
 use App\Common\Services\BaseService;
 use App\Common\Services\LengthAwarePaginatorService;
-use App\Common\Services\MailConfigService;
 use App\Common\Services\StorageConfigService;
 use App\Common\Services\SysSettingService;
 use Exception;
@@ -79,8 +78,6 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('sys_setting_items')) {
                 // 刷新系统设置缓存
                 SysSettingService::refreshSettings();
-                // 从系统设置初始化邮件配置
-                MailConfigService::initFromSettings();
                 // 从系统设置初始化存储配置
                 StorageConfigService::initFromSettings();
             }

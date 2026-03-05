@@ -484,6 +484,18 @@ class SysUserSeeder extends Seeder
                         ]
                     ],
                     [
+                        'type' => 'route',
+                        'key' => 'system.mail',
+                        'name' => '邮件配置',
+                        'path' => '/system/mail',
+                        'local' => 'menu.system.mail',
+                        'children' => [
+                            ['type' => 'rule', 'name' => '获取配置', 'key' => 'system.mail.config'],
+                            ['type' => 'rule', 'name' => '保存配置', 'key' => 'system.mail.save'],
+                            ['type' => 'rule', 'name' => '发送测试', 'key' => 'system.mail.test'],
+                        ]
+                    ],
+                    [
                         'type' => "route",
                         'name' => "系统信息",
                         'local' => "menu.system.info",

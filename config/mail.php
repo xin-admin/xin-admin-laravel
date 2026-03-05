@@ -78,7 +78,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'channel' => env('MAIL_LOG_CHANNEL', 'stack'),
         ],
 
         'array' => [
@@ -87,18 +87,12 @@ return [
 
         'failover' => [
             'transport' => 'failover',
-            'mailers' => [
-                'smtp',
-                'log',
-            ],
+            'mailers' => explode(",", env('MAIL_FAILOVER_MAILERS', 'smtp,log')),
         ],
 
         'roundrobin' => [
             'transport' => 'roundrobin',
-            'mailers' => [
-                'ses',
-                'postmark',
-            ],
+            'mailers' => explode(",", env('MAIL_ROUNDROBIN_MAILERS', 'ses,postmark')),
         ],
 
     ],
