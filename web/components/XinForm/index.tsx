@@ -96,10 +96,9 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
 
     const key = String(dataIndex) || `form-item-${index}`;
 
-    let formItemContent;
     if (dependency) {
       // 有依赖时使用 Form.Item 的 shouldUpdate
-      formItemContent = (
+      return (
         <Form.Item noStyle shouldUpdate>
           {({getFieldsValue}) => {
             const values = getFieldsValue() as T;
@@ -126,7 +125,21 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
               />
             );
 
-            return (
+            return grid ?
+              <Col
+                {...Object.assign(colProps, columnColProps)}
+                key={key}
+              >
+                <Form.Item
+                  key={key}
+                  name={dataIndex}
+                  label={column.title || column.label}
+                  {...formItemProps as FormItemProps}
+                >
+                  {fieldRender ? fieldRender(form) : defaultFieldRender}
+                </Form.Item>
+              </Col>
+              :
               <Form.Item
                 key={key}
                 name={dataIndex}
@@ -135,12 +148,10 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
               >
                 {fieldRender ? fieldRender(form) : defaultFieldRender}
               </Form.Item>
-            );
           }}
         </Form.Item>
       );
     } else {
-
       const defaultFieldRender = (
         <FieldRender
           valueType={valueType}
@@ -148,8 +159,21 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
           {...fieldProps}
         />
       );
-      // 普通表单项
-      formItemContent = (
+      return grid ?
+        <Col
+          {...Object.assign(colProps, columnColProps)}
+          key={key}
+        >
+          <Form.Item
+            key={key}
+            name={dataIndex}
+            label={column.title || column.label}
+            {...formItemProps as FormItemProps}
+          >
+            {fieldRender ? fieldRender(form) : defaultFieldRender}
+          </Form.Item>
+        </Col>
+        :
         <Form.Item
           key={key}
           name={dataIndex}
@@ -158,9 +182,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
         >
           {fieldRender ? fieldRender(form) : defaultFieldRender}
         </Form.Item>
-      );
     }
-    return grid ? <Col {...Object.assign(colProps, columnColProps)} key={key}>{formItemContent}</Col> : formItemContent;
   }, [grid, form]);
 
   // 渲染提交按钮

@@ -75,7 +75,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   } = props;
 
   const {t} = useTranslation();
-  const formRef = useRef<XinFormRef<T>>(undefined);
+  const formRef = useRef<XinFormRef<T>>(null);
 
   // 内部状态
   const [loading, setLoading] = useState<boolean>(true);
@@ -422,7 +422,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
         return indexA - indexB;
       })
       .map((item) => ({
-        key: item.dataIndex!,
+        key: String(item.dataIndex),
         title: item.title,
       }));
   }, [columns, columnSorted]);

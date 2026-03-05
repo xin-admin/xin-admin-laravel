@@ -65,11 +65,11 @@ const SettingManagement: React.FC = () => {
 
   // 设置组表单
   const [editingGroup, setEditingGroup] = useState<ISettingGroup | null>(null);
-  const groupFormRef = useRef<XinFormRef | undefined>(undefined);
+  const groupFormRef = useRef<XinFormRef>(null);
 
   // 设置项表单
   const [editingItem, setEditingItem] = useState<ISetting | null>(null);
-  const itemFormRef = useRef<XinFormRef | undefined>(undefined);
+  const itemFormRef = useRef<XinFormRef>(null);
 
   // 设置项值表单
   const [valuesForm] = Form.useForm();

@@ -125,7 +125,7 @@ export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 
   /** 请求参数处理 */
   requestParams?: (params: RequestParams) => RequestParams;
   /** 自定义表单请求 */
-  handleFinish?: (values: T, mode: FormMode, formRef: RefObject<XinFormRef<T> | undefined>, defaultValue?: T) => Promise<boolean>;
+  handleFinish?: (values: T, mode: FormMode, formRef: RefObject<XinFormRef<T> | null>, defaultValue?: T) => Promise<boolean>;
 
   /** 开启批量操作 */
   batchOperation?: boolean;

@@ -27,7 +27,7 @@ export type SubmitterButton = {
  */
 export interface SubmitterProps {
   /** 操作栏渲染 */
-  render?: false | ((dom: SubmitterButton, form?: RefObject<XinFormRef | undefined>) => ReactNode);
+  render?: false | ((dom: SubmitterButton, form?: RefObject<XinFormRef | null>) => ReactNode);
   /** 提交按钮文本 */
   submitText?: string | ReactNode;
   /** 重置按钮文本 */
@@ -73,7 +73,7 @@ export type XinFormProps<T = any> = Omit<FormProps<T>, 'onFinish' | 'form'> & {
   /** 表单提交 */
   onFinish?: (values: T) => Promise<boolean | void>;
   /** 表单实例引用 */
-  formRef?: RefObject<XinFormRef | undefined>;
+  formRef?: RefObject<XinFormRef | null>;
   /** ModalForm 弹窗配置 */
   modalProps?: Omit<ModalProps, 'open'>;
   /** DrawerForm 抽屉配置 */
