@@ -59,7 +59,7 @@ export interface XinFormRef<T = any> extends FormInstance<T> {
 /**
  * XinForm 组件属性
  */
-export type XinFormProps<T = any> = Omit<FormProps<T>, 'onFinish' | 'form'> & {
+export type XinFormProps<T = any> = Omit<FormProps<T>, 'onFinish'> & {
   /** 表单列配置 */
   columns: FormColumn<T>[];
   /** 表单布局类型 */

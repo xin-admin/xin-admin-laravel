@@ -27,6 +27,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
     colProps = { span: 12 },
     onFinish,
     formRef,
+    form,
     modalProps,
     drawerProps,
     trigger,
@@ -35,13 +36,13 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
   } = props;
 
   const { t } = useTranslation();
-  const [form] = Form.useForm<T>();
+  const [xinForm] = Form.useForm<T>(form);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // 暴露表单方法
   useImperativeHandle(formRef, (): XinFormRef => ({
-    ...form,
+    ...xinForm,
     open: handleOpen,
     close: handleClose,
     isOpen: () => open,
@@ -136,7 +137,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
                   label={column.title || column.label}
                   {...formItemProps as FormItemProps}
                 >
-                  {fieldRender ? fieldRender(form) : defaultFieldRender}
+                  {fieldRender ? fieldRender(xinForm) : defaultFieldRender}
                 </Form.Item>
               </Col>
               :
@@ -146,7 +147,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
                 label={column.title || column.label}
                 {...formItemProps as FormItemProps}
               >
-                {fieldRender ? fieldRender(form) : defaultFieldRender}
+                {fieldRender ? fieldRender(xinForm) : defaultFieldRender}
               </Form.Item>
           }}
         </Form.Item>
@@ -170,7 +171,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
             label={column.title || column.label}
             {...formItemProps as FormItemProps}
           >
-            {fieldRender ? fieldRender(form) : defaultFieldRender}
+            {fieldRender ? fieldRender(xinForm) : defaultFieldRender}
           </Form.Item>
         </Col>
         :
@@ -180,7 +181,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
           label={column.title || column.label}
           {...formItemProps as FormItemProps}
         >
-          {fieldRender ? fieldRender(form) : defaultFieldRender}
+          {fieldRender ? fieldRender(xinForm) : defaultFieldRender}
         </Form.Item>
     }
   }, [grid, form]);
@@ -193,7 +194,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
       <Button
         type="primary"
         loading={loading}
-        onClick={() => form.submit()}
+        onClick={() => xinForm.submit()}
         {...submitter?.submitButtonProps}
       >
         {submitter?.submitText || t('xinForm.submit')}
@@ -213,7 +214,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
     const resetButton = (
       <Button
         loading={loading}
-        onClick={() => form.resetFields()}
+        onClick={() => xinForm.resetFields()}
         {...submitter?.resetButtonProps}
       >
         {submitter?.resetText || t('xinForm.reset')}
