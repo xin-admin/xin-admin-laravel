@@ -37,6 +37,7 @@ export default {
   "menu.system.monitor": "System Monitor",
   "menu.system.file": "File Management",
   "menu.system.dict": "Dictionary Management",
+  "menu.system.mail": "Mail Management",
   "menu.system.dict.item": "Dictionary Data",
   "menu.system.dict-demo": "Dict Demo",
   "menu.system.setting": "System Configuration",
