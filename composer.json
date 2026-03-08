@@ -26,11 +26,12 @@
     },
     "autoload": {
         "psr-4": {
+            "": "web/",
             "App\\": "app/",
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-          "app/Support/helpers.php"
+          "app/Common/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -41,8 +42,7 @@
     "scripts": {
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "@php artisan serve",
-            "@php artisan queue:listen --tries=1"
+            "npx concurrently \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"npm run dev\" --names=server,queue,vite --kill-others"
         ],
         "post-create-project-cmd": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

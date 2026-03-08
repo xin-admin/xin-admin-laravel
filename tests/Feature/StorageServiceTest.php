@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Services\StorageConfigService;
-use App\Services\SysSettingService;
+use App\Common\Services\StorageConfigService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;

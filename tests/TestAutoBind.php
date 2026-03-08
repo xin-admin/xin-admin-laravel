@@ -2,8 +2,7 @@
 
 namespace Tests;
 
-use App\Providers\AutoBindServiceProvider;
-use Tests\TestCase;
+use App\Common\Providers\AutoBindServiceProvider;
 
 class TestAutoBind extends TestCase
 {

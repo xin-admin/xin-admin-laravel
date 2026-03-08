@@ -1,0 +1,28 @@
+/* 路由切换动画样式 */
+.page-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+/* 淡入淡出 + 轻微滑动效果 */
+.page-enter {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.page-exit {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.page-exit-active {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 200ms ease-in, transform 200ms ease-in;
+}

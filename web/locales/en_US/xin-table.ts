@@ -1,0 +1,35 @@
+export default {
+  // XinTable Component
+  'xinTable.queryTable': 'Query Table',
+  'xinTable.keywordPlaceholder': 'Enter keyword',
+  'xinTable.keywordEmpty': 'Please enter search content',
+  'xinTable.add': 'Add',
+  'xinTable.refresh': 'Refresh',
+  'xinTable.columnSettings': 'Column Settings',
+  'xinTable.showBorder': 'Show Border',
+  'xinTable.hideBorder': 'Hide Border',
+  'xinTable.density.default': 'Default',
+  'xinTable.density.middle': 'Middle',
+  'xinTable.density.compact': 'Compact',
+  'xinTable.total': 'Total {{total}} items',
+  // Operate Column
+  'xinTable.operate': 'Actions',
+  'xinTable.edit': 'Edit',
+  'xinTable.delete': 'Delete',
+  'xinTable.deleteConfirm': 'Are you sure to delete record {{id}}?',
+  'xinTable.deleteOk': 'Confirm Delete',
+  'xinTable.deleteCancel': 'Cancel',
+  'xinTable.deleteSuccess': 'Deleted successfully',
+  // FormModal
+  'xinTable.form.createTitle': 'Create',
+  'xinTable.form.editTitle': 'Edit',
+  'xinTable.form.close': 'Close',
+  'xinTable.form.createSuccess': 'Created successfully!',
+  'xinTable.form.updateSuccess': 'Updated successfully!',
+  'xinTable.form.updateKeyUndefined': 'Primary key for update is undefined!',
+  // SearchForm
+  'xinTable.search.search': 'Search',
+  'xinTable.search.reset': 'Reset',
+  'xinTable.search.expand': 'Expand',
+  'xinTable.search.collapse': 'Collapse',
+};

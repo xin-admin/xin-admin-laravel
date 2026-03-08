@@ -1,0 +1,35 @@
+export default {
+  // XinTable 组件
+  'xinTable.queryTable': '查询表格',
+  'xinTable.keywordPlaceholder': '请输入关键字',
+  'xinTable.keywordEmpty': '请输入搜索内容',
+  'xinTable.add': '新增',
+  'xinTable.refresh': '刷新',
+  'xinTable.columnSettings': '列设置',
+  'xinTable.showBorder': '显示边框',
+  'xinTable.hideBorder': '隐藏边框',
+  'xinTable.density.default': '默认',
+  'xinTable.density.middle': '适中',
+  'xinTable.density.compact': '紧凑',
+  'xinTable.total': '共 {{total}} 条',
+  // 操作栏
+  'xinTable.operate': '操作栏',
+  'xinTable.edit': '编辑',
+  'xinTable.delete': '删除',
+  'xinTable.deleteConfirm': '你是否要删除 {{id}} 记录？',
+  'xinTable.deleteOk': '确认删除',
+  'xinTable.deleteCancel': '取消删除',
+  'xinTable.deleteSuccess': '删除成功',
+  // FormModal
+  'xinTable.form.createTitle': '新增',
+  'xinTable.form.editTitle': '编辑',
+  'xinTable.form.close': '关闭',
+  'xinTable.form.createSuccess': '创建成功！',
+  'xinTable.form.updateSuccess': '更新成功！',
+  'xinTable.form.updateKeyUndefined': '更新的主键未定义！',
+  // SearchForm
+  'xinTable.search.search': '搜索',
+  'xinTable.search.reset': '重置',
+  'xinTable.search.expand': '展开',
+  'xinTable.search.collapse': '收起',
+};
