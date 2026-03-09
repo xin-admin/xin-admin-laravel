@@ -496,6 +496,18 @@ class SysUserSeeder extends Seeder
                         ]
                     ],
                     [
+                        'type' => 'route',
+                        'key' => 'system.storage',
+                        'name' => '存储配置',
+                        'path' => '/system/storage',
+                        'local' => 'menu.system.storage',
+                        'children' => [
+                            ['type' => 'rule', 'name' => '获取配置', 'key' => 'system.storage.config'],
+                            ['type' => 'rule', 'name' => '保存配置', 'key' => 'system.storage.save'],
+                            ['type' => 'rule', 'name' => '测试连接', 'key' => 'system.storage.test'],
+                        ]
+                    ],
+                    [
                         'type' => "route",
                         'name' => "系统信息",
                         'local' => "menu.system.info",
