@@ -4,6 +4,9 @@
 <h1 align="center">Xin Admin</h1>
 <h4 align="center">企业级 PHP 全栈开发框架</h4>
 <p align="center">
+    <a href="./README.md">简体中文</a> | <a href="./README.en.md">English</a>
+</p>
+<p align="center">
     <a href="https://xinadmin.cn/" target="_blank">
         <img src="https://img.shields.io/badge/XinAdmin-V2-brightgreen" alt="xinadmin">
     </a>
@@ -28,7 +31,7 @@
 XinAdmin 是一款基于 PHP8.2 + Laravel12 + Mysql + React + Zustand + TypeScript + Ant Design 等前沿技术栈开发的全栈开发框架，提供注解路由、接口权限验证、动态菜单、分组权限、数据字典、系统配置、文件管理、字典管理等便捷开发，
 遵循 MIT 无需授权即可免费商用.
 
-<img src="https://file.xinadmin.cn/file/demo.png" alt=""/>
+<img src="https://file.xinadmin.cn/readme/index_zh.png" alt=""/>
 
 ## 主要特征
 
@@ -61,12 +64,20 @@ XinAdmin 是一款基于 PHP8.2 + Laravel12 + Mysql + React + Zustand + TypeScri
 - 邮件管理：为 `Laravel` 邮件系统提供可视化配置与测试
 - 存储配置：为 `Laravel` 文件存储提供可视化配置与测试
 
+## 预览图片
+
+<img src="https://file.xinadmin.cn/readme/index_zh.png" alt="首页"/>
+<img src="https://file.xinadmin.cn/readme/index_dark_zh.png" alt="暗黑模式"/>
+<img src="https://file.xinadmin.cn/readme/file_zh.png" alt="文件管理"/>
+<img src="https://file.xinadmin.cn/readme/mail_zh.png" alt="邮件管理"/>
+<img src="https://file.xinadmin.cn/readme/storage_zh.png" alt="存储配置"/>
+
 ## 其他
 - 官网：[https://xinadmin.cn/](https://xinadmin.cn/)
 - 项目文档：[https://xinadmin.cn/](https://xinadmin.cn/)
 - 演示站：[https://laravel.xinadmin.cn/](https://laravel.xinadmin.cn/)
 
 ## 联系我们
-Github: [xinova](https://github.com/xinova)
-Github: [xin-admin](https://github.com/xin-admin)
-QQ: 2302563948
+- Github: [xinova](https://github.com/xinova)
+- Github: [xin-admin](https://github.com/xin-admin)
+- QQ: 2302563948
