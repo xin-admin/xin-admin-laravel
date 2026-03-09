@@ -11,6 +11,7 @@ import {
   Select
 } from 'antd';
 import { CloudUploadOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { getStorageConfig, saveStorageConfig, testStorageConnection } from '@/api/system/sysStorage.ts';
 import type { FormColumn } from "@/components/XinFormField/FieldRender";
 import XinForm, { type XinFormRef } from "@/components/XinForm";
@@ -55,23 +56,24 @@ interface StorageResponse {
 }
 
 const StorageConfig: React.FC = () => {
+  const { t } = useTranslation();
   const formRef = useRef<XinFormRef>(null);
   const [form] = Form.useForm();
   const [testing, setTesting] = useState(false);
   const [selectedDisk, setSelectedDisk] = useState<string>('local');
 
   const driverOptions = [
-    { label: '本地存储 (Local)', value: 'local' },
-    { label: 'Amazon S3 / 对象存储', value: 's3' },
-    { label: 'FTP 服务器', value: 'ftp' },
-    { label: 'SFTP 服务器', value: 'sftp' },
+    { label: t('storage.driver.local'), value: 'local' },
+    { label: t('storage.driver.s3'), value: 's3' },
+    { label: t('storage.driver.ftp'), value: 'ftp' },
+    { label: t('storage.driver.sftp'), value: 'sftp' },
   ];
 
   const columns: FormColumn<StorageResponse>[] = [
     {
       dataIndex: 'default',
       valueType: 'radioButton',
-      title: '默认存储驱动',
+      title: t('storage.driver'),
       fieldProps: {
         options: driverOptions
       },
@@ -80,7 +82,7 @@ const StorageConfig: React.FC = () => {
     },
     // 本地存储配置
     {
-      fieldRender: () => <Divider>本地存储配置</Divider>,
+      fieldRender: () => <Divider>{t('storage.local.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'local'
@@ -91,11 +93,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['local', 'url'],
       valueType: 'text',
-      title: '访问 URL',
+      title: t('storage.local.url'),
       fieldProps: {
-        placeholder: '例如: https://example.com/storage',
+        placeholder: t('storage.local.url.placeholder'),
       },
-      tooltip: '文件的公开访问 URL 前缀',
+      tooltip: t('storage.local.url.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -104,7 +106,7 @@ const StorageConfig: React.FC = () => {
     },
     // S3 配置
     {
-      fieldRender: () => <Divider>S3 / 对象存储配置</Divider>,
+      fieldRender: () => <Divider>{t('storage.s3.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 's3'
@@ -115,9 +117,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'key'],
       valueType: 'text',
-      title: 'Access Key ID',
+      title: t('storage.s3.key'),
       fieldProps: {
-        placeholder: '请输入 Access Key ID',
+        placeholder: t('storage.s3.key.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -129,9 +131,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'secret'],
       valueType: 'password',
-      title: 'Secret Access Key',
+      title: t('storage.s3.secret'),
       fieldProps: {
-        placeholder: '请输入 Secret Access Key',
+        placeholder: t('storage.s3.secret.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -143,9 +145,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'region'],
       valueType: 'text',
-      title: '区域 (Region)',
+      title: t('storage.s3.region'),
       fieldProps: {
-        placeholder: '例如: us-east-1 或 cn-hangzhou',
+        placeholder: t('storage.s3.region.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -157,9 +159,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'bucket'],
       valueType: 'text',
-      title: '存储桶 (Bucket)',
+      title: t('storage.s3.bucket'),
       fieldProps: {
-        placeholder: '请输入存储桶名称',
+        placeholder: t('storage.s3.bucket.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -171,11 +173,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'endpoint'],
       valueType: 'text',
-      title: '端点 (Endpoint)',
+      title: t('storage.s3.endpoint'),
       fieldProps: {
-        placeholder: '自定义端点，如阿里云 OSS: oss-cn-hangzhou.aliyuncs.com',
+        placeholder: t('storage.s3.endpoint.placeholder'),
       },
-      tooltip: '使用 AWS S3 时可留空，使用阿里云 OSS、腾讯云 COS 等需要填写',
+      tooltip: t('storage.s3.endpoint.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -185,11 +187,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'url'],
       valueType: 'text',
-      title: '自定义 URL',
+      title: t('storage.s3.url'),
       fieldProps: {
-        placeholder: '自定义文件访问 URL 前缀（可选）',
+        placeholder: t('storage.s3.url.placeholder'),
       },
-      tooltip: '如果使用 CDN，可以在此配置 CDN 域名',
+      tooltip: t('storage.s3.url.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -199,8 +201,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'use_path_style_endpoint'],
       valueType: 'switch',
-      title: '路径风格端点',
-      tooltip: '某些 S3 兼容服务（如 MinIO）需要启用此选项',
+      title: t('storage.s3.path_style'),
+      tooltip: t('storage.s3.path_style.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -209,7 +211,7 @@ const StorageConfig: React.FC = () => {
     },
     // FTP 配置
     {
-      fieldRender: () => <Divider>FTP 服务器配置</Divider>,
+      fieldRender: () => <Divider>{t('storage.ftp.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'ftp'
@@ -220,9 +222,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'host'],
       valueType: 'text',
-      title: '主机地址',
+      title: t('storage.ftp.host'),
       fieldProps: {
-        placeholder: '例如: ftp.example.com',
+        placeholder: t('storage.ftp.host.placeholder'),
       },
       required: true,
       colProps: { span: 16 },
@@ -234,9 +236,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'port'],
       valueType: 'digit',
-      title: '端口',
+      title: t('storage.ftp.port'),
       fieldProps: {
-        placeholder: '21',
+        placeholder: t('storage.ftp.port.placeholder'),
       },
       colProps: { span: 8 },
       dependency: {
@@ -247,9 +249,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'username'],
       valueType: 'text',
-      title: '用户名',
+      title: t('storage.ftp.username'),
       fieldProps: {
-        placeholder: '请输入 FTP 用户名',
+        placeholder: t('storage.ftp.username.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -261,9 +263,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'password'],
       valueType: 'password',
-      title: '密码',
+      title: t('storage.ftp.password'),
       fieldProps: {
-        placeholder: '请输入 FTP 密码',
+        placeholder: t('storage.ftp.password.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -275,11 +277,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'root'],
       valueType: 'text',
-      title: '根目录',
+      title: t('storage.ftp.root'),
       fieldProps: {
-        placeholder: '例如: /public_html/uploads',
+        placeholder: t('storage.ftp.root.placeholder'),
       },
-      tooltip: 'FTP 服务器上的存储根目录',
+      tooltip: t('storage.ftp.root.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -289,10 +291,10 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'timeout'],
       valueType: 'digit',
-      title: '超时时间',
+      title: t('storage.ftp.timeout'),
       fieldProps: {
-        placeholder: '30',
-        addonAfter: '秒'
+        placeholder: t('storage.ftp.timeout.placeholder'),
+        addonAfter: t('storage.ftp.timeout.suffix')
       },
       colProps: { span: 12 },
       dependency: {
@@ -303,8 +305,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'passive'],
       valueType: 'switch',
-      title: '被动模式',
-      tooltip: '建议开启，适用于大多数网络环境',
+      title: t('storage.ftp.passive'),
+      tooltip: t('storage.ftp.passive.tooltip'),
       colProps: { span: 8 },
       dependency: {
         dependencies: ['default'],
@@ -314,8 +316,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'ssl'],
       valueType: 'switch',
-      title: 'SSL/TLS',
-      tooltip: '启用 FTPS 安全连接',
+      title: t('storage.ftp.ssl'),
+      tooltip: t('storage.ftp.ssl.tooltip'),
       colProps: { span: 8 },
       dependency: {
         dependencies: ['default'],
@@ -324,7 +326,7 @@ const StorageConfig: React.FC = () => {
     },
     // SFTP 配置
     {
-      fieldRender: () => <Divider>SFTP 服务器配置</Divider>,
+      fieldRender: () => <Divider>{t('storage.sftp.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'sftp'
@@ -335,9 +337,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'host'],
       valueType: 'text',
-      title: '主机地址',
+      title: t('storage.sftp.host'),
       fieldProps: {
-        placeholder: '例如: sftp.example.com',
+        placeholder: t('storage.sftp.host.placeholder'),
       },
       required: true,
       colProps: { span: 16 },
@@ -349,9 +351,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'port'],
       valueType: 'digit',
-      title: '端口',
+      title: t('storage.sftp.port'),
       fieldProps: {
-        placeholder: '22',
+        placeholder: t('storage.sftp.port.placeholder'),
       },
       colProps: { span: 8 },
       dependency: {
@@ -362,9 +364,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'username'],
       valueType: 'text',
-      title: '用户名',
+      title: t('storage.sftp.username'),
       fieldProps: {
-        placeholder: '请输入 SFTP 用户名',
+        placeholder: t('storage.sftp.username.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -376,11 +378,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'password'],
       valueType: 'password',
-      title: '密码',
+      title: t('storage.sftp.password'),
       fieldProps: {
-        placeholder: '请输入 SFTP 密码',
+        placeholder: t('storage.sftp.password.placeholder'),
       },
-      tooltip: '如果使用密钥认证可留空',
+      tooltip: t('storage.sftp.password.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -390,11 +392,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'root'],
       valueType: 'text',
-      title: '根目录',
+      title: t('storage.sftp.root'),
       fieldProps: {
-        placeholder: '例如: /var/www/uploads',
+        placeholder: t('storage.sftp.root.placeholder'),
       },
-      tooltip: 'SFTP 服务器上的存储根目录',
+      tooltip: t('storage.sftp.root.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -404,10 +406,10 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'timeout'],
       valueType: 'digit',
-      title: '超时时间',
+      title: t('storage.sftp.timeout'),
       fieldProps: {
-        placeholder: '30',
-        addonAfter: '秒'
+        placeholder: t('storage.sftp.timeout.placeholder'),
+        addonAfter: t('storage.sftp.timeout.suffix')
       },
       colProps: { span: 12 },
       dependency: {
@@ -418,12 +420,12 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'private_key'],
       valueType: 'textarea',
-      title: '私钥内容',
+      title: t('storage.sftp.private_key'),
       fieldProps: {
-        placeholder: '粘贴 SSH 私钥内容（可选）',
+        placeholder: t('storage.sftp.private_key.placeholder'),
         rows: 4
       },
-      tooltip: '如果使用密钥认证，请粘贴私钥内容',
+      tooltip: t('storage.sftp.private_key.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -433,11 +435,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'passphrase'],
       valueType: 'password',
-      title: '私钥密码',
+      title: t('storage.sftp.passphrase'),
       fieldProps: {
-        placeholder: '如果私钥有密码保护，请输入',
+        placeholder: t('storage.sftp.passphrase.placeholder'),
       },
-      tooltip: '私钥的密码短语（如果有）',
+      tooltip: t('storage.sftp.passphrase.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -461,7 +463,7 @@ const StorageConfig: React.FC = () => {
 
   const onFinish = async (values: any) => {
     await saveStorageConfig(values);
-    message.success('保存成功');
+    message.success(t('storage.save.success'));
   };
 
   const onValuesChange = (changedValues: any) => {
@@ -474,7 +476,7 @@ const StorageConfig: React.FC = () => {
     try {
       setTesting(true);
       await testStorageConnection(selectedDisk);
-      message.success('连接测试成功');
+      message.success(t('storage.test.success'));
     } finally {
       setTesting(false);
     }
@@ -483,8 +485,8 @@ const StorageConfig: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>文件存储配置</Title>
-        <Text type="secondary">配置系统文件存储方式，支持本地存储、S3 对象存储、FTP 及 SFTP 等多种存储方式</Text>
+        <Title level={3}>{t('storage.page.title')}</Title>
+        <Text type="secondary">{t('storage.page.description')}</Text>
       </div>
       <Row gutter={24}>
         <Col span={16}>
@@ -505,9 +507,9 @@ const StorageConfig: React.FC = () => {
         </Col>
 
         <Col span={8}>
-          <Card title="连接测试">
+          <Card title={t('storage.test.title')}>
             <Form layout="vertical">
-              <Form.Item label="当前存储驱动">
+              <Form.Item label={t('storage.test.current_driver')}>
                 <Select
                   value={selectedDisk}
                   onChange={setSelectedDisk}
@@ -522,18 +524,18 @@ const StorageConfig: React.FC = () => {
                 loading={testing}
                 onClick={onTestConnection}
               >
-                测试连接
+                {t('storage.test.button')}
               </Button>
             </Form>
 
             <Divider />
 
             <div style={{ fontSize: 12, color: '#666' }}>
-              <Title level={5}><CloudUploadOutlined /> 存储驱动说明</Title>
-              <p><strong>本地存储：</strong>文件存储在服务器本地磁盘，适合小型项目。</p>
-              <p><strong>S3 / 对象存储：</strong>兼容 AWS S3、阿里云 OSS、腾讯云 COS、七牛云等，适合大规模文件存储。</p>
-              <p><strong>FTP：</strong>通过 FTP 协议连接远程服务器存储文件。</p>
-              <p><strong>SFTP：</strong>通过 SSH 安全连接远程服务器，更安全可靠。</p>
+              <Title level={5}><CloudUploadOutlined /> {t('storage.help.title')}</Title>
+              <p><strong>{t('storage.help.local')}</strong>{t('storage.help.local.desc')}</p>
+              <p><strong>{t('storage.help.s3')}</strong>{t('storage.help.s3.desc')}</p>
+              <p><strong>{t('storage.help.ftp')}</strong>{t('storage.help.ftp.desc')}</p>
+              <p><strong>{t('storage.help.sftp')}</strong>{t('storage.help.sftp.desc')}</p>
             </div>
           </Card>
         </Col>

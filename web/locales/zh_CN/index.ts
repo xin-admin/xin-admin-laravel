@@ -16,6 +16,7 @@ import xinForm from "./xin-form";
 import xinCrud from "./xin-crud";
 import systemInfo from "./system-info";
 import sysMail from "./sys-mail";
+import sysStorage from "./sys-storage";
 
 export default {
   ...xinTable,
@@ -37,4 +38,5 @@ export default {
   ...xinCrud,
   ...systemInfo,
   ...sysMail,
+  ...sysStorage,
 };

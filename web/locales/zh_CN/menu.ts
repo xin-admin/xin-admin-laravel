@@ -38,6 +38,7 @@ export default {
   "menu.system.file": "文件管理",
   "menu.system.dict": "字典管理",
   "menu.system.mail": "邮件管理",
+  "menu.system.storage": "存储配置",
   "menu.system.dict.item": "字典数据",
   "menu.system.dict-demo": "字典示例",
   "menu.system.setting": "系统配置",

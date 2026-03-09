@@ -10,6 +10,7 @@ import sysFile from "./sys-file";
 import sysDict from "./sys-dict";
 import sysSetting from "./sys-setting";
 import sysMail from "./sys-mail";
+import sysStorage from "./sys-storage";
 import dashboard from "./dashboard";
 import layout from "./layout";
 import login from "./login";
@@ -31,6 +32,7 @@ export default {
   ...sysDict,
   ...sysSetting,
   ...sysMail,
+  ...sysStorage,
   ...dashboard,
   ...layout,
   ...login,
