@@ -176,7 +176,7 @@ class SysFileController extends BaseController
     /**
      * 下载文件
      */
-    #[GetRoute('/download/{id}', 'download', where: ['id' => '[0-9]+'])]
+    #[GetRoute('/download/{id}', false, where: ['id' => '[0-9]+'])]
     public function download(int $id): StreamedResponse
     {
         return $this->service->download($id);
