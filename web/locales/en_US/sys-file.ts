@@ -69,6 +69,7 @@ export default {
   "sysFile.type.video": "Video",
   "sysFile.type.archive": "Archive",
   "sysFile.type.other": "Other",
+  "sysFile.type.document": "Document",
   "sysFile.trash": "Trash",
   "sysFile.emptyTrash": "Empty Trash",
   "sysFile.confirmEmptyTrash": "Are you sure to empty the trash? This action cannot be undone!",

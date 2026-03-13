@@ -30,26 +30,21 @@ const { Title, Text } = Typography;
 import {useTranslation} from 'react-i18next';
 import type {TreeProps} from 'antd/es/tree';
 import {
-  AudioOutlined,
   CloudUploadOutlined,
   CopyOutlined,
   DeleteOutlined,
   DownloadOutlined,
   EditOutlined,
   FileAddOutlined,
-  FileImageOutlined,
-  FileTextOutlined,
-  FileZipOutlined,
   FolderOpenOutlined,
   MoreOutlined,
   ReloadOutlined,
   ScissorOutlined,
   UndoOutlined,
-  UploadOutlined,
-  VideoCameraOutlined
+  UploadOutlined
 } from '@ant-design/icons';
 import type {ISysFileGroup} from '@/domain/iSysFileGroup';
-import type {ISysFileInfo, SysFileType} from '@/domain/iSysFile';
+import type {ISysFileInfo} from '@/domain/iSysFile';
 import {
   createFileGroup,
   deleteFileGroup,
@@ -79,10 +74,9 @@ import IconFont from '@/components/IconFont';
 import {isArray, isFunction} from "lodash";
 
 interface FileOptions {
-  value: SysFileType;
+  value: number;
   color: TagProps['color'];
-  label: React.ReactNode,
-  icon: React.ReactNode
+  label: React.ReactNode
 }
 
 const FileManagement: React.FC = () => {
@@ -463,37 +457,37 @@ const FileManagement: React.FC = () => {
     {
       value: 10,
       color: 'purple',
-      icon: <FileImageOutlined />,
       label: t('sysFile.type.image')
     },
     {
       value: 20,
       color: 'blue',
-      icon: <AudioOutlined />,
       label: t('sysFile.type.audio')
     },
     {
       value: 30,
       color: 'magenta',
-      icon: <VideoCameraOutlined />,
       label: t('sysFile.type.video')
     },
     {
       value: 40,
       color: 'orange',
-      icon: <FileZipOutlined />,
       label: t('sysFile.type.archive')
     },
     {
       value: 50,
-      color: 'yellow',
-      icon: <FileTextOutlined />,
+      color: 'success',
+      label: t('sysFile.type.document')
+    },
+    {
+      value: 99,
+      color: 'error',
       label: t('sysFile.type.other')
     }
   ];
 
   /** 文件类型渲染 */
-  const fileTypeRender = (type: SysFileType) => {
+  const fileTypeRender = (type: number) => {
     const options = fileOptions.find(opt => opt.value === type);
     return <Tag color={options?.color}>{options?.label}</Tag>;
   }

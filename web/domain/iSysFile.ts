@@ -1,6 +1,3 @@
-// 文件类型 10：图片，20：音频，30：视频，40：压缩包，50：其他
-export type SysFileType = 10 | 20 | 30 | 40 | 50;
-
 export interface ISysFileInfo {
   /** 文件ID */
   id?: number;
@@ -10,8 +7,8 @@ export interface ISysFileInfo {
   channel?: number;
   /** 存储磁盘 local/s3 */
   disk?: string;
-  /** 文件类型 10：图片，20：音频，30：视频，40：压缩包，50：其他 */
-  file_type?: SysFileType;
+  /** 文件类型 10：图片，20：音频，30：视频，40：压缩包，50：文档，99：其它 */
+  file_type?: number;
   /** 文件名 */
   file_name?: string;
   /** 文件路径 */

@@ -65,6 +65,7 @@ export default {
   "sysFile.type.video": "视频",
   "sysFile.type.archive": "压缩包",
   "sysFile.type.other": "其他",
+  "sysFile.type.document": "文档",
   "sysFile.trash": "回收站",
   "sysFile.emptyTrash": "清空回收站",
   "sysFile.confirmEmptyTrash": "确定清空回收站吗？此操作不可恢复！",
