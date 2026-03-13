@@ -12,6 +12,7 @@ return [
         'audio' => '音频',
         'video' => '视频',
         'zip' => '压缩包',
+        'document' => '文档',
         'annex' => '附件',
         'size_limit' => '文件大小超出限制',
         'ext_limit' => '文件扩展名不允许 :ext',

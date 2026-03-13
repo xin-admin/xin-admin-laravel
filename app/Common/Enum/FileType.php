@@ -11,7 +11,7 @@ enum FileType: int
     // 图片
     case IMAGE = 10;
 
-    //音频
+    // 音频
     case AUDIO = 20;
 
     // 视频
@@ -19,6 +19,9 @@ enum FileType: int
 
     // 压缩包
     case ZIP = 40;
+
+    // 文档
+    case DOCUMENT = 50;
 
     // 未知文件
     case ANNEX = 99;
@@ -33,6 +36,7 @@ enum FileType: int
             self::AUDIO => __('system.file.audio'),
             self::VIDEO => __('system.file.video'),
             self::ZIP => __('system.file.zip'),
+            self::DOCUMENT => __('system.file.document'),
             self::ANNEX => __('system.file.annex'),
         };
     }
@@ -47,19 +51,27 @@ enum FileType: int
             self::AUDIO => 'static/audio.svg',
             self::VIDEO => 'static/video.svg',
             self::ZIP => 'static/zip.svg',
+            self::DOCUMENT => 'static/document.svg',
             self::ANNEX => 'static/annex.svg',
         };
     }
 
     /**
-     * 获取最大大小
+     * 根据扩展名推断文件类型
      */
-    public function maxSize(): int
+    public static function guessFromExtension(string $extension): self
     {
-        return match ($this) {
-            self::IMAGE => 2097152,
-            self::AUDIO, self::VIDEO, self::ZIP, self::ANNEX => 10485760,
-        };
+        $extension = strtolower($extension);
+
+        foreach (self::cases() as $case) {
+            if ($case === self::ANNEX) continue; // 跳过 OTHER
+
+            if (in_array($extension, $case->fileExt())) {
+                return $case;
+            }
+        }
+
+        return self::ANNEX;
     }
 
     /**
@@ -68,10 +80,11 @@ enum FileType: int
     public function fileExt(): array|string
     {
         return match ($this) {
-            self::IMAGE => ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'avif', 'webp'],
+            self::IMAGE => ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'avif', 'webp', 'svg', 'ico'],
             self::AUDIO => ['mp3', 'wma', 'wav', 'ape', 'flac', 'ogg', 'aac'],
             self::VIDEO => ['mp4', 'mov', 'wmv', 'flv', 'avl', 'webm', 'mkv'],
-            self::ZIP => ['zip', 'rar'],
+            self::DOCUMENT => ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'md', 'csv'],
+            self::ZIP => ['zip', 'rar', '7z', 'tar', 'gz'],
             self::ANNEX => '*',
         };
     }

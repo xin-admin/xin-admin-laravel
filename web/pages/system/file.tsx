@@ -14,7 +14,6 @@ import {
   Typography,
   Progress,
   Row,
-  Select,
   Space,
   Spin,
   Table,
@@ -94,7 +93,7 @@ const FileManagement: React.FC = () => {
   const [fileGroupMap, setFileGroupMap] = useState<Map<React.Key, ISysFileGroup>>(new Map());
   const [selectedGroupId, setSelectedGroupId] = useState<React.Key>(0);
   const [updateGroupData, setUpdateGroupData] = useState<ISysFileGroup | null>(null);
-  const groupFormRef = useRef<XinFormRef | undefined>(undefined);
+  const groupFormRef = useRef<XinFormRef>(null);
   const [groupSearchKeyword, setGroupSearchKeyword] = useState<string>();
   const [fileGroupLoading, setFileGroupLoading] = useState<boolean>(true);
 
@@ -103,7 +102,6 @@ const FileManagement: React.FC = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [uploadFileType, setUploadFileType] = useState<SysFileType>(10);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: 0});
@@ -272,7 +270,7 @@ const FileManagement: React.FC = () => {
     try {
       setUploading(true);
       for (const file of fileList) {
-        await uploadFile(file.originFileObj as File, uploadFileType, Number(selectedGroupId) || undefined, setUploadProgress);
+        await uploadFile(file.originFileObj as File, Number(selectedGroupId), setUploadProgress);
       }
       message.success(t('sysFile.uploadSuccess'));
       setUploadModalOpen(false);
@@ -937,13 +935,6 @@ const FileManagement: React.FC = () => {
         confirmLoading={uploading}
       >
         <Form layout="vertical">
-          <Form.Item label={t('sysFile.uploadFileType')} required>
-            <Select
-              value={uploadFileType}
-              onChange={(v) => setUploadFileType(v as SysFileType)}
-              options={fileOptions}
-            />
-          </Form.Item>
           <Form.Item label={t('sysFile.selectFile')} required>
             <Upload.Dragger
               fileList={fileList}

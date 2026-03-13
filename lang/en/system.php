@@ -12,6 +12,7 @@ return [
         'audio' => 'audio',
         'video' => 'video',
         'zip' => 'zip',
+        'document' => 'document',
         'annex' => 'annex',
         'size_limit' => 'The file size exceeds the limit',
         'ext_limit' => 'The file extension is not allowed :ext',

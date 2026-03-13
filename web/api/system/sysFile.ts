@@ -1,5 +1,5 @@
 import createAxios from "@/utils/request";
-import type { ISysFileInfo, SysFileType } from "@/domain/iSysFile";
+import type { ISysFileInfo } from "@/domain/iSysFile";
 
 export type FileListParams = {
   group_id?: number;
@@ -34,17 +34,13 @@ export function getTrashedFileList(params: {page?: number; pageSize?: number}) {
 /**
  * 上传文件
  * @param file 文件
- * @param fileType 文件类型
  * @param groupId 文件组ID
  * @param onProgress 上传进度回调
  */
-export function uploadFile(file: File, fileType: SysFileType, groupId?: number, onProgress?: (progress: number) => void) {
+export function uploadFile(file: File, groupId: number, onProgress?: (progress: number) => void) {
   const formData = new FormData();
   formData.append('file', file);
-  if (groupId) {
-    formData.append('group_id', groupId.toString());
-    formData.append('file_type', fileType.toString());
-  }
+  formData.append('group_id', groupId.toString());
   return createAxios({
     timeout: 0,
     url: '/system/file/list/upload',

@@ -6,16 +6,15 @@ use App\Common\Enum\FileType;
 use App\Common\Exceptions\HttpResponseException;
 use App\Common\Models\System\SysFileModel;
 use App\Common\Services\BaseService;
-use App\Common\Services\StorageConfigService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * 文件服务类
- * 提供完整的文件管理功能，包括上传、下载、复制、移动、删除等操作
  */
 class SysFileService extends BaseService
 {
@@ -26,61 +25,11 @@ class SysFileService extends BaseService
         'file_type' => '=',
     ];
 
-    protected function rules(): array
-    {
-        return [
-            'group_id' => 'required|integer|exists:sys_file_group,id',
-            'channel' => 'required|integer|in:10,20',
-            'disk' => 'required|string|max:10',
-            'file_type' => 'required|integer',
-            'file_name' => 'required|string|max:255',
-            'file_path' => 'required|string|max:255',
-            'file_size' => 'required|integer|min:0',
-            'file_ext' => 'required|string|max:20',
-            'uploader_id' => 'required|integer',
-        ];
-    }
-
-    protected function messages(): array
-    {
-        return [
-            // 文件表验证消息
-            'group_id.required' => '文件分组ID不能为空',
-            'group_id.integer' => '文件分组ID必须是整数',
-            'group_id.exists' => '文件分组不存在',
-
-            'channel.required' => '上传来源不能为空',
-            'channel.integer' => '上传来源必须是整数',
-            'channel.in' => '上传来源必须是10(系统用户)或20(App用户端)',
-
-            'disk.required' => '存储方式不能为空',
-            'disk.string' => '存储方式必须是字符串',
-            'disk.max' => '存储方式不能超过10个字符',
-
-            'file_type.required' => '文件类型不能为空',
-            'file_type.integer' => '文件类型必须是整数',
-
-            'file_name.required' => '文件名称不能为空',
-            'file_name.string' => '文件名称必须是字符串',
-            'file_name.max' => '文件名称不能超过255个字符',
-
-            'file_path.required' => '文件路径不能为空',
-            'file_path.string' => '文件路径必须是字符串',
-            'file_path.max' => '文件路径不能超过255个字符',
-
-            'file_size.required' => '文件大小不能为空',
-            'file_size.integer' => '文件大小必须是整数',
-            'file_size.min' => '文件大小不能为负数',
-
-            'file_ext.required' => '文件扩展名不能为空',
-            'file_ext.string' => '文件扩展名必须是字符串',
-            'file_ext.max' => '文件扩展名不能超过20个字符',
-
-            'uploader_id.required' => '上传者用户ID不能为空',
-            'uploader_id.integer' => '上传者用户ID必须是整数',
-        ];
-    }
-
+    /**
+     * 获取回收站列表
+     * @param array $params
+     * @return array
+     */
     public function getTrashedList(array $params = []): array
     {
         $pageSize = $params['pageSize'] ?? 10;
@@ -93,18 +42,17 @@ class SysFileService extends BaseService
     /**
      * 获取存储磁盘实例
      */
-    protected function disk(?string $disk = null): FilesystemAdapter
+    protected function disk($disk): FilesystemAdapter
     {
-        $diskName = $disk ?? StorageConfigService::getDefaultDisk();
-        if ($diskName === 's3' && !StorageConfigService::isS3Configured()) {
+        if ($disk === 's3' && !self::isS3Configured()) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.storage.s3_not_configured')]);
         }
         /** @var FilesystemAdapter */
-        return Storage::disk($diskName);
+        return Storage::disk($disk);
     }
 
     /**
-     * 生成存储路径（结合分组ID）
+     * 生成存储路径
      */
     protected function generateStoragePath(string $extension): string
     {
@@ -113,102 +61,44 @@ class SysFileService extends BaseService
 
     /**
      * 上传文件
+     * @param UploadedFile $file 文件
+     * @param int $groupId 分组 ID
+     * @param int $channel 上传来源 0：匿名用户，10：后台用户，20：APP用户
+     * @param int|null $user_id 上传用户 ID
+     * @return array
      */
-    public function upload(
-        FileType $fileType,
-        ?int $groupId = null,
-        int $channel = 10,
-    ): array {
-        $disk = StorageConfigService::getDefaultDisk();
-        $groupId = $groupId ?? 0;
+    public function upload(UploadedFile $file, int $groupId = 0, int $channel = 0, ?int $user_id = null): array
+    {
+        // 文件扩展名
+        $fileExt = strtolower($file->getClientOriginalExtension() ?: $file->extension());
 
-        $file = request()->file('file');
-        if (!$file instanceof UploadedFile) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
+        if (empty($fileExt)) {
+            throw new HttpResponseException(['success' => false, 'msg' => '无法识别的文件扩展名']);
         }
-
-        $this->validateFile($file, $fileType);
-
-        $fileExt = strtolower($file->getClientOriginalExtension()) ?: $file->extension();
+        // 推断文件类型
+        $fileType = FileType::guessFromExtension($fileExt);
+        // 获取储存路径
         $storagePath = $this->generateStoragePath($fileExt);
-        
+        // 获取磁盘
+        $disk = Config::get('filesystems.default');
         // 存储文件并设置可见性
         $stored = $this->disk($disk)->put($storagePath, $file->getContent(), 'public');
         if (!$stored) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.upload_failed')]);
         }
-        
-        $fileData = SysFileModel::create([
-            'disk' => $disk,
-            'group_id' => $groupId,
-            'channel' => $channel,
-            'file_name' => $file->getClientOriginalName(),
-            'file_type' => $fileType->value,
-            'file_path' => $storagePath,
-            'file_size' => $file->getSize(),
-            'file_ext' => $fileExt,
-            'uploader_id' => Auth::id(),
-        ]);
-        
-        return $fileData->toArray();
-    }
-
-    /**
-     * 通过内容直接存储文件
-     */
-    public function store(
-        string $content,
-        string $filename,
-        FileType $fileType,
-        ?int $groupId = null,
-    ): array {
-        $disk = StorageConfigService::getDefaultDisk();
-        $groupId = $groupId ?? 0;
-
-        $fileExt = pathinfo($filename, PATHINFO_EXTENSION) ?: 'bin';
-        $storagePath = $this->generateStoragePath($fileExt);
-        
-        $stored = $this->disk($disk)->put($storagePath, $content, 'public');
-        if (!$stored) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.upload_failed')]);
-        }
-        
-        $fileData = SysFileModel::create([
-            'disk' => $disk,
-            'group_id' => $groupId,
-            'channel' => 10,
-            'file_name' => $filename,
-            'file_type' => $fileType->value,
-            'file_path' => $storagePath,
-            'file_size' => strlen($content),
-            'file_ext' => $fileExt,
-            'uploader_id' => Auth::id(),
-        ]);
-        
-        return $fileData->toArray();
-    }
-
-    /**
-     * 验证上传文件
-     */
-    protected function validateFile(UploadedFile $file, FileType $fileType): void
-    {
-        // 验证文件类型的大小限制
-        if ($file->getSize() > $fileType->maxSize()) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.size_limit')]);
-        }
-        
-        $fileExt = strtolower($file->getClientOriginalExtension()) ?: $file->extension();
-        
-        // 验证文件类型的扩展名限制
-        $allowedExt = $fileType->fileExt();
-        if (is_array($allowedExt)) {
-            if (!in_array($fileExt, $allowedExt)) {
-                throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
-            }
-        } elseif ($allowedExt !== '*' && $allowedExt !== $fileExt) {
-            throw new HttpResponseException(['success' => false, 'msg' => __('system.file.ext_limit', ['ext' => $fileType->name()])]);
-        }
+        // 保存到数据库
+        $model = new SysFileModel();
+        $model->disk = $disk;
+        $model->group_id = $groupId;
+        $model->channel = $channel;
+        $model->file_type = $fileType->value;
+        $model->file_path = $storagePath;
+        $model->file_name = $file->getClientOriginalName();
+        $model->file_size = $file->getSize();
+        $model->file_ext = $fileExt;
+        $model->uploader_id = $user_id;
+        $model->save();
+        return $model->toArray();
     }
 
     /**
@@ -220,7 +110,7 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         return (bool) $file->delete();
     }
 
@@ -241,7 +131,7 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         return $file->restore();
     }
 
@@ -262,10 +152,10 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         // 删除物理文件
         $this->disk($file->disk)->delete($file->file_path);
-        
+
         return (bool) $file->forceDelete();
     }
 
@@ -276,13 +166,13 @@ class SysFileService extends BaseService
     {
         $files = SysFileModel::withTrashed()->whereIn('id', $fileIds)->get();
         $count = 0;
-        
+
         foreach ($files as $file) {
             $this->disk($file->disk)->delete($file->file_path);
             $file->forceDelete();
             $count++;
         }
-        
+
         return $count;
     }
 
@@ -295,7 +185,7 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         $downloadName = $filename ?? $file->file_name;
         return $this->disk($file->disk)->download($file->file_path, $downloadName);
     }
@@ -309,9 +199,9 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         $mimeType = $this->getMimeType($file->file_ext);
-        
+
         return response()->stream(
             function () use ($file) {
                 $stream = $this->disk($file->disk)->readStream($file->file_path);
@@ -337,7 +227,7 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         return $this->disk($file->disk)->get($file->file_path);
     }
 
@@ -350,7 +240,7 @@ class SysFileService extends BaseService
         if (!$file) {
             return null;
         }
-        
+
         return $this->disk($file->disk)->url($file->file_path);
     }
 
@@ -371,9 +261,9 @@ class SysFileService extends BaseService
         if (!$file) {
             return null;
         }
-        
+
         $disk = $this->disk($file->disk);
-        
+
         return [
             'id' => $file->id,
             'name' => $file->file_name,
@@ -382,8 +272,8 @@ class SysFileService extends BaseService
             'size' => $file->file_size,
             'extension' => $file->file_ext,
             'mime_type' => $this->getMimeType($file->file_ext),
-            'last_modified' => $disk->exists($file->file_path) 
-                ? date('Y-m-d H:i:s', $disk->lastModified($file->file_path)) 
+            'last_modified' => $disk->exists($file->file_path)
+                ? date('Y-m-d H:i:s', $disk->lastModified($file->file_path))
                 : null,
             'url' => $this->getUrl($file->id),
             'group_id' => $file->group_id,
@@ -406,7 +296,7 @@ class SysFileService extends BaseService
         $newPath = $this->generateStoragePath($file->file_ext);
 
         $this->disk($file->disk)->copy($file->file_path, $newPath);
-        
+
         // 创建新的文件记录
         $newFile = SysFileModel::create([
             'disk' => $file->disk,
@@ -419,7 +309,7 @@ class SysFileService extends BaseService
             'file_ext' => $file->file_ext,
             'uploader_id' => Auth::id(),
         ]);
-        
+
         return $newFile->toArray();
     }
 
@@ -480,7 +370,7 @@ class SysFileService extends BaseService
         if (!$file) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.file.not_found')]);
         }
-        
+
         return $file->update(['file_name' => $newName]);
     }
 
@@ -493,7 +383,7 @@ class SysFileService extends BaseService
         if (!$file) {
             return false;
         }
-        
+
         return $this->disk($file->disk)->exists($file->file_path);
     }
 
@@ -506,7 +396,7 @@ class SysFileService extends BaseService
         if (!$file) {
             return null;
         }
-        
+
         return $this->disk($file->disk)->size($file->file_path);
     }
 
@@ -552,7 +442,7 @@ class SysFileService extends BaseService
             'xml' => 'application/xml',
             'txt' => 'text/plain',
         ];
-        
+
         return $mimeTypes[strtolower($extension)] ?? 'application/octet-stream';
     }
 
@@ -571,4 +461,22 @@ class SysFileService extends BaseService
         return $count;
     }
 
+
+    /**
+     * 检查 S3 配置是否有效
+     * @return bool
+     */
+    public static function isS3Configured(): bool
+    {
+        $storageConfig = Config::get('filesystems.disks.s3');
+
+        if (empty($storageConfig)) {
+            return false;
+        }
+
+        return !empty($storageConfig['key'])
+            && !empty($storageConfig['secret'])
+            && !empty($storageConfig['bucket'])
+            && !empty($storageConfig['region']);
+    }
 }

@@ -14,6 +14,8 @@ use App\Common\Services\AnnoRoute\Route\PostRoute;
 use App\Common\Services\AnnoRoute\Route\PutRoute;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -29,14 +31,31 @@ class SysFileController extends BaseController
     ) {}
 
     /**
-     * 上传图片
+     * 上传文件
      */
     #[PostRoute('/upload', 'upload')]
-    public function uploadImage(): JsonResponse
+    public function uploadImage(Request $request): JsonResponse
     {
-        $fileType = request()->filled('file_type') ? (int) request('file_type') : 10;
-        $groupId = request()->filled('group_id') ? (int) request('group_id') : null;
-        $result = $this->service->upload(FileType::from($fileType), $groupId);
+        $data = $request->validate([
+            'file' => 'required|file',
+            'group_id' => [
+                'required', 'integer',
+                function ($attribute, $value, $fail) {
+                    if ($value == 0) {
+                        return;
+                    }
+                    if (!\DB::table('sys_file_group')->where('id', $value)->exists()) {
+                        $fail('所选的分组 ID 不存在。');
+                    }
+                },
+            ],
+        ]);
+        $result = $this->service->upload(
+            $data['file'],
+            $data['group_id'],
+            10,
+            Auth::id()
+        );
         return $this->success($result);
     }
 

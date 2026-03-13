@@ -3,11 +3,8 @@
 namespace App\Common\Providers;
 
 use App\Common\Models\System\SysAccessToken;
-use App\Common\Models\System\SysSettingItemsModel;
-use App\Common\Observers\SysSettingObserver;
 use App\Common\Services\BaseService;
 use App\Common\Services\LengthAwarePaginatorService;
-use App\Common\Services\StorageConfigService;
 use App\Common\Services\SysSettingService;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
@@ -69,17 +66,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(SysAccessToken::class);
-        
-        // 注册系统设置观察者，自动刷新缓存
-        SysSettingItemsModel::observe(SysSettingObserver::class);
 
         try {
             DB::connection()->getPDO();
             if (Schema::hasTable('sys_setting_items')) {
                 // 刷新系统设置缓存
                 SysSettingService::refreshSettings();
-                // 从系统设置初始化存储配置
-                StorageConfigService::initFromSettings();
             }
         } catch (Exception $e) {
 
