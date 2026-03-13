@@ -41,8 +41,8 @@ const STYLE_CONFIGS = [
 
 // 预设主题列表
 const THEME_LIST = [
-  {background: import.meta.env.VITE_BASE_URL + '/static/theme/default.svg', name: 'light', title: 'layout.themeLight'},
-  {background: import.meta.env.VITE_BASE_URL + '/static/theme/dark.svg', name: 'dark', title: 'layout.themeDark'},
+  {background: '/static/theme/default.svg', name: 'light', title: 'layout.themeLight'},
+  {background: '/static/theme/dark.svg', name: 'dark', title: 'layout.themeDark'},
 ];
 
 // 布局配置

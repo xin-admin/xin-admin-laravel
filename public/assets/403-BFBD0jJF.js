@@ -1,1 +1,0 @@
-import{j as t,B as r}from"./index-fnLueA1H.js";import{C as s}from"./index-_QreiJ2W.js";import{R as a}from"./index-BExbbdBi.js";const p=()=>t.jsx(s,{variant:"borderless",children:t.jsx(a,{status:"403",title:"403",subTitle:"Sorry, you are not authorized to access this page.",extra:t.jsx(r,{type:"primary",children:"Back Home"})})});export{p as default};

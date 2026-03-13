@@ -1,1 +1,0 @@
-import{j as r,B as o}from"./index-fnLueA1H.js";import{C as s}from"./index-_QreiJ2W.js";import{R as t}from"./index-BExbbdBi.js";const n=()=>r.jsx(s,{variant:"borderless",children:r.jsx(t,{status:"warning",title:"There are some problems with your operation.",extra:r.jsx(o,{type:"primary",children:"Go Console"},"console")})});export{n as default};

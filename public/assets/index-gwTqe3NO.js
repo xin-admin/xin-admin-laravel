@@ -1,0 +1,1 @@
+import{f as o,r as u,j as e}from"./index-ByjTjS8C.js";const a=({auth:s,children:t})=>{const r=o(n=>n.access);return u.useMemo(()=>s?r.includes(s):!0,[r,s])?e.jsx(e.Fragment,{children:t}):null};export{a as A};
