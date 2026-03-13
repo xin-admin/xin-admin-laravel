@@ -75,7 +75,7 @@ XinAdmin 是一款基于 PHP8.2 + Laravel12 + Mysql + React + Zustand + TypeScri
 ## 其他
 - 官网：[https://xinadmin.cn/](https://xinadmin.cn/)
 - 项目文档：[https://xinadmin.cn/](https://xinadmin.cn/)
-- 演示站：[https://laravel.xinadmin.cn/](https://laravel.xinadmin.cn/)
+- 演示站：[https://demo.xinadmin.cn/](https://demo.xinadmin.cn/)
 
 ## 联系我们
 - Github: [xinova](https://github.com/xinova)

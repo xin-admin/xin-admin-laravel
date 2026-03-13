@@ -74,7 +74,7 @@ Use annotation routing in `Laravel` controllers, simplifying route definitions a
 ## More Information
 - Official Website: [https://xinadmin.cn/](https://xinadmin.cn/)
 - Documentation: [https://xinadmin.cn/](https://xinadmin.cn/)
-- Demo: [https://laravel.xinadmin.cn/](https://laravel.xinadmin.cn/)
+- Demo: [https://demo.xinadmin.cn/](https://demo.xinadmin.cn/)
 
 ## Contact Us
 - Github: [xinova](https://github.com/xinova)
