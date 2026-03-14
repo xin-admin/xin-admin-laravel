@@ -65,11 +65,11 @@ Use annotation routing in `Laravel` controllers, simplifying route definitions a
 
 ## Preview
 
-<img src="https://file.xinadmin.cn/readme/index_zh.png" alt="Dashboard"/>
-<img src="https://file.xinadmin.cn/readme/index_dark_zh.png" alt="Dark Mode"/>
-<img src="https://file.xinadmin.cn/readme/file_zh.png" alt="File Management"/>
-<img src="https://file.xinadmin.cn/readme/mail_zh.png" alt="Mail Configuration"/>
-<img src="https://file.xinadmin.cn/readme/storage_zh.png" alt="Storage Configuration"/>
+<img src="https://file.xinadmin.cn/readme/index_en.png" alt="Dashboard"/>
+<img src="https://file.xinadmin.cn/readme/index_dark_en.png" alt="Dark Mode"/>
+<img src="https://file.xinadmin.cn/readme/file_en.png" alt="File Management"/>
+<img src="https://file.xinadmin.cn/readme/mail_en.png" alt="Mail Configuration"/>
+<img src="https://file.xinadmin.cn/readme/storage_en.png" alt="Storage Configuration"/>
 
 ## More Information
 - Official Website: [https://xinadmin.cn/](https://xinadmin.cn/)
