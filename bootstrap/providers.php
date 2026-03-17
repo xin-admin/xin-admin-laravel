@@ -1,6 +1,8 @@
 <?php
 
-use App\Common\Providers\{AppServiceProvider, AutoBindServiceProvider, RouteServiceProvider};
+use App\Providers\AppServiceProvider;
+use App\Providers\AutoBindServiceProvider;
+use Xin\AnnoRoute\RouteServiceProvider;
 
 return [
     AppServiceProvider::class,

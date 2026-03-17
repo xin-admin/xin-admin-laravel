@@ -1,0 +1,192 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\BaseController;
+use App\Http\Requests\SysFileMoveOrCopyRequest;
+use App\Services\Admin\SysFileService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Xin\AnnoRoute\Crud\Query;
+use Xin\AnnoRoute\RequestAttribute;
+use Xin\AnnoRoute\Route\DeleteRoute;
+use Xin\AnnoRoute\Route\GetRoute;
+use Xin\AnnoRoute\Route\PostRoute;
+use Xin\AnnoRoute\Route\PutRoute;
+
+/**
+ * 文件列表
+ */
+#[RequestAttribute('/system/file/list', 'system.file.list')]
+#[Query]
+class SysFileController extends BaseController
+{
+
+    public function __construct(
+        protected SysFileService $service
+    ) {}
+
+    /**
+     * 上传文件
+     */
+    #[PostRoute('/upload', 'upload')]
+    public function uploadImage(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'file' => 'required|file',
+            'group_id' => [
+                'required', 'integer',
+                function ($attribute, $value, $fail) {
+                    if ($value == 0) {
+                        return;
+                    }
+                    if (!\DB::table('sys_file_group')->where('id', $value)->exists()) {
+                        $fail('所选的分组 ID 不存在。');
+                    }
+                },
+            ],
+        ]);
+        $result = $this->service->upload(
+            $data['file'],
+            $data['group_id'],
+            10,
+            Auth::id()
+        );
+        return $this->success($result);
+    }
+
+    /**
+     * 获取回收站文件列表
+     */
+    #[GetRoute('/trashed', 'trashed')]
+    public function trashed(): JsonResponse
+    {
+        $list = $this->service->getTrashedList(request()->all());
+        return $this->success($list);
+    }
+
+    /**
+     * 删除文件（软删除）
+     */
+    #[DeleteRoute('/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
+    public function delete(int $id): JsonResponse
+    {
+        $this->service->delete($id);
+        return $this->success();
+    }
+
+    /**
+     * 批量删除文件
+     */
+    #[DeleteRoute('/batch/delete', 'delete')]
+    public function batchDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        $count = $this->service->batchDelete($ids);
+        return $this->success(['count' => $count]);
+    }
+
+    /**
+     * 彻底删除文件
+     */
+    #[DeleteRoute('/force-delete/{id}', 'force-delete', where: ['id' => '[0-9]+'])]
+    public function forceDelete(int $id): JsonResponse
+    {
+        $this->service->forceDelete($id);
+        return $this->success();
+    }
+
+    /**
+     * 批量彻底删除文件
+     */
+    #[DeleteRoute('/batch/force-delete', 'force-delete')]
+    public function batchForceDelete(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        $count = $this->service->batchForceDelete($ids);
+        return $this->success(['count' => $count]);
+    }
+
+    /**
+     * 恢复文件
+     */
+    #[PostRoute('/restore/{id}', 'restore', where: ['id' => '[0-9]+'])]
+    public function restore(int $id): JsonResponse
+    {
+        $this->service->restore($id);
+        return $this->success();
+    }
+
+    /**
+     * 批量恢复文件
+     */
+    #[PostRoute('/batch/restore', 'restore')]
+    public function batchRestore(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        $count = $this->service->batchRestore($ids);
+        return $this->success(['count' => $count]);
+    }
+
+    /**
+     * 复制文件
+     */
+    #[PostRoute('/copy', 'copy')]
+    public function copy(SysFileMoveOrCopyRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        if(! is_array($data['ids'])) {
+            $result = $this->service->copy($data['ids'], $data['group_id']);
+        } else {
+            $result = $this->service->batchCopy($data['ids'], $data['group_id']);
+        }
+        return $this->success($result);
+    }
+
+    /**
+     * 移动文件
+     */
+    #[PostRoute('/move', 'move')]
+    public function move(SysFileMoveOrCopyRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        if(! is_array($data['ids'])) {
+            $result = $this->service->move($data['ids'], $data['group_id']);
+        } else {
+            $result = $this->service->batchMove($data['ids'], $data['group_id']);
+        }
+        return $this->success($result);
+    }
+
+    /**
+     * 重命名文件
+     */
+    #[PutRoute('/rename/{id}', 'rename', where: ['id' => '[0-9]+'])]
+    public function rename(int $id, Request $request): JsonResponse
+    {
+        $newName = $request->input('name');
+        $this->service->rename($id, $newName);
+        return $this->success();
+    }
+
+    /**
+     * 下载文件
+     */
+    #[GetRoute('/download/{id}', false, where: ['id' => '[0-9]+'])]
+    public function download(int $id): StreamedResponse
+    {
+        return $this->service->download($id);
+    }
+
+    /**
+     * 清空回收站文件
+     */
+    #[DeleteRoute('/clean/trashed', 'clean-trashed')]
+    public function cleanTrashed(Request $request): JsonResponse
+    {
+        $count = $this->service->cleanTrashed();
+        return $this->success(['count' => $count]);
+    }
+}
