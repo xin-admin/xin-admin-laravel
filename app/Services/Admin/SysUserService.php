@@ -9,6 +9,7 @@ use App\Models\System\SysUserModel;
 use App\Services\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -297,11 +298,11 @@ class SysUserService extends BaseService
     /**
      * 更新用户头像
      */
-    public function uploadAvatar(): JsonResponse
+    public function uploadAvatar(UploadedFile $file, int $user_id): JsonResponse
     {
         $service = new SysFileService();
-        $data = $service->upload(FileType::IMAGE, 0); // 使用系统设置中的默认存储
-        $user = SysUserModel::find(Auth::id());
+        $data = $service->upload($file, 2, 20, $user_id); // 使用系统设置中的默认存储
+        $user = SysUserModel::find($user_id);
         $user->avatar_id = $data['id'];
         $user->save();
         return $this->success($data);

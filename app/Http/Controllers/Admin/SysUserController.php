@@ -104,9 +104,11 @@ class SysUserController extends BaseController
 
     /** 上传头像 */
     #[PostRoute('/uploadAvatar')]
-    public function uploadAvatar(): JsonResponse
+    public function uploadAvatar(Request $request): JsonResponse
     {
-        return $this->service->uploadAvatar();
+        $user_id = Auth::id();
+        $file = $request->file('file');
+        return $this->service->uploadAvatar($file, $user_id);
     }
 
     /** 获取管理员登录日志 */
