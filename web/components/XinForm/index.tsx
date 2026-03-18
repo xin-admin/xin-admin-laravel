@@ -255,7 +255,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
   const formContent = useMemo(() => (
     <Form
       {...formProps}
-      form={form}
+      form={xinForm}
       onFinish={handleFinish}
     >
       {grid ? (

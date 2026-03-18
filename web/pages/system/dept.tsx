@@ -36,9 +36,9 @@ const Dept = () => {
   const {t} = useTranslation();
   const {auth} = useAuth();
   /** 部门信息表单 */
-  const formRef = useRef<XinFormRef<ISysDept>>(undefined);
+  const formRef = useRef<XinFormRef<ISysDept>>(null);
   /** 新增表单 */
-  const modalFormRef = useRef<XinFormRef<ISysDept>>(undefined);
+  const modalFormRef = useRef<XinFormRef<ISysDept>>(null);
   /** 当前选中的部门 key */
   const [selectKey, setSelectKey] = useState<string>('');
   /** 当前（多选框）选择的部门 keys */
