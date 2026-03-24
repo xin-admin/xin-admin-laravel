@@ -114,7 +114,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       const uploadedFiles = newFileList
         .filter((file) => file.status === 'done' && file.response)
         .map((file) => file.response.data as ISysFileInfo);
-      onChange?.(uploadedFiles);
+      if( mode === 'single' ) {
+        onChange?.(uploadedFiles[0]);
+      } else {
+        onChange?.(uploadedFiles);
+      }
       // 上传失败的文件
       const errorFiles = newFileList.filter((file) => file.status === 'error');
       setFileList([...uploadedFiles.map(fileToList), ...errorFiles]);
@@ -140,8 +144,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       disabled={disabled}
       maxCount={uploadMaxCount}
       multiple={mode === 'multiple'}
-      headers={{ 
+      headers={{
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }}
+      onRemove={(file) => {
+        setFileList(fileList.filter((item) => {
+          return item.uid != file.uid
+        }))
       }}
       action={import.meta.env.VITE_BASE_URL + action}
       accept="image/*"
