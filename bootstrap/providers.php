@@ -2,7 +2,7 @@
 
 use App\Providers\AppServiceProvider;
 use Xin\AnnoRoute\RouteServiceProvider;
-use App\Providers\PaginationProvider;
+use Xin\Pagination\PaginationProvider;
 
 return [
     AppServiceProvider::class,
