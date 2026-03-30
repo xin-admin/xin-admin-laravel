@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\Admin\SysUserFormRequest;
+use App\Models\System\SysUserModel;
 use App\Services\Admin\SysLoginRecordService;
 use App\Services\Admin\SysUserDeptService;
 use App\Services\Admin\SysUserRoleService;
@@ -10,11 +12,9 @@ use App\Services\Admin\SysUserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Xin\AnnoRoute\Crud\Create;
-use Xin\AnnoRoute\Crud\Delete;
-use Xin\AnnoRoute\Crud\Query;
-use Xin\AnnoRoute\Crud\Update;
+use Illuminate\Support\Facades\Hash;
 use Xin\AnnoRoute\RequestAttribute;
+use Xin\AnnoRoute\Route\DeleteRoute;
 use Xin\AnnoRoute\Route\GetRoute;
 use Xin\AnnoRoute\Route\PostRoute;
 use Xin\AnnoRoute\Route\PutRoute;
@@ -23,15 +23,88 @@ use Xin\AnnoRoute\Route\PutRoute;
  * 管理员用户控制器
  */
 #[RequestAttribute('/system/user', 'system.user')]
-#[Create, Update, Delete, Query]
 class SysUserController extends BaseController
 {
     public function __construct(
-        protected SysUserService $service,
-        protected SysUserRoleService $roleService,
-        protected SysUserDeptService $deptService,
+        protected SysUserService        $service,
+        private readonly SysUserModel   $model,
+        protected SysUserRoleService    $roleService,
+        protected SysUserDeptService    $deptService,
         protected SysLoginRecordService $loginRecordService,
     ) {}
+
+    /** 查询管理员用户列表 */
+    #[GetRoute(authorize: 'query')]
+    public function query(Request $request): JsonResponse
+    {
+        $params = $request->all();
+        $pageSize = $params['pageSize'] ?? 10;
+        $query = $this->model::query();
+        $data = $this->buildSearch($params, $query)
+            ->paginate($pageSize)
+            ->toArray();
+        return $this->success($data);
+    }
+
+    /** 创建管理员用户 */
+    #[PostRoute(authorize: 'create')]
+    public function create(SysUserFormRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $user = $this->model->create([
+            'username' => $validated['username'],
+            'nickname' => $validated['nickname'],
+            'email' => $validated['email'],
+            'mobile' => $validated['mobile'],
+            'password' => Hash::make($validated['password']),
+            'status' => $validated['status'] ?? 1,
+            'dept_id' => $validated['dept_id'] ?? null,
+            'sex' => $validated['sex'] ?? 0
+        ]);
+        if(empty($user)) {
+            return $this->error();
+        }
+        $user->roles()->sync($data['role_id'] ?? []);
+        return $this->success();
+    }
+
+    /** 编辑管理员用户 */
+    #[PutRoute(
+        route: '/{id}',
+        authorize: 'update',
+        where: ['id' => '[0-9]+']
+    )]
+    public function update(int $id, SysUserFormRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $model = SysUserModel::find($id);
+        if (empty($model)) {
+            return $this->error();
+        }
+        $model->roles()->sync($data['role_id'] ?? []);
+        $model->update($validated);
+        return $this->success();
+    }
+
+    /** 删除管理员用户 */
+    #[DeleteRoute(
+        route: '/{id}',
+        authorize: 'delete',
+        where: ['id' => '[0-9]+']
+    )]
+    public function delete(int $id): JsonResponse
+    {
+        if($id == 1) {
+            $this->error('不能删除系统用户！');
+        }
+        $user = SysUserModel::find($id);
+        if (empty($user)) {
+            $this->error('Model not found');
+        }
+        $user->roles()->detach();
+        $user->delete();
+        return $this->success();
+    }
 
     /** 重置用户密码 */
     #[PutRoute('/resetPassword', 'resetPassword')]
