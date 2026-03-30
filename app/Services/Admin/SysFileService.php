@@ -5,7 +5,6 @@ namespace App\Services\Admin;
 use App\Enum\FileType;
 use App\Exceptions\HttpResponseException;
 use App\Models\System\SysFileModel;
-use App\Services\BaseService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +15,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 文件服务类
  */
-class SysFileService extends BaseService
+class SysFileService
 {
-    protected SysFileModel $model;
-    protected array $searchField = [
-        'group_id' => '=',
-        'name' => 'like',
-        'file_type' => '=',
-    ];
 
     /**
      * 获取回收站列表
@@ -33,8 +26,7 @@ class SysFileService extends BaseService
     public function getTrashedList(array $params = []): array
     {
         $pageSize = $params['pageSize'] ?? 10;
-        return $this->model
-            ->onlyTrashed()
+        return SysFileModel::onlyTrashed()
             ->paginate($pageSize)
             ->toArray();
     }

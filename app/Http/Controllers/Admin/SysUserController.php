@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\SysUserFormRequest;
+use App\Models\System\SysDeptModel;
+use App\Models\System\SysRoleModel;
 use App\Models\System\SysUserModel;
-use App\Services\Admin\SysLoginRecordService;
-use App\Services\Admin\SysUserDeptService;
-use App\Services\Admin\SysUserRoleService;
-use App\Services\Admin\SysUserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Xin\AnnoRoute\RequestAttribute;
 use Xin\AnnoRoute\Route\DeleteRoute;
@@ -25,13 +22,6 @@ use Xin\AnnoRoute\Route\PutRoute;
 #[RequestAttribute('/system/user', 'system.user')]
 class SysUserController extends BaseController
 {
-    public function __construct(
-        protected SysUserService        $service,
-        private readonly SysUserModel   $model,
-        protected SysUserRoleService    $roleService,
-        protected SysUserDeptService    $deptService,
-        protected SysLoginRecordService $loginRecordService,
-    ) {}
 
     /** 查询管理员用户列表 */
     #[GetRoute(authorize: 'query')]
@@ -39,7 +29,7 @@ class SysUserController extends BaseController
     {
         $params = $request->all();
         $pageSize = $params['pageSize'] ?? 10;
-        $query = $this->model::query();
+        $query = SysUserModel::query();
         $data = $this->buildSearch($params, $query)
             ->paginate($pageSize)
             ->toArray();
@@ -51,7 +41,7 @@ class SysUserController extends BaseController
     public function create(SysUserFormRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $user = $this->model->create([
+        $user = SysUserModel::create([
             'username' => $validated['username'],
             'nickname' => $validated['nickname'],
             'email' => $validated['email'],
@@ -110,86 +100,65 @@ class SysUserController extends BaseController
     #[PutRoute('/resetPassword', 'resetPassword')]
     public function resetPassword(Request $request): JsonResponse
     {
-        return $this->service->resetPassword($request);
+        $data = $request->validate([
+            'id' => 'required|exists:sys_user,id',
+            'password' => 'required|string|min:6|max:20',
+            'rePassword' => 'required|same:password',
+        ], [
+            'id.required' => '请选择管理员用户！',
+            'id.exists' => '管理员用户不存在！',
+            'password.required' => '请输入管理员密码！',
+            'password.min' => '密码最短为6个字符！',
+            'password.max' => '密码最长伟20个字符！',
+            'rePassword.required' => '请重复输入密码！',
+            'rePassword.same' => '两次输入的密码不同！',
+        ]);
+        $user = SysUserModel::find($data['id']);
+        if (!$user) {
+            return $this->error(__('user.user_not_exist'));
+        }
+        $user->password = Hash::make($data['password']);
+        $user->save();
+        return $this->success('ok');
     }
 
     /** 获取用户角色选项栏数据 */
     #[GetRoute('/role', 'role')]
     public function role(): JsonResponse
     {
-        return $this->success($this->roleService->getRoleFields());
+        $data = SysRoleModel::where('status', 1)
+            ->get(['id as role_id', 'name'])
+            ->toArray();
+        return $this->success($data);
     }
 
     /** 获取用户部门选项栏数据 */
     #[GetRoute('/dept', 'dept')]
     public function dept(): JsonResponse
     {
-        return $this->success($this->deptService->getDeptField());
-    }
+        $field = SysDeptModel::where('status', 0)
+            ->select(['id as dept_id', 'name', 'parent_id'])
+            ->get()
+            ->toArray();
+        $data = $this->buildTree($field);
 
-    /** 用户登录 */
-    #[PostRoute('/login', false, 'login_log')]
-    public function login(Request $request, SysUserService $service): JsonResponse
-    {
-        return $service->login($request);
-    }
-
-    /** 退出登录 */
-    #[PostRoute('/logout')]
-    public function logout(Request $request): JsonResponse
-    {
-        $request->user()->currentAccessToken()->delete();
-        return $this->success(__('user.logout_success'));
-    }
-
-    /** 获取管理员信息 */
-    #[GetRoute('/info')]
-    public function info(): JsonResponse
-    {
-        $info = Auth::user();
-        $id = Auth::id();
-        $access = $this->service->ruleKeys($id);
-        return $this->success(compact('access','info'));
-    }
-
-    /** 获取菜单信息 */
-    #[GetRoute('/menu')]
-    public function menu(): JsonResponse
-    {
-        $id = Auth::id();
-        $menus = $this->service->getAdminMenus($id);
-        return $this->success(compact('menus'));
-    }
-
-    /** 更新管理员信息 */
-    #[PutRoute('/updateInfo')]
-    public function updateInfo(Request $request): JsonResponse
-    {
-        return $this->service->updateInfo(Auth::id(), $request);
-    }
-
-    /** 修改密码 */
-    #[PutRoute('/updatePassword')]
-    public function updatePassword(Request $request): JsonResponse
-    {
-        return $this->service->updatePassword($request);
-    }
-
-    /** 上传头像 */
-    #[PostRoute('/uploadAvatar')]
-    public function uploadAvatar(Request $request): JsonResponse
-    {
-        $user_id = Auth::id();
-        $file = $request->file('file');
-        return $this->service->uploadAvatar($file, $user_id);
-    }
-
-    /** 获取管理员登录日志 */
-    #[GetRoute('/loginRecord')]
-    public function loginRecord(): JsonResponse
-    {
-        $id = Auth::id();
-        $data = $this->loginRecordService->getRecordByID($id);
         return $this->success($data);
+    }
+
+    private function buildTree(array $items, $parentId = 0): array
+    {
+        $tree = [];
+        foreach ($items as $item) {
+            if ($item['parent_id'] == $parentId) {
+                $children = $this->buildTree($items, $item['dept_id']);
+                $node = [
+                    'dept_id' => $item['dept_id'],
+                    'name' => $item['name'],
+                    'children' => $children
+                ];
+                $tree[] = $node;
+            }
+        }
+        return $tree;
     }
 }

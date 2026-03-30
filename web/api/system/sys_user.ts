@@ -105,7 +105,7 @@ export async function resetPassword(data: ResetPasswordType) {
 /** 后台用户登录 */
 export async function login(data: LoginParams) {
   return createAxios<LoginResponse>({
-    url: '/system/user/login',
+    url: '/admin/login',
     method: 'post',
     data,
   });
@@ -114,7 +114,7 @@ export async function login(data: LoginParams) {
 /** 后台用户退出登录 */
 export async function logout() {
   return createAxios({
-    url: '/system/user/logout',
+    url: '/admin/logout',
     method: 'post',
   });
 }
@@ -122,7 +122,7 @@ export async function logout() {
 /** 获取管理员用户信息 */
 export async function info() {
   return createAxios<InfoResponse>({
-    url: '/system/user/info',
+    url: '/admin/info',
     method: 'get',
   });
 }
@@ -130,7 +130,7 @@ export async function info() {
 /** 获取管理员用户信息 */
 export async function menu() {
   return createAxios<MenuResponse>({
-    url: '/system/user/menu',
+    url: '/admin/menu',
     method: 'get',
   });
 }
@@ -138,7 +138,7 @@ export async function menu() {
 /** 更改管理员信息 */
 export async function updateInfo(info: InfoParams) {
   return createAxios({
-    url: '/system/user/updateInfo',
+    url: '/admin/updateInfo',
     method: 'put',
     data: info,
   })
@@ -147,7 +147,7 @@ export async function updateInfo(info: InfoParams) {
 /** 修改管理员密码 */
 export async function updatePassword(data: PasswordParams) {
   return createAxios({
-    url: '/system/user/updatePassword',
+    url: '/admin/updatePassword',
     method: 'put',
     data: data,
   })
@@ -156,7 +156,7 @@ export async function updatePassword(data: PasswordParams) {
 /** 修改管理员头像 */
 export async function updateAvatar() {
   return createAxios({
-    url: '/system/user/uploadAvatar',
+    url: '/admin/uploadAvatar',
     method: 'post',
   })
 }
@@ -164,6 +164,6 @@ export async function updateAvatar() {
 /** 获取管理员登录日志 */
 export async function loginRecord() {
   return createAxios<ISysLoginRecord[]>({
-    url: '/system/user/loginRecord',
+    url: '/admin/loginRecord',
   })
 }

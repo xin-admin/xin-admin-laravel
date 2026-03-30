@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Http\Requests\Admin;
 
 use App\Exceptions\RepositoryException;
+use App\Http\Requests\BaseFormRequest;
 use App\Models\System\SysSettingItemsModel;
-use App\Services\BaseService;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
-class SysSettingItemsService extends BaseService
+class SysSettingItemsFormRequest extends BaseFormRequest
 {
-    protected SysSettingItemsModel $model;
+    protected $stopOnFirstFailure = true;
 
-    protected array $searchField = [ 'group_id' => '=' ];
-
-    protected function rules(): array
+    public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required',
             'key' => 'required|min:2|max:255',
             'group_id' => 'required|exists:sys_setting_group,id',
@@ -36,9 +34,24 @@ class SysSettingItemsService extends BaseService
             'sort' => 'sometimes|integer',
             'values' => 'sometimes|string',
         ];
+
+        if (!$this->isUpdate()) {
+            $rules['key'][] = function ($attribute, $value, $fail) {
+                $groupId = $this->input('group_id');
+                $exists = SysSettingItemsModel::query()
+                    ->where('group_id', $groupId)
+                    ->where('key', $value)
+                    ->exists();
+                if ($exists) {
+                    $fail('该键名在此分组中已存在');
+                }
+            };
+        }
+
+        return $rules;
     }
 
-    protected function messages(): array
+    public function messages(): array
     {
         return [
             'title.required' => '标题字段是必填的',
@@ -54,37 +67,5 @@ class SysSettingItemsService extends BaseService
             'sort.integer' => '排序必须是整数',
             'values.string' => '值必须是字符串',
         ];
-    }
-
-    /** 验证数据 */
-    protected function validation(array $data): array
-    {
-        $data = parent::validation($data);
-        $num = $this->model()->where('group_id', $data['group_id'])->where('key', $data['key'])->count();
-        if($num > 0 && request()->method() != 'PUT') {
-            throw new RepositoryException(
-                'Validation failed: ' . '该键名在此分组中已存在',
-            );
-        }
-        return $data;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function model(): Builder
-    {
-        return SysSettingItemsModel::query();
-    }
-
-    public function query(array $params): array
-    {
-        if(empty($params['group_id'])) {
-            throw new RepositoryException('请选择设置分组');
-        }
-        return $this->model()
-            ->where('group_id', $params['group_id'])
-            ->get()
-            ->toArray();
     }
 }

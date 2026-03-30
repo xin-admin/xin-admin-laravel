@@ -34,3 +34,36 @@ if (! function_exists('web_path')) {
         return base_path('web'. DIRECTORY_SEPARATOR . $path);
     }
 }
+
+if (! function_exists('getTreeData')) {
+    /**
+     * 获取树形数据
+     *
+     * @param array $list
+     * @param int $parentId
+     * @param string[] $params
+     * @return array
+     */
+    function getTreeData(
+        array &$list,
+        int $parentId = 0,
+        array $params = []
+    ): array
+    {
+        $params = array_merge($params, [
+            'id' => 'id',
+            'parent_id' => 'parent_id',
+            'children' => 'children'
+        ]);
+        $data = [];
+        foreach ($list as $k => $item) {
+            if ($item[$params['parent_id']] == $parentId) {
+                $children = getTreeData($list, $item[$params['id']]);
+                !empty($children) && $item[$params['children']] = $children;
+                $data[] = $item;
+                unset($list[$k]);
+            }
+        }
+        return $data;
+    }
+}

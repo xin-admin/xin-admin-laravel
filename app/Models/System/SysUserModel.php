@@ -117,6 +117,27 @@ class SysUserModel extends User
         return null;
     }
 
+    /**
+     * 获取用户所有权限
+     * @return array
+     */
+    public function access(): array
+    {
+        if($this->id == 1) {
+            return SysRuleModel::query()
+                ->where('status', 1)
+                ->pluck('key')
+                ->toArray();
+        }
+        $roles = SysUserModel::with(['roles.rules' => function ($query) {
+            $query->where('status', 1);
+        }])->find($this->id)->roles->toArray();
 
-
+        return collect($roles)
+            ->map(fn ($item) => $item['rules'] )
+            ->collapse()
+            ->map(fn ($item) => $item['key'] )
+            ->unique()
+            ->toArray();
+    }
 }

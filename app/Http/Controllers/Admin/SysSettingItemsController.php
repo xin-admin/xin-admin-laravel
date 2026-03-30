@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\RepositoryException;
 use App\Http\Controllers\BaseController;
-use App\Services\Admin\SysSettingItemsService;
+use App\Http\Requests\Admin\SysSettingItemsFormRequest;
+use App\Models\System\SysSettingItemsModel;
 use App\Services\SysSettingService;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\Crud\Create;
-use Xin\AnnoRoute\Crud\Delete;
-use Xin\AnnoRoute\Crud\Query;
-use Xin\AnnoRoute\Crud\Update;
+use Illuminate\Http\Request;
 use Xin\AnnoRoute\RequestAttribute;
+use Xin\AnnoRoute\Route\DeleteRoute;
+use Xin\AnnoRoute\Route\GetRoute;
 use Xin\AnnoRoute\Route\PostRoute;
 use Xin\AnnoRoute\Route\PutRoute;
 
@@ -18,12 +19,71 @@ use Xin\AnnoRoute\Route\PutRoute;
  * 系统设置
  */
 #[RequestAttribute('/system/setting/items', 'system.setting.items')]
-#[Query, Create, Update, Delete]
 class SysSettingItemsController extends BaseController
 {
-    public function __construct(
-        protected SysSettingItemsService $service
-    ) {}
+    protected array $searchField = [
+        'group_id' => '=',
+    ];
+
+    /** 查询设置项列表 */
+    #[GetRoute(authorize: 'query')]
+    public function query(Request $request): JsonResponse
+    {
+        $params = $request->all();
+        if (empty($params['group_id'])) {
+            throw new RepositoryException('请选择设置分组');
+        }
+        $query = SysSettingItemsModel::query();
+        $data = $this->buildSearch($params, $query)
+            ->get()
+            ->toArray();
+        return $this->success($data);
+    }
+
+    /** 创建设置项 */
+    #[PostRoute(authorize: 'create')]
+    public function create(SysSettingItemsFormRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $model = SysSettingItemsModel::create($validated);
+        if (empty($model)) {
+            return $this->error();
+        }
+        return $this->success();
+    }
+
+    /** 编辑设置项 */
+    #[PutRoute(
+        route: '/{id}',
+        authorize: 'update',
+        where: ['id' => '[0-9]+']
+    )]
+    public function update(int $id, SysSettingItemsFormRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $model = SysSettingItemsModel::find($id);
+        if (empty($model)) {
+            return $this->error();
+        }
+        $model->update($validated);
+        return $this->success();
+    }
+
+    /** 删除设置项 */
+    #[DeleteRoute(
+        route: '/{id}',
+        authorize: 'delete',
+        where: ['id' => '[0-9]+']
+    )]
+    public function delete(int $id): JsonResponse
+    {
+        $model = SysSettingItemsModel::find($id);
+        if (empty($model)) {
+            return $this->error();
+        }
+        $model->delete();
+        return $this->success();
+    }
 
     /** 保存设置 */
     #[PutRoute('/save/{id}', 'save')]

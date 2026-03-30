@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\System\SysAccessToken;
-use App\Services\BaseService;
 use App\Services\LengthAwarePaginatorService;
 use App\Services\SysSettingService;
 use Exception;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use ReflectionClass;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,29 +33,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ExceptionsHandler::class, \App\Exceptions\ExceptionsHandler::class);
-
-        $this->app->resolving(function ($object, $app) {
-            if ($object instanceof BaseService) {
-                $this->injectProperties($object, $app);
-            }
-        });
-    }
-
-    protected function injectProperties(object $object, $app): void
-    {
-        $reflection = new ReflectionClass($object);
-
-        if (!$reflection->hasProperty('model')) {
-            return;
-        }
-
-        $property = $reflection->getProperty('model');
-        $type = $property->getType();
-
-        if ($type && !$type->isBuiltin()) {
-            $className = $type->getName();
-            $property->setValue($object, $app->make($className));
-        }
     }
 
     /**
