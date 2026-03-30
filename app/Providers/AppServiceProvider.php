@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\System\SysAccessToken;
-use App\Services\LengthAwarePaginatorService;
 use App\Services\SysSettingService;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
@@ -19,19 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
         $this->app->singleton(SysSettingService::class, SysSettingService::class);
-
-        $this->app->bind('Illuminate\Pagination\LengthAwarePaginator', function ($app, $options) {
-            return new LengthAwarePaginatorService(
-                $options['items'],
-                $options['total'],
-                $options['perPage'],
-                $options['currentPage'],
-                $options['options']
-            );
-        });
-
         $this->app->bind(ExceptionsHandler::class, \App\Exceptions\ExceptionsHandler::class);
     }
 
