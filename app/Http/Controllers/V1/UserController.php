@@ -7,10 +7,10 @@ use App\Models\UserModel;
 use App\Trait\RequestJson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\RequestAttribute;
-use Xin\AnnoRoute\Route\GetRoute;
-use Xin\AnnoRoute\Route\PostRoute;
-use Xin\AnnoRoute\Route\PutRoute;
+use Xin\AnnoRoute\Attribute\GetRoute;
+use Xin\AnnoRoute\Attribute\PostRoute;
+use Xin\AnnoRoute\Attribute\PutRoute;
+use Xin\AnnoRoute\Attribute\RequestAttribute;
 
 #[RequestAttribute('/api/user', authGuard: 'users')]
 class UserController

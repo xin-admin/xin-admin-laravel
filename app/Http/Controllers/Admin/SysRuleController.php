@@ -6,11 +6,11 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Admin\SysRuleFormRequest;
 use App\Models\System\SysRuleModel;
 use Illuminate\Http\JsonResponse;
-use Xin\AnnoRoute\RequestAttribute;
-use Xin\AnnoRoute\Route\DeleteRoute;
-use Xin\AnnoRoute\Route\GetRoute;
-use Xin\AnnoRoute\Route\PostRoute;
-use Xin\AnnoRoute\Route\PutRoute;
+use Xin\AnnoRoute\Attribute\DeleteRoute;
+use Xin\AnnoRoute\Attribute\GetRoute;
+use Xin\AnnoRoute\Attribute\PostRoute;
+use Xin\AnnoRoute\Attribute\PutRoute;
+use Xin\AnnoRoute\Attribute\RequestAttribute;
 
 /**
  * 管理员权限控制器

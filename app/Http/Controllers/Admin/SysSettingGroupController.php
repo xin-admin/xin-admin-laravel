@@ -8,11 +8,11 @@ use App\Http\Requests\Admin\SysSettingGroupFormRequest;
 use App\Models\System\SysSettingGroupModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Xin\AnnoRoute\RequestAttribute;
-use Xin\AnnoRoute\Route\DeleteRoute;
-use Xin\AnnoRoute\Route\GetRoute;
-use Xin\AnnoRoute\Route\PostRoute;
-use Xin\AnnoRoute\Route\PutRoute;
+use Xin\AnnoRoute\Attribute\DeleteRoute;
+use Xin\AnnoRoute\Attribute\GetRoute;
+use Xin\AnnoRoute\Attribute\PostRoute;
+use Xin\AnnoRoute\Attribute\PutRoute;
+use Xin\AnnoRoute\Attribute\RequestAttribute;
 
 /**
  * 设置分组控制器

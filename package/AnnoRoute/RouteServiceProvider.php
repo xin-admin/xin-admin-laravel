@@ -1,7 +1,6 @@
 <?php
 namespace Xin\AnnoRoute;
 
-
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

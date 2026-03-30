@@ -1,15 +1,15 @@
 <?php
 
-namespace Xin\AnnoRoute\Route;
+namespace Xin\AnnoRoute\Attribute;
 
 use Attribute;
 use Xin\AnnoRoute\BaseAttribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class GetRoute extends BaseAttribute
+class DeleteRoute extends BaseAttribute
 {
     /** @var string 请求方法 */
-    public string $httpMethod = 'GET';
+    public string $httpMethod = 'DELETE';
 
     /**
      * @param string $route 路由地址

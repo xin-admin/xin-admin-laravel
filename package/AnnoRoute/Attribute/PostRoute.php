@@ -1,6 +1,6 @@
 <?php
 
-namespace Xin\AnnoRoute\Route;
+namespace Xin\AnnoRoute\Attribute;
 
 use Attribute;
 use Xin\AnnoRoute\BaseAttribute;

@@ -12,10 +12,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Xin\AnnoRoute\RequestAttribute;
-use Xin\AnnoRoute\Route\GetRoute;
-use Xin\AnnoRoute\Route\PostRoute;
-use Xin\AnnoRoute\Route\PutRoute;
+use Xin\AnnoRoute\Attribute\GetRoute;
+use Xin\AnnoRoute\Attribute\PostRoute;
+use Xin\AnnoRoute\Attribute\PutRoute;
+use Xin\AnnoRoute\Attribute\RequestAttribute;
 
 #[RequestAttribute]
 class IndexController extends BaseController

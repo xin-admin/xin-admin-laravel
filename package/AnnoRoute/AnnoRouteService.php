@@ -3,21 +3,15 @@
 namespace Xin\AnnoRoute;
 
 use Closure;
-use Exception;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionException;
-use Xin\AnnoRoute\Crud\Create;
-use Xin\AnnoRoute\Crud\Delete;
-use Xin\AnnoRoute\Crud\Find;
-use Xin\AnnoRoute\Crud\Query;
-use Xin\AnnoRoute\Crud\Update;
-use Xin\AnnoRoute\Route\DeleteRoute;
-use Xin\AnnoRoute\Route\GetRoute;
-use Xin\AnnoRoute\Route\PostRoute;
-use Xin\AnnoRoute\Route\PutRoute;
+use Xin\AnnoRoute\Attribute\DeleteRoute;
+use Xin\AnnoRoute\Attribute\GetRoute;
+use Xin\AnnoRoute\Attribute\PostRoute;
+use Xin\AnnoRoute\Attribute\PutRoute;
+use Xin\AnnoRoute\Attribute\RequestAttribute;
 
 class AnnoRouteService
 {
@@ -60,8 +54,6 @@ class AnnoRouteService
      */
     private ?string $authGuard = null;
 
-    private ?string $service = null;
-
     /**
      * register 注册路由
      */
@@ -71,12 +63,6 @@ class AnnoRouteService
             $this->className = $className;
 
             $classRef = new ReflectionClass($className);
-
-            try {
-                $this->service = $classRef->getProperty('service')->getType() ?? null;
-            } catch (ReflectionException $e) {
-                $this->service = null;
-            }
 
             $classAttr = collect($classRef->getAttributes());
             if($classAttr->isEmpty()) return;
@@ -93,8 +79,6 @@ class AnnoRouteService
             $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
             $this->middleware = $this->registerMiddleware($routeInstance->middleware);
 
-            $this->registerCRUD($classAttr);
-
             collect($classRef->getMethods())->each(function ($method) {
                 // 方法注解
                 $attributes = $method->getAttributes();
@@ -108,22 +92,6 @@ class AnnoRouteService
         } catch (ReflectionException $e) {
             echo $e->getMessage();
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function registerCRUD(Collection $classAttr): void
-    {
-        $CRUD = [ Create::class, Query::class, Find::class, Update::class, Delete::class ];
-        $classAttr->filter(fn ($item) => in_array($item->getName(), $CRUD))->each(function ($item) {
-            if(empty($this->service)) {
-                throw new Exception('控制器' . $this->className . '未定义仓储类，但是它使用了CRUD注解！');
-            }
-            $instance = $item->newInstance();
-            $fun = $instance->store($this->service);
-            $this->registerRoute($instance, $fun);
-        });
     }
 
     /**
