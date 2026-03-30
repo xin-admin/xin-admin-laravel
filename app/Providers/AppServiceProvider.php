@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use Xin\AnnoRoute\AnnoRoute;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,8 +26,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(AnnoRoute $annoRoute): void
     {
+        // 注册路由
+        $annoRoute->register(app_path('Http/Controllers'));
+
         Sanctum::usePersonalAccessTokenModel(SysAccessToken::class);
 
         try {

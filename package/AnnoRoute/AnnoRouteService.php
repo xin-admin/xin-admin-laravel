@@ -2,166 +2,42 @@
 
 namespace Xin\AnnoRoute;
 
-use Closure;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-use ReflectionClass;
-use ReflectionException;
-use Xin\AnnoRoute\Attribute\DeleteRoute;
-use Xin\AnnoRoute\Attribute\GetRoute;
-use Xin\AnnoRoute\Attribute\PostRoute;
-use Xin\AnnoRoute\Attribute\PutRoute;
-use Xin\AnnoRoute\Attribute\RequestAttribute;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
-class AnnoRouteService
+class AnnoRouteService implements AnnoRoute
 {
-    /**
-     * 当前请求控制器类名
-     * The current requested controller class
-     *
-     * @var string
-     */
-    private string $className;
 
     /**
-     * 当前请求中默认的中间件
-     * The default middleware of the current request
-     *
-     * @var array
+     * register route
+     * @param $path
+     * @return void
      */
-    private array $middleware = [];
-
-    /**
-     * 当前请求路由的前缀
-     * The prefix of the currently requested routing path
-     *
-     * @var string
-     */
-    private string $routePrefix = '';
-
-    /**
-     * 当前请求路由的权限能力前缀
-     * The routing abilities prefix of the current request
-     *
-     * @var string
-     */
-    private string $abilitiesPrefix = '';
-
-    /**
-     * 当前请求路由的 Authentication Guards
-     * The Authentication Guards of the current request
-     * @var ?string
-     */
-    private ?string $authGuard = null;
-
-    /**
-     * register 注册路由
-     */
-    public function register(string $className): void
+    public function register($path): void
     {
-        try {
-            $this->className = $className;
-
-            $classRef = new ReflectionClass($className);
-
-            $classAttr = collect($classRef->getAttributes());
-            if($classAttr->isEmpty()) return;
-
-            $classAttrName = $classAttr->map->getName();
-            if(! $classAttrName->contains(RequestAttribute::class)) {
-                return;
+        $controllers = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+        foreach ($controllers as $controller) {
+            if (! $controller->isFile()) {
+                continue;
             }
-            $requestMapping = $classAttr->first(fn ($item) => $item->getName() == RequestAttribute::class);
-            $routeInstance = $requestMapping->newInstance();
-            // 默认参数
-            $this->routePrefix = $routeInstance->routePrefix ?? '';
-            $this->authGuard = $routeInstance->authGuard ?? null;
-            $this->abilitiesPrefix = $routeInstance->abilitiesPrefix ?? '';
-            $this->middleware = $this->registerMiddleware($routeInstance->middleware);
-
-            collect($classRef->getMethods())->each(function ($method) {
-                // 方法注解
-                $attributes = $method->getAttributes();
-
-                if(!empty($attributes)) {
-                    $methodName = $method->getName();
-
-                    $this->registerMapping($attributes , $methodName);
-                }
-            });
-        } catch (ReflectionException $e) {
-            echo $e->getMessage();
+            if (! str_contains($controller->getFilename(), 'Controller')) {
+                continue;
+            }
+            if ($controller->getFilename() === 'BaseController.php') {
+                continue;
+            }
+            $className = $this->getClassName($controller);
+            RouteRegisterService::register($className);
         }
     }
 
     /**
-     * @param array $attributes
-     * @param string $method
+     * get class name
      */
-    private function registerMapping(array $attributes, string $method): void
+    private function getClassName($controller): string
     {
-        $mapping = [ GetRoute::class, PostRoute::class, PutRoute::class, DeleteRoute::class ];
-
-        collect($attributes)->filter(fn ($item) => in_array($item->getName(), $mapping))->each(function ($item) use ($method) {
-            $instance = $item->newInstance();
-            $this->registerRoute($instance, $method);
-        });
-    }
-
-    private function registerRoute(BaseAttribute $instance, Closure | string $method): void
-    {
-        $authorize = $instance->authorize;
-        $middleware = [];
-
-        if (!empty($authorize)) {
-
-            $middleware[] = 'auth:sanctum';
-            if(! empty($this->authGuard) ) {
-                $middleware[] = 'authGuard:' . $this->authGuard;
-            } else {
-                $middleware[] = 'authGuard';
-            }
-            if (is_string($authorize) && !empty($this->abilitiesPrefix)) {
-                $middleware[] = 'abilities:' .  $this->abilitiesPrefix . '.' . $authorize;
-            } else {
-                $middleware[] = 'abilities:' . $authorize;
-            }
-        }
-
-        $middleware = array_merge($middleware, $this->registerMiddleware($instance->middleware), $this->middleware);
-        if(is_string($method)) {
-            $route = Route::{Str::lower($instance->httpMethod)}(
-                $this->routePrefix . $instance->route,
-                [$this->className, $method]
-            )->middleware(array_unique($middleware));
-        } else {
-            $route = Route::{Str::lower($instance->httpMethod)}(
-                $this->routePrefix . $instance->route,
-                $method
-            )->middleware(array_unique($middleware));
-        }
-
-        if (!empty($instance->where)) {
-            $route->where($instance->where);
-        }
-    }
-
-    /**
-     * 注册中间件
-     * @param $middleware
-     * @return string[]
-     */
-    private function registerMiddleware($middleware): array
-    {
-        if(empty($middleware)) {
-            return [];
-        }
-        if(is_array($middleware)) {
-            return $middleware;
-        }
-        if (is_string($middleware)) {
-            return [$middleware];
-        }
-        return [];
+        $filePath = str_replace(app_path(), '', $controller->getPath());
+        $filePath = str_replace('/', '\\', $filePath);
+        return 'App'.$filePath.'\\'.basename($controller->getFileName(), '.php');
     }
 }
