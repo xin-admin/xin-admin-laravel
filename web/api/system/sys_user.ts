@@ -92,10 +92,10 @@ export async function deptField() {
   });
 }
 
-/** 获取管理员角色选项栏数据 */
+/** 重置密码 */
 export async function resetPassword(data: ResetPasswordType) {
   return createAxios({
-    url: '/system/user/resetPassword',
+    url: '/system/resetPassword',
     method: 'put',
     data
   });
@@ -105,7 +105,7 @@ export async function resetPassword(data: ResetPasswordType) {
 /** 后台用户登录 */
 export async function login(data: LoginParams) {
   return createAxios<LoginResponse>({
-    url: '/admin/login',
+    url: '/system/login',
     method: 'post',
     data,
   });
@@ -114,7 +114,7 @@ export async function login(data: LoginParams) {
 /** 后台用户退出登录 */
 export async function logout() {
   return createAxios({
-    url: '/admin/logout',
+    url: '/system/logout',
     method: 'post',
   });
 }
@@ -122,7 +122,7 @@ export async function logout() {
 /** 获取管理员用户信息 */
 export async function info() {
   return createAxios<InfoResponse>({
-    url: '/admin/info',
+    url: '/system/info',
     method: 'get',
   });
 }
@@ -130,7 +130,7 @@ export async function info() {
 /** 获取管理员用户信息 */
 export async function menu() {
   return createAxios<MenuResponse>({
-    url: '/admin/menu',
+    url: '/system/menu',
     method: 'get',
   });
 }
@@ -138,7 +138,7 @@ export async function menu() {
 /** 更改管理员信息 */
 export async function updateInfo(info: InfoParams) {
   return createAxios({
-    url: '/admin/updateInfo',
+    url: '/system/updateInfo',
     method: 'put',
     data: info,
   })
@@ -147,7 +147,7 @@ export async function updateInfo(info: InfoParams) {
 /** 修改管理员密码 */
 export async function updatePassword(data: PasswordParams) {
   return createAxios({
-    url: '/admin/updatePassword',
+    url: '/system/updatePassword',
     method: 'put',
     data: data,
   })
@@ -156,7 +156,7 @@ export async function updatePassword(data: PasswordParams) {
 /** 修改管理员头像 */
 export async function updateAvatar() {
   return createAxios({
-    url: '/admin/uploadAvatar',
+    url: '/system/uploadAvatar',
     method: 'post',
   })
 }
@@ -164,6 +164,6 @@ export async function updateAvatar() {
 /** 获取管理员登录日志 */
 export async function loginRecord() {
   return createAxios<ISysLoginRecord[]>({
-    url: '/admin/loginRecord',
+    url: '/system/loginRecord',
   })
 }

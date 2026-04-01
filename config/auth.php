@@ -66,7 +66,7 @@ return [
     'providers' => [
         'sys_users' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\System\SysUserModel::class
+            'model' => \Modules\SystemUser\Models\SysUserModel::class
         ],
         'users' => [
             'driver' => 'eloquent',

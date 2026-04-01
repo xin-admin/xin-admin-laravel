@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Enum\ShowType;
+use Modules\Common\Enum\ShowType;
 use RuntimeException;
 
 class HttpResponseException extends RuntimeException

@@ -24,13 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "": "web/",
             "App\\": "app/",
-            "Xin\\": "package",
+            "Modules\\": "modules",
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/helpers.php"
+            "modules/Common/helpers.php"
         ]
     },
     "autoload-dev": {

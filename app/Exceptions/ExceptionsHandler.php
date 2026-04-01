@@ -2,13 +2,13 @@
 
 namespace App\Exceptions;
 
-use App\Enum\ShowType;
-use App\Trait\RequestJson;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
+use Modules\Common\Enum\ShowType;
+use Modules\Common\Trait\RequestJson;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
