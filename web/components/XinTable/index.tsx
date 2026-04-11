@@ -2,7 +2,6 @@ import {
   Button,
   Tree,
   Card,
-  Flex,
   Form,
   Input,
   Space,
@@ -10,10 +9,9 @@ import {
   Tooltip,
   Popover,
   Dropdown,
-  Typography,
   type TableProps,
   type TableColumnType,
-  type TreeProps,
+  type TreeProps, ConfigProvider,
 } from "antd";
 import type {XinTableProps, XinTableInstance, RequestParams, FormMode} from "./typings";
 import SearchForm from "./SearchForm";
@@ -29,7 +27,9 @@ import {
   ColumnHeightOutlined,
   DeleteOutlined,
   EditOutlined,
-  ReloadOutlined, SettingOutlined
+  ReloadOutlined,
+  SearchOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
 import type {DataNode} from "antd/es/tree";
@@ -90,7 +90,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
 
   const [searchRef] = Form.useForm<T>();
   const [columnsChecked, setColumnsChecked] = useState<any[]>([]);
-  const [columnSorted, setColumnSorted] = useState<any[]>([]);
+  const [searchRender, setSearchRender] = useState<boolean>(false);
 
   // 表单模式状态
   const [formMode, setFormMode] = useState<FormMode>('create');
@@ -261,7 +261,6 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   useEffect(() => {
     const dataIndexList = defaultTableColumns.map(item => item.dataIndex!);
     setColumnsChecked(dataIndexList);
-    setColumnSorted(dataIndexList);
   }, [defaultTableColumns]);
 
   /** 表格操作列 */
@@ -377,56 +376,15 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     selectedKeys: [density || 'large'],
   };
 
-  // 处理拖拽排序
-  const handleDrop: TreeProps['onDrop'] = useCallback((info: any) => {
-    const { dragNode, node, dropPosition } = info;
-    const dragKey = dragNode.key;
-    const dropKey = node.key;
-
-    setColumnSorted((prevSorted) => {
-      const newSorted = [...prevSorted];
-      const dragIndex = newSorted.indexOf(dragKey);
-      const dropIndex = newSorted.indexOf(dropKey);
-
-      if (dragIndex === -1 || dropIndex === -1) return prevSorted;
-
-      // 移除拖拽的元素
-      newSorted.splice(dragIndex, 1);
-
-      // 计算插入位置
-      let insertIndex = newSorted.indexOf(dropKey);
-      if (dropPosition === -1) {
-        // 放在目标节点前面
-        insertIndex = insertIndex - 1;
-      } else {
-        // 放在目标节点后面
-        insertIndex = insertIndex + 1;
-      }
-
-      // 插入到新位置
-      newSorted.splice(insertIndex, 0, dragKey);
-
-      return newSorted;
-    });
-  }, []);
-
   /** 列设置树数据  */
   const columnTreeData: DataNode[] = useMemo(() => {
     const filteredColumns = columns.filter(item => item.hideInTable !== true && item.dataIndex);
-    // 根据 columnSorted 排序
     return filteredColumns
-      .sort((a, b) => {
-        const indexA = columnSorted.indexOf(a.dataIndex as any);
-        const indexB = columnSorted.indexOf(b.dataIndex as any);
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-      })
       .map((item) => ({
         key: String(item.dataIndex),
         title: item.title,
       }));
-  }, [columns, columnSorted]);
+  }, [columns]);
 
   /** 列设置选中改变 */
   const columnSettingCheck: TreeProps['onCheck'] = (keys) => {
@@ -441,17 +399,8 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     const filteredColumns = defaultTableColumns.filter(column =>
       columnsChecked.includes(column.dataIndex as any)
     );
-    // 根据 columnSorted 的顺序排序
-    const sortedColumns = filteredColumns.sort((a, b) => {
-      const indexA = columnSorted.indexOf(a.dataIndex as any);
-      const indexB = columnSorted.indexOf(b.dataIndex as any);
-      // 如果不在排序列表中，放到最后
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
-    return [...sortedColumns, ...operate];
-  }, [defaultTableColumns, columnsChecked, columnSorted, operate]);
+    return [...filteredColumns, ...operate];
+  }, [defaultTableColumns, columnsChecked, operate]);
 
   /** 分页配置 */
   const paginationProps: TableProps['pagination'] = {
@@ -467,7 +416,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   return (
     <div>
       {/* 搜索表单 */}
-      { searchShow && (
+      { searchRender && (
         <Card style={{marginBottom: 20}} {...cardProps}>
           <SearchForm<T>
             form={searchRef}
@@ -477,91 +426,99 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
           />
         </Card>
       )}
-      <Card {...cardProps}>
-        <div style={{ marginBottom: 20 }}>
-          {/* 操作栏 */}
-          <Flex justify={'space-between'}>
-            <Flex align={'center'}>
-              {titleRender || <Typography.Title level={5}>{t('xinTable.queryTable')}</Typography.Title>}
-            </Flex>
-            <Space>
-              {/* 快速搜索 */}
-              {keywordSearchShow && (
-                <Input.Search
-                  onChange={keywordSearchChange}
-                  placeholder={t('xinTable.keywordPlaceholder')}
-                  style={{ width: 200 }}
-                  value={requestParams.keywordSearch}
-                  onSearch={handleKeywordSearch}
+      <Card
+        styles={{ body: {padding: 0, overflow: 'hidden'}, header: { height: 64 } }}
+        title={titleRender || t('xinTable.queryTable')}
+        {...cardProps}
+        extra={(
+          <Space>
+            {toolBarRender.length > 0 && toolBarRender.map((item) => item)}
+            {addShow && (
+              <AuthButton auth={accessName + '.create'} key={'create'}>
+                <Button type="primary" onClick={handleCreate}>{t('xinTable.add')}</Button>
+              </AuthButton>
+            )}
+            {searchShow && (
+              <Button type="primary" icon={<SearchOutlined/>} onClick={() => setSearchRender(!searchRender)}/>
+            )}
+            <Button
+              type="primary"
+              icon={<ReloadOutlined />}
+              onClick={() => handleRequest()}
+            />
+            {keywordSearchShow && (
+              <Input.Search
+                onChange={keywordSearchChange}
+                placeholder={t('xinTable.keywordPlaceholder')}
+                style={{ width: 200 }}
+                value={requestParams.keywordSearch}
+                onSearch={handleKeywordSearch}
+              />
+            )}
+            <Space size={1}>
+              {/* 密度设置 */}
+              <Dropdown menu={densityMenu} trigger={['click']}>
+                <Button type="text" size={'small'} icon={<ColumnHeightOutlined />} />
+              </Dropdown>
+              {/* 边框设置 */}
+              <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
+                <Button
+                  type="text"
+                  size={'small'}
+                  icon={bordered ? <BorderOutlined /> : <BorderlessTableOutlined />}
+                  onClick={() => setBordered(!bordered)}
                 />
-              )}
-              {toolBarRender.length > 0 && toolBarRender.map((item) => item)}
-              {addShow && (
-                <AuthButton auth={accessName + '.create'} key={'create'}>
-                  <Button type="primary" onClick={handleCreate}>{t('xinTable.add')}</Button>
-                </AuthButton>
-              )}
-              <Space size={1}>
-                {/* 刷新表格 */}
-                <Tooltip title={t('xinTable.refresh')}>
-                  <Button
-                    type="text"
-                    size={'small'}
-                    icon={<ReloadOutlined />}
-                    onClick={() => handleRequest()}
-                  />
-                </Tooltip>
-                {/* 密度设置 */}
-                <Dropdown menu={densityMenu} trigger={['click']}>
-                  <Button type="text" size={'small'} icon={<ColumnHeightOutlined />} />
-                </Dropdown>
-                {/* 边框设置 */}
-                <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
-                  <Button
-                    type="text"
-                    size={'small'}
-                    icon={bordered ? <BorderOutlined /> : <BorderlessTableOutlined />}
-                    onClick={() => setBordered(!bordered)}
-                  />
-                </Tooltip>
-                {/* 列设置 */}
-                <Popover
-                  content={(
+              </Tooltip>
+              {/* 列设置 */}
+              <Popover
+                content={(
+                  <ConfigProvider
+                    theme={{
+                      components: { Tree: { switcherSize: 12 } },
+                    }}
+                  >
                     <Tree
-                      draggable
+                      icon={false}
                       blockNode
                       checkable={true}
                       treeData={columnTreeData}
                       selectable={false}
-                      onDrop={handleDrop}
                       checkedKeys={columnsChecked}
                       onCheck={columnSettingCheck}
                     />
-                  )}
-                  trigger="click"
-                  placement="bottomRight"
-                  title={t('xinTable.columnSettings')}
-                >
-                  <Tooltip title={t('xinTable.columnSettings')}>
-                    <Button type="text" size={'small'} icon={<SettingOutlined />} />
-                  </Tooltip>
-                </Popover>
-              </Space>
-            </Space>
-          </Flex>
-        </div>
+                  </ConfigProvider>
 
-        <Table
-          loading={loading}
-          dataSource={dataSource}
-          size={density}
-          bordered={bordered}
-          {...props}
-          columns={tableColumns}
-          rowKey={rowKey}
-          onChange={handleTableChange}
-          pagination={paginationShow ? paginationProps : false}
-        />
+                )}
+                trigger="click"
+                placement="bottomRight"
+                title={t('xinTable.columnSettings')}
+              >
+                <Tooltip title={t('xinTable.columnSettings')}>
+                  <Button type="text" size={'small'} icon={<SettingOutlined />} />
+                </Tooltip>
+              </Popover>
+            </Space>
+          </Space>
+        )}
+      >
+        <ConfigProvider
+          theme={{
+            components: { Table: { headerBorderRadius: 0 } },
+          }}
+        >
+          <Table
+            styles={{ pagination: { root: {padding: '0 20px 20px'} } }}
+            loading={loading}
+            dataSource={dataSource}
+            size={density}
+            bordered={bordered}
+            {...props}
+            columns={tableColumns}
+            rowKey={rowKey}
+            onChange={handleTableChange}
+            pagination={paginationShow ? paginationProps : false}
+          />
+        </ConfigProvider>
       </Card>
 
       {/* 新增编辑表单 */}

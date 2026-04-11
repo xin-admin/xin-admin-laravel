@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
   Form,
   Button,
@@ -10,7 +10,6 @@ import type { FormItemProps } from 'antd';
 import type { FormColumn } from "@/components/XinFormField/FieldRender";
 import FieldRender from '@/components/XinFormField/FieldRender';
 import { pick } from 'lodash';
-import {CaretDownOutlined, CaretUpOutlined} from "@ant-design/icons";
 
 /**
  * SearchForm - JSON 配置动态搜索表单组件
@@ -29,25 +28,23 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
     colProps = {
       xs: 24,
       sm: 12,
-      md: 8,
+      md: 12,
       lg: 8,
       xl: 6,
+      xxl: 4
     },
     ...formProps
   } = props;
 
   const { t } = useTranslation();
   const [form] = Form.useForm<T>(formRef);
-  const [collapse, setCollapse] = useState(false);
-  // 打开弹窗/抽屉
-  const onCollapse = () => setCollapse(!collapse);
 
   // 渲染表单项
   const renderFormItem = useCallback((column: FormColumn<T>, index: number): React.ReactNode => {
     const {
-      dataIndex, 
+      dataIndex,
       valueType,
-      title = '', 
+      title = '',
       fieldProps = {},
       fieldRender
     } = column;
@@ -63,7 +60,7 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
     const key = String(dataIndex) || `form-item-${index}`;
 
     const defaultFieldRender = (
-      <FieldRender 
+      <FieldRender
         valueType={valueType}
         placeholder={title}
         {...fieldProps}
@@ -109,34 +106,9 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
       </Button>
     );
 
-    const collapseButtonRender = (collapsed: boolean) => {
-      if (collapsed) {
-        return (
-          <Space>
-            { t('xinTable.search.collapse') }
-            <CaretUpOutlined />
-          </Space>
-        )
-      } else {
-        return (
-          <Space>
-            { t('xinTable.search.expand') }
-            <CaretDownOutlined />
-          </Space>
-        )
-      }
-    };
-
-    const collapseButton = (
-      <a onClick={onCollapse}>
-        { submitter?.collapseRender ? submitter.collapseRender(collapse) : collapseButtonRender(collapse) }
-      </a>
-    );
-
     const buttons: SubmitterButton = {
       search: submitButton,
-      reset: resetButton,
-      collapse: collapseButton
+      reset: resetButton
     };
 
     if (typeof submitter?.render === 'function') {
@@ -148,20 +120,10 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
         <Space size={16}>
           {buttons.reset}
           {buttons.search}
-          {buttons.collapse}
         </Space>
       </Form.Item>
     );
-  }, [form, submitter, t, onCollapse]);
-
-  // 表单内容
-  const formBodyRender = () => {
-    if(collapse) {
-      return columns.map((column, index) => renderFormItem(column, index));
-    } else {
-      return columns.slice(0, 3).map((column, index) => renderFormItem(column, index));
-    }
-  };
+  }, [form, submitter, t]);
 
   // 表单内容
   return (
@@ -173,12 +135,12 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
     >
       {grid ? (
         <Row {...rowProps}>
-          {...formBodyRender()}
+          {columns.map((column, index) => renderFormItem(column, index))}
           <Col {...colProps}>{renderSubmitter}</Col>
         </Row>
       ) : (
         <>
-          {...formBodyRender()}
+          {columns.map((column, index) => renderFormItem(column, index))}
           {renderSubmitter}
         </>
       )}
