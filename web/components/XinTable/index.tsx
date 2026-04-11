@@ -53,7 +53,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
       variant: 'borderless'
     },
     searchProps,
-    operateProps,
+    operateProps = {},
 
     tableRef,
     addShow = true,
@@ -267,14 +267,15 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   /** 表格操作列 */
   const operate = useMemo((): TableColumnType<T>[] => {
     if (!operateShow) return [];
+    const {spaceProps, ...opProps} = operateProps;
     return [
       {
         title: t('xinTable.operate'),
         key: 'operate',
         align: 'center',
-        ...operateProps,
+        ...opProps,
         render: (_, record) => (
-          <Space>
+          <Space {...spaceProps}>
             {beforeOperateRender?.(record)}
             {(typeof editShow === 'function' ? editShow(record) : editShow) && (
               <AuthButton auth={props.accessName + '.update'} key={'update'}>

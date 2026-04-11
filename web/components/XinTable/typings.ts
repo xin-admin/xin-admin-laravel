@@ -3,7 +3,7 @@ import type {
   TableColumnType,
   CardProps,
   FormInstance,
-  PaginationProps,
+  PaginationProps, SpaceProps,
 } from 'antd';
 import type {ReactNode, RefObject, Dispatch, SetStateAction} from 'react';
 import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
@@ -105,7 +105,7 @@ export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 
   /** 搜索栏属性  */
   searchProps?: Omit<SearchFormProps<T>, 'form'> | false;
   /** 操作栏属性 */
-  operateProps?: TableColumnType<T>;
+  operateProps?: TableColumnType<T> & { spaceProps?: SpaceProps };
   /** 卡片属性 */
   cardProps?: Pick<CardProps, 'variant' | 'hoverable' | 'size' | 'classNames' | 'styles'>;
   /** 分页配置 */
