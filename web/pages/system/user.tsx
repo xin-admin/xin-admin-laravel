@@ -268,8 +268,9 @@ const Table: React.FC = () => {
     deleteShow: (i) => i.id !== 1,
     formProps: {
       grid: true,
-        colProps: {span: 12},
-      rowProps: {gutter: [20, 0]},
+      colProps: {span: 12},
+      rowProps: {gutter: [30, 0]},
+      layout: 'vertical'
     },
     modalProps: {
       width: 800,

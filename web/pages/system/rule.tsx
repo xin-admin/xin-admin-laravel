@@ -276,8 +276,10 @@ const Rule =  () => {
         formProps={{
           grid: true,
           rowProps: {gutter: [20, 0]},
-          colProps: {span: 6}
+          colProps: {span: 12},
+          layout: 'vertical'
         }}
+        modalProps={{ width: 800 }}
         columns={columns}
         api={'/system/rule'}
         rowKey={"id"}

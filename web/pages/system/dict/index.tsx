@@ -116,7 +116,10 @@ export default function DictPage() {
       formProps={{
         grid: true,
         colProps: {span: 12},
+        rowProps: {gutter: [30, 0]},
+        layout: 'vertical'
       }}
+      modalProps={{ width: 800 }}
       toolBarRender={[
         <Button
           type="primary"
