@@ -11,12 +11,12 @@ import {
   Dropdown,
   type TableProps,
   type TableColumnType,
-  type TreeProps, ConfigProvider,
+  type TreeProps, ConfigProvider, Flex, Divider,
 } from "antd";
 import type {XinTableProps, XinTableInstance, RequestParams, FormMode} from "./typings";
 import SearchForm from "./SearchForm";
 import XinForm, {type XinFormRef} from "@/components/XinForm";
-import {useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
+import {type ReactNode, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
 import type {FormColumn} from "@/components/XinFormField/FieldRender/typings";
 import {Delete, List, Create, Update} from "@/api/common/table.ts";
 import {isArray, isEmpty, omit} from "lodash";
@@ -27,6 +27,7 @@ import {
   ColumnHeightOutlined,
   DeleteOutlined,
   EditOutlined,
+  PlusOutlined,
   ReloadOutlined,
   SearchOutlined,
   SettingOutlined
@@ -46,16 +47,15 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     accessName,
     rowKey,
     columns,
+    tableRef,
 
     formProps,
     modalProps,
-    cardProps = {
-      variant: 'borderless'
-    },
+    cardProps,
     searchProps,
     operateProps = {},
+    pagination: customPagination = {},
 
-    tableRef,
     addShow = true,
     editShow = true,
     deleteShow = true,
@@ -63,12 +63,11 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     operateShow = true,
     paginationShow = true,
     keywordSearchShow = true,
-    titleRender,
-    toolBarRender = [],
 
-    beforeOperateRender,
-    afterOperateRender,
-    pagination: customPagination = {},
+    toolBarRender: customToolBalRender,
+    actionBarRender: customActionBarRender,
+    operateRender: customOperateRender,
+
     handleRequest: customHandleRequest,
     requestParams: customRequestParams,
     handleFinish: customHandleFinish,
@@ -263,50 +262,50 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     setColumnsChecked(dataIndexList);
   }, [defaultTableColumns]);
 
-  /** 表格操作列 */
-  const operate = useMemo((): TableColumnType<T>[] => {
-    if (!operateShow) return [];
-    const {spaceProps, ...opProps} = operateProps;
-    return [
-      {
-        title: t('xinTable.operate'),
-        key: 'operate',
-        align: 'center',
-        ...opProps,
-        render: (_, record) => (
-          <Space {...spaceProps}>
-            {beforeOperateRender?.(record)}
-            {(typeof editShow === 'function' ? editShow(record) : editShow) && (
-              <AuthButton auth={props.accessName + '.update'} key={'update'}>
-                <Tooltip title={t('xinTable.edit')}>
-                  <Button
-                    type="primary"
-                    icon={<EditOutlined />}
-                    size={'small'}
-                    onClick={() => handleUpdate(record)}
-                  />
-                </Tooltip>
-              </AuthButton>
-            )}
-            {(typeof deleteShow === 'function' ? deleteShow(record) : deleteShow) !== false && (
-              <AuthButton auth={props.accessName + '.delete'} key={'delete'}>
-                <Tooltip title={t('xinTable.delete')}>
-                  <Button
-                    danger
-                    type="primary"
-                    icon={<DeleteOutlined />}
-                    size={'small'}
-                    onClick={() => handleDelete(record)}
-                  />
-                </Tooltip>
-              </AuthButton>
-            )}
-            {afterOperateRender?.(record)}
-          </Space>
-        ),
-      },
-    ];
-  }, [columns, operateShow, editShow, deleteShow, t, beforeOperateRender, afterOperateRender, props.accessName, handleUpdate]);
+  /** 表格操作列渲染 */
+  const operateRender = (record: T): ReactNode[] => {
+    // 编辑按钮渲染
+    const editRender = (): ReactNode => {
+      const show = typeof editShow === 'function' ? editShow(record) : editShow;
+      return show ? (
+        <AuthButton auth={props.accessName + '.update'} key={'update'}>
+          <Tooltip title={t('xinTable.edit')}>
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              size={'small'}
+              onClick={() => handleUpdate(record)}
+            />
+          </Tooltip>
+        </AuthButton>
+      ) : null;
+    }
+    // 删除按钮渲染
+    const deleteRender = (): ReactNode => {
+      const show = typeof deleteShow === 'function' ? deleteShow(record) : deleteShow;
+      return show ? (
+        <AuthButton auth={props.accessName + '.delete'} key={'delete'}>
+          <Tooltip title={t('xinTable.delete')}>
+            <Button
+              danger
+              type="primary"
+              icon={<DeleteOutlined />}
+              size={'small'}
+              onClick={() => handleDelete(record)}
+            />
+          </Tooltip>
+        </AuthButton>
+      ) : null;
+    }
+
+    if (customOperateRender) {
+      return customOperateRender(record, {
+        del: deleteRender(),
+        edit: editRender()
+      });
+    }
+    return [deleteRender(), editRender()];
+  };
 
   /** 删除记录 */
   const handleDelete = async (record: T) => {
@@ -399,8 +398,22 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     const filteredColumns = defaultTableColumns.filter(column =>
       columnsChecked.includes(column.dataIndex as any)
     );
-    return [...filteredColumns, ...operate];
-  }, [defaultTableColumns, columnsChecked, operate]);
+    if(! operateShow) {
+      return filteredColumns;
+    }
+    return [
+      ...filteredColumns,
+      {
+        title: t('xinTable.operate'),
+        key: 'operate',
+        align: 'center',
+        ...operateProps,
+        render: (_, record: T) => (
+          <Space>{...operateRender(record)}</Space>
+        ),
+      }
+    ];
+  }, [defaultTableColumns, columnsChecked, operateShow]);
 
   /** 分页配置 */
   const paginationProps: TableProps['pagination'] = {
@@ -413,112 +426,140 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     total,
   }
 
-  return (
-    <div>
-      {/* 搜索表单 */}
-      { searchRender && (
-        <Card style={{marginBottom: 20}} {...cardProps}>
-          <SearchForm<T>
-            form={searchRef}
-            columns={searchColumn}
-            handleSearch={handleSearch}
-            {...searchProps}
-          />
-        </Card>
-      )}
-      <Card
-        styles={{ body: {padding: 0, overflow: 'hidden'}, header: { height: 64 } }}
-        title={titleRender || t('xinTable.queryTable')}
-        {...cardProps}
-        extra={(
-          <Space>
-            {toolBarRender.length > 0 && toolBarRender.map((item) => item)}
-            {addShow && (
-              <AuthButton auth={accessName + '.create'} key={'create'}>
-                <Button type="primary" onClick={handleCreate}>{t('xinTable.add')}</Button>
-              </AuthButton>
-            )}
-            {searchShow && (
-              <Button type="primary" icon={<SearchOutlined/>} onClick={() => setSearchRender(!searchRender)}/>
-            )}
-            <Button
-              type="primary"
-              icon={<ReloadOutlined />}
-              onClick={() => handleRequest()}
-            />
-            {keywordSearchShow && (
-              <Input.Search
-                onChange={keywordSearchChange}
-                placeholder={t('xinTable.keywordPlaceholder')}
-                style={{ width: 200 }}
-                value={requestParams.keywordSearch}
-                onSearch={handleKeywordSearch}
-              />
-            )}
-            <Space size={1}>
-              {/* 密度设置 */}
-              <Dropdown menu={densityMenu} trigger={['click']}>
-                <Button type="text" size={'small'} icon={<ColumnHeightOutlined />} />
-              </Dropdown>
-              {/* 边框设置 */}
-              <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
-                <Button
-                  type="text"
-                  size={'small'}
-                  icon={bordered ? <BorderOutlined /> : <BorderlessTableOutlined />}
-                  onClick={() => setBordered(!bordered)}
-                />
-              </Tooltip>
-              {/* 列设置 */}
-              <Popover
-                content={(
-                  <ConfigProvider
-                    theme={{
-                      components: { Tree: { switcherSize: 12 } },
-                    }}
-                  >
-                    <Tree
-                      icon={false}
-                      blockNode
-                      checkable={true}
-                      treeData={columnTreeData}
-                      selectable={false}
-                      checkedKeys={columnsChecked}
-                      onCheck={columnSettingCheck}
-                    />
-                  </ConfigProvider>
+  /** 顶部操作栏渲染 */
+  const actionBarRender = (): ReactNode[] => {
+    // 新增按钮渲染
+    const addButtonRender = addShow ? (
+      <AuthButton auth={accessName + '.create'}>
+        <Button type="primary" onClick={handleCreate} icon={<PlusOutlined />}>{t('xinTable.add')}</Button>
+      </AuthButton>
+    ) : null;
+    // 搜索按钮渲染
+    const searchButtonRender = searchShow ? (
+      <Button type="primary" icon={<SearchOutlined/>} onClick={() => setSearchRender(!searchRender)}>
+        搜索
+      </Button>
+    ) : null;
+    // 关键字搜索按钮渲染
+    const keywordSearchRender = keywordSearchShow ? (
+      <Input.Search
+        onChange={keywordSearchChange}
+        placeholder={t('xinTable.keywordPlaceholder')}
+        style={{ width: 200 }}
+        value={requestParams.keywordSearch}
+        onSearch={handleKeywordSearch}
+      />
+    ) : null;
+    // 自定义顶部操作栏渲染
+    if (customActionBarRender) {
+      return customActionBarRender({
+        add: addButtonRender,
+        search: searchButtonRender,
+        keywordSearch: keywordSearchRender
+      }).filter(Boolean);
+    } else {
+      return [addButtonRender, searchButtonRender, keywordSearchRender].filter(Boolean);
+    }
+  }
 
-                )}
-                trigger="click"
-                placement="bottomRight"
-                title={t('xinTable.columnSettings')}
-              >
-                <Tooltip title={t('xinTable.columnSettings')}>
-                  <Button type="text" size={'small'} icon={<SettingOutlined />} />
-                </Tooltip>
-              </Popover>
-            </Space>
-          </Space>
+  /** 顶部工具栏渲染 */
+  const toolBarRender = (): ReactNode[] => {
+    // 刷新
+    const reload = (
+      <Tooltip title={'刷新表格'}>
+        <Button
+          type="text"
+          icon={<ReloadOutlined />}
+          onClick={() => handleRequest()}
+        />
+      </Tooltip>
+    );
+    // 密度设置
+    const columnHeight = (
+      <Dropdown menu={densityMenu} trigger={['click']}>
+        <Button type="text" icon={<ColumnHeightOutlined />} />
+      </Dropdown>
+    );
+    // 边框设置
+    const hideBorder = (
+      <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
+        <Button
+          type="text"
+          icon={bordered ? <BorderOutlined /> : <BorderlessTableOutlined />}
+          onClick={() => setBordered(!bordered)}
+        />
+      </Tooltip>
+    );
+    // 列设置
+    const columnSetting = (
+      <Popover
+        content={(
+          <ConfigProvider
+            theme={{
+              components: { Tree: { switcherSize: 12 } },
+            }}
+          >
+            <Tree
+              icon={false}
+              blockNode
+              checkable={true}
+              treeData={columnTreeData}
+              selectable={false}
+              checkedKeys={columnsChecked}
+              onCheck={columnSettingCheck}
+            />
+          </ConfigProvider>
+
         )}
+        trigger="click"
+        placement="bottomRight"
+        title={t('xinTable.columnSettings')}
       >
-        <ConfigProvider
-          theme={{
-            components: { Table: { headerBorderRadius: 0 } },
-          }}
-        >
-          <Table
-            styles={{ pagination: { root: {padding: '0 20px 20px'} } }}
-            loading={loading}
-            dataSource={dataSource}
-            size={density}
-            bordered={bordered}
-            {...props}
-            columns={tableColumns}
-            rowKey={rowKey}
-            onChange={handleTableChange}
-            pagination={paginationShow ? paginationProps : false}
-          />
-        </ConfigProvider>
+        <Tooltip title={t('xinTable.columnSettings')}>
+          <Button type="text" icon={<SettingOutlined />} />
+        </Tooltip>
+      </Popover>
+    );
+    // 自定义顶部操作栏渲染
+    if (customToolBalRender) {
+      return customToolBalRender({reload, columnHeight, hideBorder, columnSetting}).filter(Boolean);
+    } else {
+      return [reload, columnHeight, hideBorder, columnSetting];
+    }
+  }
+
+  return (
+    <>
+      <Card {...cardProps}>
+        {/* 搜索表单 */}
+        { searchRender && (
+          <>
+            <SearchForm<T>
+              form={searchRef}
+              columns={searchColumn}
+              handleSearch={handleSearch}
+              {...searchProps}
+            />
+            <Divider />
+          </>
+        )}
+        {/* 操作栏 */}
+        <Flex justify={'space-between'} align={'center'} style={{ marginBottom: 20 }}>
+          <Space>{ ...actionBarRender() }</Space>
+          <Space size={1}>{...toolBarRender()}</Space>
+        </Flex>
+        {/* 表格 */}
+        <Table
+          loading={loading}
+          dataSource={dataSource}
+          size={density}
+          bordered={bordered}
+          {...props}
+          columns={tableColumns}
+          rowKey={rowKey}
+          onChange={handleTableChange}
+          pagination={paginationShow ? paginationProps : false}
+        />
       </Card>
 
       {/* 新增编辑表单 */}
@@ -534,6 +575,6 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
         }}
         onFinish={handleFinish}
       />
-    </div>
+    </>
   );
 }

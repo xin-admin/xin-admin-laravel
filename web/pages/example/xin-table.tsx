@@ -1,6 +1,6 @@
 import { Button, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
-import type { XinTableColumn } from '@/components/XinTable/typings';
+import type {XinTableColumn, XinTableProps} from '@/components/XinTable/typings';
 import XinTable from '@/components/XinTable';
 
 // 模拟用户数据类型
@@ -119,10 +119,14 @@ const XinTableExample = () => {
   ];
 
   // 自定义工具栏
-  const customToolbar = [
+  const customToolbar: XinTableProps['toolBarRender'] = (dom) => [
     <Button key="export" icon={<ExportOutlined />}>
       导出
     </Button>,
+    dom.columnSetting,
+    dom.hideBorder,
+    dom.reload,
+    dom.columnHeight
   ];
 
   return (

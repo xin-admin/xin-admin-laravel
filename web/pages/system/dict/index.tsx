@@ -120,7 +120,8 @@ export default function DictPage() {
         layout: 'vertical'
       }}
       modalProps={{ width: 800 }}
-      toolBarRender={[
+      actionBarRender={(dom) => [
+        dom.add,
         <Button
           type="primary"
           key="refresh"
@@ -128,13 +129,14 @@ export default function DictPage() {
         >
           {t('dict.refreshCache')}
         </Button>,
+        dom.keywordSearch,
       ]}
       operateProps={{
         fixed: 'right',
         width: 180,
       }}
       scroll={{x: 1000}}
-      beforeOperateRender={(record) => (
+      operateRender={(record, dom) => [
         <Tooltip title={t('dict.manageItems')}>
           <Button
             type="default"
@@ -142,8 +144,10 @@ export default function DictPage() {
             size="small"
             onClick={() => handleGoToItems(record)}
           />
-        </Tooltip>
-      )}
+        </Tooltip>,
+        dom.edit,
+        dom.del
+      ]}
     />
   </>
   );

@@ -3,7 +3,7 @@ import type {
   TableColumnType,
   CardProps,
   FormInstance,
-  PaginationProps, SpaceProps,
+  PaginationProps,
 } from 'antd';
 import type {ReactNode, RefObject, Dispatch, SetStateAction} from 'react';
 import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
@@ -26,6 +26,42 @@ export type XinTableColumn<T = any> = Omit<TableColumnType<T>, 'dataIndex'> & {
   hideInCreate?: boolean;
   search?: FormColumn<T>;
 } & FormColumn<T>;
+
+/**
+ * 表格操作栏按钮
+ */
+export type OperateNode = {
+  /** 删除按钮 */
+  del: ReactNode;
+  /** 编辑按钮 */
+  edit: ReactNode;
+}
+
+/**
+ * 顶部操作按钮渲染
+ */
+export type ActionNode = {
+  /** 新增按钮 */
+  add: ReactNode;
+  /** 搜索按钮 */
+  search: ReactNode;
+  /** 关键字搜索框 */
+  keywordSearch: ReactNode;
+}
+
+/**
+ * 顶部右侧工具栏渲染
+ */
+export type ToolBarNode = {
+  /** 刷新按钮 */
+  reload: ReactNode;
+  /** 密度设置按钮 */
+  columnHeight: ReactNode;
+  /** 边框设置按钮 */
+  hideBorder: ReactNode;
+  /** 列设置按钮 */
+  columnSetting: ReactNode;
+}
 
 /**
  * XinTable 实例
@@ -105,20 +141,18 @@ export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 
   /** 搜索栏属性  */
   searchProps?: Omit<SearchFormProps<T>, 'form'> | false;
   /** 操作栏属性 */
-  operateProps?: TableColumnType<T> & { spaceProps?: SpaceProps };
+  operateProps?: TableColumnType<T>;
   /** 卡片属性 */
   cardProps?: Pick<CardProps, 'variant' | 'hoverable' | 'size' | 'classNames' | 'styles'>;
   /** 分页配置 */
   pagination?: Omit<PaginationProps, 'total' | 'onChange' | 'current'>;
 
-  /** 标题渲染 */
-  titleRender?: ReactNode;
+  /** 顶部操作栏渲染 */
+  actionBarRender?: ((dom: ActionNode) => ReactNode[]);
   /** 工具栏渲染 */
-  toolBarRender?: ReactNode[];
-  /** 操作栏之后渲染 */
-  beforeOperateRender?: (record: T) => ReactNode;
-  /** 操作栏之后渲染 */
-  afterOperateRender?: (record: T) => ReactNode;
+  toolBarRender?: ((dom: ToolBarNode) => ReactNode[]);
+  /** 表格操作栏渲染 */
+  operateRender?: ((record: T, dom: OperateNode) => ReactNode[]);
 
   /** 自定义请求 */
   handleRequest?: (params: RequestParams) => Promise<{ data: T[]; total: number }>;
@@ -126,9 +160,4 @@ export interface XinTableProps<T = any> extends Omit<TableProps<T>, 'columns' | 
   requestParams?: (params: RequestParams) => RequestParams;
   /** 自定义表单请求 */
   handleFinish?: (values: T, mode: FormMode, formRef: RefObject<XinFormRef<T> | null>, defaultValue?: T) => Promise<boolean>;
-
-  /** 开启批量操作 */
-  batchOperation?: boolean;
-  /** */
-  selectionProps?: TableProps['rowSelection'];
 }
