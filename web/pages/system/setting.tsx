@@ -409,6 +409,7 @@ const SettingManagement: React.FC = () => {
       title: t('setting.group.field.remark'),
       dataIndex: 'remark',
       valueType: 'textarea',
+      colProps: {span: 24},
     },
   ];
 
@@ -436,6 +437,11 @@ const SettingManagement: React.FC = () => {
       rules: [{ required: true, message: t('setting.item.field.type.required') }],
     },
     {
+      title: t('setting.item.field.sort'),
+      dataIndex: 'sort',
+      valueType: 'digit',
+    },
+    {
       title: t('setting.item.field.describe'),
       dataIndex: 'describe',
       valueType: 'textarea',
@@ -457,11 +463,6 @@ const SettingManagement: React.FC = () => {
       title: t('setting.item.field.values'),
       dataIndex: 'values',
       valueType: 'text',
-    },
-    {
-      title: t('setting.item.field.sort'),
-      dataIndex: 'sort',
-      valueType: 'digit',
     },
   ];
 
@@ -603,7 +604,12 @@ const SettingManagement: React.FC = () => {
           title: editingGroup ? t('setting.group.edit') : t('setting.group.create'),
           onCancel: () => groupFormRef.current?.close(),
           forceRender: true,
+          width: 800
         }}
+        grid
+        layout={'vertical'}
+        colProps={{span: 8}}
+        rowProps={{gutter: [30, 0]}}
         trigger={<span style={{display: 'none'}} />}
       />
 
@@ -615,11 +621,13 @@ const SettingManagement: React.FC = () => {
         onFinish={handleSaveItem}
         grid={true}
         colProps={{ span: 12 }}
+        rowProps={{gutter: 30}}
+        layout={'vertical'}
         modalProps={{
           title: editingItem ? t('setting.item.edit') : t('setting.item.create'),
           onCancel: () => itemFormRef.current?.close(),
           forceRender: true,
-          width: 600,
+          width: 800,
         }}
         trigger={<span style={{display: 'none'}} />}
       />

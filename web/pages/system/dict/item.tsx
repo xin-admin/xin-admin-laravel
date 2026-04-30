@@ -170,8 +170,11 @@ export default function DictItemPage() {
         accessName={'system.dict.item'}
         formProps={{
           grid: true,
-          colProps: {span: 12}
+          colProps: {span: 12},
+          layout: 'vertical',
+          rowProps: {gutter: [30, 0]}
         }}
+        modalProps={{ width: 600 }}
         requestParams={(params) => {
           return {
             ...params,

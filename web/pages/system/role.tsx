@@ -59,6 +59,7 @@ const Role = () => {
       valueType: "text",
       align: "center",
       required: true,
+      colProps: {span: 8},
       rules: [{ required: true, message: t('sysUserRole.table.roleName.required') }],
       render: (value: any, record: ISysRole) => (
         <>
@@ -75,6 +76,7 @@ const Role = () => {
       hideInSearch: true,
       align: "center",
       required: true,
+      colProps: {span: 8},
       rules: [{ required: true, message: t('sysUserRole.table.sort.required') }],
       render: (value: number) => <Tag variant="filled" color="purple">{value}</Tag>,
     },
@@ -91,6 +93,7 @@ const Role = () => {
       dataIndex: "status",
       valueType: "switch",
       align: "center",
+      colProps: {span: 8},
       filters: [
         { text: t('sysUserRole.table.status.disable'), value: 0 },
         { text: t('sysUserRole.table.status.enable'), value: 1 },
@@ -121,6 +124,7 @@ const Role = () => {
       valueType: 'textarea',
       title: t('sysUserRole.table.description'),
       dataIndex: 'description',
+      colProps: {span: 24},
       hideInTable: true,
     },
     {
@@ -328,7 +332,10 @@ const Role = () => {
             formProps={{
               grid: true,
               rowProps: { gutter: [20, 0] },
-              colProps: { span: 12 },
+              layout: 'vertical'
+            }}
+            modalProps={{
+              width: 800
             }}
             operateProps={{
               fixed: 'right'

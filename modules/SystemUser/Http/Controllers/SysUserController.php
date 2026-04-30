@@ -54,7 +54,7 @@ class SysUserController extends BaseController
         if(empty($user)) {
             return $this->error();
         }
-        $user->roles()->sync($data['role_id'] ?? []);
+        $user->roles()->sync($validated['role_id'] ?? []);
         return $this->success();
     }
 
@@ -71,7 +71,7 @@ class SysUserController extends BaseController
         if (empty($model)) {
             return $this->error();
         }
-        $model->roles()->sync($data['role_id'] ?? []);
+        $model->roles()->sync($validated['role_id'] ?? []);
         $model->update($validated);
         return $this->success();
     }

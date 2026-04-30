@@ -316,14 +316,18 @@ const Dept = () => {
           formRef={modalFormRef}
           modalProps={{
             title: t("sysUserDept.createModalTitle"),
-            styles: { body: { paddingTop: 20, paddingRight: 40 } },
+            styles: { body: { paddingTop: 20} },
+            width: 800
           }}
           onFinish={async (data: ISysDept) => {
             await onSubmit(data, false);
             return true;
           }}
           columns={columns}
-          layout={'horizontal'}
+          layout={'vertical'}
+          grid
+          rowProps={{gutter: [30, 0]}}
+          colProps={{ span: 12 }}
         />
         <Card
           title={(
