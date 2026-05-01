@@ -7,8 +7,7 @@ import useMenuStore from "@/stores/menu";
 /**
  * 页面标题组件
  */
-const PageTitle = (props: { children: React.ReactNode }) => {
-  const children = props.children;
+const PageTitle: React.FC = () => {
   const {t} = useTranslation();
   const location = useLocation();
   const routeMap = useMenuStore(data => data.routeMap);
@@ -31,7 +30,7 @@ const PageTitle = (props: { children: React.ReactNode }) => {
 
   }, [location.pathname, defaultSiteName, t, routeMap]);
 
-  return children;
+  return null;
 }
 
 export default PageTitle;

@@ -39,39 +39,39 @@ const LayoutRender = () => {
 
   return (
     <Layout hasSider className="min-h-screen" style={{ background: themeConfig.background }}>
-      <PageTitle>
-        {/* 主题设置抽屉 */}
-        <SettingDrawer />
+      {/* 页面标题 */}
+      <PageTitle />
+      {/* 主题设置抽屉 */}
+      <SettingDrawer />
 
-        { isMobile ? (
-          <MobileDrawerMenu />
-        ) : (
-          <>
-            {layout === 'columns' && <ColumnSiderRender/> }
-            {(layout === "mix" || layout === "side") && (
-              <Sider
-                collapsed={collapsed}
-                width={themeConfig.siderWeight}
-                style={{borderRight: "1px solid " + themeConfig.colorBorder}}
-                className={"sticky top-0 backdrop-blur-xs [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bottom-0 overflow-auto h-screen"}
-              >
-                <div className="flex items-center h-14 justify-center">
-                  <img className={"w-9"} src={logo} alt="logo"/>
-                  { !collapsed && <span className={"font-semibold text-[20px] ml-5"}>{title}</span> }
-                </div>
-                <MenuRender />
-              </Sider>
-            )}
-          </>
-        )}
-        <Layout className={"relative"}>
-          <HeaderRender/>
-          <Content style={{padding: themeConfig.bodyPadding}}>
-            <AnimatedOutlet/>
-          </Content>
-          <FooterRender/>
-        </Layout>
-      </PageTitle>
+      { isMobile ? (
+        <MobileDrawerMenu />
+      ) : (
+        <>
+          {layout === 'columns' && <ColumnSiderRender/> }
+          {(layout === "mix" || layout === "side") && (
+            <Sider
+              collapsed={collapsed}
+              width={themeConfig.siderWeight}
+              style={{borderRight: "1px solid " + themeConfig.colorBorder}}
+              className={"sticky top-0 backdrop-blur-xs [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bottom-0 overflow-auto h-screen"}
+            >
+              <div className="flex items-center h-14 justify-center">
+                <img className={"w-9"} src={logo} alt="logo"/>
+                { !collapsed && <span className={"font-semibold text-[20px] ml-5"}>{title}</span> }
+              </div>
+              <MenuRender />
+            </Sider>
+          )}
+        </>
+      )}
+      <Layout className={"relative"}>
+        <HeaderRender/>
+        <Content style={{padding: themeConfig.bodyPadding}}>
+          <AnimatedOutlet/>
+        </Content>
+        <FooterRender/>
+      </Layout>
     </Layout>
   );
 };
