@@ -6,16 +6,19 @@ import HeaderRightRender from "@/layout/HeaderRightRender";
 import IconFont from "@/components/IconFont";
 import {useTranslation} from "react-i18next";
 import MenuRender from "@/layout/MenuRender.tsx";
-import {useNavigate} from "react-router";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import BreadcrumbRender from "@/layout/BreadcrumbRender.tsx";
 import useMobile from "@/hooks/useMobile";
+import type {ISysRule} from "@/domain/iSysRule.ts";
 
 const {Header} = Layout;
 
-const HeaderRender: React.FC = () => {
+interface HeaderProps {
+  onMenuChange: (rule: ISysRule) => void;
+}
+
+const HeaderRender: React.FC<HeaderProps> = ({ onMenuChange }) => {
   const {t} = useTranslation();
-  const navigate = useNavigate();
   const isMobile = useMobile();
   const logo = useGlobalStore(state => state.logo);
   const title = useGlobalStore(state => state.title);
@@ -49,13 +52,7 @@ const HeaderRender: React.FC = () => {
   const onSelect: MenuProps['onSelect'] = (info: any) => {
     setSelectKey([info.key]);
     const route = routeMap[info.key];
-    if(route && route.type === 'route' && route.path) {
-      if (info.key.includes('http://') || info.key.includes('https://')) {
-        window.open(info.key, '_blank');
-      } else {
-        navigate(route.path);
-      }
-    }
+    if(route) onMenuChange(route);
   }
 
   return (
@@ -74,13 +71,8 @@ const HeaderRender: React.FC = () => {
           style={{borderBottom: "1px solid " + themeConfig.colorBorder}}
         >
           <div className={"flex items-center relative"}>
-            {/* 顶栏标题 */}
-            {layout === 'top' && (
-              <>
-                <img className={"w-9"} src={logo} alt="logo"/>
-                <span className={"font-semibold text-[20px] ml-5"}>{title}</span>
-              </>
-            )}
+            <img className={"h-8"} src={logo} alt="logo"/>
+            <span className={"font-semibold text-[20px] ml-5 mr-5"}>{title}</span>
             {/* 侧边栏开关 */}
             {['mix', 'side'].includes(layout) && (
               <Button
@@ -96,7 +88,7 @@ const HeaderRender: React.FC = () => {
           </div>
           <div className={"overflow-hidden flex-1"}>
             {/* 顶部菜单 */}
-            { layout == 'top' && <MenuRender /> }
+            { layout == 'top' && <MenuRender onMenuChange={onMenuChange} /> }
             {/* 混合布局模式下的顶部菜单 */}
             { layout == 'mix' && (
               <Menu
