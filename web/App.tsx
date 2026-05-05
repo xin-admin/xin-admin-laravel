@@ -1,8 +1,9 @@
 import createRouter from "@/router";
 import {RouterProvider} from "react-router";
+import type {DataRouter} from "react-router";
 import useGlobalStore from "@/stores/global";
 import AntdProvider from "@/components/AntdProvider";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import useLanguage from '@/hooks/useLanguage';
 import useAuthStore from "@/stores/user";
 import useDictStore from "@/stores/dict";
@@ -12,6 +13,7 @@ const App = () => {
   const fetchUser = useAuthStore(state => state.info);
   const initWebInfo = useGlobalStore(state => state.initWebInfo);
   const initDict = useDictStore(state => state.initDict);
+  const [router, setRoute] = useState<DataRouter>();
 
   const initData = async () => {
     // 初始化网站信息
@@ -32,11 +34,14 @@ const App = () => {
   }
 
   // 执行初始化
-  useEffect(() => { initData() }, []);
+  useEffect(() => {
+    initData();
+    setRoute(createRouter());
+  }, []);
 
   return (
     <AntdProvider>
-      <RouterProvider router={createRouter()} />
+      {router && <RouterProvider router={router} />}
     </AntdProvider>
   );
 };
