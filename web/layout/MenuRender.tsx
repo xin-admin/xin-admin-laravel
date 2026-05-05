@@ -1,13 +1,19 @@
-import type {IMenus, ISysRule} from "@/domain/iSysRule.ts";
-import IconFont from "@/components/IconFont";
+import type {IMenus} from "@/domain/iSysRule.ts";
 import {useTranslation} from "react-i18next";
 import {Menu, type MenuProps} from "antd";
 import React, {useMemo} from "react";
 import useGlobalStore from "@/stores/global";
-import useMenuStore from "@/stores/menu";
-import useMobile from "@/hooks/useMobile";
+import {useLayoutContext} from "@/layout/LayoutContext";
+import useMobile from "@/hooks/useMobile.ts";
+import IconFont from "@/components/IconFont";
+
 type MenuItem = Required<MenuProps>['items'][number];
 
+/**
+ * 构建菜单Item
+ * @param nodes
+ * @param t
+ */
 const transformMenus = (nodes: IMenus[], t: any): MenuItem[] => {
   return nodes.reduce<MenuItem[]>((acc, node) => {
     if (!['route', 'menu'].includes(node.type!) || !node.hidden) {
@@ -15,7 +21,7 @@ const transformMenus = (nodes: IMenus[], t: any): MenuItem[] => {
     }
     const menuItem: MenuItem = {
       label: node.local ? t(node.local) : node.name,
-      icon: node.icon ? <IconFont name={node.icon}/> : undefined,
+      icon: node.icon ? <IconFont name={node.icon} /> : undefined,
       key: node.key!,
     };
     if (node.type === 'menu' && node.children?.length) {
@@ -26,41 +32,29 @@ const transformMenus = (nodes: IMenus[], t: any): MenuItem[] => {
   }, []);
 };
 
-interface HeaderProps {
-  onMenuChange: (rule: ISysRule) => void;
-  parentKey?: string;
-}
-
-const MenuRender: React.FC<HeaderProps> = ({onMenuChange, parentKey}) => {
+const MenuRender: React.FC = () => {
   const {t} = useTranslation();
-  const menus = useMenuStore(state => state.menus);
-  const layout = useGlobalStore(state => state.layout);
   const isMobile = useMobile();
-  const routeMap = useMenuStore(state => state.routeMap);
+  const layout = useGlobalStore(state => state.layout);
+  const { menus, parentKey, selectKey ,onMenuChange } = useLayoutContext();
 
   const menuItems: MenuItem[] = useMemo(() => {
     let menuItem: IMenus[] = menus;
-    if (parentKey) {
+    if (['columns', 'mix'].includes(layout) && parentKey && !isMobile) {
       const rule = menus.find(item => item.key === parentKey);
       menuItem = rule?.children || [];
     }
     return transformMenus(menuItem, t);
-  }, [menus, layout, parentKey, t]);
-
-  const onSelect: MenuProps['onSelect'] = (info) => {
-    const route = routeMap[info.key];
-    if (route) onMenuChange(route);
-  }
+  }, [menus, layout, parentKey, t, isMobile]);
 
   return (
-    <div className={'pl-2.5 pr-2.5'}>
-      <Menu
-        className={"border-b-0 w-full"}
-        mode={ layout === 'top' && !isMobile ? 'horizontal' : 'inline' }
-        items={menuItems}
-        onSelect={onSelect}
-      />
-    </div>
+    <Menu
+      className={"border-b-0 flex-1"}
+      mode={ layout === 'top' && !isMobile ? 'horizontal' : 'inline' }
+      items={menuItems}
+      onSelect={info => onMenuChange(info.key)}
+      selectedKeys={selectKey}
+    />
   )
 }
 

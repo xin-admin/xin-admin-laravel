@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Button, Drawer, Space } from 'antd';
 import useGlobalStore from '@/stores/global';
 import MenuRender from '@/layout/MenuRender';
@@ -11,9 +11,8 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 const MobileDrawerMenu: React.FC = () => {
   const themeConfig = useGlobalStore(state => state.themeConfig);
   const themeDrawer = useGlobalStore(state => state.themeDrawer);
-  const collapsed = useGlobalStore(state => state.collapsed);
-  const setCollapsed = useGlobalStore(state => state.setCollapsed);
   const setThemeDrawer = useGlobalStore(state => state.setThemeDrawer);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   return (
     <div>
@@ -31,8 +30,8 @@ const MobileDrawerMenu: React.FC = () => {
         closable={true}
         onClose={() => setCollapsed(false)}
         open={collapsed}
-        width={280}
         styles={{
+          section: {width: 280},
           header: {
             borderBottom: '1px solid ' + themeConfig.colorBorder,
             background: themeConfig.siderBg,
@@ -58,6 +57,7 @@ const MobileDrawerMenu: React.FC = () => {
           style={{
             height: '100%',
             overflowY: 'auto',
+            width: '100%',
             background: themeConfig.siderBg,
           }}
         >

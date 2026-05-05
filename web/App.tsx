@@ -4,14 +4,12 @@ import useGlobalStore from "@/stores/global";
 import AntdProvider from "@/components/AntdProvider";
 import {useEffect} from "react";
 import useLanguage from '@/hooks/useLanguage';
-import useMenuStore from "@/stores/menu";
 import useAuthStore from "@/stores/user";
 import useDictStore from "@/stores/dict";
 
 const App = () => {
   const { changeLanguage } = useLanguage();
   const fetchUser = useAuthStore(state => state.info);
-  const fetchMenu = useMenuStore(state => state.menu);
   const initWebInfo = useGlobalStore(state => state.initWebInfo);
   const initDict = useDictStore(state => state.initDict);
 
@@ -26,7 +24,6 @@ const App = () => {
     const isLoggedIn = !!localStorage.getItem('token');
     if (isLoggedIn) {
       await fetchUser();
-      await fetchMenu();
     } else {
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';

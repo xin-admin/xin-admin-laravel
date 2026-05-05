@@ -6,14 +6,12 @@ export interface GlobalStoreState {
   subtitle: string;
   describe: string;
   layout: LayoutType;
-  collapsed: boolean;
   themeConfig: ThemeProps;
   themeDrawer: boolean;
 }
 
 export interface GlobalStoreActions {
   setLayout: (layout: LayoutType) => void;
-  setCollapsed: (collapsed: boolean) => void;
   initWebInfo: () => Promise<void>;
   setThemeConfig: (themeConfig: ThemeProps) => void;
   setThemeDrawer: (themeDrawer: boolean) => void;

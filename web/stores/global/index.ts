@@ -11,7 +11,6 @@ const globalState: GlobalStoreState = {
   subtitle: "基于 Ant Design 的后台管理框架",
   describe: "Xin Admin 是一个基于 Ant Design 的后台管理框架",
   layout: "side",
-  collapsed: false,
   themeConfig: { ...defaultColorTheme, ...configTheme },
   themeDrawer: false,
 };
@@ -29,9 +28,6 @@ const globalAction: StateCreator<GlobalStoreState, [], [], GlobalStoreActions> =
   },
   setLayout: (layout: LayoutType) => {
     set({ layout });
-  },
-  setCollapsed: (collapsed: boolean) => {
-    set({ collapsed });
   },
   setThemeConfig: (themeConfig: ThemeProps) => {
     set({ themeConfig });
