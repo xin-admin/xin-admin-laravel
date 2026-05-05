@@ -4,11 +4,9 @@ import {useTranslation} from "react-i18next";
 import IconFont from "@/components/IconFont";
 import XinTable from "@/components/XinTable";
 import type {XinTableColumn, XinTableInstance} from "@/components/XinTable/typings.ts";
-import {Button, message, Switch, Tag, Tooltip, Typography} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
+import {message, Switch, Tag, Typography} from "antd";
 import {useEffect, useRef, useState} from "react";
 import useAuth from "@/hooks/useAuth.ts";
-import AuthButton from "@/components/AuthButton";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useDictStore from "@/stores/dict";
@@ -73,7 +71,6 @@ const Rule =  () => {
       fieldProps: {
         treeData: parentOptions,
         fieldNames: { label: 'name', value: 'id' },
-        disabled: true,
       },
     },
     {
@@ -101,12 +98,33 @@ const Rule =  () => {
       rules: [{ required: true, message: t("sysUserRule.key.required") }],
     },
     {
+      title: t("sysUserRule.link"),
+      dataIndex: 'link',
+      valueType: 'radio',
+      hideInTable: true,
+      hideInSearch: true,
+      dependency: {
+        dependencies: ['type'],
+        visible: values => values.type === 'route'
+      },
+      fieldProps: {
+        options: [
+          {label: t("sysUserRule.link.0"), value: 0},
+          {label: t("sysUserRule.link.1"), value: 1},
+        ],
+      },
+    },
+    {
       title: t("sysUserRule.routePath"),
       dataIndex: 'path',
       valueType: 'text',
       hideInTable: true,
       hideInSearch: true,
       tooltip: t("sysUserRule.routePath.tooltip"),
+      dependency: {
+        dependencies: ['type'],
+        visible: values => values.type === 'route'
+      },
     },
     {
       title: t("sysUserRule.icon"),
@@ -114,6 +132,10 @@ const Rule =  () => {
       valueType: 'icon',
       hideInTable: true,
       hideInSearch: true,
+      dependency: {
+        dependencies: ['type'],
+        visible: values => values.type === 'route' || values.type === 'menu'
+      },
     },
     {
       title: t("sysUserRule.local"),
@@ -121,6 +143,10 @@ const Rule =  () => {
       valueType: 'text',
       hideInTable: true,
       hideInSearch: true,
+      dependency: {
+        dependencies: ['type'],
+        visible: values => values.type === 'route' || values.type === 'menu'
+      },
     },
     /** ------------------ 表格使用的 Column ---------------- */
     {
@@ -255,24 +281,6 @@ const Rule =  () => {
         searchProps={false}
         paginationShow={false}
         scroll={{x: 1200}}
-        beforeOperateRender={(data) => (
-          <AuthButton auth={"system.rule.create"}>
-            <Tooltip title={t("sysUserRule.addChildButton")}>
-              <Button
-                color={'green'}
-                variant={'solid'}
-                icon={<PlusOutlined />}
-                size={'small'}
-                onClick={() => {
-                  tableRef.current?.getForm()?.setFieldsValue({
-                    pid: data.id || 0,
-                  })
-                  tableRef.current?.getForm()?.open();
-                }}
-              />
-            </Tooltip>
-          </AuthButton>
-        )}
         formProps={{
           grid: true,
           rowProps: {gutter: [20, 0]},
