@@ -9,17 +9,20 @@ import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import BreadcrumbRender from "@/layout/BreadcrumbRender.tsx";
 import {useLayoutContext} from "@/layout/LayoutContext";
 import useMobile from "@/hooks/useMobile";
+import {useNavigate} from "react-router";
+import {findMenuByKey} from "@/layout/utils.ts";
 
 const {Header} = Layout;
 
 const HeaderRender: React.FC = () => {
   const {t} = useTranslation();
   const isMobile = useMobile();
+  const navigate = useNavigate();
   const logo = useGlobalStore(state => state.logo);
   const title = useGlobalStore(state => state.title);
   const layout = useGlobalStore(state => state.layout);
   const themeConfig = useGlobalStore(state => state.themeConfig);
-  const { menus, onMenuChange, parentKey, collapsed, setCollapsed } = useLayoutContext();
+  const { menus, parentKey, collapsed, setCollapsed, setParentKey, setSelectKey } = useLayoutContext();
 
   const theme: ThemeConfig = {
     token: { colorTextBase: themeConfig.headerColor },
@@ -39,6 +42,24 @@ const HeaderRender: React.FC = () => {
       key: item.key!,
     })));
   }, [menus, t]);
+
+  const onMenuChange = (key: string) => {
+    const menu = findMenuByKey(menus, key);
+    if(!menu || !menu.key) return;
+    setParentKey(menu.key);
+    if(menu.type === 'menu') {
+      return;
+    }
+    setSelectKey([menu.key]);
+    if(menu.type === 'route' && menu.link) {
+      window.open(menu.path, '_blank');
+      return;
+    }
+    if(menu.type === 'route' && menu.path) {
+      navigate(menu.path);
+      return;
+    }
+  }
 
   return (
     <ConfigProvider theme={theme}>
@@ -80,7 +101,7 @@ const HeaderRender: React.FC = () => {
                 className={"border-b-0 w-full"}
                 mode="horizontal"
                 items={mixMenu}
-                onSelect={(info) => onMenuChange(info.key, false)}
+                onSelect={(info) => onMenuChange(info.key)}
                 selectedKeys={[parentKey!]}
               />
             )}

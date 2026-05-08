@@ -1,11 +1,13 @@
 import type {IMenus} from "@/domain/iSysRule.ts";
 import {useTranslation} from "react-i18next";
 import {Menu, type MenuProps} from "antd";
-import React, {useMemo} from "react";
+import React, {useEffect, useState} from "react";
 import useGlobalStore from "@/stores/global";
 import {useLayoutContext} from "@/layout/LayoutContext";
 import useMobile from "@/hooks/useMobile.ts";
 import IconFont from "@/components/IconFont";
+import {findMenuByKey} from "@/layout/utils.ts";
+import {useNavigate} from "react-router";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -35,26 +37,53 @@ const transformMenus = (nodes: IMenus[], t: any): MenuItem[] => {
 const MenuRender: React.FC = () => {
   const {t} = useTranslation();
   const isMobile = useMobile();
+  const navigate = useNavigate();
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const layout = useGlobalStore(state => state.layout);
-  const { menus, parentKey, selectKey ,onMenuChange } = useLayoutContext();
+  const { menus, parentKey, selectKey, setSelectKey, setParentKey } = useLayoutContext();
 
-  const menuItems: MenuItem[] = useMemo(() => {
-    let menuItem: IMenus[] = menus;
-    if (['columns', 'mix'].includes(layout) && parentKey && !isMobile) {
-      const rule = menus.find(item => item.key === parentKey);
-      menuItem = rule?.children || [];
+  useEffect(() => {
+    if (isMobile) {
+      setMenuItems(transformMenus(menus, t));
+      return;
     }
-    return transformMenus(menuItem, t);
+    if (['columns', 'mix'].includes(layout) && parentKey) {
+      const rule = menus.find(item => item.key === parentKey);
+      setMenuItems(transformMenus(rule?.children || [], t));
+    } else {
+      setMenuItems(transformMenus(menus, t));
+    }
   }, [menus, layout, parentKey, t, isMobile]);
 
+  const onMenuChange = (keyPath: string[]) => {
+    setSelectKey(keyPath);
+    if (['top', 'side'].includes(layout)) {
+      setParentKey(keyPath[keyPath.length -1 ]);
+    }
+    const menu = findMenuByKey(menus, keyPath[0]);
+    if (!menu || !menu.key) return;
+    if(menu.type === 'route' && menu.link) {
+      window.open(menu.path, '_blank');
+      return;
+    }
+    if(menu.type === 'route' && menu.path) {
+      navigate(menu.path);
+      return;
+    }
+  }
+
   return (
-    <Menu
-      className={"border-b-0 flex-1"}
-      mode={ layout === 'top' && !isMobile ? 'horizontal' : 'inline' }
-      items={menuItems}
-      onSelect={info => onMenuChange(info.key)}
-      selectedKeys={selectKey}
-    />
+    <>
+      { menuItems.length > 0 && (
+        <Menu
+          className={"border-b-0 flex-1"}
+          mode={ layout === 'top' && !isMobile ? 'horizontal' : 'inline' }
+          items={menuItems}
+          onSelect={info => onMenuChange(info.keyPath)}
+          selectedKeys={selectKey}
+        />
+      ) }
+    </>
   )
 }
 

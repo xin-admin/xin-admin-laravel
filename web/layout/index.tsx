@@ -10,14 +10,31 @@ import {LayoutProvider, useLayoutContext} from "@/layout/LayoutContext";
 import {Outlet} from "react-router";
 import useMobile from "@/hooks/useMobile.ts";
 import ColumnsMenu from "@/layout/ColumnsMenu.tsx";
+import React, {useEffect, useState} from "react";
 
 const {Content, Sider} = Layout;
 
-const LayoutContent = () => {
+const LayoutContent: React.FC = () => {
   const isMobile = useMobile();
   const themeConfig = useGlobalStore(state => state.themeConfig);
   const layout = useGlobalStore(state => state.layout);
-  const {siderWidth, collapsed} = useLayoutContext();
+  const [siderWidth, setSiderWidth] = useState<number>(226);
+  const {menus, collapsed, parentKey} = useLayoutContext();
+
+  useEffect(() => {
+    const menuWidth = themeConfig.siderWeight ? themeConfig.siderWeight : 226;
+    const columnWidth = layout === 'columns' ? 79 : 0;
+    const rule = menus.find(item => item.key === parentKey);
+    if(['mix', 'columns'].includes(layout)) {
+      if(rule?.children && rule?.children.length) {
+        setSiderWidth(columnWidth + menuWidth)
+      } else {
+        setSiderWidth(columnWidth);
+      }
+    } else {
+      setSiderWidth(menuWidth);
+    }
+  }, [themeConfig, layout, menus, parentKey]);
 
   return (
     <Layout className="min-h-screen" style={{ background: themeConfig.background }}>
