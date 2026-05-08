@@ -18,7 +18,6 @@ import type { LoginParams } from '@/api/system/sys_user';
 import { useTranslation } from 'react-i18next';
 import { darkColorTheme, defaultColorTheme } from '@/layout/theme';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import {useThemeTransition} from '@/hooks/useThemeTransition';
 
 // 样式定义函数，支持暗黑模式
 const getBodyStyle = (isDark: boolean): CSSProperties => ({
@@ -87,8 +86,6 @@ const Login: React.FC = () => {
   const subtitle = useGlobalStore(state => state.subtitle);
   const [isDark, setIsDark] = useState(themeConfig.algorithm === 'darkAlgorithm');
   const [loading, setLoading] = useState(false);
-  // 主题过渡动画 Hook
-  const { transitionThemeWithCircle } = useThemeTransition();
 
   useEffect(() => {
     if(localStorage.getItem('token') && user) {
@@ -111,15 +108,13 @@ const Login: React.FC = () => {
   };
 
   // 暗黑模式切换
-  const toggleTheme = (e: any) => {
+  const toggleTheme = () => {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
-    transitionThemeWithCircle(e, () => {
-      setThemeConfig({
-        ...themeConfig,
-        ...newIsDark ? darkColorTheme : defaultColorTheme,
-      });
-    })
+    setThemeConfig({
+      ...themeConfig,
+      ...newIsDark ? darkColorTheme : defaultColorTheme,
+    });
   };
 
   return (

@@ -6,7 +6,6 @@ import {configTheme, darkColorTheme, defaultColorTheme} from "@/layout/theme.ts"
 import {algorithmOptions} from "@/layout/algorithm.ts";
 
 import {useTranslation} from 'react-i18next';
-import {useThemeTransition} from '@/hooks/useThemeTransition';
 
 const {useToken} = theme;
 
@@ -98,9 +97,6 @@ const SettingDrawer: React.FC = () => {
   const layout = useGlobalStore(state => state.layout);
   const setLayout = useGlobalStore(state => state.setLayout);
 
-  // 主题过渡动画 Hook
-  const { transitionTheme, transitionThemeWithCircle, isTransitioning } = useThemeTransition();
-
   // 翻译后的算法选项
   const translatedAlgorithmOptions = algorithmOptions?.map(option => ({
     ...option,
@@ -109,10 +105,8 @@ const SettingDrawer: React.FC = () => {
 
   // 防抖更新主题配置（带过渡动画）
   const changeSetting = debounce((key: string, value: any) => {
-    transitionTheme(() => {
-      setThemeConfig({...themeConfig, [key]: value});
-    });
-  }, 300, {leading: true, trailing: false});
+    setThemeConfig({...themeConfig, [key]: value});
+  }, 400, {leading: true, trailing: false});
 
   // 处理主题切换（带圆形扩散动画）
   const handleThemeChange = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -126,18 +120,13 @@ const SettingDrawer: React.FC = () => {
     };
 
     if (themeMap[themeName as keyof typeof themeMap]) {
-      // 使用圆形扩散动画切换主题
-      transitionThemeWithCircle(e, () => {
-        setThemeConfig({...themeConfig, ...themeMap[themeName as keyof typeof themeMap]});
-      });
+      setThemeConfig({...themeConfig, ...themeMap[themeName as keyof typeof themeMap]});
     }
   };
 
   // 重置主题（带过渡动画）
   const resetTheme = () => {
-    transitionTheme(() => {
-      setThemeConfig({...configTheme, ...defaultColorTheme});
-    });
+    setThemeConfig({...configTheme, ...defaultColorTheme});
   };
 
   return (
@@ -147,14 +136,10 @@ const SettingDrawer: React.FC = () => {
       closable={false}
       onClose={() => setThemeDrawer(false)}
       open={themeDrawer}
-      width={392}
       footer={(
         <div className="flex w-full justify-between">
-          <Button onClick={resetTheme} disabled={isTransitioning}>
+          <Button onClick={resetTheme}>
             {t('layout.resetTheme')}
-          </Button>
-          <Button type="primary" disabled={isTransitioning}>
-            {t('layout.saveTheme')}
           </Button>
         </div>
       )}
