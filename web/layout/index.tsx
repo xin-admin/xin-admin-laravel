@@ -44,9 +44,10 @@ const LayoutContent: React.FC = () => {
       <SettingDrawer />
       {/* 顶栏 */}
       <HeaderRender />
-
+      {/* 移动端抽屉菜单 */}
+      { isMobile && <MobileDrawerMenu /> }
+      {/* 内容区域 */}
       <Layout hasSider className={"relative"}>
-        { isMobile && <MobileDrawerMenu /> }
         { layout !== "top" && !isMobile && (
           <Sider
             collapsed={collapsed}
@@ -56,6 +57,7 @@ const LayoutContent: React.FC = () => {
               height: `calc(100vh - ${themeConfig.headerHeight}px)`,
               top: themeConfig.headerHeight,
               overflowY: "auto",
+              overflowX: "hidden",
               position: 'sticky'
             }}
           >

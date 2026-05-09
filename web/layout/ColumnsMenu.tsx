@@ -36,9 +36,9 @@ const ColumnsMenu: React.FC = () => {
   }
 
   return (
-    <div className={'flex h-full overflow-auto'}>
+    <div className={'flex h-full'}>
       <div
-        className={'box-border shrink-0'}
+        className={'box-border shrink-0 h-full overflow-auto'}
         style={{
           borderRight: !collapsed ? "1px solid " + themeConfig.colorBorder : 'none',
           width: 79
@@ -61,7 +61,7 @@ const ColumnsMenu: React.FC = () => {
         ))}
       </div>
       { !collapsed && (
-        <div className={'flex-1'}>
+        <div className={'flex-1 h-full overflow-y-auto'}>
           <MenuRender />
         </div>
       )}
