@@ -3,6 +3,7 @@
 namespace Modules\SystemTool\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SystemTool\Enum\SettingType;
 use Modules\SystemTool\Models\SysSettingGroupModel;
@@ -112,6 +113,66 @@ class SysSettingService
                 'error' => $e->getMessage()
             ]);
             return false;
+        }
+    }
+
+    /**
+     * 批量保存设置项
+     *
+     * 先验证所有 ID 是否存在，再在事务内统一更新。
+     * 任一保存失败则全部回滚。
+     *
+     * @param array $settings [['id' => int, 'values' => mixed], ...]
+     * @return array{success: bool, errors: array}
+     */
+    public static function batchSetSettings(array $settings): array
+    {
+        $errors = [];
+        $ids = array_column($settings, 'id');
+        $items = SysSettingItemsModel::whereIn('id', $ids)->get()->keyBy('id');
+
+        // 先验证所有 ID 是否存在，收集缺失项信息
+        foreach ($settings as $item) {
+            $id = (int)$item['id'];
+            if (!$items->has($id)) {
+                $errors[] = [
+                    'key' => "unknown_{$id}",
+                    'title' => "未知设置(ID: {$id})",
+                ];
+            }
+        }
+
+        if (!empty($errors)) {
+            return ['success' => false, 'errors' => $errors];
+        }
+
+        // 事务内执行批量更新
+        try {
+            DB::transaction(function () use ($settings, $items) {
+                foreach ($settings as $item) {
+                    $id = (int)$item['id'];
+                    $model = $items->get($id);
+                    $value = $item['value'];
+                    $model->values = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
+                    $model->save();
+                }
+            });
+            return ['success' => true, 'errors' => []];
+        } catch (\Throwable $e) {
+            Log::error('批量保存设置项事务失败', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            // 事务已回滚，收集所有项的报告信息
+            foreach ($settings as $item) {
+                $id = (int)$item['id'];
+                $model = $items->get($id);
+                $errors[] = [
+                    'key' => $model ? $model->key : "unknown_{$id}",
+                    'title' => $model ? $model->title : "未知设置(ID: {$id})",
+                ];
+            }
+            return ['success' => false, 'errors' => $errors];
         }
     }
 

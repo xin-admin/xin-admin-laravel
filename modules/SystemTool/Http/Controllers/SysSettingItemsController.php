@@ -35,6 +35,7 @@ class SysSettingItemsController extends BaseController
         }
         $query = SysSettingItemsModel::query();
         $data = $this->buildSearch($params, $query)
+            ->orderBy('sort', 'desc')
             ->get()
             ->toArray();
         return $this->success($data);
@@ -85,16 +86,26 @@ class SysSettingItemsController extends BaseController
         return $this->success();
     }
 
-    /** 保存设置 */
-    #[PutRoute('/save/{id}', 'save')]
-    public function save(int $id, SysSettingService $service): JsonResponse
+    /** 批量保存设置 */
+    #[PutRoute('/save', 'save')]
+    public function save(): JsonResponse
     {
-        $values = request()->input('values');
-        if (is_null($values)) {
-            return $this->error('请提供设置值');
+        $settings = request()->input('settings');
+        if (empty($settings) || !is_array($settings)) {
+            return $this->error('请提供设置数据');
         }
-        $service->setSetting($id, $values);
-        return $this->success('保存成功');
+
+        $result = SysSettingService::batchSetSettings($settings);
+
+        if ($result['success']) {
+            SysSettingService::refreshSettings();
+            return $this->success('保存成功');
+        }
+
+        // 收集失败项的名称用于提示
+        $failedTitles = array_column($result['errors'], 'title');
+        $message = '部分设置保存失败：' . implode('、', $failedTitles);
+        return $this->success(['errors' => $result['errors']], $message);
     }
 
     /** 刷新设置 */

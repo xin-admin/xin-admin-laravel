@@ -71,11 +71,11 @@ export async function deleteSettingItem(id: number) {
   });
 }
 
-/** 保存设置项值 */
-export async function saveSettingItemValue(id: number, values: string) {
+/** 批量保存设置项值 */
+export async function saveAllSettingItems(settings: { id: number; value: string }[]) {
   return createAxios({
-    url: `/system/setting/items/save/${id}`,
+    url: '/system/setting/items/save',
     method: 'put',
-    data: { values },
+    data: { settings },
   });
 }

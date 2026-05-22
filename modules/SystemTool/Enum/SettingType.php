@@ -14,8 +14,6 @@ enum SettingType: string
     case SWITCH = 'Switch';              // 开关
     case RADIO = 'Radio';                // 单选框
     case CHECKBOX = 'Checkbox';          // 复选框
-    case SELECT = 'Select';              // 下拉选择
-    case DATE_PICKER = 'DatePicker';     // 日期选择器
 
     /**
      * 获取类型说明
@@ -29,8 +27,6 @@ enum SettingType: string
             self::SWITCH => '开关',
             self::RADIO => '单选框',
             self::CHECKBOX => '复选框',
-            self::SELECT => '下拉选择',
-            self::DATE_PICKER => '日期选择器',
         };
     }
 
@@ -79,8 +75,6 @@ enum SettingType: string
             self::SWITCH->value,
             self::RADIO->value,
             self::CHECKBOX->value,
-            self::SELECT->value,
-            self::DATE_PICKER->value,
         ];
     }
 

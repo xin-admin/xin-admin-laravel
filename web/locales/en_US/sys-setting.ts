@@ -53,8 +53,6 @@ export default {
   'setting.component.Switch': 'Switch',
   'setting.component.Radio': 'Radio',
   'setting.component.Checkbox': 'Checkbox',
-  'setting.component.Select': 'Select',
-  'setting.component.DatePicker': 'Date Picker',
 
   // Form placeholders
   'setting.form.placeholder.input': 'Please input',
@@ -62,8 +60,10 @@ export default {
   'setting.form.placeholder.date': 'Please select date',
 
   // Operation prompts
+  'setting.save.button': 'Save',
   'setting.save.success': 'Saved successfully',
   'setting.save.error': 'Save failed',
+  'setting.save.partialWarning': 'Partial save: {names} failed',
   'setting.confirm.ok': 'Confirm',
   'setting.confirm.cancel': 'Cancel',
 };

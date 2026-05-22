@@ -53,8 +53,6 @@ export default {
   'setting.component.Switch': '开关',
   'setting.component.Radio': '单选框',
   'setting.component.Checkbox': '复选框',
-  'setting.component.Select': '下拉选择',
-  'setting.component.DatePicker': '日期选择器',
 
   // 表单提示
   'setting.form.placeholder.input': '请输入',
@@ -62,8 +60,10 @@ export default {
   'setting.form.placeholder.date': '请选择日期',
 
   // 操作提示
+  'setting.save.button': '保存',
   'setting.save.success': '保存成功',
   'setting.save.error': '保存失败',
+  'setting.save.partialWarning': '部分保存成功，{names}保存失败',
   'setting.confirm.ok': '确认',
   'setting.confirm.cancel': '取消',
 };

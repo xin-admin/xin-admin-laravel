@@ -4,7 +4,6 @@ import {
   Card,
   Checkbox,
   Col,
-  DatePicker,
   Divider,
   Form,
   Input,
@@ -14,13 +13,12 @@ import {
   Popconfirm,
   Radio,
   Row,
-  Select,
   Space,
   Spin,
   Switch,
   Typography,
 } from 'antd';
-import {DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined,} from '@ant-design/icons';
+import {DeleteOutlined, EditOutlined, PlusOutlined, SaveOutlined, SettingOutlined,} from '@ant-design/icons';
 import XinForm from '@/components/XinForm';
 import type { XinFormRef } from '@/components/XinForm/typings';
 import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
@@ -34,7 +32,7 @@ import {
   deleteSettingItem,
   getSettingGroupList,
   getSettingItemList,
-  saveSettingItemValue,
+  saveAllSettingItems,
   updateSettingGroup,
   updateSettingItem,
 } from '@/api/system/sysSetting';
@@ -53,8 +51,6 @@ const SettingManagement: React.FC = () => {
     { label: t('setting.component.Switch'), value: 'Switch' },
     { label: t('setting.component.Radio'), value: 'Radio' },
     { label: t('setting.component.Checkbox'), value: 'Checkbox' },
-    { label: t('setting.component.Select'), value: 'Select' },
-    { label: t('setting.component.DatePicker'), value: 'DatePicker' },
   ];
   const [settingGroups, setSettingGroups] = useState<ISettingGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number>();
@@ -62,6 +58,7 @@ const SettingManagement: React.FC = () => {
   const [settingItems, setSettingItems] = useState<ISetting[]>([]);
   const [loading, setLoading] = useState(false);
   const [itemsLoading, setItemsLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   // 设置组表单
   const [editingGroup, setEditingGroup] = useState<ISettingGroup | null>(null);
@@ -73,9 +70,6 @@ const SettingManagement: React.FC = () => {
 
   // 设置项值表单
   const [valuesForm] = Form.useForm();
-
-  // 保存计时器
-  const saveTimerRef = useRef<{ [key: number]: NodeJS.Timeout }>({});
 
   /** 加载设置组列表 */
   const loadSettingGroups = async () => {
@@ -108,16 +102,28 @@ const SettingManagement: React.FC = () => {
       // 初始化表单值
       const initialValues: { [key: string]: any } = {};
       items.forEach(item => {
-        if (item.values) {
+        if(!item.type || ['Input', 'TextArea', 'Radio'].includes(item.type)) {
+          initialValues[`item_${item.id}`] = String(item.values);
+        }
+        if(item.type && item.type === 'InputNumber') {
+          initialValues[`item_${item.id}`] = Number(item.values);
+        }
+        if(item.type && item.type === 'Switch') {
+          if(item.values === '0' || item.values === 'false') {
+            initialValues[`item_${item.id}`] = false;
+          }else {
+            initialValues[`item_${item.id}`] = Boolean(item.values);
+          }
+        }
+        if(item.type && item.type === 'Checkbox') {
           try {
-            // 尝试解析JSON值
-            initialValues[`item_${item.id}`] = JSON.parse(item.values);
+            initialValues[`item_${item.id}`] = JSON.parse(item.values || '[]');
           } catch {
-            // 如果不是JSON,直接使用字符串值
-            initialValues[`item_${item.id}`] = item.values;
+            initialValues[`item_${item.id}`] = [];
           }
         }
       });
+      console.log(initialValues)
       valuesForm.setFieldsValue(initialValues);
     } finally {
       setItemsLoading(false);
@@ -225,23 +231,35 @@ const SettingManagement: React.FC = () => {
     }
   };
 
-  /** 自动保存设置项值 */
-  const handleValueChange = async (itemId: number, value: any) => {
-    // 清除之前的定时器
-    if (saveTimerRef.current[itemId]) {
-      clearTimeout(saveTimerRef.current[itemId]);
+  /** 批量保存所有设置项值 */
+  const handleSaveAll = async () => {
+    try {
+      setSaving(true);
+      const values = valuesForm.getFieldsValue();
+      const settings = settingItems.map(item => {
+        const value = values[`item_${item.id}`];
+        if(!item.type || ['Input', 'TextArea', 'Radio'].includes(item.type)) {
+          return { id: item.id!, value: String(value) };
+        }
+        if(item.type && item.type === 'InputNumber') {
+          return { id: item.id!, value: String(value) };
+        }
+        if(item.type && item.type === 'Switch') {
+          if(value === '0' || value === 'false' || !!value) {
+            return { id: item.id!, value: 'false' };
+          }else {
+            return { id: item.id!, value: 'true' };
+          }
+        }
+        if(item.type && item.type === 'Checkbox') {
+          return { id: item.id!, value: JSON.stringify(value) };
+        }
+        return { id: item.id!, value: value };
+      });
+      await saveAllSettingItems(settings);
+    } finally {
+      setSaving(false);
     }
-
-    // 设置新的定时器,500ms后保存
-    saveTimerRef.current[itemId] = setTimeout(async () => {
-      try {
-        const valueStr = typeof value === 'object' ? JSON.stringify(value) : String(value);
-        await saveSettingItemValue(itemId, valueStr);
-        message.success(t('setting.save.success'), 1);
-      } catch {
-        message.error(t('setting.save.error'));
-      }
-    }, 500);
   };
 
   /** 渲染设置项的表单组件 */
@@ -261,23 +279,14 @@ const SettingManagement: React.FC = () => {
     }
 
     // 解析props
-    let props: any = {};
+    let componentProps: any = {};
     if (item.props_json) {
       try {
-        props = JSON.parse(item.props_json);
+        componentProps = JSON.parse(item.props_json);
       } catch {
         console.error('props解析失败:', item.props_json);
       }
     }
-
-    const commonProps = {
-      ...props,
-      onChange: (value: any) => {
-        // 对于事件对象,提取value
-        const actualValue = value?.target ? value.target.value : value;
-        handleValueChange(item.id!, actualValue);
-      },
-    };
 
     // 自定义Label组件
     const CustomLabel = () => (
@@ -318,67 +327,39 @@ const SettingManagement: React.FC = () => {
         component = (
           <Input
             placeholder={item.describe || t('setting.form.placeholder.input')}
-            {...commonProps}
-            onBlur={(e) => handleValueChange(item.id!, e.target.value)}
+            {...componentProps}
           />
         );
         break;
-
       case 'TextArea':
         component = (
           <TextArea
             placeholder={item.describe || t('setting.form.placeholder.input')}
             rows={4}
-            {...commonProps}
-            onBlur={(e) => handleValueChange(item.id!, e.target.value)}
+            {...componentProps}
           />
         );
         break;
-
       case 'InputNumber':
         component = (
           <InputNumber
             style={{ width: '100%' }}
             placeholder={item.describe || t('setting.form.placeholder.input')}
-            {...commonProps}
+            {...componentProps}
           />
         );
         break;
-
       case 'Switch':
-        component = <Switch {...commonProps} />;
+        component = <Switch {...componentProps} />;
         break;
-
       case 'Radio':
-        component = <Radio.Group options={options} {...commonProps} />;
+        component = <Radio.Group options={options} {...componentProps} />;
         break;
-
       case 'Checkbox':
-        component = <Checkbox.Group options={options} {...commonProps} />;
+        component = <Checkbox.Group options={options} {...componentProps} />;
         break;
-
-      case 'Select':
-        component = (
-          <Select
-            placeholder={item.describe || t('setting.form.placeholder.select')}
-            options={options}
-            {...commonProps}
-          />
-        );
-        break;
-
-      case 'DatePicker':
-        component = (
-          <DatePicker
-            style={{ width: '100%' }}
-            placeholder={item.describe || t('setting.form.placeholder.date')}
-            {...commonProps}
-          />
-        );
-        break;
-
       default:
-        component = <Input placeholder={item.describe || t('setting.form.placeholder.input')} {...commonProps} />;
+        component = <Input placeholder={item.describe || t('setting.form.placeholder.input')} {...componentProps} />;
     }
 
     return (
@@ -556,14 +537,23 @@ const SettingManagement: React.FC = () => {
           title={t('setting.item.title')}
           extra={
             selectedGroupId && (
-              <Button
-                type="link"
-                size="small"
-                icon={<PlusOutlined />}
-                onClick={handleAddItem}
-              >
-                {t('setting.item.add')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  icon={<SaveOutlined />}
+                  loading={saving}
+                  onClick={handleSaveAll}
+                >
+                  {t('setting.save.button')}
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={handleAddItem}
+                >
+                  {t('setting.item.add')}
+                </Button>
+              </Space>
             )
           }
         >

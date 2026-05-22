@@ -1,3 +1,5 @@
+export type SettingType = 'Input' | 'TextArea' | 'InputNumber' | 'Switch' | 'Radio' | 'Checkbox';
+
 export interface ISetting {
   /** ID */
   id?: number;
@@ -10,7 +12,7 @@ export interface ISetting {
   /** 值 */
   values?: string;
   /** 类型 */
-  type?: string;
+  type?: SettingType;
   /** 选项 */
   options?: string;
   /** 选项JSON */

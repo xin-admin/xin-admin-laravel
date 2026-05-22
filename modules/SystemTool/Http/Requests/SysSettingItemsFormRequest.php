@@ -4,6 +4,7 @@ namespace Modules\SystemTool\Http\Requests;
 
 use Modules\Common\Http\Requests\BaseFormRequest;
 use Modules\SystemTool\Models\SysSettingItemsModel;
+use Modules\SystemTool\Rules\SettingTypeRule;
 
 class SysSettingItemsFormRequest extends BaseFormRequest
 {
@@ -12,11 +13,11 @@ class SysSettingItemsFormRequest extends BaseFormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required',
-            'key' => 'required|min:2|max:255',
+            'title' => 'required|string',
+            'key' => ['required', 'string', 'min:2', 'max:255'],
             'group_id' => 'required|exists:sys_setting_group,id',
-            'type' => 'required',
-            'describe' => 'sometimes|string',
+            'type' => ['required', 'string', new SettingTypeRule],
+            'describe' => 'nullable|string',
             'options' => [
                 'sometimes',
                 'nullable',
@@ -29,8 +30,8 @@ class SysSettingItemsFormRequest extends BaseFormRequest
                 'string',
                 'regex:/^(?:[^=\n]+=[^=\n]+)(?:\n[^=\n]+=[^=\n]+)*$/',
             ],
-            'sort' => 'sometimes|integer',
-            'values' => 'sometimes|string',
+            'sort' => 'nullable|integer',
+            'values' => 'nullable|string',
         ];
 
         if (!$this->isUpdate()) {
@@ -53,7 +54,9 @@ class SysSettingItemsFormRequest extends BaseFormRequest
     {
         return [
             'title.required' => '标题字段是必填的',
+            'title.string' => '标题字段必须是字符串',
             'key.required' => '键名字段是必填的',
+            'key.string' => '键名字段必填是字符串',
             'key.min' => '键名至少需要 :min 个字符',
             'key.max' => '键名不能超过 :max 个字符',
             'group_id.required' => '分组ID是必填的',
