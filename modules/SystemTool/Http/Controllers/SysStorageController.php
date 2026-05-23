@@ -9,6 +9,7 @@ use Modules\AnnoRoute\Attribute\GetRoute;
 use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
+use Modules\SystemTool\Settings\StorageSettings;
 
 /**
  * 文件存储配置管理
@@ -17,11 +18,14 @@ use Modules\Common\Http\Controllers\BaseController;
 class SysStorageController extends BaseController
 {
     /**
-     * 获取存储配置
+     * 获取存储配置（从 DB 加载已保存的值，fallback 到 config 文件）
      */
     #[GetRoute('/config', 'config')]
     public function getConfig(): JsonResponse
     {
+        // 将 DB 中的配置加载到 config() 运行时，使下面的读取直接拿到 DB 值
+        StorageSettings::reloadIntoConfig();
+
         $filesystems = config('filesystems');
         $default = $filesystems['default'] ?? 'local';
 
@@ -31,7 +35,7 @@ class SysStorageController extends BaseController
         // 本地存储配置
         $local = [
             'root' => $disks['local']['root'] ?? storage_path('app/public'),
-            'url' => $disks['local']['url'] ?? env('APP_URL') . '/storage',
+            'url' => $disks['local']['url'] ?? config('app.url') . '/storage',
             'visibility' => $disks['local']['visibility'] ?? 'public',
         ];
 
@@ -80,7 +84,10 @@ class SysStorageController extends BaseController
     }
 
     /**
-     * 保存存储配置
+     * 保存存储配置到数据库（el-settings 风格）
+     *
+     * 使用 StorageSettings::set() 将每个配置项写入 应用配置 表，
+     * 写入后自动更新缓存，并通过 reloadIntoConfig() 同步到 config() 运行时。
      */
     #[PostRoute('/save', 'save')]
     public function saveConfig(): JsonResponse
@@ -93,54 +100,56 @@ class SysStorageController extends BaseController
         $ftp = $data['ftp'] ?? [];
         $sftp = $data['sftp'] ?? [];
 
-        $envData = [];
-
-        // 设置默认存储驱动
-        $envData['FILESYSTEM_DISK'] = $default;
-
-        // 本地存储配置
-        if (!empty($local['url'])) {
-            $envData['FILESYSTEM_LOCAL_URL'] = $local['url'];
-        }
-
-        // S3 / OSS 配置
-        if ($default === 's3' || !empty($s3['key'])) {
-            $envData['AWS_ACCESS_KEY_ID'] = $s3['key'] ?? '';
-            $envData['AWS_SECRET_ACCESS_KEY'] = $s3['secret'] ?? '';
-            $envData['AWS_DEFAULT_REGION'] = $s3['region'] ?? '';
-            $envData['AWS_BUCKET'] = $s3['bucket'] ?? '';
-            $envData['AWS_URL'] = $s3['url'] ?? '';
-            $envData['AWS_ENDPOINT'] = $s3['endpoint'] ?? '';
-            $envData['AWS_USE_PATH_STYLE_ENDPOINT'] = $s3['use_path_style_endpoint'] ? 'true' : 'false';
-        }
-
-        // FTP 配置
-        if ($default === 'ftp' || !empty($ftp['host'])) {
-            $envData['FTP_HOST'] = $ftp['host'] ?? '';
-            $envData['FTP_USERNAME'] = $ftp['username'] ?? '';
-            $envData['FTP_PASSWORD'] = $ftp['password'] ?? '';
-            $envData['FTP_PORT'] = $ftp['port'] ?? 21;
-            $envData['FTP_ROOT'] = $ftp['root'] ?? '';
-            $envData['FTP_PASSIVE'] = ($ftp['passive'] ?? true) ? 'true' : 'false';
-            $envData['FTP_SSL'] = ($ftp['ssl'] ?? false) ? 'true' : 'false';
-            $envData['FTP_TIMEOUT'] = $ftp['timeout'] ?? 30;
-        }
-
-        // SFTP 配置
-        if ($default === 'sftp' || !empty($sftp['host'])) {
-            $envData['SFTP_HOST'] = $sftp['host'] ?? '';
-            $envData['SFTP_USERNAME'] = $sftp['username'] ?? '';
-            $envData['SFTP_PASSWORD'] = $sftp['password'] ?? '';
-            $envData['SFTP_PORT'] = $sftp['port'] ?? 22;
-            $envData['SFTP_ROOT'] = $sftp['root'] ?? '';
-            $envData['SFTP_TIMEOUT'] = $sftp['timeout'] ?? 30;
-            $envData['SFTP_PRIVATE_KEY'] = $sftp['private_key'] ?? '';
-            $envData['SFTP_PASSPHRASE'] = $sftp['passphrase'] ?? '';
-        }
-
         try {
-            $this->updateEnv($envData);
+            // 默认存储驱动
+            StorageSettings::set('filesystems.default', $default);
+
+            // 本地存储
+            if (!empty($local['url'])) {
+                StorageSettings::set('filesystems.disks.local.url', $local['url']);
+            }
+
+            // S3
+            if ($default === 's3' || !empty($s3['key'])) {
+                StorageSettings::set('filesystems.disks.s3.key', $s3['key'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.secret', $s3['secret'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.region', $s3['region'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.bucket', $s3['bucket'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.url', $s3['url'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.endpoint', $s3['endpoint'] ?? '');
+                StorageSettings::set('filesystems.disks.s3.use_path_style_endpoint', (bool) ($s3['use_path_style_endpoint'] ?? false));
+            }
+
+            // FTP
+            if ($default === 'ftp' || !empty($ftp['host'])) {
+                StorageSettings::set('filesystems.disks.ftp.host', $ftp['host'] ?? '');
+                StorageSettings::set('filesystems.disks.ftp.username', $ftp['username'] ?? '');
+                StorageSettings::set('filesystems.disks.ftp.password', $ftp['password'] ?? '');
+                StorageSettings::set('filesystems.disks.ftp.port', (int) ($ftp['port'] ?? 21));
+                StorageSettings::set('filesystems.disks.ftp.root', $ftp['root'] ?? '');
+                StorageSettings::set('filesystems.disks.ftp.passive', (bool) ($ftp['passive'] ?? true));
+                StorageSettings::set('filesystems.disks.ftp.ssl', (bool) ($ftp['ssl'] ?? false));
+                StorageSettings::set('filesystems.disks.ftp.timeout', (int) ($ftp['timeout'] ?? 30));
+            }
+
+            // SFTP
+            if ($default === 'sftp' || !empty($sftp['host'])) {
+                StorageSettings::set('filesystems.disks.sftp.host', $sftp['host'] ?? '');
+                StorageSettings::set('filesystems.disks.sftp.username', $sftp['username'] ?? '');
+                StorageSettings::set('filesystems.disks.sftp.password', $sftp['password'] ?? '');
+                StorageSettings::set('filesystems.disks.sftp.port', (int) ($sftp['port'] ?? 22));
+                StorageSettings::set('filesystems.disks.sftp.root', $sftp['root'] ?? '');
+                StorageSettings::set('filesystems.disks.sftp.timeout', (int) ($sftp['timeout'] ?? 30));
+                StorageSettings::set('filesystems.disks.sftp.privateKey', $sftp['private_key'] ?? '');
+                StorageSettings::set('filesystems.disks.sftp.passphrase', $sftp['passphrase'] ?? '');
+            }
+
+            // 同步到 config() 运行时
+            StorageSettings::reloadIntoConfig();
+
+            // 清除 Laravel 配置缓存
             Artisan::call('config:clear');
+
             return $this->success('保存成功');
         } catch (\Throwable $e) {
             return $this->error('保存失败：' . $e->getMessage());
@@ -178,37 +187,4 @@ class SysStorageController extends BaseController
         }
     }
 
-    /**
-     * 更新 .env 文件
-     * @param array $data
-     * @return void
-     */
-    protected function updateEnv(array $data): void
-    {
-        $envPath = base_path('.env');
-        if (!file_exists($envPath)) {
-            return;
-        }
-        $content = file_get_contents($envPath);
-        foreach ($data as $key => $value) {
-            if (is_null($value)) {
-                $value = '';
-            }
-            $value = (string) $value;
-            if (str_contains($value, ' ') && !str_contains($value, '"')) {
-                $value = '"' . $value . '"';
-            }
-            $pattern = "/^{$key}=.*/m";
-
-            if (preg_match($pattern, $content)) {
-                $content = preg_replace($pattern, "{$key}={$value}", $content);
-            } else {
-                if (!str_ends_with($content, "\n")) {
-                    $content .= "\n";
-                }
-                $content .= "{$key}={$value}\n";
-            }
-        }
-        file_put_contents($envPath, $content);
-    }
 }

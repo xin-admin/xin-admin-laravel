@@ -9,6 +9,7 @@ use Modules\AnnoRoute\Attribute\GetRoute;
 use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
+use Modules\SystemTool\Settings\MailSettings;
 
 /**
  * 邮件配置管理
@@ -17,11 +18,14 @@ use Modules\Common\Http\Controllers\BaseController;
 class SysMailController extends BaseController
 {
     /**
-     * 获取邮件配置
+     * 获取邮件配置（从 DB 加载已保存的值，fallback 到 config 文件）
      */
     #[GetRoute('/config', 'config')]
     public function getConfig(): JsonResponse
     {
+        // 将 DB 中的配置加载到 config() 运行时，使下面的读取直接拿到 DB 值
+        MailSettings::reloadIntoConfig();
+
         $mail = config('mail');
         $mode = $mail['default'] ?? 'single';
         $mailers = [];
@@ -46,7 +50,10 @@ class SysMailController extends BaseController
     }
 
     /**
-     * 保存邮件配置
+     * 保存邮件配置到数据库
+     *
+     * 使用 MailSettings::set() 将每个配置项写入 应用配置 表，
+     * 写入后自动更新缓存，并通过 reloadIntoConfig() 同步到 config() 运行时。
      */
     #[PostRoute('/save', 'save')]
     public function saveConfig(): JsonResponse
@@ -62,60 +69,63 @@ class SysMailController extends BaseController
         $mode = $other['mode'] ?? 'single';
         $selectedMailers = $other['mailers'] ?? [];
 
-        $envData = [];
-
-        if ($mode === 'single') {
-            $envData['MAIL_MAILER'] = $mail['default'] ?? 'smtp';
-        } elseif ($mode === 'failover') {
-            $envData['MAIL_MAILER'] = 'failover';
-            $envData['MAIL_FAILOVER_MAILERS'] = implode(',', $selectedMailers);
-        } elseif ($mode === 'roundrobin') {
-            $envData['MAIL_MAILER'] = 'roundrobin';
-            $envData['MAIL_ROUNDROBIN_MAILERS'] = implode(',', $selectedMailers);
-        }
-
-        // 处理 SMTP 配置
-        if (isset($mail['mailers']['smtp'])) {
-            $smtp = $mail['mailers']['smtp'];
-            $envData['MAIL_HOST'] = $smtp['host'] ?? '127.0.0.1';
-            $envData['MAIL_PORT'] = $smtp['port'] ?? 587;
-            $envData['MAIL_USERNAME'] = $smtp['username'] ?? '';
-            $envData['MAIL_PASSWORD'] = $smtp['password'] ?? '';
-        }
-
-        // 处理发件人配置
-        if (isset($mail['from'])) {
-            $envData['MAIL_FROM_ADDRESS'] = $mail['from']['address'] ?? '';
-            $envData['MAIL_FROM_NAME'] = $mail['from']['name'] ?? '';
-        }
-
-        // 处理日志驱动配置
-        if (isset($mail['mailers']['log'])) {
-            $envData['MAIL_LOG_CHANNEL'] = $mail['mailers']['log']['channel'] ?? 'stack';
-        }
-
-        // 处理第三方服务配置
-        if (isset($services['postmark'])) {
-            $envData['POSTMARK_TOKEN'] = $services['postmark']['token'] ?? '';
-        }
-        if (isset($services['ses'])) {
-            $envData['AWS_ACCESS_KEY_ID'] = $services['ses']['key'] ?? '';
-            $envData['AWS_SECRET_ACCESS_KEY'] = $services['ses']['secret'] ?? '';
-            $envData['AWS_DEFAULT_REGION'] = $services['ses']['region'] ?? 'us-east-1';
-            $envData['AWS_SESSION_TOKEN'] = $services['ses']['token'] ?? '';
-        }
-        if (isset($services['resend'])) {
-            $envData['RESEND_KEY'] = $services['resend']['key'] ?? '';
-        }
-        if (isset($services['mailgun'])) {
-            $envData['MAILGUN_DOMAIN'] = $services['mailgun']['domain'] ?? '';
-            $envData['MAILGUN_SECRET'] = $services['mailgun']['secret'] ?? '';
-            $envData['MAILGUN_ENDPOINT'] = $services['mailgun']['endpoint'] ?? 'api.mailgun.net';
-        }
-
         try {
-            $this->updateEnv($envData);
+            // 邮件默认驱动
+            if ($mode === 'single') {
+                MailSettings::set('mail.default', $mail['default'] ?? 'smtp');
+            } elseif ($mode === 'failover') {
+                MailSettings::set('mail.default', 'failover');
+                MailSettings::set('mail.mailers.failover.mailers', $selectedMailers);
+            } elseif ($mode === 'roundrobin') {
+                MailSettings::set('mail.default', 'roundrobin');
+                MailSettings::set('mail.mailers.roundrobin.mailers', $selectedMailers);
+            }
+
+            // SMTP 配置
+            if (isset($mail['mailers']['smtp'])) {
+                $smtp = $mail['mailers']['smtp'];
+                MailSettings::set('mail.mailers.smtp.host', $smtp['host'] ?? '127.0.0.1');
+                MailSettings::set('mail.mailers.smtp.port', (int) ($smtp['port'] ?? 587));
+                MailSettings::set('mail.mailers.smtp.username', $smtp['username'] ?? '');
+                MailSettings::set('mail.mailers.smtp.password', $smtp['password'] ?? '');
+            }
+
+            // 发件人配置
+            if (isset($mail['from'])) {
+                MailSettings::set('mail.from.address', $mail['from']['address'] ?? '');
+                MailSettings::set('mail.from.name', $mail['from']['name'] ?? '');
+            }
+
+            // 日志驱动配置
+            if (isset($mail['mailers']['log'])) {
+                MailSettings::set('mail.mailers.log.channel', $mail['mailers']['log']['channel'] ?? 'stack');
+            }
+
+            // 第三方服务配置
+            if (isset($services['postmark'])) {
+                MailSettings::set('services.postmark.token', $services['postmark']['token'] ?? '');
+            }
+            if (isset($services['ses'])) {
+                MailSettings::set('services.ses.key', $services['ses']['key'] ?? '');
+                MailSettings::set('services.ses.secret', $services['ses']['secret'] ?? '');
+                MailSettings::set('services.ses.region', $services['ses']['region'] ?? 'us-east-1');
+                MailSettings::set('services.ses.token', $services['ses']['token'] ?? '');
+            }
+            if (isset($services['resend'])) {
+                MailSettings::set('services.resend.key', $services['resend']['key'] ?? '');
+            }
+            if (isset($services['mailgun'])) {
+                MailSettings::set('services.mailgun.domain', $services['mailgun']['domain'] ?? '');
+                MailSettings::set('services.mailgun.secret', $services['mailgun']['secret'] ?? '');
+                MailSettings::set('services.mailgun.endpoint', $services['mailgun']['endpoint'] ?? 'api.mailgun.net');
+            }
+
+            // 同步到 config() 运行时
+            MailSettings::reloadIntoConfig();
+
+            // 清除 Laravel 配置缓存
             Artisan::call('config:clear');
+
             return $this->success('保存成功');
         } catch (\Throwable $e) {
             return $this->error('保存失败：' . $e->getMessage());
@@ -143,36 +153,4 @@ class SysMailController extends BaseController
         }
     }
 
-    /**
-     * 更新 .env 文件
-     * @param array $data
-     * @return void
-     */
-    protected function updateEnv(array $data): void
-    {
-        $envPath = base_path('.env');
-        if (!file_exists($envPath)) {
-            return;
-        }
-        $content = file_get_contents($envPath);
-        foreach ($data as $key => $value) {
-            if (is_null($value)) {
-                $value = '';
-            }
-            if (str_contains($value, ' ') && !str_contains($value, '"')) {
-                $value = '"' . $value . '"';
-            }
-            $pattern = "/^{$key}=.*/m";
-
-            if (preg_match($pattern, $content)) {
-                $content = preg_replace($pattern, "{$key}={$value}", $content);
-            } else {
-                if (!str_ends_with($content, "\n")) {
-                    $content .= "\n";
-                }
-                $content .= "{$key}={$value}\n";
-            }
-        }
-        file_put_contents($envPath, $content);
-    }
 }
