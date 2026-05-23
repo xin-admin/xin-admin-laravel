@@ -11,7 +11,7 @@ use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\PutRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\FileManage\Services\SysFileService;
+use Modules\SystemTool\Services\SysFileService;
 use Modules\SystemUser\Http\Requests\SysUserUpdateRequest;
 use Modules\SystemUser\Models\SysLoginRecordModel;
 use Modules\SystemUser\Models\SysRuleModel;

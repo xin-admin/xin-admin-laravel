@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FileManage\Http\Controllers;
+namespace Modules\SystemTool\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,9 +11,9 @@ use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\PutRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\FileManage\Models\SysFileModel;
-use Modules\FileManage\Services\SysFileService;
 use Modules\SystemTool\Http\Requests\SysFileMoveOrCopyRequest;
+use Modules\SystemTool\Models\SysFileModel;
+use Modules\SystemTool\Services\SysFileService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**

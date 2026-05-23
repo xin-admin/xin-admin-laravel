@@ -21,32 +21,6 @@ Route::controller(App\Http\Controllers\UserController::class)->prefix('api/user'
     Route::post('/setPwd', 'setPassword')->middleware(['auth:sanctum', 'authGuard:users', 'abilities:']);
 });
 
-// SysFileController
-Route::controller(Modules\FileManage\Http\Controllers\SysFileController::class)->prefix('system/file/list')->group(function () {
-    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.query']);
-    Route::post('/upload', 'uploadImage')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.upload']);
-    Route::get('/trashed', 'trashed')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.trashed']);
-    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.delete']);
-    Route::delete('/batch/delete', 'batchDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.delete']);
-    Route::delete('/force-delete/{id}', 'forceDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.force-delete']);
-    Route::delete('/batch/force-delete', 'batchForceDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.force-delete']);
-    Route::post('/restore/{id}', 'restore')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.restore']);
-    Route::post('/batch/restore', 'batchRestore')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.restore']);
-    Route::post('/copy', 'copy')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.copy']);
-    Route::post('/move', 'move')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.move']);
-    Route::put('/rename/{id}', 'rename')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.rename']);
-    Route::get('/download/{id}', 'download');
-    Route::delete('/clean/trashed', 'cleanTrashed')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.clean-trashed']);
-});
-
-// SysFileGroupController
-Route::controller(Modules\FileManage\Http\Controllers\SysFileGroupController::class)->prefix('system/file/group')->group(function () {
-    Route::get('/', 'list')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.query']);
-    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.create']);
-    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.update']);
-    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.delete']);
-});
-
 // SysConfigGroupController
 Route::controller(Modules\SystemTool\Http\Controllers\SysConfigGroupController::class)->prefix('system/config/group')->group(function () {
     Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.query']);
@@ -80,6 +54,32 @@ Route::controller(Modules\SystemTool\Http\Controllers\SysDictItemController::cla
     Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.dict.item.create']);
     Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.dict.item.update']);
     Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.dict.item.delete']);
+});
+
+// SysFileController
+Route::controller(Modules\SystemTool\Http\Controllers\SysFileController::class)->prefix('system/file/list')->group(function () {
+    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.query']);
+    Route::post('/upload', 'uploadImage')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.upload']);
+    Route::get('/trashed', 'trashed')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.trashed']);
+    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.delete']);
+    Route::delete('/batch/delete', 'batchDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.delete']);
+    Route::delete('/force-delete/{id}', 'forceDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.force-delete']);
+    Route::delete('/batch/force-delete', 'batchForceDelete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.force-delete']);
+    Route::post('/restore/{id}', 'restore')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.restore']);
+    Route::post('/batch/restore', 'batchRestore')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.restore']);
+    Route::post('/copy', 'copy')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.copy']);
+    Route::post('/move', 'move')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.move']);
+    Route::put('/rename/{id}', 'rename')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.rename']);
+    Route::get('/download/{id}', 'download');
+    Route::delete('/clean/trashed', 'cleanTrashed')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.list.clean-trashed']);
+});
+
+// SysFileGroupController
+Route::controller(Modules\SystemTool\Http\Controllers\SysFileGroupController::class)->prefix('system/file/group')->group(function () {
+    Route::get('/', 'list')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.query']);
+    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.create']);
+    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.update']);
+    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.delete']);
 });
 
 // SysIndexController

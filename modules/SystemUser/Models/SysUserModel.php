@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Modules\FileManage\Models\SysFileModel;
+use Modules\SystemTool\Models\SysFileModel;
 
 /**
  * 系统用户模型

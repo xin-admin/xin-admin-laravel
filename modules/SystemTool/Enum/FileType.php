@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FileManage\Enum;
+namespace Modules\SystemTool\Enum;
 
 /**
  * 枚举类：文件类型

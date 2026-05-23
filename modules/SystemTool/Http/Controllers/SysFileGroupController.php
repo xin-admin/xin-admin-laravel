@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FileManage\Http\Controllers;
+namespace Modules\SystemTool\Http\Controllers;
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Http\JsonResponse;
@@ -10,8 +10,8 @@ use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\PutRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\FileManage\Http\Requests\SysFileGroupFormRequest;
-use Modules\FileManage\Models\SysFileGroupModel;
+use Modules\SystemTool\Http\Requests\SysFileGroupFormRequest;
+use Modules\SystemTool\Models\SysFileGroupModel;
 
 /**
  * 文件分组控制器

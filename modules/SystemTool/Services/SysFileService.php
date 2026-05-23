@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\FileManage\Services;
+namespace Modules\SystemTool\Services;
 
 use App\Exceptions\HttpResponseException;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Modules\FileManage\Enum\FileType;
-use Modules\FileManage\Models\SysFileModel;
+use Modules\SystemTool\Enum\FileType;
+use Modules\SystemTool\Models\SysFileModel;
 use Modules\SystemTool\Settings\StorageSettings;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

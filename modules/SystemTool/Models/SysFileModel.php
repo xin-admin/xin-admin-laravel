@@ -1,5 +1,5 @@
 <?php
-namespace Modules\FileManage\Models;
+namespace Modules\SystemTool\Models;
 
 use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Modules\FileManage\Enum\FileType;
+use Modules\SystemTool\Enum\FileType;
 use Modules\SystemUser\Models\SysUserModel;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FileManage\Http\Requests;
+namespace Modules\SystemTool\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Common\Http\Requests\BaseFormRequest;
