@@ -23,7 +23,6 @@ class SysMailController extends BaseController
     #[GetRoute('/config', 'config')]
     public function getConfig(): JsonResponse
     {
-        // 将 DB 中的配置加载到 config() 运行时，使下面的读取直接拿到 DB 值
         MailSettings::reloadIntoConfig();
 
         $mail = config('mail');
@@ -138,6 +137,7 @@ class SysMailController extends BaseController
     #[PostRoute('/test', 'test')]
     public function sendTest(): JsonResponse
     {
+        MailSettings::reloadIntoConfig();
         $to = request()->input('to');
         if (empty($to)) {
             return $this->error('请输入收件人邮箱');
