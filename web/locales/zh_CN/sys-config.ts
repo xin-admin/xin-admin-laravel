@@ -1,7 +1,7 @@
 export default {
   // 页面标题
-  'config.page.title': '系统配置',
-  'config.page.description': '管理系统配置项，支持动态配置系统参数',
+  'config.page.title': '网站设置',
+  'config.page.description': '管理网站设置项，支持动态配置系统参数',
 
   // 设置组
   'config.group.title': '设置组',

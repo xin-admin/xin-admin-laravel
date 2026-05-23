@@ -1,13 +1,13 @@
 export default {
   // Page title
-  'config.page.title': 'System Settings',
-  'config.page.description': 'Manage system configuration items, support dynamic configuration of system parameters',
+  'config.page.title': 'Site Configs',
+  'config.page.description': 'Manage site configuration items, support dynamic configuration of site parameters',
 
-  // Setting group
-  'config.group.title': 'Setting Groups',
+  // Config group
+  'config.group.title': 'Config Groups',
   'config.group.add': 'Add',
-  'config.group.create': 'Create Setting Group',
-  'config.group.edit': 'Edit Setting Group',
+  'config.group.create': 'Create Config Group',
+  'config.group.edit': 'Edit Config Group',
   'config.group.delete': 'Delete',
   'config.group.deleteConfirm': 'Confirm deletion?',
   'config.group.deleteWarning': 'Deleting a setting group will also delete all settings in that group',
@@ -16,19 +16,19 @@ export default {
   'config.group.field.key': 'Key',
   'config.group.field.key.required': 'Please enter key',
   'config.group.field.remark': 'Description',
-  'config.group.createSuccess': 'Setting group created successfully',
-  'config.group.updateSuccess': 'Setting group updated successfully',
-  'config.group.deleteSuccess': 'Setting group deleted successfully',
+  'config.group.createSuccess': 'Config group created successfully',
+  'config.group.updateSuccess': 'Config group updated successfully',
+  'config.group.deleteSuccess': 'Config group deleted successfully',
 
-  // Setting item
-  'config.item.title': 'Setting Items',
-  'config.item.add': 'Add Setting Item',
-  'config.item.create': 'Create Setting Item',
-  'config.item.edit': 'Edit Setting Item',
+  // Config item
+  'config.item.title': 'Config Items',
+  'config.item.add': 'Add Config Item',
+  'config.item.create': 'Create Config Item',
+  'config.item.edit': 'Edit Config Item',
   'config.item.delete': 'Delete',
   'config.item.deleteConfirm': 'Confirm deletion?',
   'config.item.selectGroup': 'Please select a setting group first',
-  'config.item.empty': 'No setting items, please click "Add Setting Item" button to add',
+  'config.item.empty': 'No setting items, please click "Add Config Item" button to add',
   'config.item.field.key': 'Key',
   'config.item.field.key.required': 'Please enter key',
   'config.item.field.title': 'Title',
@@ -42,9 +42,9 @@ export default {
   'config.item.field.props.tooltip': 'Example: placeholder=Please input /n maxLength=100',
   'config.item.field.values': 'Default Value',
   'config.item.field.sort': 'Sort',
-  'config.item.createSuccess': 'Setting item created successfully',
-  'config.item.updateSuccess': 'Setting item updated successfully',
-  'config.item.deleteSuccess': 'Setting item deleted successfully',
+  'config.item.createSuccess': 'Config item created successfully',
+  'config.item.updateSuccess': 'Config item updated successfully',
+  'config.item.deleteSuccess': 'Config item deleted successfully',
 
   // Form component types
   'config.component.Input': 'Input',
