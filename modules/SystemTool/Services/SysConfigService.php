@@ -5,14 +5,14 @@ namespace Modules\SystemTool\Services;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Modules\SystemTool\Enum\SettingType;
-use Modules\SystemTool\Models\SysSettingGroupModel;
-use Modules\SystemTool\Models\SysSettingItemsModel;
+use Modules\SystemTool\Enum\SiteConfigType;
+use Modules\SystemTool\Models\SysConfigGroupModel;
+use Modules\SystemTool\Models\SysConfigItemsModel;
 
 /**
  * 系统设置服务
  */
-class SysSettingService
+class SysConfigService
 {
     /**
      * 缓存过期时间（秒），默认30天
@@ -23,10 +23,10 @@ class SysSettingService
      * 刷新系统设置缓存
      * @return bool
      */
-    public static function refreshSettings(): bool
+    public static function refreshConfig(): bool
     {
         try {
-            $groups = SysSettingGroupModel::with('settings')->get();
+            $groups = SysConfigGroupModel::with('settings')->get();
             $settings = [];
 
             foreach ($groups as $group) {
@@ -57,13 +57,13 @@ class SysSettingService
      * @param mixed $default 默认值
      * @return mixed
      */
-    public static function getSetting(?string $name = null, mixed $default = null): mixed
+    public static function getConfig(?string $name = null, mixed $default = null): mixed
     {
         $settings = Cache::get(self::getCacheKey());
 
         // 缓存不存在时重新加载
         if (empty($settings)) {
-            self::refreshSettings();
+            self::refreshConfig();
             $settings = Cache::get(self::getCacheKey(), []);
         }
 
@@ -91,12 +91,12 @@ class SysSettingService
      * @param mixed $value 设置值
      * @return bool
      */
-    public static function setSetting(int $id, mixed $value): bool
+    public static function setConfig(int $id, mixed $value): bool
     {
         try {
 
             // 查找设置组和设置项
-            $setting = SysSettingItemsModel::find($id);
+            $setting = SysConfigItemsModel::find($id);
             if (!$setting) {
                 throw new \RuntimeException("设置项不存在: {$id}");
             }
@@ -125,11 +125,11 @@ class SysSettingService
      * @param array $settings [['id' => int, 'values' => mixed], ...]
      * @return array{success: bool, errors: array}
      */
-    public static function batchSetSettings(array $settings): array
+    public static function batchSetConfig(array $settings): array
     {
         $errors = [];
         $ids = array_column($settings, 'id');
-        $items = SysSettingItemsModel::whereIn('id', $ids)->get()->keyBy('id');
+        $items = SysConfigItemsModel::whereIn('id', $ids)->get()->keyBy('id');
 
         // 先验证所有 ID 是否存在，收集缺失项信息
         foreach ($settings as $item) {
@@ -218,7 +218,7 @@ class SysSettingService
         }
 
         // 尝试转换为枚举类型
-        $settingType = SettingType::fromString($type);
+        $settingType = SiteConfigType::fromString($type);
 
         // 如果无法识别类型，返回字符串
         if (is_null($settingType)) {
@@ -240,15 +240,7 @@ class SysSettingService
             return self::toArrayValue($value);
         }
 
-        // 根据具体类型处理
-        return match($settingType) {
-            SettingType::INPUT => (string)$value,
-            SettingType::TEXTAREA => (string)$value,
-            SettingType::RADIO => is_numeric($value) ? (int)$value : (string)$value,
-            SettingType::SELECT => is_numeric($value) ? (int)$value : (string)$value,
-            SettingType::DATE_PICKER => (string)$value,
-            default => (string)$value,
-        };
+        return (string)$value;
     }
 
     /**
@@ -306,6 +298,6 @@ class SysSettingService
      */
     private static function getCacheKey(): string
     {
-        return env('SETTING_CACHE_KEY', 'app_settings');
+        return config('site_config.cache_key', 'site_config');
     }
 }

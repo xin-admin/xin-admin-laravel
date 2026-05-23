@@ -41,6 +41,6 @@ export default {
   "menu.system.storage": "Storage Configuration",
   "menu.system.dict.item": "Dictionary Data",
   "menu.system.dict-demo": "Dict Demo",
-  "menu.system.setting": "System Configuration",
+  "menu.system.config": "System Configuration",
   "menu.xin-admin": "XinAdmin",
 }

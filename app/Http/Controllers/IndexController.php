@@ -23,7 +23,7 @@ class IndexController
     #[GetRoute('/index')]
     public function index(): JsonResponse
     {
-        $web_setting = setting('web');
+        $web_setting = site_config('web');
 
         return $this->success(compact('web_setting'));
     }

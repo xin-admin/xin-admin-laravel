@@ -15,7 +15,7 @@ class SysIndexController extends BaseController
     #[GetRoute('/index', false)]
     public function index(): JsonResponse
     {
-        $web_setting = setting('web');
+        $web_setting = site_config('web');
         return $this->success($web_setting);
     }
 

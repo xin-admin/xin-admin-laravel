@@ -3,11 +3,11 @@
 namespace Modules\SystemTool\Rules;
 
 use Closure;
-use Modules\SystemTool\Enum\SettingType;
+use Modules\SystemTool\Enum\SiteConfigType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class SettingTypeRule implements ValidationRule
+class ConfigTypeRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -16,7 +16,7 @@ class SettingTypeRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (SettingType::tryFrom($value) == null) {
+        if (SiteConfigType::tryFrom($value) == null) {
             $fail('设置类型不存在！');
         }
     }

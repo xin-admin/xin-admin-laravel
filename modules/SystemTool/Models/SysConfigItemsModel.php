@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Class Setting
  */
-class SysSettingItemsModel extends Model
+class SysConfigItemsModel extends Model
 {
-    protected $table = 'sys_setting_items';
+    protected $table = 'sys_config_items';
 
     protected $casts = [
         'group_id' => 'int',
@@ -36,7 +36,7 @@ class SysSettingItemsModel extends Model
      */
     public function group(): BelongsTo
     {
-        return $this->belongsTo(SysSettingGroupModel::class, 'id', 'group_id');
+        return $this->belongsTo(SysConfigGroupModel::class, 'id', 'group_id');
     }
 
     public function getOptionsJsonAttribute(): string

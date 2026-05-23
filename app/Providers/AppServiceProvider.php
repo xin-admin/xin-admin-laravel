@@ -2,13 +2,9 @@
 
 namespace App\Providers;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Modules\AnnoRoute\AnnoRoute;
-use Modules\SystemTool\Services\SysSettingService;
 
 
 class AppServiceProvider extends ServiceProvider

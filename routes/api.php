@@ -47,6 +47,24 @@ Route::controller(Modules\FileManage\Http\Controllers\SysFileGroupController::cl
     Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.file.group.delete']);
 });
 
+// SysConfigGroupController
+Route::controller(Modules\SystemTool\Http\Controllers\SysConfigGroupController::class)->prefix('system/config/group')->group(function () {
+    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.query']);
+    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.create']);
+    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.update']);
+    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.delete']);
+});
+
+// SysConfigItemsController
+Route::controller(Modules\SystemTool\Http\Controllers\SysConfigItemsController::class)->prefix('system/config/items')->group(function () {
+    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.query']);
+    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.create']);
+    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.update']);
+    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.delete']);
+    Route::put('/save', 'save')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.save']);
+    Route::post('/refreshCache', 'refreshCache')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.items.refresh']);
+});
+
 // SysDictController
 Route::controller(Modules\SystemTool\Http\Controllers\SysDictController::class)->prefix('system/dict/list')->group(function () {
     Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.dict.list.query']);
@@ -74,24 +92,6 @@ Route::controller(Modules\SystemTool\Http\Controllers\SysMailController::class)-
     Route::get('/config', 'getConfig')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.mail.config']);
     Route::post('/save', 'saveConfig')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.mail.save']);
     Route::post('/test', 'sendTest')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.mail.test']);
-});
-
-// SysSettingGroupController
-Route::controller(Modules\SystemTool\Http\Controllers\SysSettingGroupController::class)->prefix('system/setting/group')->group(function () {
-    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.group.query']);
-    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.group.create']);
-    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.group.update']);
-    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.group.delete']);
-});
-
-// SysSettingItemsController
-Route::controller(Modules\SystemTool\Http\Controllers\SysSettingItemsController::class)->prefix('system/setting/items')->group(function () {
-    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.query']);
-    Route::post('/', 'create')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.create']);
-    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.update']);
-    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.delete']);
-    Route::put('/save/{id}', 'save')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.save']);
-    Route::post('/refreshCache', 'refreshCache')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.setting.items.refresh']);
 });
 
 // SysStorageController

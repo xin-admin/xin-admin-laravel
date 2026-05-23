@@ -1,4 +1,4 @@
-export interface ISettingGroup {
+export interface IConfigGroup {
   /** ID */
   id?: number;
   /** 标题 */

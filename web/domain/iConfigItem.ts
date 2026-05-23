@@ -1,6 +1,6 @@
-export type SettingType = 'Input' | 'TextArea' | 'InputNumber' | 'Switch' | 'Radio' | 'Checkbox';
+export type ConfigType = 'Input' | 'TextArea' | 'InputNumber' | 'Switch' | 'Radio' | 'Checkbox';
 
-export interface ISetting {
+export interface IConfigItem {
   /** ID */
   id?: number;
   /** 键 */
@@ -12,7 +12,7 @@ export interface ISetting {
   /** 值 */
   values?: string;
   /** 类型 */
-  type?: SettingType;
+  type?: ConfigType;
   /** 选项 */
   options?: string;
   /** 选项JSON */

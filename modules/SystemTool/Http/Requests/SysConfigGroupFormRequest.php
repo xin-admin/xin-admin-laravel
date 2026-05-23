@@ -5,7 +5,7 @@ namespace Modules\SystemTool\Http\Requests;
 use Illuminate\Validation\Rule;
 use Modules\Common\Http\Requests\BaseFormRequest;
 
-class SysSettingGroupFormRequest extends BaseFormRequest
+class SysConfigGroupFormRequest extends BaseFormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -13,14 +13,14 @@ class SysSettingGroupFormRequest extends BaseFormRequest
     {
         if (!$this->isUpdate()) {
             return [
-                'key' => 'required|unique:sys_setting_group,key',
+                'key' => 'required|unique:sys_config_group,key',
                 'title' => 'required',
                 'remark' => 'sometimes|required',
             ];
         } else {
             $id = $this->route('id');
             return [
-                'key' => ['required', Rule::unique('sys_setting_group', 'key')->ignore($id)],
+                'key' => ['required', Rule::unique('sys_config_group', 'key')->ignore($id)],
                 'title' => 'required',
                 'remark' => 'sometimes|required',
             ];

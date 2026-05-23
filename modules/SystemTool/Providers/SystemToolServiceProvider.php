@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Modules\AnnoRoute\AnnoRoute;
-use Modules\SystemTool\Services\SysSettingService;
+use Modules\SystemTool\Services\SysConfigService;
 
 class SystemToolServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class SystemToolServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(SysSettingService::class, SysSettingService::class);
+        $this->app->singleton(SysConfigService::class, SysConfigService::class);
     }
 
     /**
@@ -32,7 +32,7 @@ class SystemToolServiceProvider extends ServiceProvider
             DB::connection()->getPDO();
             if (Schema::hasTable('sys_setting_items')) {
                 // 刷新系统设置缓存
-                SysSettingService::refreshSettings();
+                SysConfigService::refreshConfig();
             }
         } catch (Exception $e) {
 

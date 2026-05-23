@@ -1,8 +1,8 @@
 <?php
 
-use Modules\SystemTool\Services\SysSettingService;
+use Modules\SystemTool\Services\SysConfigService;
 
-if (! function_exists('setting')) {
+if (! function_exists('site_config')) {
     /**
      * 获取或设置系统配置
      *
@@ -11,14 +11,14 @@ if (! function_exists('setting')) {
      * @return mixed
      *
      * @example
-     *   setting('site.name')           // 获取配置
-     *   setting('site.name', 'Default') // 带默认值获取
-     *   setting('site')                 // 获取整个组
-     *   setting()                       // 获取所有配置
+     *   site_config('site.name')           // 获取配置
+     *   site_config('site.name', 'Default') // 带默认值获取
+     *   site_config('site')                 // 获取整个组
+     *   site_config()                       // 获取所有配置
      */
-    function setting(?string $name = null, mixed $default = null): mixed
+    function site_config(?string $name = null, mixed $default = null): mixed
     {
-        return SysSettingService::getSetting($name, $default);
+        return SysConfigService::getConfig($name, $default);
     }
 }
 

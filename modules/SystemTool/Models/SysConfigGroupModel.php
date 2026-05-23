@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Class SettingGroup
  */
-class SysSettingGroupModel extends Model
+class SysConfigGroupModel extends Model
 {
-    protected $table = 'sys_setting_group';
+    protected $table = 'sys_config_group';
 
     protected $fillable = [
         'title',
@@ -23,7 +23,7 @@ class SysSettingGroupModel extends Model
      */
     public function settings(): HasMany
     {
-        return $this->hasMany(SysSettingItemsModel::class ,'group_id', 'id');
+        return $this->hasMany(SysConfigItemsModel::class ,'group_id', 'id');
     }
 
 }

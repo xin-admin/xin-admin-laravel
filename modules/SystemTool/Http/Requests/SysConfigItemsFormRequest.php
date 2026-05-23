@@ -3,10 +3,10 @@
 namespace Modules\SystemTool\Http\Requests;
 
 use Modules\Common\Http\Requests\BaseFormRequest;
-use Modules\SystemTool\Models\SysSettingItemsModel;
-use Modules\SystemTool\Rules\SettingTypeRule;
+use Modules\SystemTool\Models\SysConfigItemsModel;
+use Modules\SystemTool\Rules\ConfigTypeRule;
 
-class SysSettingItemsFormRequest extends BaseFormRequest
+class SysConfigItemsFormRequest extends BaseFormRequest
 {
     protected $stopOnFirstFailure = true;
 
@@ -15,8 +15,8 @@ class SysSettingItemsFormRequest extends BaseFormRequest
         $rules = [
             'title' => 'required|string',
             'key' => ['required', 'string', 'min:2', 'max:255'],
-            'group_id' => 'required|exists:sys_setting_group,id',
-            'type' => ['required', 'string', new SettingTypeRule],
+            'group_id' => 'required|exists:sys_config_group,id',
+            'type' => ['required', 'string', new ConfigTypeRule],
             'describe' => 'nullable|string',
             'options' => [
                 'sometimes',
@@ -37,7 +37,7 @@ class SysSettingItemsFormRequest extends BaseFormRequest
         if (!$this->isUpdate()) {
             $rules['key'][] = function ($attribute, $value, $fail) {
                 $groupId = $this->input('group_id');
-                $exists = SysSettingItemsModel::query()
+                $exists = SysConfigItemsModel::query()
                     ->where('group_id', $groupId)
                     ->where('key', $value)
                     ->exists();

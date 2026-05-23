@@ -11,21 +11,21 @@ use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\PutRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\SystemTool\Http\Requests\SysSettingGroupFormRequest;
-use Modules\SystemTool\Models\SysSettingGroupModel;
+use Modules\SystemTool\Http\Requests\SysConfigGroupFormRequest;
+use Modules\SystemTool\Models\SysConfigGroupModel;
 
 /**
  * 设置分组控制器
  */
-#[RequestAttribute('/system/setting/group', 'system.setting.group')]
-class SysSettingGroupController extends BaseController
+#[RequestAttribute('/system/config/group', 'system.config.group')]
+class SysConfigGroupController extends BaseController
 {
     /** 查询设置分组列表 */
     #[GetRoute(authorize: 'query')]
     public function query(Request $request): JsonResponse
     {
         $params = $request->all();
-        $query = SysSettingGroupModel::query();
+        $query = SysConfigGroupModel::query();
 
         if (!empty($params['keywordSearch'])) {
             $query->whereAny(
@@ -41,10 +41,10 @@ class SysSettingGroupController extends BaseController
 
     /** 创建设置分组 */
     #[PostRoute(authorize: 'create')]
-    public function create(SysSettingGroupFormRequest $request): JsonResponse
+    public function create(SysConfigGroupFormRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $model = SysSettingGroupModel::create($validated);
+        $model = SysConfigGroupModel::create($validated);
         if (empty($model)) {
             return $this->error();
         }
@@ -57,10 +57,10 @@ class SysSettingGroupController extends BaseController
         authorize: 'update',
         where: ['id' => '[0-9]+']
     )]
-    public function update(int $id, SysSettingGroupFormRequest $request): JsonResponse
+    public function update(int $id, SysConfigGroupFormRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $model = SysSettingGroupModel::find($id);
+        $model = SysConfigGroupModel::find($id);
         if (empty($model)) {
             return $this->error();
         }
@@ -76,7 +76,7 @@ class SysSettingGroupController extends BaseController
     )]
     public function delete(int $id): JsonResponse
     {
-        $model = SysSettingGroupModel::find($id);
+        $model = SysConfigGroupModel::find($id);
         if (empty($model)) {
             return $this->error();
         }

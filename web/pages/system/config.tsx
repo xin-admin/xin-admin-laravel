@@ -23,61 +23,61 @@ import XinForm from '@/components/XinForm';
 import type { XinFormRef } from '@/components/XinForm/typings';
 import type { FormColumn } from '@/components/XinFormField/FieldRender/typings';
 import {useTranslation} from 'react-i18next';
-import type {ISettingGroup} from '@/domain/iSettingGroup';
-import type {ISetting} from '@/domain/iSetting';
+import type {IConfigGroup} from '@/domain/iConfigGroup.ts';
+import type {IConfigItem} from '@/domain/iConfigItem.ts';
 import {
-  createSettingGroup,
-  createSettingItem,
-  deleteSettingGroup,
-  deleteSettingItem,
-  getSettingGroupList,
-  getSettingItemList,
-  saveAllSettingItems,
-  updateSettingGroup,
-  updateSettingItem,
-} from '@/api/system/sysSetting';
+  createConfigGroup,
+  createConfigItem,
+  deleteConfigGroup,
+  deleteConfigItem,
+  getConfigGroupList,
+  getConfigItemList,
+  saveConfigItems,
+  updateConfigGroup,
+  updateConfigItem,
+} from '@/api/system/sys_config.ts';
 
 const { TextArea } = Input;
 const { Text, Title } = Typography;
 
-const SettingManagement: React.FC = () => {
+const ConfigManagement: React.FC = () => {
   const { t } = useTranslation();
 
   /** 表单组件类型选项 */
   const FORM_COMPONENT_OPTIONS = [
-    { label: t('setting.component.Input'), value: 'Input' },
-    { label: t('setting.component.TextArea'), value: 'TextArea' },
-    { label: t('setting.component.InputNumber'), value: 'InputNumber' },
-    { label: t('setting.component.Switch'), value: 'Switch' },
-    { label: t('setting.component.Radio'), value: 'Radio' },
-    { label: t('setting.component.Checkbox'), value: 'Checkbox' },
+    { label: t('config.component.Input'), value: 'Input' },
+    { label: t('config.component.TextArea'), value: 'TextArea' },
+    { label: t('config.component.InputNumber'), value: 'InputNumber' },
+    { label: t('config.component.Switch'), value: 'Switch' },
+    { label: t('config.component.Radio'), value: 'Radio' },
+    { label: t('config.component.Checkbox'), value: 'Checkbox' },
   ];
-  const [settingGroups, setSettingGroups] = useState<ISettingGroup[]>([]);
+  const [configGroups, setConfigGroups] = useState<IConfigGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number>();
   const [selectedGroupKey, setSelectedGroupKey] = useState<string>();
-  const [settingItems, setSettingItems] = useState<ISetting[]>([]);
+  const [configItems, setConfigItems] = useState<IConfigItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [itemsLoading, setItemsLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
   // 设置组表单
-  const [editingGroup, setEditingGroup] = useState<ISettingGroup | null>(null);
+  const [editingGroup, setEditingGroup] = useState<IConfigGroup | null>(null);
   const groupFormRef = useRef<XinFormRef>(null);
 
   // 设置项表单
-  const [editingItem, setEditingItem] = useState<ISetting | null>(null);
+  const [editingItem, setEditingItem] = useState<IConfigItem | null>(null);
   const itemFormRef = useRef<XinFormRef>(null);
 
   // 设置项值表单
   const [valuesForm] = Form.useForm();
 
   /** 加载设置组列表 */
-  const loadSettingGroups = async () => {
+  const loadConfigGroups = async () => {
     try {
       setLoading(true);
-      const { data } = await getSettingGroupList();
+      const { data } = await getConfigGroupList();
       const groups = data.data || [];
-      setSettingGroups(groups);
+      setConfigGroups(groups);
 
       // 如果当前没有选中的组,选中第一个
       if (!selectedGroupId && groups.length > 0) {
@@ -90,14 +90,14 @@ const SettingManagement: React.FC = () => {
   };
 
   /** 加载设置项列表 */
-  const loadSettingItems = async (groupId?: number) => {
+  const loadConfigItems = async (groupId?: number) => {
     if (!groupId) return;
 
     try {
       setItemsLoading(true);
-      const { data } = await getSettingItemList(groupId);
+      const { data } = await getConfigItemList(groupId);
       const items = data.data || [];
-      setSettingItems(items);
+      setConfigItems(items);
 
       // 初始化表单值
       const initialValues: { [key: string]: any } = {};
@@ -131,12 +131,12 @@ const SettingManagement: React.FC = () => {
   };
 
   useEffect(() => {
-    loadSettingGroups();
+    loadConfigGroups();
   }, []);
 
   useEffect(() => {
     if (selectedGroupId) {
-      loadSettingItems(selectedGroupId);
+      loadConfigItems(selectedGroupId);
     }
   }, [selectedGroupId]);
 
@@ -148,24 +148,24 @@ const SettingManagement: React.FC = () => {
   };
 
   /** 打开编辑设置组对话框 */
-  const handleEditGroup = (group: ISettingGroup) => {
+  const handleEditGroup = (group: IConfigGroup) => {
     setEditingGroup(group);
     groupFormRef.current?.setFieldsValue(group);
     groupFormRef.current?.open();
   };
 
   /** 保存设置组 */
-  const handleSaveGroup = async (values: ISettingGroup) => {
+  const handleSaveGroup = async (values: IConfigGroup) => {
     try {
       if (editingGroup) {
-        await updateSettingGroup(editingGroup.id!, values);
-        message.success(t('setting.group.updateSuccess'));
+        await updateConfigGroup(editingGroup.id!, values);
+        message.success(t('config.group.updateSuccess'));
       } else {
-        await createSettingGroup(values);
-        message.success(t('setting.group.createSuccess'));
+        await createConfigGroup(values);
+        message.success(t('config.group.createSuccess'));
       }
       groupFormRef.current?.close();
-      await loadSettingGroups();
+      await loadConfigGroups();
       return true;
     } catch {
       return false;
@@ -175,13 +175,13 @@ const SettingManagement: React.FC = () => {
   /** 删除设置组 */
   const handleDeleteGroup = async (id: number) => {
     try {
-      await deleteSettingGroup(id);
-      message.success(t('setting.group.deleteSuccess'));
+      await deleteConfigGroup(id);
+      message.success(t('config.group.deleteSuccess'));
       if (selectedGroupId === id) {
         setSelectedGroupId(undefined);
         setSelectedGroupKey(undefined);
       }
-      await loadSettingGroups();
+      await loadConfigGroups();
     } catch (error) {
       console.error('删除设置组失败:', error);
     }
@@ -196,24 +196,24 @@ const SettingManagement: React.FC = () => {
   };
 
   /** 打开编辑设置项对话框 */
-  const handleEditItem = (item: ISetting) => {
+  const handleEditItem = (item: IConfigItem) => {
     setEditingItem(item);
     itemFormRef.current?.setFieldsValue(item);
     itemFormRef.current?.open();
   };
 
   /** 保存设置项 */
-  const handleSaveItem = async (values: ISetting) => {
+  const handleSaveItem = async (values: IConfigItem) => {
     try {
       if (editingItem) {
-        await updateSettingItem(editingItem.id!, { ...values, group_id: selectedGroupId });
-        message.success(t('setting.item.updateSuccess'));
+        await updateConfigItem(editingItem.id!, { ...values, group_id: selectedGroupId });
+        message.success(t('config.item.updateSuccess'));
       } else {
-        await createSettingItem({ ...values, group_id: selectedGroupId });
-        message.success(t('setting.item.createSuccess'));
+        await createConfigItem({ ...values, group_id: selectedGroupId });
+        message.success(t('config.item.createSuccess'));
       }
       itemFormRef.current?.close();
-      await loadSettingItems(selectedGroupId);
+      await loadConfigItems(selectedGroupId);
       return true;
     } catch {
       return false;
@@ -223,9 +223,9 @@ const SettingManagement: React.FC = () => {
   /** 删除设置项 */
   const handleDeleteItem = async (id: number) => {
     try {
-      await deleteSettingItem(id);
-      message.success(t('setting.item.deleteSuccess'));
-      await loadSettingItems(selectedGroupId);
+      await deleteConfigItem(id);
+      message.success(t('config.item.deleteSuccess'));
+      await loadConfigItems(selectedGroupId);
     } catch (error) {
       console.error('删除设置项失败:', error);
     }
@@ -236,7 +236,7 @@ const SettingManagement: React.FC = () => {
     try {
       setSaving(true);
       const values = valuesForm.getFieldsValue();
-      const settings = settingItems.map(item => {
+      const configs = configItems.map(item => {
         const value = values[`item_${item.id}`];
         if(!item.type || ['Input', 'TextArea', 'Radio'].includes(item.type)) {
           return { id: item.id!, value: String(value) };
@@ -256,17 +256,18 @@ const SettingManagement: React.FC = () => {
         }
         return { id: item.id!, value: value };
       });
-      await saveAllSettingItems(settings);
+      await saveConfigItems(configs);
+      message.success(t('config.item.updateSuccess'));
     } finally {
       setSaving(false);
     }
   };
 
   /** 渲染设置项的表单组件 */
-  const renderSettingItemComponent = (item: ISetting) => {
+  const renderConfigItemComponent = (item: IConfigItem) => {
     const fieldName = `item_${item.id}`;
     const componentType = item.type || 'Input';
-    const usage = `setting('${selectedGroupKey}.${item.key}')`;
+    const usage = `site_config('${selectedGroupKey}.${item.key}')`;
 
     // 解析options
     let options: any[] = [];
@@ -300,10 +301,10 @@ const SettingManagement: React.FC = () => {
             onClick={() => handleEditItem(item)}
           />
           <Popconfirm
-            title={t('setting.item.deleteConfirm')}
+            title={t('config.item.deleteConfirm')}
             onConfirm={() => handleDeleteItem(item.id!)}
-            okText={t('setting.confirm.ok')}
-            cancelText={t('setting.confirm.cancel')}
+            okText={t('config.confirm.ok')}
+            cancelText={t('config.confirm.cancel')}
           >
             <Button
               type="text"
@@ -326,7 +327,7 @@ const SettingManagement: React.FC = () => {
       case 'Input':
         component = (
           <Input
-            placeholder={item.describe || t('setting.form.placeholder.input')}
+            placeholder={item.describe || t('config.form.placeholder.input')}
             {...componentProps}
           />
         );
@@ -334,7 +335,7 @@ const SettingManagement: React.FC = () => {
       case 'TextArea':
         component = (
           <TextArea
-            placeholder={item.describe || t('setting.form.placeholder.input')}
+            placeholder={item.describe || t('config.form.placeholder.input')}
             rows={4}
             {...componentProps}
           />
@@ -344,7 +345,7 @@ const SettingManagement: React.FC = () => {
         component = (
           <InputNumber
             style={{ width: '100%' }}
-            placeholder={item.describe || t('setting.form.placeholder.input')}
+            placeholder={item.describe || t('config.form.placeholder.input')}
             {...componentProps}
           />
         );
@@ -359,7 +360,7 @@ const SettingManagement: React.FC = () => {
         component = <Checkbox.Group options={options} {...componentProps} />;
         break;
       default:
-        component = <Input placeholder={item.describe || t('setting.form.placeholder.input')} {...componentProps} />;
+        component = <Input placeholder={item.describe || t('config.form.placeholder.input')} {...componentProps} />;
     }
 
     return (
@@ -373,21 +374,21 @@ const SettingManagement: React.FC = () => {
   };
 
   /** 设置组表单列 */
-  const groupColumns: FormColumn<ISettingGroup>[] = [
+  const groupColumns: FormColumn<IConfigGroup>[] = [
     {
-      title: t('setting.group.field.title'),
+      title: t('config.group.field.title'),
       dataIndex: 'title',
       valueType: 'text',
-      rules: [{ required: true, message: t('setting.group.field.title.required') }],
+      rules: [{ required: true, message: t('config.group.field.title.required') }],
     },
     {
-      title: t('setting.group.field.key'),
+      title: t('config.group.field.key'),
       dataIndex: 'key',
       valueType: 'text',
-      rules: [{ required: true, message: t('setting.group.field.key.required') }],
+      rules: [{ required: true, message: t('config.group.field.key.required') }],
     },
     {
-      title: t('setting.group.field.remark'),
+      title: t('config.group.field.remark'),
       dataIndex: 'remark',
       valueType: 'textarea',
       colProps: {span: 24},
@@ -395,53 +396,53 @@ const SettingManagement: React.FC = () => {
   ];
 
   /** 设置项表单列 */
-  const itemColumns: FormColumn<ISetting>[] = [
+  const itemColumns: FormColumn<IConfigItem>[] = [
     {
-      title: t('setting.item.field.key'),
+      title: t('config.item.field.key'),
       dataIndex: 'key',
       valueType: 'text',
-      rules: [{ required: true, message: t('setting.item.field.key.required') }],
+      rules: [{ required: true, message: t('config.item.field.key.required') }],
     },
     {
-      title: t('setting.item.field.title'),
+      title: t('config.item.field.title'),
       dataIndex: 'title',
       valueType: 'text',
-      rules: [{ required: true, message: t('setting.item.field.title.required') }],
+      rules: [{ required: true, message: t('config.item.field.title.required') }],
     },
     {
-      title: t('setting.item.field.type'),
+      title: t('config.item.field.type'),
       dataIndex: 'type',
       valueType: 'select',
       fieldProps: {
         options: FORM_COMPONENT_OPTIONS,
       },
-      rules: [{ required: true, message: t('setting.item.field.type.required') }],
+      rules: [{ required: true, message: t('config.item.field.type.required') }],
     },
     {
-      title: t('setting.item.field.sort'),
+      title: t('config.item.field.sort'),
       dataIndex: 'sort',
       valueType: 'digit',
     },
     {
-      title: t('setting.item.field.describe'),
+      title: t('config.item.field.describe'),
       dataIndex: 'describe',
       valueType: 'textarea',
       colProps: { span: 24 },
     },
     {
-      title: t('setting.item.field.options'),
+      title: t('config.item.field.options'),
       dataIndex: 'options',
       valueType: 'textarea',
-      tooltip: t('setting.item.field.options.tooltip'),
+      tooltip: t('config.item.field.options.tooltip'),
     },
     {
-      title: t('setting.item.field.props'),
+      title: t('config.item.field.props'),
       dataIndex: 'props',
       valueType: 'textarea',
-      tooltip: t('setting.item.field.props.tooltip'),
+      tooltip: t('config.item.field.props.tooltip'),
     },
     {
-      title: t('setting.item.field.values'),
+      title: t('config.item.field.values'),
       dataIndex: 'values',
       valueType: 'text',
     },
@@ -450,8 +451,8 @@ const SettingManagement: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('setting.page.title')}</Title>
-        <Text type="secondary">{t('setting.page.description')}</Text>
+        <Title level={3}>{t('config.page.title')}</Title>
+        <Text type="secondary">{t('config.page.description')}</Text>
       </div>
       <Row gutter={[16, 16]}>
         {/* 左侧设置组菜单 */}
@@ -464,7 +465,7 @@ const SettingManagement: React.FC = () => {
           title={(
             <Space>
               <SettingOutlined />
-              {t('setting.group.title')}
+              {t('config.group.title')}
             </Space>
           )}
           extra={
@@ -474,7 +475,7 @@ const SettingManagement: React.FC = () => {
               icon={<PlusOutlined />}
               onClick={handleAddGroup}
             >
-              {t('setting.group.add')}
+              {t('config.group.add')}
             </Button>
           }
           loading={loading}
@@ -482,7 +483,7 @@ const SettingManagement: React.FC = () => {
           <Menu
             mode="inline"
             selectedKeys={selectedGroupId ? [String(selectedGroupId)] : []}
-            items={settingGroups.map(group => ({
+            items={configGroups.map(group => ({
               key: String(group.id),
               label: (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -498,14 +499,14 @@ const SettingManagement: React.FC = () => {
                       }}
                     />
                     <Popconfirm
-                      title={t('setting.group.deleteConfirm')}
-                      description={t('setting.group.deleteWarning')}
+                      title={t('config.group.deleteConfirm')}
+                      description={t('config.group.deleteWarning')}
                       onConfirm={(e) => {
                         e?.stopPropagation();
                         handleDeleteGroup(group.id!);
                       }}
-                      okText={t('setting.confirm.ok')}
-                      cancelText={t('setting.confirm.cancel')}
+                      okText={t('config.confirm.ok')}
+                      cancelText={t('config.confirm.cancel')}
                     >
                       <Button
                         type="text"
@@ -534,7 +535,7 @@ const SettingManagement: React.FC = () => {
             header: { paddingInline: 16, paddingBlock: 0, minHeight: 48 },
             body: { padding: 16, minHeight: 52 },
           }}
-          title={t('setting.item.title')}
+          title={t('config.item.title')}
           extra={
             selectedGroupId && (
               <Space>
@@ -544,14 +545,14 @@ const SettingManagement: React.FC = () => {
                   loading={saving}
                   onClick={handleSaveAll}
                 >
-                  {t('setting.save.button')}
+                  {t('config.save.button')}
                 </Button>
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}
                   onClick={handleAddItem}
                 >
-                  {t('setting.item.add')}
+                  {t('config.item.add')}
                 </Button>
               </Space>
             )
@@ -559,22 +560,22 @@ const SettingManagement: React.FC = () => {
         >
           {!selectedGroupId ? (
             <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
-              {t('setting.item.selectGroup')}
+              {t('config.item.selectGroup')}
             </div>
           ) : (
             <Spin spinning={itemsLoading}>
               <Form form={valuesForm} layout="vertical">
-                {settingItems.length === 0 ? (
+                {configItems.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
-                    {t('setting.item.empty')}
+                    {t('config.item.empty')}
                   </div>
                 ) : (
-                  settingItems.map((item, index) => (
+                  configItems.map((item, index) => (
                     <div key={item.id} style={{ position: 'relative' }}>
                       <div style={{ paddingRight: 80 }}>
-                        {renderSettingItemComponent(item)}
+                        {renderConfigItemComponent(item)}
                       </div>
-                      {index < settingItems.length - 1 && <Divider />}
+                      {index < configItems.length - 1 && <Divider />}
                     </div>
                   ))
                 )}
@@ -585,13 +586,13 @@ const SettingManagement: React.FC = () => {
       </Col>
 
       {/* 设置组表单弹窗 */}
-      <XinForm<ISettingGroup>
+      <XinForm<IConfigGroup>
         formRef={groupFormRef}
         layoutType="ModalForm"
         columns={groupColumns}
         onFinish={handleSaveGroup}
         modalProps={{
-          title: editingGroup ? t('setting.group.edit') : t('setting.group.create'),
+          title: editingGroup ? t('config.group.edit') : t('config.group.create'),
           onCancel: () => groupFormRef.current?.close(),
           forceRender: true,
           width: 800
@@ -604,7 +605,7 @@ const SettingManagement: React.FC = () => {
       />
 
       {/* 设置项表单弹窗 */}
-      <XinForm<ISetting>
+      <XinForm<IConfigItem>
         formRef={itemFormRef}
         layoutType="ModalForm"
         columns={itemColumns}
@@ -614,7 +615,7 @@ const SettingManagement: React.FC = () => {
         rowProps={{gutter: 30}}
         layout={'vertical'}
         modalProps={{
-          title: editingItem ? t('setting.item.edit') : t('setting.item.create'),
+          title: editingItem ? t('config.item.edit') : t('config.item.create'),
           onCancel: () => itemFormRef.current?.close(),
           forceRender: true,
           width: 800,
@@ -626,4 +627,4 @@ const SettingManagement: React.FC = () => {
   );
 };
 
-export default SettingManagement;
+export default ConfigManagement;

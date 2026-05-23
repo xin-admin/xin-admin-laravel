@@ -8,7 +8,7 @@ import sysUserRole from "./sys-user-role";
 import watcher from "./watcher";
 import sysFile from "./sys-file";
 import sysDict from "./sys-dict";
-import sysSetting from "./sys-setting";
+import sysSetting from "./sys-config.ts";
 import sysMail from "./sys-mail";
 import sysStorage from "./sys-storage";
 import dashboard from "./dashboard";

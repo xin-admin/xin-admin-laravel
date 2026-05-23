@@ -5,7 +5,7 @@ namespace Modules\SystemTool\Enum;
 /**
  * 系统设置类型枚举
  */
-enum SettingType: string
+enum SiteConfigType: string
 {
     // 前端表单组件类型（新版，与前端保持一致）
     case INPUT = 'Input';                // 输入框
