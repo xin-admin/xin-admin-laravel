@@ -6,10 +6,10 @@ use App\Exceptions\HttpResponseException;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Modules\FileManage\Enum\FileType;
 use Modules\FileManage\Models\SysFileModel;
+use Modules\SystemTool\Settings\StorageSettings;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -34,8 +34,12 @@ class SysFileService
     /**
      * 获取存储磁盘实例
      */
-    protected function disk($disk): FilesystemAdapter
+    protected function disk($disk = null): FilesystemAdapter
     {
+        StorageSettings::reloadIntoConfig();
+        if(!$disk) {
+            $disk = config('filesystems.default');
+        }
         if ($disk === 's3' && !self::isS3Configured()) {
             throw new HttpResponseException(['success' => false, 'msg' => __('system.storage.s3_not_configured')]);
         }
@@ -72,7 +76,7 @@ class SysFileService
         // 获取储存路径
         $storagePath = $this->generateStoragePath($fileExt);
         // 获取磁盘
-        $disk = Config::get('filesystems.default');
+        $disk = StorageSettings::get('filesystems.default', 'local');
         // 存储文件并设置可见性
         $stored = $this->disk($disk)->put($storagePath, $file->getContent(), 'public');
         if (!$stored) {
@@ -460,7 +464,7 @@ class SysFileService
      */
     public static function isS3Configured(): bool
     {
-        $storageConfig = Config::get('filesystems.disks.s3');
+        $storageConfig = config('filesystems.disks.s3');
 
         if (empty($storageConfig)) {
             return false;
