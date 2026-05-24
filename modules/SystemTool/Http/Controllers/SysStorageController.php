@@ -23,9 +23,6 @@ class SysStorageController extends BaseController
     #[GetRoute('/config', 'config')]
     public function getConfig(): JsonResponse
     {
-        // 将 DB 中的配置加载到 config() 运行时，使下面的读取直接拿到 DB 值
-        StorageSettings::reloadIntoConfig();
-
         $filesystems = config('filesystems');
         $default = $filesystems['default'] ?? 'local';
 
@@ -84,10 +81,10 @@ class SysStorageController extends BaseController
     }
 
     /**
-     * 保存存储配置到数据库（el-settings 风格）
+     * 保存存储配置到数据库
      *
      * 使用 StorageSettings::set() 将每个配置项写入 应用配置 表，
-     * 写入后自动更新缓存，并通过 reloadIntoConfig() 同步到 config() 运行时。
+     * 写入后自动更新缓存，并通过全局中间件同步到 config() 运行时。
      */
     #[PostRoute('/save', 'save')]
     public function saveConfig(): JsonResponse
@@ -143,9 +140,6 @@ class SysStorageController extends BaseController
                 StorageSettings::set('filesystems.disks.sftp.privateKey', $sftp['private_key'] ?? '');
                 StorageSettings::set('filesystems.disks.sftp.passphrase', $sftp['passphrase'] ?? '');
             }
-
-            // 同步到 config() 运行时
-            StorageSettings::reloadIntoConfig();
 
             // 清除 Laravel 配置缓存
             Artisan::call('config:clear');

@@ -36,7 +36,6 @@ class SysFileService
      */
     protected function disk($disk = null): FilesystemAdapter
     {
-        StorageSettings::reloadIntoConfig();
         if(!$disk) {
             $disk = config('filesystems.default');
         }

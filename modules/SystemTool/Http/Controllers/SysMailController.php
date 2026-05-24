@@ -23,8 +23,6 @@ class SysMailController extends BaseController
     #[GetRoute('/config', 'config')]
     public function getConfig(): JsonResponse
     {
-        MailSettings::reloadIntoConfig();
-
         $mail = config('mail');
         $mode = $mail['default'] ?? 'single';
         $mailers = [];
@@ -52,7 +50,7 @@ class SysMailController extends BaseController
      * 保存邮件配置到数据库
      *
      * 使用 MailSettings::set() 将每个配置项写入 应用配置 表，
-     * 写入后自动更新缓存，并通过 reloadIntoConfig() 同步到 config() 运行时。
+     * 写入后自动更新缓存，并通过全局中间件同步到 config() 运行时。
      */
     #[PostRoute('/save', 'save')]
     public function saveConfig(): JsonResponse
@@ -119,9 +117,6 @@ class SysMailController extends BaseController
                 MailSettings::set('services.mailgun.endpoint', $services['mailgun']['endpoint'] ?? 'api.mailgun.net');
             }
 
-            // 同步到 config() 运行时
-            MailSettings::reloadIntoConfig();
-
             // 清除 Laravel 配置缓存
             Artisan::call('config:clear');
 
@@ -137,7 +132,6 @@ class SysMailController extends BaseController
     #[PostRoute('/test', 'test')]
     public function sendTest(): JsonResponse
     {
-        MailSettings::reloadIntoConfig();
         $to = request()->input('to');
         if (empty($to)) {
             return $this->error('请输入收件人邮箱');

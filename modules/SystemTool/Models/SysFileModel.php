@@ -69,13 +69,16 @@ class SysFileModel extends Model
         return new Attribute(
             get: function ($value, array $data) {
                 try {
-                    $fileType = FileType::tryFrom($data['file_type']);
-
                     // 图片类型：直接返回图片URL作为预览
-                    if ($fileType === FileType::IMAGE) {
-                        return Storage::disk($data['disk'])->url($data['file_path']);
+                    if ($data['file_type'] === FileType::IMAGE->value) {
+                        if($data['disk'] === 'local') {
+                            return Storage::disk($data['disk'])->url($data['file_path']);
+                        }
+                        return Storage::disk($data['disk'])->temporaryUrl(
+                            $data['file_path'], now()->plus(minutes: 5)
+                        );
                     }
-
+                    $fileType = FileType::tryFrom($data['file_type']);
                     // 其他类型：返回默认类型图标
                     $previewPath = $fileType?->previewPath() ?? FileType::ANNEX->previewPath();
                     return config('app.url') . '/' . $previewPath;

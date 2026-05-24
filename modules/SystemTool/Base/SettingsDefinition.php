@@ -16,6 +16,12 @@ use ReflectionClass;
 abstract class SettingsDefinition
 {
     /**
+     * 聚合缓存键名 — 全局中间件 LoadAppSettingsMiddleware 使用
+     * 所有设置一次性缓存在此键中，set() 写入时自动清除。
+     */
+    const AGGREGATE_CACHE_KEY = 'app-settings-all';
+
+    /**
      * 解析后的定义缓存（类名 → 定义数组）
      *
      * @var array<string, array<string, array{config: string, type: string, description: string|null}>>
@@ -131,6 +137,12 @@ abstract class SettingsDefinition
 
         static::setDBValue($key, $value);
         static::setCacheValue($key, $value);
+
+        // 当前请求立即生效（中间件在下一个请求才会重新加载）
+        config([$key => $value]);
+
+        // 清除聚合缓存，使下次请求通过中间件重新从 DB 加载
+        Cache::forget(self::AGGREGATE_CACHE_KEY);
     }
 
     /**
@@ -201,6 +213,9 @@ abstract class SettingsDefinition
     public static function forgetCache(string $key): void
     {
         Cache::forget('app-setting-' . $key);
+
+        // 同时清除聚合缓存，保持一致性
+        Cache::forget(self::AGGREGATE_CACHE_KEY);
     }
 
 

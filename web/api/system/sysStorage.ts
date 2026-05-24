@@ -22,6 +22,7 @@ export async function testStorageConnection(disk: string) {
   return createAxios({
     url: '/system/storage/test',
     method: 'post',
+    timeout: 60000,
     data: { disk },
   });
 }

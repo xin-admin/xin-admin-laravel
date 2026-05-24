@@ -9,6 +9,7 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 use Modules\Common\Console\Commands\GenerateRouteHelperCommand;
 use Modules\Common\Middlewares\AllowCrossDomainMiddleware;
 use Modules\Common\Middlewares\LanguageMiddleware;
+use Modules\SystemTool\Http\Middleware\LoadAppSettingsMiddleware;
 use Modules\SystemUser\Http\Middleware\AuthGuardMiddleware;
 use Modules\SystemUser\Http\Middleware\LoginLogMiddleware;
 
@@ -20,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // 全局跨域中间件
         $middleware->append(AllowCrossDomainMiddleware::class);
         $middleware->append(LanguageMiddleware::class);
+        // 全局中间件 — 从缓存加载 DB 应用设置到 config() 运行时
+        $middleware->append(LoadAppSettingsMiddleware::class);
         $middleware->alias([
             'login_log' => LoginLogMiddleware::class,
             'abilities' => CheckAbilities::class,
