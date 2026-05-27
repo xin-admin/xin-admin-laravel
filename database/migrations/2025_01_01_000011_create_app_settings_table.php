@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! Schema::hasTable(config('app_settings.table', 'sys_app_settings'))) {
-            Schema::create(config('app_settings.table', 'sys_app_settings'), function (Blueprint $table) {
+        if (! Schema::hasTable('sys_app_settings')) {
+            Schema::create('sys_app_settings', function (Blueprint $table) {
                 $table->id();
                 $table->string('key')->unique()->index()->comment('配置键（点号表示法）');
                 $table->tinyInteger('type')->index()->comment('类型枚举：10=String 15=Bool 20=Number 30=Array 40=Object 50=EncryptedString');
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('app_settings.table', 'sys_app_settings'));
+        Schema::dropIfExists('sys_app_settings');
     }
 };
