@@ -42,5 +42,6 @@ export default {
   "menu.system.dict.item": "Dictionary Data",
   "menu.system.dict-demo": "Dict Demo",
   "menu.system.config": "System Configuration",
+  "menu.system.ai": "AI Configuration",
   "menu.xin-admin": "XinAdmin",
 }

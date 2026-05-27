@@ -17,6 +17,7 @@ import login from "./login";
 import xinForm from "./xin-form";
 import xinCrud from "./xin-crud";
 import systemInfo from "./system-info";
+import ai from "./ai";
 
 export default {
   ...xinTable,
@@ -39,4 +40,5 @@ export default {
   ...xinForm,
   ...xinCrud,
   ...systemInfo,
+  ...ai,
 };

@@ -42,5 +42,6 @@ export default {
   "menu.system.dict.item": "字典数据",
   "menu.system.dict-demo": "字典示例",
   "menu.system.config": "系统配置",
+  "menu.system.ai": "AI 配置",
   "menu.xin-admin": "XinAdmin",
 }

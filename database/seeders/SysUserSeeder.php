@@ -508,6 +508,19 @@ class SysUserSeeder extends Seeder
                         ]
                     ],
                     [
+                        'type' => 'route',
+                        'key' => 'system.ai',
+                        'name' => 'AI 配置',
+                        'path' => '/system/ai',
+                        'local' => 'menu.system.ai',
+                        'children' => [
+                            ['type' => 'rule', 'name' => '获取可用AI列表', 'key' => 'system.ai.list'],
+                            ['type' => 'rule', 'name' => '获取AI配置', 'key' => 'system.ai.config'],
+                            ['type' => 'rule', 'name' => '保存AI配置', 'key' => 'system.ai.save'],
+                            ['type' => 'rule', 'name' => '测试连接', 'key' => 'system.ai.test'],
+                        ]
+                    ],
+                    [
                         'type' => "route",
                         'name' => "系统信息",
                         'local' => "menu.system.info",

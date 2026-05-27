@@ -34,7 +34,7 @@ return [
     'caching' => [
         'embeddings' => [
             'cache' => false,
-            'store' => env('CACHE_STORE', 'database'),
+            'store' => env('CACHE_STORE', 'redis'),
         ],
     ],
 
