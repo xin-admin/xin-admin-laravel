@@ -3,10 +3,12 @@
 namespace Modules\SystemTool\Providers;
 
 use Exception;
+use Laravel\Boost\Boost;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Modules\AnnoRoute\AnnoRoute;
+use Modules\SystemTool\Ai\Boots\Reasonix;
 use Modules\SystemTool\Services\SysConfigService;
 
 class SystemToolServiceProvider extends ServiceProvider
@@ -25,6 +27,8 @@ class SystemToolServiceProvider extends ServiceProvider
      */
     public function boot(AnnoRoute $annoRoute): void
     {
+        Boost::registerAgent('reasonix', Reasonix::class);
+
         // 注册路由
         $annoRoute->register(base_path('modules/SystemTool/Http/Controllers'));
 

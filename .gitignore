@@ -16,3 +16,5 @@ hot
 composer.lock
 pnpm-lock.yaml
 CLAUDE.md
+/.mcp.json
+/boost.json
