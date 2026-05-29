@@ -1,23 +1,6 @@
----
-name: annoroute-development
-description: TRIGGER when working with AnnoRoute which is a PHP 8 Attribute-based route registration module for Laravel. Activate when building, editing controllers that use attribute routing, defining routes via #[GetRoute]/#[PostRoute]/#[PutRoute]/#[DeleteRoute] attributes, registering routes in ServiceProviders, configuring route permissions, or working with the `Modules\AnnoRoute\` namespace. Invoke when the user references AnnoRoute, annotation routing, attribute routing, or XinAdmin controller routing patterns.
-license: MIT
----
+# AnnoRoute Attribute Routing
 
-# Developing with AnnoRoute
-
-AnnoRoute is a PHP 8 Attribute-based route registration module built into XinAdmin. It lets you declare routes via controller annotations, automatically integrating Sanctum authentication and permission verification, with support for route parameter regex constraints.
-
-## Decision Workflow
-
-- Creating a new controller with routes? → Add `#[RequestAttribute]` to the class + method attributes
-- Need to define a GET route? → `#[GetRoute]`
-- Need to define a POST route? → `#[PostRoute]`
-- Need to define a PUT/PATCH route? → `#[PutRoute]`
-- Need to define a DELETE route? → `#[DeleteRoute]`
-- Need public access (no auth)? → Set `authorize: false` on the method attribute
-- Need route parameter constraints? → Use the `where` parameter
-- Need extra middleware? → Use the `middleware` parameter on class or method
+AnnoRoute is a PHP 8 Attribute-based route registration module built into XinAdmin. Routes are declared via controller annotations, with automatic Sanctum authentication and permission verification integration.
 
 ## Core Concepts
 
@@ -204,29 +187,16 @@ public function batchProcess(): JsonResponse { }
 public function detail(int $deptId, int $userId): JsonResponse { }
 ```
 
-## Key Patterns
+## Key Rules
 
 - Namespace: `Modules\AnnoRoute\Attribute\`
-- Controller classes MUST use `#[RequestAttribute]` to be discovered; methods are only registered when the class has this attribute.
-- Method attributes are: `GetRoute`, `PostRoute`, `PutRoute`, `DeleteRoute`
-- Route registration happens via `AnnoRoute->register(path)` in ServiceProvider `boot()`
-- The scanner only looks for `*Controller.php` files
-- All auth middleware is auto-assembled — you only need to declare `authorize` strings, not auth middleware directly
-- Inherit `BaseController` from `Modules\Common\Http\Controllers\BaseController` for the `success()` / `error()` response helpers
-
-## Service Provider Setup
-
-```php
-use Modules\AnnoRoute\AnnoRoute;
-
-class YourModuleServiceProvider extends ServiceProvider
-{
-    public function boot(AnnoRoute $annoRoute): void
-    {
-        $annoRoute->register(base_path('modules/YourModule/Http/Controllers'));
-    }
-}
-```
+- Controller classes MUST use `#[RequestAttribute]` to be discovered; methods are only registered when the class has this attribute
+- Method attributes: `GetRoute`, `PostRoute`, `PutRoute`, `DeleteRoute`
+- Route registration: `AnnoRoute->register(path)` in ServiceProvider `boot()`
+- Scanner only looks for `*Controller.php` files
+- All auth middleware is auto-assembled — only declare `authorize` strings, not auth middleware directly
+- Inherit `BaseController` for the `success()` / `error()` response helpers
+- Controllers must return `Illuminate\Http\JsonResponse`
 
 ## Common Pitfalls
 
@@ -236,12 +206,8 @@ If the class attribute is missing, no routes from that controller will be regist
 
 ### Duplicate Route Prefix
 
-The final route is `routePrefix + route`. If both are `/users` and `/list`, the result is `/users/list` (no double slash). But avoid trailing/leading slash confusion — the convention is leading slash on both, and they concatenate directly.
+The final route is `routePrefix + route`. Convention is leading slash on both — they concatenate directly (no double slash).
 
 ### authorize vs abilitiesPrefix
 
 The full permission string is `abilitiesPrefix.authorize`. If `abilitiesPrefix` is empty, the raw `authorize` value is used. Omitting `abilitiesPrefix` means you must pass the full ability string in each method's `authorize`.
-
-### Method Return Types
-
-AnnoRoute controllers must return `Illuminate\Http\JsonResponse`. The `BaseController` provides `success()` and `error()` helpers that return `JsonResponse`.

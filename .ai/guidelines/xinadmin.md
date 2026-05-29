@@ -20,45 +20,8 @@ AnnoRoute is a PHP 8 Attribute-based route registration module. Routes are decla
 
 ## Usage
 
-- `#[RequestAttribute]` on the Controller class defines the common route prefix and permission prefix
 - `#[GetRoute]` / `#[PostRoute]` / `#[PutRoute]` / `#[DeleteRoute]` on methods declare HTTP routes
 - The `authorize` parameter controls access: `'query'` becomes ability `prefix.query`, `false` makes a route public
-
-## Route Registration
-
-In your ServiceProvider `boot()`:
-
-```php
-use Modules\AnnoRoute\AnnoRoute;
-
-public function boot(AnnoRoute $annoRoute): void
-{
-    $annoRoute->register(base_path('modules/YourModule/Http/Controllers'));
-}
-```
-
-## Controller Example
-
-```php
-use Modules\AnnoRoute\Attribute\{RequestAttribute, GetRoute, PostRoute, PutRoute, DeleteRoute};
-
-#[RequestAttribute('/system/user', 'system.user')]
-class SysUserController extends BaseController
-{
-    #[GetRoute(authorize: 'query')]
-    public function query(Request $request): JsonResponse { }
-
-    #[PostRoute(authorize: 'create')]
-    public function create(FormRequest $request): JsonResponse { }
-
-    #[PutRoute(route: '/{id}', authorize: 'update', where: ['id' => '[0-9]+'])]
-    public function update(int $id, FormRequest $request): JsonResponse { }
-
-    #[DeleteRoute(route: '/{id}', authorize: 'delete', where: ['id' => '[0-9]+'])]
-    public function delete(int $id): JsonResponse { }
-}
-```
-
 - `#[RequestAttribute]` params: `routePrefix`, `abilitiesPrefix`, `middleware` (string|array), `authGuard` (?string)
 - Method attributes share: `route` (path appended to prefix), `authorize` (string|bool), `middleware`, `where` (regex array)
 - Final route = `routePrefix + route`; final ability = `abilitiesPrefix + '.' + authorize`
@@ -94,6 +57,17 @@ Source lives in `web/`. Bundled with Vite, outputting to `public/`. Package mana
 - HTTP client auto-attaches `Authorization: Bearer`, `User-Language`, handles 401 auto-logout
 - Pages in `web/pages/` are auto-routed; `index.tsx` maps to parent directory; root `/` → `/dashboard/analysis`
 - Pages outside layout: add to `excludePaths` array in router config
+
+# Antd
+
+Ant Design 6 is the UI component library. Components are imported from `antd` and themed via `<ConfigProvider>` with tokens from `web/layout/theme.ts`.
+
+## Key Conventions
+
+- Use `antd` MCP tools (`antd_info`, `antd_doc`, `antd_demo`) to verify component APIs before writing code
+- Never use deprecated props or components — check with `antd_changelog` when upgrading or referencing older examples
+- Theme tokens flow: `web/layout/theme.ts` → `<ConfigProvider theme={...}>` → Ant Design components
+- Common components: `Table`, `Form`, `Modal`, `Drawer`, `Button`, `Input`, `Select`, `DatePicker`, `Switch`, `Tag`, `Card`, `App` ...
 
 # Layout
 
@@ -160,3 +134,12 @@ Customize with: `handleRequest` (full custom fetch), `requestParams` (transform 
 - **XinForm** (inline/ModalForm): Settings pages with a single form (mail, storage, AI config)
 - **XinForm** (ModalForm + trigger): Add/edit without a table (dept management)
 - Use `hideInForm` / `hideInTable` / `hideInSearch` to control per-context visibility
+
+# Development Workflow
+
+When building a new CRUD feature, follow this four-phase workflow. See `@skill:xinadmin-development` for complete details.
+
+1. **Database Migration** — create table structure, indexes, foreign keys
+2. **Backend** — Controller (AnnoRoute attributes), Model, FormRequest
+3. **Frontend** — Page (file-system routing), Domain types, API wrappers, i18n
+4. **Menu & Permissions** — seeder menu entry + rules, menu translation keys
