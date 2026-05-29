@@ -19,6 +19,7 @@ import sysMail from "./sys-mail";
 import sysStorage from "./sys-storage";
 import ai from "./ai";
 import chat from "./chat";
+import conversation from "./conversation";
 
 export default {
   ...xinTable,
@@ -43,4 +44,5 @@ export default {
   ...sysStorage,
   ...ai,
   ...chat,
+  ...conversation,
 };

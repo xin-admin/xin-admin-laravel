@@ -19,6 +19,7 @@ import xinCrud from "./xin-crud";
 import systemInfo from "./system-info";
 import ai from "./ai";
 import chat from "./chat";
+import conversation from "./conversation";
 
 export default {
   ...xinTable,
@@ -43,4 +44,5 @@ export default {
   ...systemInfo,
   ...ai,
   ...chat,
+  ...conversation,
 };

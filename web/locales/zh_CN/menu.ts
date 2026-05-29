@@ -30,6 +30,7 @@ export default {
   "menu.example.xin-table": "XinTable 表格",
   "menu.ai": "AI",
   "menu.ai.chat": "智能对话",
+  "menu.ai.conversation": "会话管理",
   "menu.system": "系统管理",
   "menu.system.user": "用户管理",
   "menu.system.dept": "部门管理",

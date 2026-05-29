@@ -29,6 +29,14 @@ Route::controller(Modules\SystemTool\Http\Controllers\ChatController::class)->pr
     Route::delete('/messages/{conversationId}', 'deleteConversation')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.delete']);
 });
 
+// ConversationController
+Route::controller(Modules\SystemTool\Http\Controllers\ConversationController::class)->prefix('ai/conversation')->group(function () {
+    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.query']);
+    Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.delete']);
+    Route::get('/{id}/messages', 'messages')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.query']);
+    Route::get('/{id}', 'show')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.query']);
+});
+
 // SysAiController
 Route::controller(Modules\SystemTool\Http\Controllers\SysAiController::class)->prefix('system/ai')->group(function () {
     Route::get('/list', 'index')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.ai.list']);

@@ -373,6 +373,17 @@ class SysUserSeeder extends Seeder
                             ['type' => 'rule', 'name' => '删除会话', 'key' => 'ai.chat.delete'],
                         ]
                     ],
+                    [
+                        'type' => "route",
+                        'key' => "ai.conversation",
+                        'name' => "会话管理",
+                        "path" => "/ai/conversation",
+                        'local' => "menu.ai.conversation",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '查询会话列表', 'key' => 'ai.conversation.query'],
+                            ['type' => 'rule', 'name' => '删除会话', 'key' => 'ai.conversation.delete'],
+                        ]
+                    ],
                 ]
             ],
             [

@@ -30,6 +30,7 @@ export default {
   "menu.example.xin-table": "Xin Table",
   "menu.ai": "AI",
   "menu.ai.chat": "Chat",
+  "menu.ai.conversation": "Conversations",
   "menu.system": "System",
   "menu.system.user": "Users",
   "menu.system.dept": "Departments",
