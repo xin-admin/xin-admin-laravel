@@ -354,6 +354,28 @@ class SysUserSeeder extends Seeder
                 ]
             ],
             [
+                'type' => 'menu',
+                'name' => 'AI',
+                'local' => "menu.ai",
+                'icon' => "OpenAiOutlined",
+                'key' => "ai",
+                'children' => [
+                    [
+                        'type' => "route",
+                        'key' => "ai.chat",
+                        'name' => "AI对话",
+                        "path" => "/ai/chat",
+                        'local' => "menu.ai.chat",
+                        'children' => [
+                            ['type' => 'rule', 'name' => '发送消息', 'key' => 'ai.chat.send'],
+                            ['type' => 'rule', 'name' => '会话列表', 'key' => 'ai.chat.conversations'],
+                            ['type' => 'rule', 'name' => '消息列表', 'key' => 'ai.chat.messages'],
+                            ['type' => 'rule', 'name' => '删除会话', 'key' => 'ai.chat.delete'],
+                        ]
+                    ],
+                ]
+            ],
+            [
                 'type' => "menu",
                 'name' => "系统管理",
                 'local' => "menu.system",

@@ -21,6 +21,22 @@ Route::controller(App\Http\Controllers\UserController::class)->prefix('api/user'
     Route::post('/setPwd', 'setPassword')->middleware(['auth:sanctum', 'authGuard:users', 'abilities:']);
 });
 
+// ChatController
+Route::controller(Modules\SystemTool\Http\Controllers\ChatController::class)->prefix('ai/chat')->group(function () {
+    Route::post('/send', 'send')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.send']);
+    Route::get('/conversations', 'conversations')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.conversations']);
+    Route::get('/messages/{conversationId}', 'messages')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.messages']);
+    Route::delete('/messages/{conversationId}', 'deleteConversation')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.delete']);
+});
+
+// SysAiController
+Route::controller(Modules\SystemTool\Http\Controllers\SysAiController::class)->prefix('system/ai')->group(function () {
+    Route::get('/list', 'index')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.ai.list']);
+    Route::get('/config', 'getConfig')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.ai.config']);
+    Route::post('/save', 'saveConfig')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.ai.save']);
+    Route::post('/test', 'testConnection')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.ai.test']);
+});
+
 // SysConfigGroupController
 Route::controller(Modules\SystemTool\Http\Controllers\SysConfigGroupController::class)->prefix('system/config/group')->group(function () {
     Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:system.config.group.query']);

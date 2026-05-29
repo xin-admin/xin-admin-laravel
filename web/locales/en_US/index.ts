@@ -18,6 +18,7 @@ import xinForm from "./xin-form";
 import xinCrud from "./xin-crud";
 import systemInfo from "./system-info";
 import ai from "./ai";
+import chat from "./chat";
 
 export default {
   ...xinTable,
@@ -41,4 +42,5 @@ export default {
   ...xinCrud,
   ...systemInfo,
   ...ai,
+  ...chat,
 };

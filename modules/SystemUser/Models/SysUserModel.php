@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Ai\Concerns\HasConversations;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\SystemTool\Models\SysFileModel;
 
@@ -18,7 +19,7 @@ use Modules\SystemTool\Models\SysFileModel;
  */
 class SysUserModel extends User
 {
-    use SoftDeletes, HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes, HasConversations, HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'sys_user';
     protected $primaryKey = 'id';
