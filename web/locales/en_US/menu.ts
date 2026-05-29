@@ -28,6 +28,8 @@ export default {
   "menu.example.image-uploader": "Image Upload",
   "menu.example.xin-form": "Xin Form",
   "menu.example.xin-table": "Xin Table",
+  "menu.ai": "AI",
+  "menu.ai.chat": "Chat",
   "menu.system": "System",
   "menu.system.user": "Users",
   "menu.system.dept": "Departments",

@@ -4,7 +4,7 @@ import type {BubbleItemType, ConversationItemType} from "@ant-design/x";
 /** 获取会话列表 */
 export async function getConversations() {
   return createAxios<ConversationItemType[]>({
-    url: '/chat/conversations',
+    url: '/ai/chat/conversations',
     method: 'get',
   });
 }
@@ -12,7 +12,7 @@ export async function getConversations() {
 /** 获取会话消息 */
 export async function getMessages(conversationId: string) {
   return createAxios<BubbleItemType[]>({
-    url: `/chat/messages/${conversationId}`,
+    url: `/ai/chat/messages/${conversationId}`,
     method: 'get',
   });
 }
@@ -20,7 +20,7 @@ export async function getMessages(conversationId: string) {
 /** 删除会话 */
 export async function deleteConversation(conversationId: string) {
   return createAxios({
-    url: `/chat/conversations/${conversationId}`,
+    url: `/ai/chat/conversations/${conversationId}`,
     method: 'delete',
   });
 }

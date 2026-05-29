@@ -357,7 +357,7 @@ class SysUserSeeder extends Seeder
                 'type' => 'menu',
                 'name' => 'AI',
                 'local' => "menu.ai",
-                'icon' => "OpenAiOutlined",
+                'icon' => "OpenAIOutlined",
                 'key' => "ai",
                 'children' => [
                     [

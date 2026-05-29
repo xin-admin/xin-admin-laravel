@@ -16,7 +16,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { XMarkdown } from '@ant-design/x-markdown';
 import '@ant-design/x-markdown/themes/light.css';
-import { getConversations, getMessages, deleteConversation } from '@/api/chat';
+import { getConversations, getMessages, deleteConversation } from '@/api/ai/chat.ts';
 import useGlobalStore from "@/stores/global";
 
 /** 自定义气泡扩展字段（通过 extraInfo 传递） */
@@ -129,7 +129,7 @@ const ChatPage: React.FC = () => {
     const token = localStorage.getItem('token');
     const baseUrl = import.meta.env.VITE_BASE_URL || '';
     let aiContent = '';
-    XRequest(`${baseUrl}/chat/send`, {
+    XRequest(`${baseUrl}/ai/chat/send`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
