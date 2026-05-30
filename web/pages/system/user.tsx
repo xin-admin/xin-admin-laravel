@@ -238,7 +238,7 @@ const Table: React.FC = () => {
   }, []);
 
   /** 操作栏之后渲染 */
-  const beforeOperateRender: XinTableProps['beforeOperateRender'] = (record) => (
+  const operateRender: XinTableProps['operateRender'] = (record, dom) => ([
     <>
       {record.id !== 1 &&
         <AuthButton auth={'system.user.resetPassword'}>
@@ -253,8 +253,10 @@ const Table: React.FC = () => {
           </Tooltip>
         </AuthButton>
       }
-    </>
-  );
+    </>,
+    dom.del,
+    dom.edit
+  ]);
 
   /** 表格配置 */
   const tableProps: XinTableProps<ISysUser> = {
@@ -262,7 +264,7 @@ const Table: React.FC = () => {
     columns,
     rowKey: 'id',
     accessName: 'system.user',
-    beforeOperateRender,
+    operateRender,
     scroll: { x: 1400 },
     editShow: (i) => i.id !== 1,
     deleteShow: (i) => i.id !== 1,
