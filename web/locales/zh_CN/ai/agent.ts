@@ -4,4 +4,5 @@ export default {
   "ai.agent.update.success": "更新成功",
   "ai.agent.update.failed": "更新失败",
   "ai.agent.empty": "暂未注册 Agent。",
+  "ai.agent.goChat": "去对话",
 };

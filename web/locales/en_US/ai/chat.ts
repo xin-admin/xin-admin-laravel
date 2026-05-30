@@ -17,4 +17,6 @@ export default {
   'ai.chat.attachment.upload': 'Upload file',
   'ai.chat.attachment.maxCount': 'Maximum {count} files',
   'ai.chat.attachment.error': 'File upload failed',
+  'ai.chat.switchAgent': 'Switch Agent',
+  'ai.chat.defaultTitle': 'AI Chat',
 };

@@ -8,6 +8,13 @@ export async function getAgentList() {
   });
 }
 
+export async function getAgent(id: number) {
+  return createAxios<IAgent>({
+    url: `/ai/agent/${id}`,
+    method: 'get',
+  });
+}
+
 export async function updateAgent(id: number, data: {enabled: boolean}) {
   return createAxios({
     url: `/ai/agent/${id}`,

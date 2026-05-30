@@ -17,4 +17,6 @@ export default {
   "ai.chat.attachment.upload": "上传文件",
   "ai.chat.attachment.maxCount": "最多上传 {count} 个文件",
   "ai.chat.attachment.error": "文件上传失败",
+  "ai.chat.switchAgent": "切换智能体",
+  "ai.chat.defaultTitle": "AI 对话",
 };

@@ -11,6 +11,7 @@ use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
 use Modules\SystemAgent\Ai\Agents\XinChatAgent;
+use Modules\SystemAgent\Models\AgentModel;
 
 #[RequestAttribute('/ai/chat', 'ai.chat')]
 class ChatController extends BaseController
@@ -24,14 +25,22 @@ class ChatController extends BaseController
         $request->validate([
             'message' => 'required|string|max:10000',
             'conversation_id' => 'nullable|string|max:36',
+            'agent_id' => 'nullable|integer|exists:agents,id',
         ]);
 
         $message = $request->input('message');
         $conversationId = $request->input('conversation_id');
+        $agentId = $request->input('agent_id');
         $user = $request->user();
 
         try {
-            $agent = XinChatAgent::make();
+            if ($agentId) {
+                $agentModel = AgentModel::findOrFail($agentId);
+                $agentClass = $agentModel->namespace;
+                $agent = $agentClass::make();
+            } else {
+                $agent = XinChatAgent::make();
+            }
 
             if ($conversationId) {
                 // 继续已有会话

@@ -1,5 +1,6 @@
 import {
   App,
+  Button,
   Empty,
   Space,
   Switch,
@@ -9,6 +10,7 @@ import {
 } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import { getAgentList, updateAgent } from '@/api/ai/agent.ts';
 import type { IAgent } from '@/domain/iAgents.ts';
 
@@ -18,6 +20,7 @@ export default function AgentPage() {
   const { t } = useTranslation();
   const { token } = theme.useToken();
   const { message } = App.useApp();
+  const navigate = useNavigate();
   const [agents, setAgents] = useState<IAgent[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -91,6 +94,16 @@ export default function AgentPage() {
                       </Tag>
                     ))}
                   </Space>
+                  <div style={{ marginTop: token.marginSM }}>
+                    <Button
+                      type="primary"
+                      size="small"
+                      block
+                      onClick={() => navigate(`/ai/chat?agent_id=${agent.id}`)}
+                    >
+                      {t('ai.agent.goChat')}
+                    </Button>
+                  </div>
                 </Card>
               </Tooltip>
 

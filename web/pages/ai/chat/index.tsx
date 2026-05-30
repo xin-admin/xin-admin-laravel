@@ -7,17 +7,22 @@ import {
 } from '@ant-design/x';
 import type { BubbleItemType } from '@ant-design/x';
 import {useXConversations, XRequest} from '@ant-design/x-sdk';
-import {App, Avatar, Card, theme, type UploadFile} from 'antd';
+import {App, Avatar, Button, Card, Space, Typography, theme, type UploadFile} from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useSearchParams } from 'react-router';
 import { XMarkdown } from '@ant-design/x-markdown';
 import '@ant-design/x-markdown/themes/light.css';
 import { getConversations, getMessages, deleteConversation } from '@/api/ai/chat.ts';
+import { getAgent } from '@/api/ai/agent.ts';
+import type { IAgent } from '@/domain/iAgents.ts';
 import useGlobalStore from "@/stores/global";
+
+const { Text } = Typography;
 
 /** 自定义气泡扩展字段（通过 extraInfo 传递） */
 interface ChatExtraInfo {
@@ -32,6 +37,11 @@ const ChatPage: React.FC = () => {
   const { message: appMessage, modal } = App.useApp();
   const { token } = theme.useToken();
   const themeConfig = useGlobalStore(state => state.themeConfig)
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const agentIdParam = searchParams.get('agent_id');
+
+  const [agent, setAgent] = useState<IAgent | null>(null);
 
   const bubbleListRef = useRef<any>(null);
 
@@ -71,6 +81,16 @@ const ChatPage: React.FC = () => {
   }
 
   useEffect(() => { loadConversations(); }, []);
+
+  useEffect(() => {
+    if (agentIdParam) {
+      getAgent(Number(agentIdParam)).then(({ data }) => {
+        if (data.success && data.data) {
+          setAgent(data.data);
+        }
+      });
+    }
+  }, [agentIdParam]);
 
   // 会话操作
   const handleActiveChange = (key: string) => {
@@ -138,7 +158,8 @@ const ChatPage: React.FC = () => {
       method: "post",
       params: {
         conversation_id: activeConversationKey,
-        message: text
+        message: text,
+        agent_id: agentIdParam ? Number(agentIdParam) : undefined,
       },
       callbacks: {
         onSuccess: async () => {
@@ -198,7 +219,7 @@ const ChatPage: React.FC = () => {
     assistant: {
       placement: 'start',
       variant: 'filled',
-      avatar: <Avatar src={'https://file.xinadmin.cn/file/favicons.ico'} />,
+      avatar: <Avatar src={agent?.icon || 'https://file.xinadmin.cn/file/favicons.ico'} />,
       // AI 消息内容：Markdown 渲染
       contentRender: (content: string, info: any) => {
         if (!content) return null;
@@ -235,7 +256,28 @@ const ChatPage: React.FC = () => {
   return (
     <Card
       styles={{ body: { padding: 0, overflow: 'hidden', display: 'flex', height: 'calc(100vh - 180px)' } }}
-      title={"Chat"}
+      title={
+        <Space align="center">
+          {agent ? (
+            <>
+              <Avatar src={agent.icon} size={36} />
+              <div>
+                <span style={{ fontSize: 18, fontWeight: 600, marginRight: 10 }}>{agent.name}</span>
+                {agent.description && (
+                  <Text type="secondary" style={{ fontSize: 12, lineHeight: 1  }}>{agent.description}</Text>
+                )}
+              </div>
+            </>
+          ) : (
+            <span>{t('ai.chat.defaultTitle')}</span>
+          )}
+        </Space>
+      }
+      extra={
+        <Button onClick={() => navigate('/ai/agent')}>
+          {t('ai.chat.switchAgent')}
+        </Button>
+      }
     >
       {/* 左侧会话列表 */}
       <div
@@ -280,7 +322,7 @@ const ChatPage: React.FC = () => {
         {!hasMessages && (
           <div className={"h-full flex items-center justify-center"}>
             <Welcome
-              icon="https://file.xinadmin.cn/file/favicons.ico"
+              icon={agent?.icon || "https://file.xinadmin.cn/file/favicons.ico"}
               style={{
                 backgroundImage: themeConfig.themeScheme === 'dark' ?
                   'linear-gradient(97deg, rgba(90,196,255,0.12) 0%, rgba(174,136,255,0.12) 100%)'

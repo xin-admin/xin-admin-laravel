@@ -4,4 +4,5 @@ export default {
   'ai.agent.update.success': 'Updated successfully',
   'ai.agent.update.failed': 'Failed to update',
   'ai.agent.empty': 'No agents registered.',
+  'ai.agent.goChat': 'Chat',
 };

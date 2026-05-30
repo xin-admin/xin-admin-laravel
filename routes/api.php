@@ -24,6 +24,7 @@ Route::controller(App\Http\Controllers\UserController::class)->prefix('api/user'
 // AgentController
 Route::controller(Modules\SystemAgent\Http\Controllers\AgentController::class)->prefix('ai/agent')->group(function () {
     Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.agent.query']);
+    Route::get('/{id}', 'show')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.agent.query']);
     Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.agent.update']);
 });
 

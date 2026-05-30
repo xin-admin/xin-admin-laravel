@@ -20,6 +20,16 @@ class AgentController extends BaseController
         return $this->success($agents->toArray());
     }
 
+    #[GetRoute('/{id}', authorize: 'query', where: ['id' => '[0-9]+'])]
+    public function show(int $id): JsonResponse
+    {
+        $agent = AgentModel::find($id);
+        if (! $agent) {
+            return $this->error('Agent not found');
+        }
+        return $this->success($agent->toArray());
+    }
+
     #[PutRoute('/{id}', authorize: 'update', where: ['id' => '[0-9]+'])]
     public function update(int $id, Request $request): JsonResponse
     {
