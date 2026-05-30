@@ -2,7 +2,7 @@ import XinTable from '@/components/XinTable';
 import {Button, Drawer, Table, Tag, Tooltip, Typography} from 'antd';
 import {EyeOutlined} from '@ant-design/icons';
 import type {XinTableColumn} from '@/components/XinTable/typings.ts';
-import type {IAgentConversation, IAgentMessage} from '@/domain/agentConversation.ts';
+import type {IAgentConversation, IAgentMessage} from '@/domain/iAgents.ts';
 import {getMessages} from '@/api/ai/conversation.ts';
 import {useTranslation} from 'react-i18next';
 import dayjs from 'dayjs';

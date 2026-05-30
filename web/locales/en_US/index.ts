@@ -20,6 +20,7 @@ import systemInfo from "./system-info";
 import ai from "./ai";
 import chat from "./chat";
 import conversation from "./conversation";
+import sysAgent from "./sys-agent";
 
 export default {
   ...xinTable,
@@ -45,4 +46,5 @@ export default {
   ...ai,
   ...chat,
   ...conversation,
+  ...sysAgent,
 };

@@ -1,3 +1,16 @@
+export interface IAgent {
+  id?: number;
+  namespace: string;
+  name: string;
+  icon: string;
+  description?: string | null;
+  tags?: string[];
+  enabled: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+
 export interface IAgentConversation {
     id?: string;
     user_id?: number | null;

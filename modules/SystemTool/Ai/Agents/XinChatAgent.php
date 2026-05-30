@@ -8,7 +8,7 @@ use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-class ChatAgent implements Agent, Conversational
+class XinChatAgent implements Agent, Conversational
 {
     use Promptable, RemembersConversations;
 

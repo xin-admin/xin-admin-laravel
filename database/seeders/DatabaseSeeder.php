@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SysUserSeeder::class,
             SysDataSeeder::class,
+            SysAgentSeeder::class,
         ]);
     }
 }

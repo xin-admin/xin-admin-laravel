@@ -9,7 +9,7 @@ use Modules\AnnoRoute\Attribute\GetRoute;
 use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\SystemTool\Ai\Agents\ChatAgent;
+use Modules\SystemTool\Ai\Agents\XinChatAgent;
 use Laravel\Ai\Responses\StreamableAgentResponse;
 
 #[RequestAttribute('/ai/chat', 'ai.chat')]
@@ -31,7 +31,7 @@ class ChatController extends BaseController
         $user = $request->user();
 
         try {
-            $agent = ChatAgent::make();
+            $agent = XinChatAgent::make();
 
             if ($conversationId) {
                 // 继续已有会话
