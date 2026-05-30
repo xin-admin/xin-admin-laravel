@@ -60,10 +60,10 @@ export default function AgentPage() {
 
       <Spin spinning={loading}>
         {agents.length > 0 ? (
-          <div className={'flex flex-wrap gap-2.5'}>
+          <div className={'flex flex-wrap gap-6'}>
             {agents.map((agent) => (
               <Tooltip title={agent.description}>
-                <Card hoverable variant={'borderless'} styles={{ body: { width: 236, padding: 10, overflow: "hidden" }}}>
+                <Card hoverable variant={'borderless'} styles={{ body: { width: 300, padding: 20, overflow: "hidden" }}}>
                   <div className={'flex justify-between items-center mb-2.5'}>
                     <Space align={'center'}>
                       <Avatar src={agent.icon} size={32} />
