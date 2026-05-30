@@ -203,7 +203,7 @@ const FileManagement: React.FC = () => {
     return [
       {
         key: 0,
-        title: t('sysFile.root'),
+        title: t('system.file.root'),
         icon: <FolderOpenOutlined/>,
         children: convertToTreeData(fileGroups)
       }
@@ -236,7 +236,7 @@ const FileManagement: React.FC = () => {
   const handleSaveGroup = async (values: ISysFileGroup) => {
     const isEdit = !!updateGroupData;
     await (isEdit ? updateFileGroup({...values, id: updateGroupData.id}) : createFileGroup(values));
-    message.success(isEdit ? t('sysFile.saveFolderSuccess', {action: t('sysFile.actionEdit')}) : t('sysFile.saveFolderSuccess', {action: t('sysFile.actionAdd')}));
+    message.success(isEdit ? t('system.file.saveFolderSuccess', {action: t('system.file.actionEdit')}) : t('system.file.saveFolderSuccess', {action: t('system.file.actionAdd')}));
     groupFormRef.current?.close();
     await loadFileGroups();
     return true;
@@ -245,13 +245,13 @@ const FileManagement: React.FC = () => {
   /** 删除文件夹 */
   const handleDeleteGroup = async (id: number) => {
     window.$modal?.confirm({
-      title: t('sysFile.confirmDeleteFolder'),
-      content: t('sysFile.deleteFolderHint'),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmDeleteFolder'),
+      content: t('system.file.deleteFolderHint'),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await deleteFileGroup(id);
-        message.success(t('sysFile.deleteFolderSuccess'));
+        message.success(t('system.file.deleteFolderSuccess'));
         if (selectedGroupId === id) setSelectedGroupId(0);
         await loadFileGroups();
       }
@@ -260,13 +260,13 @@ const FileManagement: React.FC = () => {
 
   /** 上传文件 */
   const handleUpload = async () => {
-    if (!fileList.length) return message.warning(t('sysFile.selectFileWarning'));
+    if (!fileList.length) return message.warning(t('system.file.selectFileWarning'));
     try {
       setUploading(true);
       for (const file of fileList) {
         await uploadFile(file.originFileObj as File, Number(selectedGroupId), setUploadProgress);
       }
-      message.success(t('sysFile.uploadSuccess'));
+      message.success(t('system.file.uploadSuccess'));
       setUploadModalOpen(false);
       setFileList([]);
       setUploadProgress(0);
@@ -279,12 +279,12 @@ const FileManagement: React.FC = () => {
   /** 删除文件 */
   const handleDeleteFile = async (id: number) => {
     window.$modal?.confirm({
-      title: t('sysFile.confirmDelete'),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmDelete'),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await deleteFile(id);
-        message.success(t('sysFile.deleteSuccess'));
+        message.success(t('system.file.deleteSuccess'));
         await loadFiles();
       }
     })
@@ -292,14 +292,14 @@ const FileManagement: React.FC = () => {
 
   /** 批量删除 */
   const handleBatchDelete = async () => {
-    if (!selectedRowKeys.length) return message.warning(t('sysFile.noSelected'));
+    if (!selectedRowKeys.length) return message.warning(t('system.file.noSelected'));
     window.$modal?.confirm({
-      title: t('sysFile.confirmBatchDelete', { count: selectedRowKeys.length }),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmBatchDelete', { count: selectedRowKeys.length }),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await batchDeleteFiles(selectedRowKeys as number[]);
-        message.success(t('sysFile.batchDeleteSuccess'));
+        message.success(t('system.file.batchDeleteSuccess'));
         await loadFiles();
       }
     });
@@ -307,15 +307,15 @@ const FileManagement: React.FC = () => {
 
   /** 提交（移动、复制） */
   const handleTargetOk = async () => {
-    if (!targetOptionValue) return message.warning(t('sysFile.noSelected'));
+    if (!targetOptionValue) return message.warning(t('system.file.noSelected'));
     const isBatch = isArray(targetOptionValue);
-    if (isBatch && targetOptionValue.length < 1) return message.warning(t('sysFile.noSelected'));
+    if (isBatch && targetOptionValue.length < 1) return message.warning(t('system.file.noSelected'));
     if(targetType === 'move') {
       await moveFile(targetOptionValue, targetGroupId);
-      message.success(t('sysFile.moveSuccess'));
+      message.success(t('system.file.moveSuccess'));
     } else {
       await copyFile(targetOptionValue, targetGroupId);
-      message.success(t('sysFile.moveSuccess'));
+      message.success(t('system.file.moveSuccess'));
     }
     setTargetModelOpen(false);
     await loadFiles();
@@ -347,7 +347,7 @@ const FileManagement: React.FC = () => {
   const handleRename = async () => {
     if (!currentRenameFile?.id || !newFileName.trim()) return;
     await renameFile(currentRenameFile.id, newFileName.trim());
-    message.success(t('sysFile.renameSuccess'));
+    message.success(t('system.file.renameSuccess'));
     setRenameModalOpen(false);
     await loadFiles();
   };
@@ -369,12 +369,12 @@ const FileManagement: React.FC = () => {
   /** 彻底删除文件 */
   const handleForceDeleteFile = async (id: number) => {
     window.$modal?.confirm({
-      title: t('sysFile.confirmForceDelete'),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmForceDelete'),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await forceDeleteFile(id);
-        message.success(t('sysFile.forceDeleteSuccess'));
+        message.success(t('system.file.forceDeleteSuccess'));
         await loadTrashFiles();
       }
     })
@@ -383,12 +383,12 @@ const FileManagement: React.FC = () => {
   /** 恢复文件 */
   const handleRestoreFile = async (id: number) => {
     window.$modal?.confirm({
-      title: t('sysFile.confirmRestore'),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmRestore'),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await restoreFile(id);
-        message.success(t('sysFile.restoreSuccess'));
+        message.success(t('system.file.restoreSuccess'));
         await loadTrashFiles();
       }
     })
@@ -396,14 +396,14 @@ const FileManagement: React.FC = () => {
 
   /** 批量彻底删除 */
   const handleBatchForceDelete = async () => {
-    if (!selectedRowKeys.length) return message.warning(t('sysFile.noSelected'));
+    if (!selectedRowKeys.length) return message.warning(t('system.file.noSelected'));
     window.$modal?.confirm({
-      title: t('sysFile.confirmBatchForceDelete', {count: selectedRowKeys.length}),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmBatchForceDelete', {count: selectedRowKeys.length}),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await batchForceDeleteFiles(selectedRowKeys as number[]);
-        message.success(t('sysFile.batchForceDeleteSuccess'));
+        message.success(t('system.file.batchForceDeleteSuccess'));
         await loadTrashFiles();
       }
     })
@@ -411,14 +411,14 @@ const FileManagement: React.FC = () => {
 
   /** 批量恢复 */
   const handleBatchRestore = async () => {
-    if (!selectedRowKeys.length) return message.warning(t('sysFile.noSelected'));
+    if (!selectedRowKeys.length) return message.warning(t('system.file.noSelected'));
     window.$modal?.confirm({
-      title: t('sysFile.confirmBatchRestore', {count: selectedRowKeys.length}),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmBatchRestore', {count: selectedRowKeys.length}),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         await batchRestoreFiles(selectedRowKeys as number[]);
-        message.success(t('sysFile.batchRestoreSuccess'));
+        message.success(t('system.file.batchRestoreSuccess'));
         await loadTrashFiles();
       }
     })
@@ -427,12 +427,12 @@ const FileManagement: React.FC = () => {
   /** 清空回收站 */
   const handleEmptyTrash = async () => {
     window.$modal?.confirm({
-      title: t('sysFile.confirmEmptyTrash'),
-      okText: t('sysFile.ok'),
-      cancelText: t('sysFile.cancel'),
+      title: t('system.file.confirmEmptyTrash'),
+      okText: t('system.file.ok'),
+      cancelText: t('system.file.cancel'),
       onOk: async () => {
         const {data} = await cleanTrashed();
-        message.success(t('sysFile.emptyTrashSuccess', {count: data.data?.count || 0}));
+        message.success(t('system.file.emptyTrashSuccess', {count: data.data?.count || 0}));
         await loadTrashFiles();
       }
     })
@@ -457,32 +457,32 @@ const FileManagement: React.FC = () => {
     {
       value: 10,
       color: 'purple',
-      label: t('sysFile.type.image')
+      label: t('system.file.type.image')
     },
     {
       value: 20,
       color: 'blue',
-      label: t('sysFile.type.audio')
+      label: t('system.file.type.audio')
     },
     {
       value: 30,
       color: 'magenta',
-      label: t('sysFile.type.video')
+      label: t('system.file.type.video')
     },
     {
       value: 40,
       color: 'orange',
-      label: t('sysFile.type.archive')
+      label: t('system.file.type.archive')
     },
     {
       value: 50,
       color: 'success',
-      label: t('sysFile.type.document')
+      label: t('system.file.type.document')
     },
     {
       value: 99,
       color: 'error',
-      label: t('sysFile.type.other')
+      label: t('system.file.type.other')
     }
   ];
 
@@ -504,13 +504,13 @@ const FileManagement: React.FC = () => {
   /** 文件组表单列 */
   const groupFormColumns: FormColumn<ISysFileGroup>[] = [
     {
-      title: t('sysFile.folderName'),
+      title: t('system.file.folderName'),
       dataIndex: 'name',
       valueType: 'text',
-      rules: [{required: true, message: t('sysFile.folderNameRequired')}]
+      rules: [{required: true, message: t('system.file.folderNameRequired')}]
     },
     {
-      title: t('sysFile.parentFolder'),
+      title: t('system.file.parentFolder'),
       dataIndex: 'parent_id',
       valueType: 'treeSelect',
       fieldProps: {
@@ -520,14 +520,14 @@ const FileManagement: React.FC = () => {
       }
     },
     {
-      title: t('sysFile.sort'),
+      title: t('system.file.sort'),
       dataIndex: 'sort',
       valueType: 'digit',
-      rules: [{required: true, message: t('sysFile.sortRequired')}],
+      rules: [{required: true, message: t('system.file.sortRequired')}],
       initialValue: 0
     },
     {
-      title: t('sysFile.describe'),
+      title: t('system.file.describe'),
       dataIndex: 'describe',
       valueType: 'textarea'
     }
@@ -536,14 +536,14 @@ const FileManagement: React.FC = () => {
   /** 文件列 */
   const columns: ColumnsType<ISysFileInfo> = [
     {
-      title: t('sysFile.fileName'),
+      title: t('system.file.fileName'),
       dataIndex: 'file_name',
       ellipsis: true,
       width: 320,
       render: (name: string, r: ISysFileInfo) => <a onClick={() => openFileDetail(r)}>{name}</a>
     },
     {
-      title: t('sysFile.fileSize'),
+      title: t('system.file.fileSize'),
       dataIndex: 'file_size',
       width: 80,
       align: 'center',
@@ -551,28 +551,28 @@ const FileManagement: React.FC = () => {
       sorter: true
     },
     {
-      title: t('sysFile.fileType'),
+      title: t('system.file.fileType'),
       dataIndex: 'file_type',
       width: 80,
       align: 'center',
       render: fileTypeRender
     },
     {
-      title: t('sysFile.disk'),
+      title: t('system.file.disk'),
       dataIndex: 'disk',
       width: 80,
       align: 'center',
       render: (disk: string) => <Tag>{disk}</Tag>
     },
     {
-      title: t('sysFile.createdAt'),
+      title: t('system.file.createdAt'),
       dataIndex: 'created_at',
       width: 180,
       align: 'center',
       render: (v) => v ? dayjs(v).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
-      title: t('sysFile.preview'),
+      title: t('system.file.preview'),
       dataIndex: 'preview_url',
       width: 80,
       align: 'center',
@@ -588,7 +588,7 @@ const FileManagement: React.FC = () => {
       )
     },
     {
-      title: t('sysFile.action'), width: 80, key: 'action', align: 'center', fixed: 'right',
+      title: t('system.file.action'), width: 80, key: 'action', align: 'center', fixed: 'right',
       render: (_, file) => (
         <Dropdown
           trigger={['click']}
@@ -597,25 +597,25 @@ const FileManagement: React.FC = () => {
               {
                 key: 'download',
                 icon: <DownloadOutlined/>,
-                label: t('sysFile.download'),
+                label: t('system.file.download'),
                 onClick: () => handleDownloadFile(file.id!)
               },
               {
                 key: 'rename',
                 icon: <EditOutlined/>,
-                label: t('sysFile.rename'),
+                label: t('system.file.rename'),
                 onClick: () => openRenameModal(file)
               },
               {
                 key: 'move',
                 icon: <ScissorOutlined/>,
-                label: t('sysFile.move'),
+                label: t('system.file.move'),
                 onClick: () => openTargetModal(file.id!, 'move')
               },
               {
                 key: 'copy',
                 icon: <CopyOutlined/>,
-                label: t('sysFile.copy'),
+                label: t('system.file.copy'),
                 onClick: () => openTargetModal(file.id!, 'copy')
               },
               {
@@ -623,7 +623,7 @@ const FileManagement: React.FC = () => {
               },
               {
                 key: 'delete',
-                label: <span style={{color: '#ff4d4f'}}>{t('sysFile.delete')}</span>,
+                label: <span style={{color: '#ff4d4f'}}>{t('system.file.delete')}</span>,
                 icon: <DeleteOutlined style={{color: '#ff4d4f'}}/>,
                 onClick: () => handleDeleteFile(file.id!)
               }
@@ -639,13 +639,13 @@ const FileManagement: React.FC = () => {
   /** 回收站文件列 */
   const trashColumns: ColumnsType<ISysFileInfo> = [
     {
-      title: t('sysFile.fileName'),
+      title: t('system.file.fileName'),
       dataIndex: 'file_name',
       ellipsis: true,
       width: 180,
     },
     {
-      title: t('sysFile.fileSize'),
+      title: t('system.file.fileSize'),
       dataIndex: 'file_size',
       width: 80,
       align: 'center',
@@ -653,42 +653,42 @@ const FileManagement: React.FC = () => {
       sorter: true
     },
     {
-      title: t('sysFile.fileType'),
+      title: t('system.file.fileType'),
       dataIndex: 'file_type',
       width: 80,
       align: 'center',
       render: fileTypeRender
     },
     {
-      title: t('sysFile.disk'),
+      title: t('system.file.disk'),
       dataIndex: 'disk',
       width: 80,
       align: 'center',
       render: (disk: string) => <Tag>{disk}</Tag>
     },
     {
-      title: t('sysFile.deletedAt'),
+      title: t('system.file.deletedAt'),
       dataIndex: 'deleted_at',
       width: 120,
       align: 'center',
       render: (v) => v ? dayjs(v).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
-      title: t('sysFile.action'),
+      title: t('system.file.action'),
       width: 80,
       key: 'action',
       align: 'center',
       fixed: 'right',
       render: (_, file) => (
         <Space>
-          <Tooltip title={t('sysFile.restore')}>
+          <Tooltip title={t('system.file.restore')}>
             <Button
               size="small"
               icon={<UndoOutlined/>}
               onClick={() => handleRestoreFile(file.id!)}
             />
           </Tooltip>
-          <Tooltip title={t('sysFile.forceDelete')}>
+          <Tooltip title={t('system.file.forceDelete')}>
             <Button
               danger
               size="small"
@@ -711,7 +711,7 @@ const FileManagement: React.FC = () => {
           label: (
             <Space>
               <FileAddOutlined/>
-              {t('sysFile.addFolder')}
+              {t('system.file.addFolder')}
             </Space>
           ),
           onClick: () => handleAddGroup(Number(node.key))
@@ -721,7 +721,7 @@ const FileManagement: React.FC = () => {
           label: (
             <Space>
               <EditOutlined/>
-              {t('sysFile.editFolder')}
+              {t('system.file.editFolder')}
             </Space>
           ),
           disabled: Number(node.key) === 0,
@@ -733,7 +733,7 @@ const FileManagement: React.FC = () => {
           icon: <DeleteOutlined/>,
           disabled: Number(node.key) === 0,
           onClick: () => handleDeleteGroup(Number(node.key)),
-          label: t('sysFile.deleteFolder')
+          label: t('system.file.deleteFolder')
         }
       ]
     }}>
@@ -747,8 +747,8 @@ const FileManagement: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('sysFile.page.title')}</Title>
-        <Text type="secondary">{t('sysFile.page.description')}</Text>
+        <Title level={3}>{t('system.file.page.title')}</Title>
+        <Text type="secondary">{t('system.file.page.description')}</Text>
       </div>
       <Row gutter={[16, 16]}>
         {/* 左侧文件夹树 */}
@@ -757,7 +757,7 @@ const FileManagement: React.FC = () => {
           title={
             <Space>
               <IconFont style={{fontSize: 18}} name='icon-wenjianjia' />
-              {t('sysFile.fileFolder')}
+              {t('system.file.fileFolder')}
             </Space>
           }
           variant={'borderless'}
@@ -767,11 +767,11 @@ const FileManagement: React.FC = () => {
           }}
         >
           <Input.Search
-            placeholder={t('sysFile.folderSearchPlaceholder')}
+            placeholder={t('system.file.folderSearchPlaceholder')}
             style={{marginBottom: 16}}
             onSearch={(value) => setGroupSearchKeyword(value)}
           />
-          <Spin spinning={fileGroupLoading} description={t('sysFile.loading')} size="small">
+          <Spin spinning={fileGroupLoading} description={t('system.file.loading')} size="small">
             <div style={{minHeight: 200}}>
               { fileGroups.length > 0 && (
                 <Tree
@@ -797,7 +797,7 @@ const FileManagement: React.FC = () => {
             <Button
               type="primary"
               icon={<UploadOutlined/>}
-              children={t('sysFile.upload')}
+              children={t('system.file.upload')}
               onClick={() => setUploadModalOpen(true)}
             />
             {/* 批量操作 */}
@@ -807,27 +807,27 @@ const FileManagement: React.FC = () => {
                   danger
                   icon={<DeleteOutlined/>}
                   onClick={handleBatchDelete}
-                  children={t('sysFile.batchDelete')}
+                  children={t('system.file.batchDelete')}
                 />
                 <Button
                   icon={<ScissorOutlined/>}
                   data-type={'move'}
                   onClick={batchOption}
-                  children={t('sysFile.batchMove')}
+                  children={t('system.file.batchMove')}
                 />
                 <Button
                   icon={<CopyOutlined/>}
                   data-type={'copy'}
                   onClick={batchOption}
-                  children={t('sysFile.batchCopy')}
+                  children={t('system.file.batchCopy')}
                 />
               </>
             )}
             {/* 刷新按钮 */}
-            <Tooltip title={t('sysFile.trash')}>
-              <Button icon={<DeleteOutlined/>} onClick={() => openTrash()} children={t('sysFile.trash')}/>
+            <Tooltip title={t('system.file.trash')}>
+              <Button icon={<DeleteOutlined/>} onClick={() => openTrash()} children={t('system.file.trash')}/>
             </Tooltip>
-            <Tooltip title={t('sysFile.refresh')}>
+            <Tooltip title={t('system.file.refresh')}>
               <Button icon={<ReloadOutlined/>} onClick={() => loadFiles()}/>
             </Tooltip>
           </Space>
@@ -843,7 +843,7 @@ const FileManagement: React.FC = () => {
               ...pagination,
               onChange: loadFiles,
               showSizeChanger: true,
-              showTotal: (total) => t('sysFile.totalFiles', { total })
+              showTotal: (total) => t('system.file.totalFiles', { total })
             }}
             rowSelection={{
               selectedRowKeys,
@@ -861,7 +861,7 @@ const FileManagement: React.FC = () => {
         columns={groupFormColumns}
         onFinish={handleSaveGroup}
         modalProps={{
-          title: updateGroupData ? t('sysFile.editFolderTitle') : t('sysFile.addFolderTitle'),
+          title: updateGroupData ? t('system.file.editFolderTitle') : t('system.file.addFolderTitle'),
           onCancel: () => groupFormRef.current?.close()
         }}
         trigger={<span style={{display: 'none'}} />}
@@ -869,7 +869,7 @@ const FileManagement: React.FC = () => {
 
       {/* 回收站抽屉 */}
       <Drawer
-        title={t('sysFile.trash')}
+        title={t('system.file.trash')}
         open={trashModelOpen}
         width={860}
         onClose={closeTrash}
@@ -880,20 +880,20 @@ const FileManagement: React.FC = () => {
             type={'primary'}
             icon={<UndoOutlined/>}
             onClick={handleBatchRestore}
-            children={t('sysFile.batchRestore')}
+            children={t('system.file.batchRestore')}
           />
           <Button
             disabled={selectedRowKeys.length === 0}
             icon={<DeleteOutlined/>}
             onClick={handleBatchForceDelete}
-            children={t('sysFile.batchForceDelete')}
+            children={t('system.file.batchForceDelete')}
           />
           <Button
             danger
             type={'primary'}
             icon={<DeleteOutlined/>}
             onClick={handleEmptyTrash}
-            children={t('sysFile.emptyTrash')}
+            children={t('system.file.emptyTrash')}
           />
         </Space>
         <Table
@@ -906,7 +906,7 @@ const FileManagement: React.FC = () => {
             ...trashPagination,
             onChange: loadTrashFiles,
             showSizeChanger: true,
-            showTotal: (total) => t('sysFile.totalFiles', { total })
+            showTotal: (total) => t('system.file.totalFiles', { total })
           }}
           rowSelection={{
             selectedRowKeys,
@@ -918,7 +918,7 @@ const FileManagement: React.FC = () => {
 
       {/* 上传文件表单 */}
       <Modal
-        title={t('sysFile.uploadTitle')}
+        title={t('system.file.uploadTitle')}
         open={uploadModalOpen}
         onOk={handleUpload}
         onCancel={() => {
@@ -929,7 +929,7 @@ const FileManagement: React.FC = () => {
         confirmLoading={uploading}
       >
         <Form layout="vertical">
-          <Form.Item label={t('sysFile.selectFile')} required>
+          <Form.Item label={t('system.file.selectFile')} required>
             <Upload.Dragger
               fileList={fileList}
               onChange={({fileList}) => setFileList(fileList)}
@@ -940,42 +940,42 @@ const FileManagement: React.FC = () => {
               <p className="ant-upload-drag-icon">
                 <CloudUploadOutlined style={{fontSize: 48, color: '#1890ff'}} />
               </p>
-              <p className="ant-upload-text">{t('sysFile.uploadDragText')}</p>
-              <p className="ant-upload-hint">{t('sysFile.uploadHint')}</p>
+              <p className="ant-upload-text">{t('system.file.uploadDragText')}</p>
+              <p className="ant-upload-hint">{t('system.file.uploadHint')}</p>
             </Upload.Dragger>
           </Form.Item>
-          {uploading && <Form.Item label={t('sysFile.uploadProgress')}><Progress percent={uploadProgress} status="active"/></Form.Item>}
+          {uploading && <Form.Item label={t('system.file.uploadProgress')}><Progress percent={uploadProgress} status="active"/></Form.Item>}
         </Form>
       </Modal>
 
       {/* 重命名弹窗 */}
       <Modal
-        title={t('sysFile.renameTitle')}
+        title={t('system.file.renameTitle')}
         open={renameModalOpen}
         onOk={handleRename}
         styles={{ body: { paddingBottom: 16 } }}
         onCancel={() => setRenameModalOpen(false)}
       >
         <div style={{ marginTop: 16, marginBottom: 16 }}>
-          {t('sysFile.renameDescription')}
+          {t('system.file.renameDescription')}
         </div>
         <Input
           value={newFileName}
           onChange={(e) => setNewFileName(e.target.value)}
-          placeholder={t('sysFile.newFileNameRequired')}
+          placeholder={t('system.file.newFileNameRequired')}
         />
       </Modal>
 
       {/* 复制移动弹窗 */}
       <Modal
-        title={ targetType === 'copy' ? t('sysFile.copyTitle') : t('sysFile.moveTitle') }
+        title={ targetType === 'copy' ? t('system.file.copyTitle') : t('system.file.moveTitle') }
         open={targetModalOpen}
         onOk={handleTargetOk}
         styles={{ body: { paddingBottom: 16 } }}
         onCancel={() => setTargetModelOpen(false)}
       >
         <div style={{ marginTop: 16, marginBottom: 16 }}>
-          { targetType === 'copy' ? t('sysFile.copyDescription') : t('sysFile.moveDescription') }
+          { targetType === 'copy' ? t('system.file.copyDescription') : t('system.file.moveDescription') }
         </div>
         <TreeSelect
           value={targetGroupId}
@@ -988,7 +988,7 @@ const FileManagement: React.FC = () => {
 
       {/* 文件详情抽屉 */}
       <Drawer
-        title={t('sysFile.fileDetail')}
+        title={t('system.file.fileDetail')}
         placement="right"
         width={480}
         open={detailDrawerOpen}
@@ -1008,57 +1008,57 @@ const FileManagement: React.FC = () => {
 
             {/* 基本信息 */}
             <Descriptions
-              title={t('sysFile.basicInfo')}
+              title={t('system.file.basicInfo')}
               column={1}
               items={[
                 {
                   key: 'name',
-                  label: t('sysFile.fileName'),
+                  label: t('system.file.fileName'),
                   children: currentDetailFile.file_name,
                 },
                 {
                   key: 'size',
-                  label: t('sysFile.fileSize'),
+                  label: t('system.file.fileSize'),
                   children: formatFileSize(currentDetailFile.file_size),
                 },
                 {
                   key: 'type',
-                  label: t('sysFile.fileType'),
+                  label: t('system.file.fileType'),
                   children: fileTypeRender(currentDetailFile.file_type || 10),
                 },
                 {
                   key: 'ext',
-                  label: t('sysFile.fileExt'),
+                  label: t('system.file.fileExt'),
                   children: currentDetailFile.file_ext,
                 },
                 {
                   key: 'disk',
-                  label: t('sysFile.storageMethod'),
+                  label: t('system.file.storageMethod'),
                   children: currentDetailFile.disk,
                 },
                 {
                   key: 'path',
-                  label: t('sysFile.filePath'),
+                  label: t('system.file.filePath'),
                   children: currentDetailFile.file_path,
                 },
                 {
                   key: 'group',
-                  label: t('sysFile.fileGroup'),
-                  children: fileGroupMap.get(currentDetailFile.group_id || 0)?.name || t('sysFile.ungrouped'),
+                  label: t('system.file.fileGroup'),
+                  children: fileGroupMap.get(currentDetailFile.group_id || 0)?.name || t('system.file.ungrouped'),
                 },
                 {
                   key: 'created_at',
-                  label: t('sysFile.createdAt'),
+                  label: t('system.file.createdAt'),
                   children: currentDetailFile.created_at,
                 },
                 {
                   key: 'updated_at',
-                  label: t('sysFile.updatedAt'),
+                  label: t('system.file.updatedAt'),
                   children: currentDetailFile.updated_at,
                 },
                 {
                   key: 'url',
-                  label: t('sysFile.accessUrl'),
+                  label: t('system.file.accessUrl'),
                   children: (
                     <Typography.Link copyable>
                       {currentDetailFile.file_url}

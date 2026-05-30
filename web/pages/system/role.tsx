@@ -35,12 +35,12 @@ const Role = () => {
     {
       key: "users",
       icon: <TeamOutlined />,
-      label: t('sysUserRole.tab.users'),
+      label: t('system.role.tab.users'),
     },
     {
       key: "rules",
       icon: <KeyOutlined />,
-      label: t('sysUserRole.tab.rules')
+      label: t('system.role.tab.rules')
     }
   ];
   // 角色表格列配置
@@ -54,13 +54,13 @@ const Role = () => {
       hideInForm: true
     },
     {
-      title: t('sysUserRole.table.roleName'),
+      title: t('system.role.table.roleName'),
       dataIndex: "name",
       valueType: "text",
       align: "center",
       required: true,
       colProps: {span: 8},
-      rules: [{ required: true, message: t('sysUserRole.table.roleName.required') }],
+      rules: [{ required: true, message: t('system.role.table.roleName.required') }],
       render: (value: any, record: ISysRole) => (
         <>
           <Tooltip title={record.description}>
@@ -70,50 +70,50 @@ const Role = () => {
       ),
     },
     {
-      title: t('sysUserRole.table.sort'),
+      title: t('system.role.table.sort'),
       dataIndex: "sort",
       valueType: "digit",
       hideInSearch: true,
       align: "center",
       required: true,
       colProps: {span: 8},
-      rules: [{ required: true, message: t('sysUserRole.table.sort.required') }],
+      rules: [{ required: true, message: t('system.role.table.sort.required') }],
       render: (value: number) => <Tag variant="filled" color="purple">{value}</Tag>,
     },
     {
-      title: t('sysUserRole.table.userCount'),
+      title: t('system.role.table.userCount'),
       dataIndex: "countUser",
       valueType: "text",
       hideInForm: true,
       align: "center",
-      render: (value: number) => <a><u>{value}{t('sysUserRole.userTable.person')}</u></a>,
+      render: (value: number) => <a><u>{value}{t('system.role.userTable.person')}</u></a>,
     },
     {
-      title: t('sysUserRole.table.status'),
+      title: t('system.role.table.status'),
       dataIndex: "status",
       valueType: "switch",
       align: "center",
       colProps: {span: 8},
       filters: [
-        { text: t('sysUserRole.table.status.disable'), value: 0 },
-        { text: t('sysUserRole.table.status.enable'), value: 1 },
+        { text: t('system.role.table.status.disable'), value: 0 },
+        { text: t('system.role.table.status.enable'), value: 1 },
       ],
       hideInSearch: true,
       required: true,
-      rules: [{ required: true, message: t('sysUserRole.table.status.required') }],
+      rules: [{ required: true, message: t('system.role.table.status.required') }],
       render: (_, record: ISysRole) => (
         <Switch
           disabled={record.id === 1}
           checked={record.status === 1}
-          checkedChildren={t('sysUserRole.table.status.enable')}
-          unCheckedChildren={t('sysUserRole.table.status.disable')}
+          checkedChildren={t('system.role.table.status.enable')}
+          unCheckedChildren={t('system.role.table.status.disable')}
           onChange={async (_, event) => {
             event.stopPropagation();
             try {
               await statusRole(record.id!);
-              message.success(t('sysUserRole.message.statusUpdateSuccess'));
+              message.success(t('system.role.message.statusUpdateSuccess'));
             } catch (error) {
-              message.error(t('sysUserRole.message.statusUpdateFailed'));
+              message.error(t('system.role.message.statusUpdateFailed'));
               console.error('Failed to update role status:', error);
             }
           }}
@@ -122,13 +122,13 @@ const Role = () => {
     },
     {
       valueType: 'textarea',
-      title: t('sysUserRole.table.description'),
+      title: t('system.role.table.description'),
       dataIndex: 'description',
       colProps: {span: 24},
       hideInTable: true,
     },
     {
-      title: t('sysUserRole.table.createdAt'),
+      title: t('system.role.table.createdAt'),
       hideInForm: true,
       hideInSearch: true,
       dataIndex: 'created_at',
@@ -136,7 +136,7 @@ const Role = () => {
       render: (value: string) => value ? dayjs(value).fromNow() : '-',
     },
     {
-      title: t('sysUserRole.table.updatedAt'),
+      title: t('system.role.table.updatedAt'),
       hideInForm: true,
       hideInSearch: true,
       dataIndex: 'updated_at',
@@ -147,46 +147,46 @@ const Role = () => {
   // 用户列表表格列配置
   const userColumns: TableProps<ISysUser>['columns'] = [
     {
-      title: t('sysUserRole.userTable.userId'),
+      title: t('system.role.userTable.userId'),
       dataIndex: 'id',
       key: 'id',
       align: 'center',
       width: 80,
     },
     {
-      title: t('sysUserRole.userTable.username'),
+      title: t('system.role.userTable.username'),
       dataIndex: 'username',
       key: 'username',
       align: 'center',
     },
     {
-      title: t('sysUserRole.userTable.nickname'),
+      title: t('system.role.userTable.nickname'),
       dataIndex: 'nickname',
       key: 'nickname',
       align: 'center',
     },
     {
-      title: t('sysUserRole.userTable.email'),
+      title: t('system.role.userTable.email'),
       dataIndex: 'email',
       key: 'email',
       align: 'center',
       ellipsis: true,
     },
     {
-      title: t('sysUserRole.userTable.mobile'),
+      title: t('system.role.userTable.mobile'),
       dataIndex: 'mobile',
       key: 'mobile',
       align: 'center',
     },
     {
-      title: t('sysUserRole.userTable.status'),
+      title: t('system.role.userTable.status'),
       dataIndex: 'status',
       key: 'status',
       align: 'center',
       render: (value: number) => {
         const status = value === 0
-          ? { color: 'error', text: t('sysUserRole.userTable.status.banned') }
-          : { color: 'success', text: t('sysUserRole.userTable.status.normal') };
+          ? { color: 'error', text: t('system.role.userTable.status.banned') }
+          : { color: 'success', text: t('system.role.userTable.status.normal') };
         return <Tag color={status.color}>{status.text}</Tag>;
       },
       width: 80,
@@ -297,14 +297,14 @@ const Role = () => {
   // 保存权限设置
   const handleSaveRules = async () => {
     if (!selectedRoleId) {
-      message.warning(t('sysUserRole.message.selectRoleFirst'));
+      message.warning(t('system.role.message.selectRoleFirst'));
       return;
     }
     setIsSavingRules(true);
     try {
       const ruleIds = checkedRuleKeys.map(key => Number(key));
       await setRule(selectedRoleId, ruleIds);
-      message.success(t('sysUserRole.message.rulesSaveSuccess'));
+      message.success(t('system.role.message.rulesSaveSuccess'));
     } finally {
       setIsSavingRules(false);
     }
@@ -313,8 +313,8 @@ const Role = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('sysUserRole.page.title')}</Title>
-        <Text type="secondary">{t('sysUserRole.page.description')}</Text>
+        <Title level={3}>{t('system.role.page.title')}</Title>
+        <Text type="secondary">{t('system.role.page.description')}</Text>
       </div>
       <Row gutter={[20, 20]}>
         {/* 角色列表 */}
@@ -391,13 +391,13 @@ const Role = () => {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                     <span style={{ color: '#666', fontSize: 12 }}>
-                      {t('sysUserRole.permission.selectedCount', { count: checkedRuleKeys.length })}
+                      {t('system.role.permission.selectedCount', { count: checkedRuleKeys.length })}
                     </span>
-                    <Button size="small" onClick={expandAll}>{t('sysUserRole.button.expandAll')}</Button>
-                    <Button size="small" onClick={collapseAll}>{t('sysUserRole.button.collapseAll')}</Button>
-                    <Button size="small" onClick={selectAll}>{t('sysUserRole.button.selectAll')}</Button>
-                    <Button size="small" onClick={deselectAll}>{t('sysUserRole.button.clearAll')}</Button>
-                    <Button size="small" onClick={invertSelection}>{t('sysUserRole.button.invertSelection')}</Button>
+                    <Button size="small" onClick={expandAll}>{t('system.role.button.expandAll')}</Button>
+                    <Button size="small" onClick={collapseAll}>{t('system.role.button.collapseAll')}</Button>
+                    <Button size="small" onClick={selectAll}>{t('system.role.button.selectAll')}</Button>
+                    <Button size="small" onClick={deselectAll}>{t('system.role.button.clearAll')}</Button>
+                    <Button size="small" onClick={invertSelection}>{t('system.role.button.invertSelection')}</Button>
                     <Button
                       type="primary"
                       icon={<SaveOutlined />}
@@ -406,7 +406,7 @@ const Role = () => {
                       size="small"
                       disabled={selectedRoleId === 1}
                     >
-                      {t('sysUserRole.button.saveRules')}
+                      {t('system.role.button.saveRules')}
                     </Button>
                   </div>
                 </>
@@ -414,7 +414,7 @@ const Role = () => {
             ) : (
               <div style={{ textAlign: 'center', color: '#00000040' }}>
                 <SmileOutlined style={{ fontSize: 40, marginBottom: 12 }} />
-                <p>{t('sysUserRole.placeholder.selectRole')}</p>
+                <p>{t('system.role.placeholder.selectRole')}</p>
               </div>
             )}
           </Card>

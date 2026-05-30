@@ -78,37 +78,37 @@ const IconSelect: React.FC<IconSelectProps> = ({
   const tabItems: TabsProps['items'] = useMemo(() => [
     {
       key: 'use',
-      label: t('xinForm.iconSelector.tabs.use'),
+      label: t('xin.form.iconSelector.tabs.use'),
       children: <IconsList type="useIcons" />,
     },
     {
       key: 'suggestion',
-      label: t('xinForm.iconSelector.tabs.suggestion'),
+      label: t('xin.form.iconSelector.tabs.suggestion'),
       children: <IconsList type="suggestionIcons" />,
     },
     {
       key: 'direction',
-      label: t('xinForm.iconSelector.tabs.direction'),
+      label: t('xin.form.iconSelector.tabs.direction'),
       children: <IconsList type="directionIcons" />,
     },
     {
       key: 'editor',
-      label: t('xinForm.iconSelector.tabs.editor'),
+      label: t('xin.form.iconSelector.tabs.editor'),
       children: <IconsList type="editorIcons" />,
     },
     {
       key: 'data',
-      label: t('xinForm.iconSelector.tabs.data'),
+      label: t('xin.form.iconSelector.tabs.data'),
       children: <IconsList type="dataIcons" />,
     },
     {
       key: 'logo',
-      label: t('xinForm.iconSelector.tabs.logo'),
+      label: t('xin.form.iconSelector.tabs.logo'),
       children: <IconsList type="logoIcons" />,
     },
     {
       key: 'other',
-      label: t('xinForm.iconSelector.tabs.other'),
+      label: t('xin.form.iconSelector.tabs.other'),
       children: <IconsList type="otherIcons" />,
     },
   ], [IconsList, t]);
@@ -131,7 +131,7 @@ const IconSelect: React.FC<IconSelectProps> = ({
     <>
       <Select
         value={selectedIcon}
-        placeholder={placeholder || t('xinForm.iconSelector.placeholder')}
+        placeholder={placeholder || t('xin.form.iconSelector.placeholder')}
         disabled={disabled}
         open={false}
         onClick={() => !disabled && !readonly && setOpen(true)}
@@ -143,7 +143,7 @@ const IconSelect: React.FC<IconSelectProps> = ({
       />
 
       <Modal
-        title={t('xinForm.iconSelector.modal.title')}
+        title={t('xin.form.iconSelector.modal.title')}
         open={open}
         onCancel={() => setOpen(false)}
         footer={null}

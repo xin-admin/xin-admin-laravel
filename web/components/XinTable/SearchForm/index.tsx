@@ -93,7 +93,7 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
         onClick={() => form.submit()}
         {...submitter?.submitButtonProps}
       >
-        {submitter?.submitText || t('xinTable.search.search')}
+        {submitter?.submitText || t('xin.table.search.search')}
       </Button>
     );
 
@@ -102,7 +102,7 @@ function SearchForm<T extends Record<string, any> = any>(props: SearchFormProps<
         onClick={() => form.resetFields()}
         {...submitter?.resetButtonProps}
       >
-        {submitter?.resetText || t('xinTable.search.reset')}
+        {submitter?.resetText || t('xin.table.search.reset')}
       </Button>
     );
 

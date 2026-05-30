@@ -39,7 +39,7 @@ const Rule =  () => {
       }));
       setParentOptions([
         {
-          name: t("sysUserRule.parent.0"),
+          name: t("system.rule.parent.0"),
           id: 0,
           children
         }
@@ -50,55 +50,55 @@ const Rule =  () => {
   const columns: XinTableColumn<ISysRule>[] = [
     /** ----------------- 表单使用的 Column ------------------- */
     {
-      title: t("sysUserRule.type"),
+      title: t("system.rule.type"),
       dataIndex: 'type',
       valueType: 'radioButton',
       hideInTable: true,
       hideInSearch: true,
       colProps: { span: 24 },
-      rules: [{ required: true, message: t("sysUserRule.type.required") }],
+      rules: [{ required: true, message: t("system.rule.type.required") }],
       fieldProps: {
         options: getOptions('sys_rule_type'),
       },
     },
     {
-      title: t("sysUserRule.parent"),
+      title: t("system.rule.parent"),
       dataIndex: 'parent_id',
       hideInTable: true,
       hideInSearch: true,
       valueType: 'treeSelect',
-      rules: [{ required: true, message: t("sysUserRule.parent.required") }],
+      rules: [{ required: true, message: t("system.rule.parent.required") }],
       fieldProps: {
         treeData: parentOptions,
         fieldNames: { label: 'name', value: 'id' },
       },
     },
     {
-      title: t("sysUserRule.order"),
+      title: t("system.rule.order"),
       hideInTable: true,
       hideInSearch: true,
       dataIndex: 'order',
       valueType: 'digit',
-      rules: [{ required: true, message: t("sysUserRule.order.required") }],
+      rules: [{ required: true, message: t("system.rule.order.required") }],
     },
     {
-      title: t("sysUserRule.name"),
+      title: t("system.rule.name"),
       hideInTable: true,
       hideInSearch: true,
       dataIndex: 'name',
       valueType: 'text',
-      rules: [{ required: true, message: t("sysUserRule.name.required") }],
+      rules: [{ required: true, message: t("system.rule.name.required") }],
     },
     {
-      title: t("sysUserRule.key"),
+      title: t("system.rule.key"),
       valueType: 'text',
       dataIndex: 'key',
       hideInTable: true,
       hideInSearch: true,
-      rules: [{ required: true, message: t("sysUserRule.key.required") }],
+      rules: [{ required: true, message: t("system.rule.key.required") }],
     },
     {
-      title: t("sysUserRule.link"),
+      title: t("system.rule.link"),
       dataIndex: 'link',
       valueType: 'radio',
       hideInTable: true,
@@ -109,25 +109,25 @@ const Rule =  () => {
       },
       fieldProps: {
         options: [
-          {label: t("sysUserRule.link.0"), value: 0},
-          {label: t("sysUserRule.link.1"), value: 1},
+          {label: t("system.rule.link.0"), value: 0},
+          {label: t("system.rule.link.1"), value: 1},
         ],
       },
     },
     {
-      title: t("sysUserRule.routePath"),
+      title: t("system.rule.routePath"),
       dataIndex: 'path',
       valueType: 'text',
       hideInTable: true,
       hideInSearch: true,
-      tooltip: t("sysUserRule.routePath.tooltip"),
+      tooltip: t("system.rule.routePath.tooltip"),
       dependency: {
         dependencies: ['type'],
         visible: values => values.type === 'route'
       },
     },
     {
-      title: t("sysUserRule.icon"),
+      title: t("system.rule.icon"),
       dataIndex: 'icon',
       valueType: 'icon',
       hideInTable: true,
@@ -138,7 +138,7 @@ const Rule =  () => {
       },
     },
     {
-      title: t("sysUserRule.local"),
+      title: t("system.rule.local"),
       dataIndex: 'local',
       valueType: 'text',
       hideInTable: true,
@@ -150,7 +150,7 @@ const Rule =  () => {
     },
     /** ------------------ 表格使用的 Column ---------------- */
     {
-      title: t("sysUserRule.name"),
+      title: t("system.rule.name"),
       ellipsis: true,
       hideInForm: true,
       hideInSearch: true,
@@ -159,14 +159,14 @@ const Rule =  () => {
     {
       ellipsis: true,
       align: 'center',
-      title: t("sysUserRule.local.show"),
+      title: t("system.rule.local.show"),
       dataIndex: 'local',
       hideInForm: true,
       hideInSearch: true,
       render: (data: string) => data ? t(data) : '-'
     },
     {
-      title: t("sysUserRule.icon"),
+      title: t("system.rule.icon"),
       dataIndex: 'icon',
       align: 'center',
       hideInForm: true,
@@ -174,7 +174,7 @@ const Rule =  () => {
       render: (data: string) => data ? <IconFont name={data} /> : '-'
     },
     {
-      title: t("sysUserRule.type"),
+      title: t("system.rule.type"),
       dataIndex: 'type',
       align: 'center',
       hideInForm: true,
@@ -182,7 +182,7 @@ const Rule =  () => {
       render: (value: string) => <DictTag value={value} renderType={'tag'} code={'sys_rule_type'}/>
     },
     {
-      title: t("sysUserRule.order"),
+      title: t("system.rule.order"),
       align: 'center',
       dataIndex: 'order',
       hideInForm: true,
@@ -190,7 +190,7 @@ const Rule =  () => {
       render: (value: number) => <Tag variant="filled" color={'purple'}>{value}</Tag>,
     },
     {
-      title: t("sysUserRule.key"),
+      title: t("system.rule.key"),
       align: 'center',
       dataIndex: 'key',
       hideInForm: true,
@@ -198,54 +198,54 @@ const Rule =  () => {
       render: (value: string) => <Tag variant="filled" color={'geekblue'}>{value}</Tag>,
     },
     {
-      title: t("sysUserRule.hidden"),
+      title: t("system.rule.hidden"),
       align: 'center',
       dataIndex: 'hidden',
       hideInForm: true,
       hideInSearch: true,
-      tooltip: t("sysUserRule.hidden.tooltip"),
+      tooltip: t("system.rule.hidden.tooltip"),
       render: (_, data: ISysRule) => {
         if (data.type === 'rule') { return '-' }
         return (
           <Switch
             defaultValue={data.hidden === 1}
             disabled={!auth("system.rule.show")}
-            checkedChildren={t("sysUserRule.hidden.1")}
-            unCheckedChildren={t("sysUserRule.hidden.0")}
+            checkedChildren={t("system.rule.hidden.1")}
+            unCheckedChildren={t("system.rule.hidden.0")}
             onChange={ async (_, event) => {
               event.stopPropagation();
               await showRule(data.id!);
-              message.success(t("sysUserRule.hidden.updateSuccess"));
+              message.success(t("system.rule.hidden.updateSuccess"));
             }}
           />
         )
       },
     },
     {
-      title: t("sysUserRule.status"),
+      title: t("system.rule.status"),
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      tooltip: t("sysUserRule.status.tooltip"),
+      tooltip: t("system.rule.status.tooltip"),
       align: 'center',
       render: (_, data: ISysRule) => {
         return (
           <Switch
             defaultChecked={data.status === 1}
             disabled={!auth("system.rule.status")}
-            checkedChildren={t("sysUserRule.status.1")}
-            unCheckedChildren={t("sysUserRule.status.0")}
+            checkedChildren={t("system.rule.status.1")}
+            unCheckedChildren={t("system.rule.status.0")}
             onChange={async (_, event) => {
               event.stopPropagation();
               await statusRule(data.id!);
-              message.success(t("sysUserRule.status.updateSuccess"));
+              message.success(t("system.rule.status.updateSuccess"));
             }}
           />
         )
       },
     },
     {
-      title: t("sysUserRule.created_at"),
+      title: t("system.rule.created_at"),
       dataIndex: 'created_at',
       hideInForm: true,
       hideInSearch: true,
@@ -253,7 +253,7 @@ const Rule =  () => {
       render: (value: string) => value ? dayjs(value).fromNow() : '-',
     },
     {
-      title: t("sysUserRule.updated_at"),
+      title: t("system.rule.updated_at"),
       dataIndex: 'updated_at',
       hideInForm: true,
       hideInSearch: true,
@@ -265,8 +265,8 @@ const Rule =  () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t("sysUserRule.title")}</Title>
-        <Text type="secondary">{t("sysUserRule.description")}</Text>
+        <Title level={3}>{t("system.rule.title")}</Title>
+        <Text type="secondary">{t("system.rule.description")}</Text>
       </div>
       <XinTable<ISysRule>
         handleRequest={async () => {

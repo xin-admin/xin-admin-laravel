@@ -41,9 +41,9 @@ export default function AgentPage() {
       setAgents((prev) =>
         prev.map((a) => (a.id === id ? { ...a, enabled } : a)),
       );
-      message.success(t('sys.agent.update.success'));
+      message.success(t('ai.agent.update.success'));
     } catch {
-      message.error(t('sys.agent.update.failed'));
+      message.error(t('ai.agent.update.failed'));
     }
   };
 
@@ -52,9 +52,9 @@ export default function AgentPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: token.marginLG }}>
         <div>
           <Title level={3} style={{ marginBottom: token.marginXS }}>
-            {t('sys.agent.page.title')}
+            {t('ai.agent.page.title')}
           </Title>
-          <Text type="secondary">{t('sys.agent.page.description')}</Text>
+          <Text type="secondary">{t('ai.agent.page.description')}</Text>
         </div>
       </div>
 
@@ -97,7 +97,7 @@ export default function AgentPage() {
             ))}
           </div>
         ) : (
-          <Empty description={t('sys.agent.empty')} />
+          <Empty description={t('ai.agent.empty')} />
         )}
       </Spin>
     </>

@@ -77,45 +77,45 @@ const UserSelector: React.FC<UserSelectorProps> = ({
   // 表格列配置
   const columns: TableColumnType<ISysUser>[] = useMemo(() => [
     {
-      title: t('sysUserList.id'),
+      title: t('system.user.id'),
       dataIndex: 'id',
       width: 80,
       align: 'center',
     },
     {
-      title: t('sysUserList.username'),
+      title: t('system.user.username'),
       dataIndex: 'username',
       width: 120,
       align: 'center',
     },
     {
-      title: t('sysUserList.nickname'),
+      title: t('system.user.nickname'),
       dataIndex: 'nickname',
       width: 120,
       align: 'center',
     },
     {
-      title: t('sysUserList.mobile'),
+      title: t('system.user.mobile'),
       dataIndex: 'mobile',
       width: 130,
       align: 'center',
     },
     ...(showDept ? [{
-      title: t('sysUserList.dept'),
+      title: t('system.user.dept'),
       dataIndex: 'dept_name',
       width: 120,
       align: 'center' as const,
       render: (text: any) => text ? <Tag color="volcano">{text}</Tag> : '-',
     }] : []),
     {
-      title: t('sysUserList.status'),
+      title: t('system.user.status'),
       dataIndex: 'status',
       width: 100,
       align: 'center',
       render: (value: number) => {
         return value === 1
-          ? <Tag color="success">{t('sysUserList.status.1')}</Tag>
-          : <Tag color="error">{t('sysUserList.status.0')}</Tag>;
+          ? <Tag color="success">{t('system.user.status.1')}</Tag>
+          : <Tag color="error">{t('system.user.status.0')}</Tag>;
       },
     },
   ], [t, showDept]);
@@ -231,7 +231,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({
           : selectedUsers.map(u => u.id!)
         }
         onChange={handleSelectChange}
-        placeholder={placeholder || t('xinForm.userSelector.placeholder')}
+        placeholder={placeholder || t('xin.form.userSelector.placeholder')}
         disabled={disabled}
         loading={loading}
         maxTagCount={maxTagCount}
@@ -248,17 +248,17 @@ const UserSelector: React.FC<UserSelectorProps> = ({
       />
 
       <Modal
-        title={t('xinForm.userSelector.modal.title')}
+        title={t('xin.form.userSelector.modal.title')}
         open={open}
         onCancel={() => setOpen(false)}
         onOk={handleSelect}
         width={1000}
-        okText={t('xinForm.userSelector.modal.okText')}
-        cancelText={t('xinForm.userSelector.modal.cancelText')}
+        okText={t('xin.form.userSelector.modal.okText')}
+        cancelText={t('xin.form.userSelector.modal.cancelText')}
       >
         <div style={{ marginBottom: 16 }}>
           <Input.Search
-            placeholder={t("sysUserList.searchPlaceholder")}
+            placeholder={t("system.user.searchPlaceholder")}
             style={{ width: 304 }}
             onSearch={(value: string) => {
               setParams({ keywordSearch: value });

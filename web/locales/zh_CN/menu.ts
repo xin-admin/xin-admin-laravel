@@ -45,4 +45,4 @@ export default {
   "menu.system.config": "系统配置",
   "menu.system.ai": "AI 配置",
   "menu.xin-admin": "XinAdmin",
-}
+};

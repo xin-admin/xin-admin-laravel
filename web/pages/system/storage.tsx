@@ -63,17 +63,17 @@ const StorageConfig: React.FC = () => {
   const [selectedDisk, setSelectedDisk] = useState<string>('local');
 
   const driverOptions = [
-    { label: t('storage.driver.local'), value: 'local' },
-    { label: t('storage.driver.s3'), value: 's3' },
-    { label: t('storage.driver.ftp'), value: 'ftp' },
-    { label: t('storage.driver.sftp'), value: 'sftp' },
+    { label: t('system.storage.driver.local'), value: 'local' },
+    { label: t('system.storage.driver.s3'), value: 's3' },
+    { label: t('system.storage.driver.ftp'), value: 'ftp' },
+    { label: t('system.storage.driver.sftp'), value: 'sftp' },
   ];
 
   const columns: FormColumn<StorageResponse>[] = [
     {
       dataIndex: 'default',
       valueType: 'radioButton',
-      title: t('storage.driver'),
+      title: t('system.storage.driver'),
       fieldProps: {
         options: driverOptions
       },
@@ -82,7 +82,7 @@ const StorageConfig: React.FC = () => {
     },
     // 本地存储配置
     {
-      fieldRender: () => <Divider>{t('storage.local.title')}</Divider>,
+      fieldRender: () => <Divider>{t('system.storage.local.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'local'
@@ -93,11 +93,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['local', 'url'],
       valueType: 'text',
-      title: t('storage.local.url'),
+      title: t('system.storage.local.url'),
       fieldProps: {
-        placeholder: t('storage.local.url.placeholder'),
+        placeholder: t('system.storage.local.url.placeholder'),
       },
-      tooltip: t('storage.local.url.tooltip'),
+      tooltip: t('system.storage.local.url.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -106,7 +106,7 @@ const StorageConfig: React.FC = () => {
     },
     // S3 配置
     {
-      fieldRender: () => <Divider>{t('storage.s3.title')}</Divider>,
+      fieldRender: () => <Divider>{t('system.storage.s3.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 's3'
@@ -117,9 +117,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'key'],
       valueType: 'text',
-      title: t('storage.s3.key'),
+      title: t('system.storage.s3.key'),
       fieldProps: {
-        placeholder: t('storage.s3.key.placeholder'),
+        placeholder: t('system.storage.s3.key.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -131,9 +131,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'secret'],
       valueType: 'password',
-      title: t('storage.s3.secret'),
+      title: t('system.storage.s3.secret'),
       fieldProps: {
-        placeholder: t('storage.s3.secret.placeholder'),
+        placeholder: t('system.storage.s3.secret.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -145,9 +145,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'region'],
       valueType: 'text',
-      title: t('storage.s3.region'),
+      title: t('system.storage.s3.region'),
       fieldProps: {
-        placeholder: t('storage.s3.region.placeholder'),
+        placeholder: t('system.storage.s3.region.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -159,9 +159,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'bucket'],
       valueType: 'text',
-      title: t('storage.s3.bucket'),
+      title: t('system.storage.s3.bucket'),
       fieldProps: {
-        placeholder: t('storage.s3.bucket.placeholder'),
+        placeholder: t('system.storage.s3.bucket.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -173,11 +173,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'endpoint'],
       valueType: 'text',
-      title: t('storage.s3.endpoint'),
+      title: t('system.storage.s3.endpoint'),
       fieldProps: {
-        placeholder: t('storage.s3.endpoint.placeholder'),
+        placeholder: t('system.storage.s3.endpoint.placeholder'),
       },
-      tooltip: t('storage.s3.endpoint.tooltip'),
+      tooltip: t('system.storage.s3.endpoint.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -187,11 +187,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'url'],
       valueType: 'text',
-      title: t('storage.s3.url'),
+      title: t('system.storage.s3.url'),
       fieldProps: {
-        placeholder: t('storage.s3.url.placeholder'),
+        placeholder: t('system.storage.s3.url.placeholder'),
       },
-      tooltip: t('storage.s3.url.tooltip'),
+      tooltip: t('system.storage.s3.url.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -201,8 +201,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['s3', 'use_path_style_endpoint'],
       valueType: 'switch',
-      title: t('storage.s3.path_style'),
-      tooltip: t('storage.s3.path_style.tooltip'),
+      title: t('system.storage.s3.path_style'),
+      tooltip: t('system.storage.s3.path_style.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -211,7 +211,7 @@ const StorageConfig: React.FC = () => {
     },
     // FTP 配置
     {
-      fieldRender: () => <Divider>{t('storage.ftp.title')}</Divider>,
+      fieldRender: () => <Divider>{t('system.storage.ftp.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'ftp'
@@ -222,9 +222,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'host'],
       valueType: 'text',
-      title: t('storage.ftp.host'),
+      title: t('system.storage.ftp.host'),
       fieldProps: {
-        placeholder: t('storage.ftp.host.placeholder'),
+        placeholder: t('system.storage.ftp.host.placeholder'),
       },
       required: true,
       colProps: { span: 16 },
@@ -236,9 +236,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'port'],
       valueType: 'digit',
-      title: t('storage.ftp.port'),
+      title: t('system.storage.ftp.port'),
       fieldProps: {
-        placeholder: t('storage.ftp.port.placeholder'),
+        placeholder: t('system.storage.ftp.port.placeholder'),
       },
       colProps: { span: 8 },
       dependency: {
@@ -249,9 +249,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'username'],
       valueType: 'text',
-      title: t('storage.ftp.username'),
+      title: t('system.storage.ftp.username'),
       fieldProps: {
-        placeholder: t('storage.ftp.username.placeholder'),
+        placeholder: t('system.storage.ftp.username.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -263,9 +263,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'password'],
       valueType: 'password',
-      title: t('storage.ftp.password'),
+      title: t('system.storage.ftp.password'),
       fieldProps: {
-        placeholder: t('storage.ftp.password.placeholder'),
+        placeholder: t('system.storage.ftp.password.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -277,11 +277,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'root'],
       valueType: 'text',
-      title: t('storage.ftp.root'),
+      title: t('system.storage.ftp.root'),
       fieldProps: {
-        placeholder: t('storage.ftp.root.placeholder'),
+        placeholder: t('system.storage.ftp.root.placeholder'),
       },
-      tooltip: t('storage.ftp.root.tooltip'),
+      tooltip: t('system.storage.ftp.root.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -291,10 +291,10 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'timeout'],
       valueType: 'digit',
-      title: t('storage.ftp.timeout'),
+      title: t('system.storage.ftp.timeout'),
       fieldProps: {
-        placeholder: t('storage.ftp.timeout.placeholder'),
-        addonAfter: t('storage.ftp.timeout.suffix')
+        placeholder: t('system.storage.ftp.timeout.placeholder'),
+        addonAfter: t('system.storage.ftp.timeout.suffix')
       },
       colProps: { span: 12 },
       dependency: {
@@ -305,8 +305,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'passive'],
       valueType: 'switch',
-      title: t('storage.ftp.passive'),
-      tooltip: t('storage.ftp.passive.tooltip'),
+      title: t('system.storage.ftp.passive'),
+      tooltip: t('system.storage.ftp.passive.tooltip'),
       colProps: { span: 8 },
       dependency: {
         dependencies: ['default'],
@@ -316,8 +316,8 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['ftp', 'ssl'],
       valueType: 'switch',
-      title: t('storage.ftp.ssl'),
-      tooltip: t('storage.ftp.ssl.tooltip'),
+      title: t('system.storage.ftp.ssl'),
+      tooltip: t('system.storage.ftp.ssl.tooltip'),
       colProps: { span: 8 },
       dependency: {
         dependencies: ['default'],
@@ -326,7 +326,7 @@ const StorageConfig: React.FC = () => {
     },
     // SFTP 配置
     {
-      fieldRender: () => <Divider>{t('storage.sftp.title')}</Divider>,
+      fieldRender: () => <Divider>{t('system.storage.sftp.title')}</Divider>,
       dependency: {
         dependencies: ['default'],
         visible: (values) => values.default === 'sftp'
@@ -337,9 +337,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'host'],
       valueType: 'text',
-      title: t('storage.sftp.host'),
+      title: t('system.storage.sftp.host'),
       fieldProps: {
-        placeholder: t('storage.sftp.host.placeholder'),
+        placeholder: t('system.storage.sftp.host.placeholder'),
       },
       required: true,
       colProps: { span: 16 },
@@ -351,9 +351,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'port'],
       valueType: 'digit',
-      title: t('storage.sftp.port'),
+      title: t('system.storage.sftp.port'),
       fieldProps: {
-        placeholder: t('storage.sftp.port.placeholder'),
+        placeholder: t('system.storage.sftp.port.placeholder'),
       },
       colProps: { span: 8 },
       dependency: {
@@ -364,9 +364,9 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'username'],
       valueType: 'text',
-      title: t('storage.sftp.username'),
+      title: t('system.storage.sftp.username'),
       fieldProps: {
-        placeholder: t('storage.sftp.username.placeholder'),
+        placeholder: t('system.storage.sftp.username.placeholder'),
       },
       required: true,
       colProps: { span: 12 },
@@ -378,11 +378,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'password'],
       valueType: 'password',
-      title: t('storage.sftp.password'),
+      title: t('system.storage.sftp.password'),
       fieldProps: {
-        placeholder: t('storage.sftp.password.placeholder'),
+        placeholder: t('system.storage.sftp.password.placeholder'),
       },
-      tooltip: t('storage.sftp.password.tooltip'),
+      tooltip: t('system.storage.sftp.password.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -392,11 +392,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'root'],
       valueType: 'text',
-      title: t('storage.sftp.root'),
+      title: t('system.storage.sftp.root'),
       fieldProps: {
-        placeholder: t('storage.sftp.root.placeholder'),
+        placeholder: t('system.storage.sftp.root.placeholder'),
       },
-      tooltip: t('storage.sftp.root.tooltip'),
+      tooltip: t('system.storage.sftp.root.tooltip'),
       colProps: { span: 12 },
       dependency: {
         dependencies: ['default'],
@@ -406,10 +406,10 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'timeout'],
       valueType: 'digit',
-      title: t('storage.sftp.timeout'),
+      title: t('system.storage.sftp.timeout'),
       fieldProps: {
-        placeholder: t('storage.sftp.timeout.placeholder'),
-        addonAfter: t('storage.sftp.timeout.suffix')
+        placeholder: t('system.storage.sftp.timeout.placeholder'),
+        addonAfter: t('system.storage.sftp.timeout.suffix')
       },
       colProps: { span: 12 },
       dependency: {
@@ -420,12 +420,12 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'private_key'],
       valueType: 'textarea',
-      title: t('storage.sftp.private_key'),
+      title: t('system.storage.sftp.private_key'),
       fieldProps: {
-        placeholder: t('storage.sftp.private_key.placeholder'),
+        placeholder: t('system.storage.sftp.private_key.placeholder'),
         rows: 4
       },
-      tooltip: t('storage.sftp.private_key.tooltip'),
+      tooltip: t('system.storage.sftp.private_key.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -435,11 +435,11 @@ const StorageConfig: React.FC = () => {
     {
       dataIndex: ['sftp', 'passphrase'],
       valueType: 'password',
-      title: t('storage.sftp.passphrase'),
+      title: t('system.storage.sftp.passphrase'),
       fieldProps: {
-        placeholder: t('storage.sftp.passphrase.placeholder'),
+        placeholder: t('system.storage.sftp.passphrase.placeholder'),
       },
-      tooltip: t('storage.sftp.passphrase.tooltip'),
+      tooltip: t('system.storage.sftp.passphrase.tooltip'),
       colProps: { span: 24 },
       dependency: {
         dependencies: ['default'],
@@ -463,7 +463,7 @@ const StorageConfig: React.FC = () => {
 
   const onFinish = async (values: any) => {
     await saveStorageConfig(values);
-    message.success(t('storage.save.success'));
+    message.success(t('system.storage.save.success'));
   };
 
   const onValuesChange = (changedValues: any) => {
@@ -476,7 +476,7 @@ const StorageConfig: React.FC = () => {
     try {
       setTesting(true);
       await testStorageConnection(selectedDisk);
-      message.success(t('storage.test.success'));
+      message.success(t('system.storage.test.success'));
     } finally {
       setTesting(false);
     }
@@ -485,8 +485,8 @@ const StorageConfig: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('storage.page.title')}</Title>
-        <Text type="secondary">{t('storage.page.description')}</Text>
+        <Title level={3}>{t('system.storage.page.title')}</Title>
+        <Text type="secondary">{t('system.storage.page.description')}</Text>
       </div>
       <Row gutter={24}>
         <Col span={16}>
@@ -507,9 +507,9 @@ const StorageConfig: React.FC = () => {
         </Col>
 
         <Col span={8}>
-          <Card title={t('storage.test.title')}>
+          <Card title={t('system.storage.test.title')}>
             <Form layout="vertical">
-              <Form.Item label={t('storage.test.current_driver')}>
+              <Form.Item label={t('system.storage.test.current_driver')}>
                 <Select
                   value={selectedDisk}
                   onChange={setSelectedDisk}
@@ -524,18 +524,18 @@ const StorageConfig: React.FC = () => {
                 loading={testing}
                 onClick={onTestConnection}
               >
-                {t('storage.test.button')}
+                {t('system.storage.test.button')}
               </Button>
             </Form>
 
             <Divider />
 
             <div style={{ fontSize: 12, color: '#666' }}>
-              <Title level={5}><CloudUploadOutlined /> {t('storage.help.title')}</Title>
-              <p><strong>{t('storage.help.local')}</strong>{t('storage.help.local.desc')}</p>
-              <p><strong>{t('storage.help.s3')}</strong>{t('storage.help.s3.desc')}</p>
-              <p><strong>{t('storage.help.ftp')}</strong>{t('storage.help.ftp.desc')}</p>
-              <p><strong>{t('storage.help.sftp')}</strong>{t('storage.help.sftp.desc')}</p>
+              <Title level={5}><CloudUploadOutlined /> {t('system.storage.help.title')}</Title>
+              <p><strong>{t('system.storage.help.local')}</strong>{t('system.storage.help.local.desc')}</p>
+              <p><strong>{t('system.storage.help.s3')}</strong>{t('system.storage.help.s3.desc')}</p>
+              <p><strong>{t('system.storage.help.ftp')}</strong>{t('system.storage.help.ftp.desc')}</p>
+              <p><strong>{t('system.storage.help.sftp')}</strong>{t('system.storage.help.sftp.desc')}</p>
             </div>
           </Card>
         </Col>

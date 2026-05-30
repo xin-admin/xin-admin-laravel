@@ -190,7 +190,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   /** 快速搜索 */
   const handleKeywordSearch: SearchProps['onSearch'] = async (value: string) => {
     if( !value ) {
-      window.$message?.warning(t('xinTable.keywordEmpty'));
+      window.$message?.warning(t('xin.table.keywordEmpty'));
       return;
     }
     const params: RequestParams = {
@@ -269,7 +269,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
       const show = typeof editShow === 'function' ? editShow(record) : editShow;
       return show ? (
         <AuthButton auth={props.accessName + '.update'} key={'update'}>
-          <Tooltip title={t('xinTable.edit')}>
+          <Tooltip title={t('xin.table.edit')}>
             <Button
               type="primary"
               icon={<EditOutlined />}
@@ -285,7 +285,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
       const show = typeof deleteShow === 'function' ? deleteShow(record) : deleteShow;
       return show ? (
         <AuthButton auth={props.accessName + '.delete'} key={'delete'}>
-          <Tooltip title={t('xinTable.delete')}>
+          <Tooltip title={t('xin.table.delete')}>
             <Button
               danger
               type="primary"
@@ -310,12 +310,12 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   /** 删除记录 */
   const handleDelete = async (record: T) => {
     window.$modal?.confirm({
-      title: t('xinTable.deleteConfirm', { id: record[rowKey] }),
-      okText: t('xinTable.deleteOk'),
-      cancelText: t('xinTable.deleteCancel'),
+      title: t('xin.table.deleteConfirm', { id: record[rowKey] }),
+      okText: t('xin.table.deleteOk'),
+      cancelText: t('xin.table.deleteCancel'),
       onOk: async () => {
         await Delete(api + `/${record[rowKey]}`);
-        window.$message?.success(t('xinTable.deleteSuccess'));
+        window.$message?.success(t('xin.table.deleteSuccess'));
         await handleRequest(requestParams);
       }
     })
@@ -336,13 +336,13 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
       }
       if (formMode === 'create') {
         await Create(api, values);
-        window.$message?.success(t('xinTable.form.createSuccess'));
+        window.$message?.success(t('xin.table.form.createSuccess'));
       } else {
         if (formDefaultValues && rowKey) {
           await Update(api + `/${formDefaultValues[rowKey]}`, values);
-          window.$message?.success(t('xinTable.form.updateSuccess'));
+          window.$message?.success(t('xin.table.form.updateSuccess'));
         } else {
-          window.$message?.error(t('xinTable.form.updateKeyUndefined'));
+          window.$message?.error(t('xin.table.form.updateKeyUndefined'));
           return;
         }
       }
@@ -358,17 +358,17 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     items: [
       {
         key: 'large',
-        label: t('xinTable.density.default'),
+        label: t('xin.table.density.default'),
         onClick: () => setDensity('large'),
       },
       {
         key: 'middle',
-        label: t('xinTable.density.middle'),
+        label: t('xin.table.density.middle'),
         onClick: () => setDensity('middle'),
       },
       {
         key: 'small',
-        label: t('xinTable.density.compact'),
+        label: t('xin.table.density.compact'),
         onClick: () => setDensity('small'),
       },
     ],
@@ -404,7 +404,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     return [
       ...filteredColumns,
       {
-        title: t('xinTable.operate'),
+        title: t('xin.table.operate'),
         key: 'operate',
         align: 'center',
         ...operateProps,
@@ -419,7 +419,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
   const paginationProps: TableProps['pagination'] = {
     showQuickJumper: true,
     showSizeChanger: true,
-    showTotal: (total) => t('xinTable.total', { total }),
+    showTotal: (total) => t('xin.table.total', { total }),
     pageSize: requestParams.pageSize,
     ...customPagination,
     current: requestParams.page,
@@ -431,7 +431,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     // 新增按钮渲染
     const addButtonRender = addShow ? (
       <AuthButton auth={accessName + '.create'}>
-        <Button type="primary" onClick={handleCreate} icon={<PlusOutlined />}>{t('xinTable.add')}</Button>
+        <Button type="primary" onClick={handleCreate} icon={<PlusOutlined />}>{t('xin.table.add')}</Button>
       </AuthButton>
     ) : null;
     // 搜索按钮渲染
@@ -444,7 +444,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     const keywordSearchRender = keywordSearchShow ? (
       <Input.Search
         onChange={keywordSearchChange}
-        placeholder={t('xinTable.keywordPlaceholder')}
+        placeholder={t('xin.table.keywordPlaceholder')}
         style={{ width: 200 }}
         value={requestParams.keywordSearch}
         onSearch={handleKeywordSearch}
@@ -482,7 +482,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
     );
     // 边框设置
     const hideBorder = (
-      <Tooltip title={bordered ? t('xinTable.hideBorder') : t('xinTable.showBorder')}>
+      <Tooltip title={bordered ? t('xin.table.hideBorder') : t('xin.table.showBorder')}>
         <Button
           type="text"
           icon={bordered ? <BorderOutlined /> : <BorderlessTableOutlined />}
@@ -513,9 +513,9 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
         )}
         trigger="click"
         placement="bottomRight"
-        title={t('xinTable.columnSettings')}
+        title={t('xin.table.columnSettings')}
       >
-        <Tooltip title={t('xinTable.columnSettings')}>
+        <Tooltip title={t('xin.table.columnSettings')}>
           <Button type="text" icon={<SettingOutlined />} />
         </Tooltip>
       </Popover>
@@ -569,7 +569,7 @@ export default function XinTable<T extends Record<string, any> = any>(props: Xin
         formRef={formRef}
         layoutType="ModalForm"
         modalProps={{
-          title: formMode === 'update' ? t('xinTable.form.editTitle') : t('xinTable.form.createTitle'),
+          title: formMode === 'update' ? t('xin.table.form.editTitle') : t('xin.table.form.createTitle'),
           styles: { header: { marginBottom: 16 } },
           ...modalProps,
         }}

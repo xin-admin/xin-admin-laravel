@@ -1,0 +1,35 @@
+export default {
+  // XinTable 组件
+  "xin.table.queryTable": "查询表格",
+  "xin.table.keywordPlaceholder": "请输入关键字",
+  "xin.table.keywordEmpty": "请输入搜索内容",
+  "xin.table.add": "新增",
+  "xin.table.refresh": "刷新",
+  "xin.table.columnSettings": "列设置",
+  "xin.table.showBorder": "显示边框",
+  "xin.table.hideBorder": "隐藏边框",
+  "xin.table.density.default": "默认",
+  "xin.table.density.middle": "适中",
+  "xin.table.density.compact": "紧凑",
+  "xin.table.total": "共 {{total}} 条",
+  // 操作栏
+  "xin.table.operate": "操作栏",
+  "xin.table.edit": "编辑",
+  "xin.table.delete": "删除",
+  "xin.table.deleteConfirm": "你是否要删除 {{id}} 记录？",
+  "xin.table.deleteOk": "确认删除",
+  "xin.table.deleteCancel": "取消删除",
+  "xin.table.deleteSuccess": "删除成功",
+  // FormModal
+  "xin.table.form.createTitle": "新增",
+  "xin.table.form.editTitle": "编辑",
+  "xin.table.form.close": "关闭",
+  "xin.table.form.createSuccess": "创建成功！",
+  "xin.table.form.updateSuccess": "更新成功！",
+  "xin.table.form.updateKeyUndefined": "更新的主键未定义！",
+  // SearchForm
+  "xin.table.search.search": "搜索",
+  "xin.table.search.reset": "重置",
+  "xin.table.search.expand": "展开",
+  "xin.table.search.collapse": "收起",
+};

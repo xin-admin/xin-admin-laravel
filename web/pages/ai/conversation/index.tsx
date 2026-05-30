@@ -48,7 +48,7 @@ export default function AgentConversationPage() {
 
   const columns: XinTableColumn<IAgentConversation>[] = [
     {
-      title: t('agentConversation.id'),
+      title: t('ai.conversation.id'),
       dataIndex: 'id',
       hideInForm: true,
       width: 260,
@@ -56,21 +56,21 @@ export default function AgentConversationPage() {
       align: 'center',
     },
     {
-      title: t('agentConversation.username'),
+      title: t('ai.conversation.username'),
       dataIndex: 'username',
       hideInForm: true,
       align: 'center',
       width: 120,
-      render: (value: string) => value || t('agentConversation.noUser'),
+      render: (value: string) => value || t('ai.conversation.noUser'),
     },
     {
-      title: t('agentConversation.title'),
+      title: t('ai.conversation.title'),
       dataIndex: 'title',
       valueType: 'text',
       ellipsis: true,
     },
     {
-      title: t('agentConversation.messageCount'),
+      title: t('ai.conversation.messageCount'),
       dataIndex: 'message_count',
       hideInForm: true,
       hideInSearch: true,
@@ -78,7 +78,7 @@ export default function AgentConversationPage() {
       width: 100,
     },
     {
-      title: t('agentConversation.createdAt'),
+      title: t('ai.conversation.createdAt'),
       dataIndex: 'created_at',
       hideInForm: true,
       hideInSearch: true,
@@ -87,7 +87,7 @@ export default function AgentConversationPage() {
       render: (value: string) => value ? dayjs(value).format('YYYY-MM-DD HH:mm:ss') : '-',
     },
     {
-      title: t('agentConversation.updatedAt'),
+      title: t('ai.conversation.updatedAt'),
       dataIndex: 'updated_at',
       hideInForm: true,
       hideInSearch: true,
@@ -99,7 +99,7 @@ export default function AgentConversationPage() {
 
   const messageColumns = [
     {
-      title: t('agentMessage.role'),
+      title: t('ai.conversation.message.role'),
       dataIndex: 'role',
       width: 100,
       render: (role: string) => {
@@ -108,22 +108,22 @@ export default function AgentConversationPage() {
           assistant: 'green',
           system: 'orange',
         };
-        return <Tag color={colorMap[role] || 'default'}>{t(`agentMessage.role.${role}`, role)}</Tag>;
+        return <Tag color={colorMap[role] || 'default'}>{t(`ai.conversation.message.role.${role}`, role)}</Tag>;
       },
     },
     {
-      title: t('agentMessage.agent'),
+      title: t('ai.conversation.message.agent'),
       dataIndex: 'agent',
       width: 150,
       ellipsis: true,
     },
     {
-      title: t('agentMessage.content'),
+      title: t('ai.conversation.message.content'),
       dataIndex: 'content',
       ellipsis: true,
     },
     {
-      title: t('agentMessage.createdAt'),
+      title: t('ai.conversation.message.createdAt'),
       dataIndex: 'created_at',
       width: 180,
       render: (value: string) => value ? dayjs(value).format('YYYY-MM-DD HH:mm:ss') : '-',
@@ -133,8 +133,8 @@ export default function AgentConversationPage() {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('agentConversation.page.title')}</Title>
-        <Text type="secondary">{t('agentConversation.page.description')}</Text>
+        <Title level={3}>{t('ai.conversation.page.title')}</Title>
+        <Text type="secondary">{t('ai.conversation.page.description')}</Text>
       </div>
       <XinTable<IAgentConversation>
         api={'/ai/conversation'}
@@ -149,7 +149,7 @@ export default function AgentConversationPage() {
           width: 120,
         }}
         operateRender={(record, dom) => [
-          <Tooltip title={t('agentConversation.viewMessages')} key="view">
+          <Tooltip title={t('ai.conversation.viewMessages')} key="view">
             <Button
               type="primary"
               icon={<EyeOutlined/>}
@@ -166,7 +166,7 @@ export default function AgentConversationPage() {
       />
 
       <Drawer
-        title={`${t('agentConversation.messageTitle')} - ${drawerTitle}`}
+        title={`${t('ai.conversation.messageTitle')} - ${drawerTitle}`}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         width={900}

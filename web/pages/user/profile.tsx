@@ -21,7 +21,7 @@ const InfoTab = () => {
 
   const uploadChange: UploadProps['onChange'] = async (info) => {
     if (info.file.status === 'done') {
-      message.success(t("userSetting.baseInfo.avatarSuccess"));
+      message.success(t("user.profile.baseInfo.avatarSuccess"));
       await getInfo();
     }
   }
@@ -31,7 +31,7 @@ const InfoTab = () => {
       setLoading(true);
       await updateInfo(values);
       await getInfo();
-      message.success(t("userSetting.baseInfo.success"));
+      message.success(t("user.profile.baseInfo.success"));
     } finally {
       setLoading(false);
     }
@@ -48,9 +48,9 @@ const InfoTab = () => {
           showUploadList={false}
           onChange={uploadChange}
         >
-          <Button icon={<UploadOutlined />}>{t("userSetting.baseInfo.updateAvatar")}</Button>
+          <Button icon={<UploadOutlined />}>{t("user.profile.baseInfo.updateAvatar")}</Button>
         </Upload>
-        <p className="text-gray-500 text-sm mt-2">{t("userSetting.baseInfo.updateAvatarDesc")}</p>
+        <p className="text-gray-500 text-sm mt-2">{t("user.profile.baseInfo.updateAvatarDesc")}</p>
       </div>
       <Form<InfoParams>
         form={form}
@@ -65,27 +65,27 @@ const InfoTab = () => {
           username: userInfo?.username,
         }}
       >
-        <Form.Item label={t("userSetting.baseInfo.username")} name="username" rules={[{ required: true, message: t("userSetting.baseInfo.username.message") }]}>
+        <Form.Item label={t("user.profile.baseInfo.username")} name="username" rules={[{ required: true, message: t("user.profile.baseInfo.username.message") }]}>
           <Input disabled />
         </Form.Item>
-        <Form.Item label={t("userSetting.baseInfo.nickname")} name="nickname" rules={[{ required: true, message: t("userSetting.baseInfo.nickname.message") }]}>
+        <Form.Item label={t("user.profile.baseInfo.nickname")} name="nickname" rules={[{ required: true, message: t("user.profile.baseInfo.nickname.message") }]}>
           <Input />
         </Form.Item>
-        <Form.Item label={t("userSetting.baseInfo.sex")} name="sex">
-          <Radio.Group options={[{ value: 0, label: t("userSetting.baseInfo.sex.0") }, { value: 1, label: t("userSetting.baseInfo.sex.1") }]} />
+        <Form.Item label={t("user.profile.baseInfo.sex")} name="sex">
+          <Radio.Group options={[{ value: 0, label: t("user.profile.baseInfo.sex.0") }, { value: 1, label: t("user.profile.baseInfo.sex.1") }]} />
         </Form.Item>
-        <Form.Item label={t("userSetting.baseInfo.bio")} name="bio">
+        <Form.Item label={t("user.profile.baseInfo.bio")} name="bio">
           <Input.TextArea rows={4} />
         </Form.Item>
-        <Form.Item label={t("userSetting.baseInfo.email")} name="email" rules={[{ type: 'email', message: t("userSetting.baseInfo.email.typeMessage") }, { required: true, message: t("userSetting.baseInfo.email.requiredMessage") }]}>
+        <Form.Item label={t("user.profile.baseInfo.email")} name="email" rules={[{ type: 'email', message: t("user.profile.baseInfo.email.typeMessage") }, { required: true, message: t("user.profile.baseInfo.email.requiredMessage") }]}>
           <Input />
         </Form.Item>
-        <Form.Item label={t("userSetting.baseInfo.mobile")} name="mobile" rules={[{ required: true, message: t("userSetting.baseInfo.mobile.message") }]}>
+        <Form.Item label={t("user.profile.baseInfo.mobile")} name="mobile" rules={[{ required: true, message: t("user.profile.baseInfo.mobile.message") }]}>
           <Input />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" size="large" loading={loading} block>
-            {t("userSetting.baseInfo.submit")}
+            {t("user.profile.baseInfo.submit")}
           </Button>
         </Form.Item>
       </Form>
@@ -104,7 +104,7 @@ const SecurityTab = () => {
       setLoading(true);
       await updatePassword(values);
       form.resetFields();
-      message.success(t("userSetting.changePassword.success"));
+      message.success(t("user.profile.changePassword.success"));
     } finally {
       setLoading(false);
     }
@@ -112,24 +112,24 @@ const SecurityTab = () => {
 
   return (
     <Form<PasswordParams> form={form} layout="vertical" onFinish={onFinish} className="w-full px-6 py-4">
-      <Form.Item label={t("userSetting.changePassword.oldPassword")} name="oldPassword" rules={[{ required: true, message: t("userSetting.changePassword.oldPassword.message") }]}>
+      <Form.Item label={t("user.profile.changePassword.oldPassword")} name="oldPassword" rules={[{ required: true, message: t("user.profile.changePassword.oldPassword.message") }]}>
         <Input.Password />
       </Form.Item>
-      <Form.Item label={t("userSetting.changePassword.newPassword")} name="newPassword" rules={[{ required: true, message: t("userSetting.changePassword.requiredMessage") }, { min: 8, message: t("userSetting.changePassword.minMessage") }]}>
+      <Form.Item label={t("user.profile.changePassword.newPassword")} name="newPassword" rules={[{ required: true, message: t("user.profile.changePassword.requiredMessage") }, { min: 8, message: t("user.profile.changePassword.minMessage") }]}>
         <Input.Password />
       </Form.Item>
       <Form.Item
-        label={t("userSetting.changePassword.rePassword")}
+        label={t("user.profile.changePassword.rePassword")}
         name="rePassword"
         dependencies={['newPassword']}
         rules={[
-          { required: true, message: t("userSetting.changePassword.requiredMessage") },
+          { required: true, message: t("user.profile.changePassword.requiredMessage") },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('newPassword') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error(t("userSetting.changePassword.rePassword.message")));
+              return Promise.reject(new Error(t("user.profile.changePassword.rePassword.message")));
             },
           }),
         ]}
@@ -137,7 +137,7 @@ const SecurityTab = () => {
         <Input.Password />
       </Form.Item>
       <Button type="primary" block htmlType="submit" size="large" loading={loading}>
-        {t("userSetting.changePassword.submit")}
+        {t("user.profile.changePassword.submit")}
       </Button>
     </Form>
   );
@@ -162,7 +162,7 @@ const LoginLogTab = () => {
     <List
       dataSource={logs}
       className="w-full px-6 py-4 overflow-auto"
-      locale={{ emptyText: t("userSetting.loginLog.empty") }}
+      locale={{ emptyText: t("user.profile.loginLog.empty") }}
       renderItem={(log) => (
         <List.Item style={{ minWidth: 600 }}>
           <Avatar
@@ -174,8 +174,8 @@ const LoginLogTab = () => {
             <div className="flex items-center mb-2">
               <Text strong className="mr-3 text-base">{log.username}</Text>
               {log.status === '0'
-                ? <Tag color="green" icon={<CheckCircleOutlined />}>{t("userSetting.loginLog.success")}</Tag>
-                : <Tag color="red" icon={<CloseCircleOutlined />}>{t("userSetting.loginLog.error")}</Tag>
+                ? <Tag color="green" icon={<CheckCircleOutlined />}>{t("user.profile.loginLog.success")}</Tag>
+                : <Tag color="red" icon={<CloseCircleOutlined />}>{t("user.profile.loginLog.error")}</Tag>
               }
               <Text type="secondary" className="ml-auto">
                 {dayjs(log.login_time).format('YYYY-MM-DD HH:mm:ss')}
@@ -214,7 +214,7 @@ const UserSettingPage = () => {
       label: (
         <span className="flex items-center">
           <UserOutlined className="mr-2" />
-          {isMobile ? null : t("userSetting.baseInfo")}
+          {isMobile ? null : t("user.profile.baseInfo")}
         </span>
       ),
       key: 'info',
@@ -224,7 +224,7 @@ const UserSettingPage = () => {
       label: (
         <span className="flex items-center">
           <LockOutlined className="mr-2" />
-          {isMobile ? null : t("userSetting.changePassword")}
+          {isMobile ? null : t("user.profile.changePassword")}
         </span>
       ),
       key: 'security',
@@ -234,7 +234,7 @@ const UserSettingPage = () => {
       label: (
         <span className="flex items-center">
           <SnippetsOutlined className="mr-2" />
-          {isMobile ? null : t("userSetting.loginLog")}
+          {isMobile ? null : t("user.profile.loginLog")}
         </span>
       ),
       key: 'loginlog',
@@ -244,7 +244,7 @@ const UserSettingPage = () => {
 
   return (
     <Card
-      title={t("userSetting.title")}
+      title={t("user.profile.title")}
       variant="borderless"
       style={{ maxWidth: 800, width: '100%' }}
       styles={{ body: { paddingInline: 0, paddingRight: 25, display: "flex" } }}

@@ -45,12 +45,12 @@ const ConfigManagement: React.FC = () => {
 
   /** 表单组件类型选项 */
   const FORM_COMPONENT_OPTIONS = [
-    { label: t('config.component.Input'), value: 'Input' },
-    { label: t('config.component.TextArea'), value: 'TextArea' },
-    { label: t('config.component.InputNumber'), value: 'InputNumber' },
-    { label: t('config.component.Switch'), value: 'Switch' },
-    { label: t('config.component.Radio'), value: 'Radio' },
-    { label: t('config.component.Checkbox'), value: 'Checkbox' },
+    { label: t('system.config.component.Input'), value: 'Input' },
+    { label: t('system.config.component.TextArea'), value: 'TextArea' },
+    { label: t('system.config.component.InputNumber'), value: 'InputNumber' },
+    { label: t('system.config.component.Switch'), value: 'Switch' },
+    { label: t('system.config.component.Radio'), value: 'Radio' },
+    { label: t('system.config.component.Checkbox'), value: 'Checkbox' },
   ];
   const [configGroups, setConfigGroups] = useState<IConfigGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number>();
@@ -159,10 +159,10 @@ const ConfigManagement: React.FC = () => {
     try {
       if (editingGroup) {
         await updateConfigGroup(editingGroup.id!, values);
-        message.success(t('config.group.updateSuccess'));
+        message.success(t('system.config.group.updateSuccess'));
       } else {
         await createConfigGroup(values);
-        message.success(t('config.group.createSuccess'));
+        message.success(t('system.config.group.createSuccess'));
       }
       groupFormRef.current?.close();
       await loadConfigGroups();
@@ -176,7 +176,7 @@ const ConfigManagement: React.FC = () => {
   const handleDeleteGroup = async (id: number) => {
     try {
       await deleteConfigGroup(id);
-      message.success(t('config.group.deleteSuccess'));
+      message.success(t('system.config.group.deleteSuccess'));
       if (selectedGroupId === id) {
         setSelectedGroupId(undefined);
         setSelectedGroupKey(undefined);
@@ -207,10 +207,10 @@ const ConfigManagement: React.FC = () => {
     try {
       if (editingItem) {
         await updateConfigItem(editingItem.id!, { ...values, group_id: selectedGroupId });
-        message.success(t('config.item.updateSuccess'));
+        message.success(t('system.config.item.updateSuccess'));
       } else {
         await createConfigItem({ ...values, group_id: selectedGroupId });
-        message.success(t('config.item.createSuccess'));
+        message.success(t('system.config.item.createSuccess'));
       }
       itemFormRef.current?.close();
       await loadConfigItems(selectedGroupId);
@@ -224,7 +224,7 @@ const ConfigManagement: React.FC = () => {
   const handleDeleteItem = async (id: number) => {
     try {
       await deleteConfigItem(id);
-      message.success(t('config.item.deleteSuccess'));
+      message.success(t('system.config.item.deleteSuccess'));
       await loadConfigItems(selectedGroupId);
     } catch (error) {
       console.error('删除设置项失败:', error);
@@ -257,7 +257,7 @@ const ConfigManagement: React.FC = () => {
         return { id: item.id!, value: value };
       });
       await saveConfigItems(configs);
-      message.success(t('config.item.updateSuccess'));
+      message.success(t('system.config.item.updateSuccess'));
     } finally {
       setSaving(false);
     }
@@ -301,10 +301,10 @@ const ConfigManagement: React.FC = () => {
             onClick={() => handleEditItem(item)}
           />
           <Popconfirm
-            title={t('config.item.deleteConfirm')}
+            title={t('system.config.item.deleteConfirm')}
             onConfirm={() => handleDeleteItem(item.id!)}
-            okText={t('config.confirm.ok')}
-            cancelText={t('config.confirm.cancel')}
+            okText={t('system.config.confirm.ok')}
+            cancelText={t('system.config.confirm.cancel')}
           >
             <Button
               type="text"
@@ -327,7 +327,7 @@ const ConfigManagement: React.FC = () => {
       case 'Input':
         component = (
           <Input
-            placeholder={item.describe || t('config.form.placeholder.input')}
+            placeholder={item.describe || t('system.config.form.placeholder.input')}
             {...componentProps}
           />
         );
@@ -335,7 +335,7 @@ const ConfigManagement: React.FC = () => {
       case 'TextArea':
         component = (
           <TextArea
-            placeholder={item.describe || t('config.form.placeholder.input')}
+            placeholder={item.describe || t('system.config.form.placeholder.input')}
             rows={4}
             {...componentProps}
           />
@@ -345,7 +345,7 @@ const ConfigManagement: React.FC = () => {
         component = (
           <InputNumber
             style={{ width: '100%' }}
-            placeholder={item.describe || t('config.form.placeholder.input')}
+            placeholder={item.describe || t('system.config.form.placeholder.input')}
             {...componentProps}
           />
         );
@@ -360,7 +360,7 @@ const ConfigManagement: React.FC = () => {
         component = <Checkbox.Group options={options} {...componentProps} />;
         break;
       default:
-        component = <Input placeholder={item.describe || t('config.form.placeholder.input')} {...componentProps} />;
+        component = <Input placeholder={item.describe || t('system.config.form.placeholder.input')} {...componentProps} />;
     }
 
     return (
@@ -376,19 +376,19 @@ const ConfigManagement: React.FC = () => {
   /** 设置组表单列 */
   const groupColumns: FormColumn<IConfigGroup>[] = [
     {
-      title: t('config.group.field.title'),
+      title: t('system.config.group.field.title'),
       dataIndex: 'title',
       valueType: 'text',
-      rules: [{ required: true, message: t('config.group.field.title.required') }],
+      rules: [{ required: true, message: t('system.config.group.field.title.required') }],
     },
     {
-      title: t('config.group.field.key'),
+      title: t('system.config.group.field.key'),
       dataIndex: 'key',
       valueType: 'text',
-      rules: [{ required: true, message: t('config.group.field.key.required') }],
+      rules: [{ required: true, message: t('system.config.group.field.key.required') }],
     },
     {
-      title: t('config.group.field.remark'),
+      title: t('system.config.group.field.remark'),
       dataIndex: 'remark',
       valueType: 'textarea',
       colProps: {span: 24},
@@ -398,51 +398,51 @@ const ConfigManagement: React.FC = () => {
   /** 设置项表单列 */
   const itemColumns: FormColumn<IConfigItem>[] = [
     {
-      title: t('config.item.field.key'),
+      title: t('system.config.item.field.key'),
       dataIndex: 'key',
       valueType: 'text',
-      rules: [{ required: true, message: t('config.item.field.key.required') }],
+      rules: [{ required: true, message: t('system.config.item.field.key.required') }],
     },
     {
-      title: t('config.item.field.title'),
+      title: t('system.config.item.field.title'),
       dataIndex: 'title',
       valueType: 'text',
-      rules: [{ required: true, message: t('config.item.field.title.required') }],
+      rules: [{ required: true, message: t('system.config.item.field.title.required') }],
     },
     {
-      title: t('config.item.field.type'),
+      title: t('system.config.item.field.type'),
       dataIndex: 'type',
       valueType: 'select',
       fieldProps: {
         options: FORM_COMPONENT_OPTIONS,
       },
-      rules: [{ required: true, message: t('config.item.field.type.required') }],
+      rules: [{ required: true, message: t('system.config.item.field.type.required') }],
     },
     {
-      title: t('config.item.field.sort'),
+      title: t('system.config.item.field.sort'),
       dataIndex: 'sort',
       valueType: 'digit',
     },
     {
-      title: t('config.item.field.describe'),
+      title: t('system.config.item.field.describe'),
       dataIndex: 'describe',
       valueType: 'textarea',
       colProps: { span: 24 },
     },
     {
-      title: t('config.item.field.options'),
+      title: t('system.config.item.field.options'),
       dataIndex: 'options',
       valueType: 'textarea',
-      tooltip: t('config.item.field.options.tooltip'),
+      tooltip: t('system.config.item.field.options.tooltip'),
     },
     {
-      title: t('config.item.field.props'),
+      title: t('system.config.item.field.props'),
       dataIndex: 'props',
       valueType: 'textarea',
-      tooltip: t('config.item.field.props.tooltip'),
+      tooltip: t('system.config.item.field.props.tooltip'),
     },
     {
-      title: t('config.item.field.values'),
+      title: t('system.config.item.field.values'),
       dataIndex: 'values',
       valueType: 'text',
     },
@@ -451,8 +451,8 @@ const ConfigManagement: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('config.page.title')}</Title>
-        <Text type="secondary">{t('config.page.description')}</Text>
+        <Title level={3}>{t('system.config.page.title')}</Title>
+        <Text type="secondary">{t('system.config.page.description')}</Text>
       </div>
       <Row gutter={[16, 16]}>
         {/* 左侧设置组菜单 */}
@@ -465,7 +465,7 @@ const ConfigManagement: React.FC = () => {
           title={(
             <Space>
               <SettingOutlined />
-              {t('config.group.title')}
+              {t('system.config.group.title')}
             </Space>
           )}
           extra={
@@ -475,7 +475,7 @@ const ConfigManagement: React.FC = () => {
               icon={<PlusOutlined />}
               onClick={handleAddGroup}
             >
-              {t('config.group.add')}
+              {t('system.config.group.add')}
             </Button>
           }
           loading={loading}
@@ -499,14 +499,14 @@ const ConfigManagement: React.FC = () => {
                       }}
                     />
                     <Popconfirm
-                      title={t('config.group.deleteConfirm')}
-                      description={t('config.group.deleteWarning')}
+                      title={t('system.config.group.deleteConfirm')}
+                      description={t('system.config.group.deleteWarning')}
                       onConfirm={(e) => {
                         e?.stopPropagation();
                         handleDeleteGroup(group.id!);
                       }}
-                      okText={t('config.confirm.ok')}
-                      cancelText={t('config.confirm.cancel')}
+                      okText={t('system.config.confirm.ok')}
+                      cancelText={t('system.config.confirm.cancel')}
                     >
                       <Button
                         type="text"
@@ -535,7 +535,7 @@ const ConfigManagement: React.FC = () => {
             header: { paddingInline: 16, paddingBlock: 0, minHeight: 48 },
             body: { padding: 16, minHeight: 52 },
           }}
-          title={t('config.item.title')}
+          title={t('system.config.item.title')}
           extra={
             selectedGroupId && (
               <Space>
@@ -545,14 +545,14 @@ const ConfigManagement: React.FC = () => {
                   loading={saving}
                   onClick={handleSaveAll}
                 >
-                  {t('config.save.button')}
+                  {t('system.config.save.button')}
                 </Button>
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}
                   onClick={handleAddItem}
                 >
-                  {t('config.item.add')}
+                  {t('system.config.item.add')}
                 </Button>
               </Space>
             )
@@ -560,14 +560,14 @@ const ConfigManagement: React.FC = () => {
         >
           {!selectedGroupId ? (
             <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
-              {t('config.item.selectGroup')}
+              {t('system.config.item.selectGroup')}
             </div>
           ) : (
             <Spin spinning={itemsLoading}>
               <Form form={valuesForm} layout="vertical">
                 {configItems.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
-                    {t('config.item.empty')}
+                    {t('system.config.item.empty')}
                   </div>
                 ) : (
                   configItems.map((item, index) => (
@@ -592,7 +592,7 @@ const ConfigManagement: React.FC = () => {
         columns={groupColumns}
         onFinish={handleSaveGroup}
         modalProps={{
-          title: editingGroup ? t('config.group.edit') : t('config.group.create'),
+          title: editingGroup ? t('system.config.group.edit') : t('system.config.group.create'),
           onCancel: () => groupFormRef.current?.close(),
           forceRender: true,
           width: 800
@@ -615,7 +615,7 @@ const ConfigManagement: React.FC = () => {
         rowProps={{gutter: 30}}
         layout={'vertical'}
         modalProps={{
-          title: editingItem ? t('config.item.edit') : t('config.item.create'),
+          title: editingItem ? t('system.config.item.edit') : t('system.config.item.create'),
           onCancel: () => itemFormRef.current?.close(),
           forceRender: true,
           width: 800,

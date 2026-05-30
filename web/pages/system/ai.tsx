@@ -43,7 +43,7 @@ const AiConfig: React.FC = () => {
   const apikeyColumn = (lab: AiLab): FormColumn<AiResponse> => ({
     dataIndex: ['providers', lab, 'key'],
     valueType: 'password',
-    title: t('ai.provider.api_key', { lab: lab }),
+    title: t('system.ai.provider.api_key', { lab: lab }),
     fieldProps: { placeholder: 'sk-...' },
     colProps: { span: 16 },
     dependency: dependency(lab)
@@ -52,8 +52,8 @@ const AiConfig: React.FC = () => {
   const urlColumn = (lab: AiLab, url: string = ''): FormColumn<AiResponse> => ({
     dataIndex: ['providers', lab, 'url'],
     valueType: 'text',
-    title: t('ai.provider.url', { lab: lab }),
-    fieldProps: { placeholder: t('ai.provider.url.placeholder', {url: url}) },
+    title: t('system.ai.provider.url', { lab: lab }),
+    fieldProps: { placeholder: t('system.ai.provider.url.placeholder', {url: url}) },
     colProps: { span: 8 },
     dependency: dependency(lab)
   })
@@ -84,7 +84,7 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'azure', 'api_version'],
       valueType: 'text',
-      title: t('ai.azure.api_version'),
+      title: t('system.ai.azure.api_version'),
       fieldProps: { placeholder: '2025-04-01-preview' },
       colProps: { span: 8 },
       dependency: dependency('azure')
@@ -92,7 +92,7 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'azure', 'deployment'],
       valueType: 'text',
-      title: t('ai.azure.deployment'),
+      title: t('system.ai.azure.deployment'),
       fieldProps: { placeholder: 'gpt-4o' },
       colProps: { span: 8 },
       dependency: dependency('azure')
@@ -100,7 +100,7 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'azure', 'embedding_deployment'],
       valueType: 'text',
-      title: t('ai.azure.embedding_deployment'),
+      title: t('system.ai.azure.embedding_deployment'),
       fieldProps: { placeholder: 'text-embedding-3-small' },
       colProps: { span: 8 },
       dependency: dependency('azure')
@@ -108,7 +108,7 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'azure', 'image_deployment'],
       valueType: 'text',
-      title: t('ai.azure.image_deployment'),
+      title: t('system.ai.azure.image_deployment'),
       fieldProps: { placeholder: 'gpt-image-1' },
       colProps: { span: 12 },
       dependency: dependency('azure')
@@ -119,7 +119,7 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'bedrock', 'region'],
       valueType: 'text',
-      title: t('ai.bedrock.region'),
+      title: t('system.ai.bedrock.region'),
       fieldProps: { placeholder: 'us-east-1' },
       colProps: { span: 12 },
       dependency: dependency('bedrock')
@@ -128,24 +128,24 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: ['providers', 'bedrock', 'access_key_id'],
       valueType: 'password',
-      title: t('ai.bedrock.access_key_id'),
-      fieldProps: { placeholder: t('ai.provider.api_key.placeholder') },
+      title: t('system.ai.bedrock.access_key_id'),
+      fieldProps: { placeholder: t('system.ai.provider.api_key.placeholder') },
       colProps: { span: 12 },
       dependency: dependency('bedrock')
     },
     {
       dataIndex: ['providers', 'bedrock', 'secret_access_key'],
       valueType: 'password',
-      title: t('ai.bedrock.secret_access_key'),
-      fieldProps: { placeholder: t('ai.provider.api_key.placeholder') },
+      title: t('system.ai.bedrock.secret_access_key'),
+      fieldProps: { placeholder: t('system.ai.provider.api_key.placeholder') },
       colProps: { span: 12 },
       dependency: dependency('bedrock')
     },
     {
       dataIndex: ['providers', 'bedrock', 'session_token'],
       valueType: 'password',
-      title: t('ai.bedrock.session_token'),
-      fieldProps: { placeholder: t('ai.provider.api_key.placeholder') },
+      title: t('system.ai.bedrock.session_token'),
+      fieldProps: { placeholder: t('system.ai.provider.api_key.placeholder') },
       colProps: { span: 24 },
       dependency: dependency('bedrock')
     },
@@ -155,8 +155,8 @@ const AiConfig: React.FC = () => {
     {
       dataIndex: 'default',
       valueType: 'radio',
-      title: t('ai.default'),
-      tooltip: t('ai.default.tooltip'),
+      title: t('system.ai.default'),
+      tooltip: t('system.ai.default.tooltip'),
       colProps: { span: 24 },
       fieldProps: {
         options: aiList.default.map(item => ({
@@ -198,7 +198,7 @@ const AiConfig: React.FC = () => {
 
   const onFinish = async (values: any) => {
     await saveAiConfig(values);
-    message.success(t('ai.save.success'));
+    message.success(t('system.ai.save.success'));
   };
 
   const handleTestConnection = async () => {
@@ -257,7 +257,7 @@ const AiConfig: React.FC = () => {
         }
       }
 
-      message.success(t('ai.test.success'));
+      message.success(t('system.ai.test.success'));
     } catch (err: any) {
       const msg = err?.message || 'Connection test failed';
       setTestError(msg);
@@ -270,8 +270,8 @@ const AiConfig: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t('ai.page.title')}</Title>
-        <Text type="secondary">{t('ai.page.description')}</Text>
+        <Title level={3}>{t('system.ai.page.title')}</Title>
+        <Text type="secondary">{t('system.ai.page.description')}</Text>
       </div>
       <Row gutter={24}>
         <Col span={16}>
@@ -290,9 +290,9 @@ const AiConfig: React.FC = () => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title={t('ai.test.title')}>
+          <Card title={t('system.ai.test.title')}>
             <div className="flex flex-col gap-4">
-              <Text type="secondary">{t('ai.test.hint')}</Text>
+              <Text type="secondary">{t('system.ai.test.hint')}</Text>
 
               <Button
                 type="primary"
@@ -301,19 +301,19 @@ const AiConfig: React.FC = () => {
                 loading={testing}
                 onClick={handleTestConnection}
               >
-                {testing ? t('ai.test.testing') : t('ai.test.button')}
+                {testing ? t('system.ai.test.testing') : t('system.ai.test.button')}
               </Button>
 
               {testing && !testResult && (
                 <div className="flex justify-center py-8">
-                  <Spin description={t('ai.test.testing')} />
+                  <Spin description={t('system.ai.test.testing')} />
                 </div>
               )}
 
               {testResult && (
                 <Alert
                   type="success"
-                  title={t('ai.test.success')}
+                  title={t('system.ai.test.success')}
                   description={testResult}
                   showIcon
                 />
@@ -322,7 +322,7 @@ const AiConfig: React.FC = () => {
               {testError && (
                 <Alert
                   type="error"
-                  title={t('ai.test.error')}
+                  title={t('system.ai.test.error')}
                   description={testError}
                   showIcon
                 />

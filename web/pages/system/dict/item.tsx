@@ -40,26 +40,26 @@ export default function DictItemPage() {
 
   const columns: XinTableColumn<IDictItem>[] = [
     {
-      title: t('dictItem.id'),
+      title: t('system.system.dict.item.id'),
       dataIndex: 'id',
       hideInForm: true,
       width: 80,
       align: 'center',
     },
     {
-      title: t('dictItem.label'),
+      title: t('system.system.dict.item.label'),
       dataIndex: 'label',
       valueType: 'text',
-      rules: [{required: true, message: t('dictItem.label.required')}],
+      rules: [{required: true, message: t('system.system.dict.item.label.required')}],
     },
     {
-      title: t('dictItem.value'),
+      title: t('system.system.dict.item.value'),
       dataIndex: 'value',
       valueType: 'text',
-      rules: [{required: true, message: t('dictItem.value.required')}],
+      rules: [{required: true, message: t('system.system.dict.item.value.required')}],
     },
     {
-      title: t('dictItem.color'),
+      title: t('system.system.dict.item.color'),
       dataIndex: 'color',
       valueType: 'select',
       colProps: {span: 12},
@@ -76,26 +76,26 @@ export default function DictItemPage() {
       }
     },
     {
-      title: t('dictItem.isDefault'),
+      title: t('system.system.dict.item.isDefault'),
       dataIndex: 'is_default',
       valueType: 'select',
       colProps: {span: 12},
       initialValue: 0,
-      rules: [{required: true, message: t('dictItem.isDefault.required')}],
+      rules: [{required: true, message: t('system.system.dict.item.isDefault.required')}],
       fieldProps: {
         options: [
-          {label: t('dictItem.isDefault.yes'), value: 1},
-          {label: t('dictItem.isDefault.no'), value: 0},
+          {label: t('system.system.dict.item.isDefault.yes'), value: 1},
+          {label: t('system.system.dict.item.isDefault.no'), value: 0},
         ],
       },
       render: (value: number) => {
         return value === 1
-          ? <Tag color="blue">{t('dictItem.isDefault.yes')}</Tag>
-          : t('dictItem.isDefault.no');
+          ? <Tag color="blue">{t('system.system.dict.item.isDefault.yes')}</Tag>
+          : t('system.system.dict.item.isDefault.no');
       }
     },
     {
-      title: t('dictItem.sort'),
+      title: t('system.system.dict.item.sort'),
       dataIndex: 'sort',
       valueType: 'digit',
       colProps: {span: 12},
@@ -107,26 +107,26 @@ export default function DictItemPage() {
       }
     },
     {
-      title: t('dictItem.status'),
+      title: t('system.system.dict.item.status'),
       dataIndex: 'status',
       valueType: 'select',
       colProps: {span: 12},
       initialValue: 0,
-      rules: [{required: true, message: t('dictItem.status.required')}],
+      rules: [{required: true, message: t('system.system.dict.item.status.required')}],
       fieldProps: {
         options: [
-          {label: t('dictItem.status.normal'), value: 0},
-          {label: t('dictItem.status.disabled'), value: 1},
+          {label: t('system.system.dict.item.status.normal'), value: 0},
+          {label: t('system.system.dict.item.status.disabled'), value: 1},
         ],
       },
       render: (value: number) => {
         return value === 0
-          ? <Badge status="success" text={t('dictItem.status.normal')}/>
-          : <Badge status="error" text={t('dictItem.status.disabled')}/>;
+          ? <Badge status="success" text={t('system.system.dict.item.status.normal')}/>
+          : <Badge status="error" text={t('system.system.dict.item.status.disabled')}/>;
       }
     },
     {
-      title: t('dictItem.createTime'),
+      title: t('system.system.dict.item.createTime'),
       dataIndex: 'created_at',
       render: (value: string) => value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '-',
       hideInForm: true,
@@ -145,7 +145,7 @@ export default function DictItemPage() {
     return (
       <div style={{padding: 50, textAlign: 'center'}}>
         <div style={{marginTop: 50, color: '#999'}}>
-          {t('dict.selectDictFirst')}
+          {t('system.dict.selectDictFirst')}
         </div>
       </div>
     );
@@ -155,10 +155,10 @@ export default function DictItemPage() {
     <Space orientation={'vertical'} style={{width: '100%'}}>
       <div>
         <Button type={'link'} onClick={handleGoBack} icon={<LeftOutlined/>} classNames={{ root: 'p-0 mb-2' }}>
-          {t('dict.backToList')}
+          {t('system.dict.backToList')}
         </Button>
         <Typography.Title level={3}>
-          <span className={'mr-2'}>{t('dict.itemManagement')} - {currentDict.name}</span>
+          <span className={'mr-2'}>{t('system.dict.itemManagement')} - {currentDict.name}</span>
           <Typography.Text type="secondary">{currentDict.code}</Typography.Text>
         </Typography.Title>
 
@@ -188,13 +188,13 @@ export default function DictItemPage() {
               ...values,
               dict_id: currentDict.id,
             });
-            window.$message?.success(t('dict.item.createSuccess'));
+            window.$message?.success(t('system.dict.item.createSuccess'));
           } else {
             await Update('/system/dict/item/' + defaultValue?.id, {
               ...values,
               dict_id: currentDict.id,
             });
-            window.$message?.success(t('dict.item.updateSuccess'));
+            window.$message?.success(t('system.dict.item.updateSuccess'));
           }
           return true;
         }}

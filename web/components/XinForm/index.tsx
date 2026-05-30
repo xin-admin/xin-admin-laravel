@@ -199,7 +199,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
         onClick={() => xinForm.submit()}
         {...submitter?.submitButtonProps}
       >
-        {submitter?.submitText || t('xinForm.submit')}
+        {submitter?.submitText || t('xin.form.submit')}
       </Button>
     );
 
@@ -209,7 +209,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
         onClick={handleClose}
         {...submitter?.closeButtonProps}
       >
-        {submitter?.closeText || t('xinForm.cancel')}
+        {submitter?.closeText || t('xin.form.cancel')}
       </Button>
     );
 
@@ -219,7 +219,7 @@ function XinForm<T extends Record<string, any> = any>(props: XinFormProps<T>) {
         onClick={() => xinForm.resetFields()}
         {...submitter?.resetButtonProps}
       >
-        {submitter?.resetText || t('xinForm.reset')}
+        {submitter?.resetText || t('xin.form.reset')}
       </Button>
     );
 

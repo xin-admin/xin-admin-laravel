@@ -49,11 +49,11 @@ const Dept = () => {
   const tabList: CardProps['tabList'] = [
     {
       key: 'info',
-      label: t("sysUserDept.tab.info")
+      label: t("system.dept.tab.info")
     },
     {
       key: 'users',
-      label: t("sysUserDept.tab.users"),
+      label: t("system.dept.tab.users"),
       disabled: !auth("system.dept.users")
     },
   ];
@@ -89,7 +89,7 @@ const Dept = () => {
       return depts.map(dept => {
         deptMap.set(dept.id!.toString(), omit(dept, 'children'));
         return {
-          title: dept.name || t("sysUserDept.tab.users"),
+          title: dept.name || t("system.dept.tab.users"),
           key: dept.id?.toString() || '',
           icon: dept.type === 0 ? <BankOutlined /> : dept.type === 1 ? <TeamOutlined /> : <UserOutlined />,
           children: convertDeptToTreeData(dept.children || [])
@@ -149,11 +149,11 @@ const Dept = () => {
       setLoading(true);
       if(!update) {
         await createDept(data);
-        message.success(t("sysUserDept.createSuccess"));
+        message.success(t("system.dept.createSuccess"));
         modalFormRef.current?.close();
       }else {
         await updateDept(Number(selectKey), data);
-        message.success(t("sysUserDept.updateSuccess"));
+        message.success(t("system.dept.updateSuccess"));
       }
       await refreshDept();
     }finally {
@@ -167,7 +167,7 @@ const Dept = () => {
       await deleteDept(checkedKeys);
       await refreshDept();
       setCheckedKeys([]);
-      message.success(t("sysUserDept.deleteSuccess"));
+      message.success(t("system.dept.deleteSuccess"));
     }finally {
       setLoading(false);
     }
@@ -175,38 +175,38 @@ const Dept = () => {
   /** 表单列数据 */
   const columns: FormColumn<ISysDept>[] = [
     {
-      title: t("sysUserDept.column.name"),
+      title: t("system.dept.column.name"),
       valueType: 'text',
       dataIndex: 'name',
-      rules: [{required: true, message: t("sysUserDept.column.name.required")}],
+      rules: [{required: true, message: t("system.dept.column.name.required")}],
     },
     {
-      title: t("sysUserDept.column.code"),
+      title: t("system.dept.column.code"),
       valueType: 'text',
       dataIndex: 'code',
-      rules: [{required: true, message: t("sysUserDept.column.code.required")}],
+      rules: [{required: true, message: t("system.dept.column.code.required")}],
     },
     {
-      title: t("sysUserDept.column.type"),
+      title: t("system.dept.column.type"),
       valueType: 'radioButton',
       dataIndex: 'type',
       fieldProps: {
         options: [
-          { value: 0, label: t("sysUserDept.column.type.0") },
-          { value: 1, label: t("sysUserDept.column.type.1") },
-          { value: 2, label: t("sysUserDept.column.type.2") },
+          { value: 0, label: t("system.dept.column.type.0") },
+          { value: 1, label: t("system.dept.column.type.1") },
+          { value: 2, label: t("system.dept.column.type.2") },
         ],
       },
-      rules: [{required: true, message: t("sysUserDept.column.type.required")}],
+      rules: [{required: true, message: t("system.dept.column.type.required")}],
     },
     {
-      title: t("sysUserDept.column.parent"),
+      title: t("system.dept.column.parent"),
       valueType: 'treeSelect',
       dataIndex: 'parent_id',
       fieldProps: {
         treeData: [
           {
-            title: t("sysUserDept.column.parent.0"),
+            title: t("system.dept.column.parent.0"),
             value: 0,
             children: deptData
           }
@@ -214,43 +214,43 @@ const Dept = () => {
         fieldNames: { label: 'title', value: 'key' },
         disabled: true
       },
-      rules: [{required: true, message: t("sysUserDept.column.parent.required")}],
+      rules: [{required: true, message: t("system.dept.column.parent.required")}],
     },
     {
-      title: t("sysUserDept.column.email"),
+      title: t("system.dept.column.email"),
       valueType: 'text',
       dataIndex: 'email',
     },
     {
-      title: t("sysUserDept.column.address"),
+      title: t("system.dept.column.address"),
       valueType: 'text',
       dataIndex: 'address',
     },
     {
-      title: t("sysUserDept.column.phone"),
+      title: t("system.dept.column.phone"),
       valueType: 'text',
       dataIndex: 'phone',
     },
     {
-      title: t("sysUserDept.column.sort"),
+      title: t("system.dept.column.sort"),
       valueType: 'digit',
       dataIndex: 'sort',
-      rules: [{required: true, message: t("sysUserDept.column.sort.required")}],
+      rules: [{required: true, message: t("system.dept.column.sort.required")}],
     },
     {
-      title: t("sysUserDept.column.status"),
+      title: t("system.dept.column.status"),
       valueType: 'radioButton',
       dataIndex: 'status',
       fieldProps: {
         options: [
-          { value: 0, label: t("sysUserDept.column.status.0") },
-          { value: 1, label: t("sysUserDept.column.status.1") },
+          { value: 0, label: t("system.dept.column.status.0") },
+          { value: 1, label: t("system.dept.column.status.1") },
         ]
       },
-      rules: [{required: true, message: t("sysUserDept.column.status.required")}],
+      rules: [{required: true, message: t("system.dept.column.status.required")}],
     },
     {
-      title: t("sysUserDept.column.remark"),
+      title: t("system.dept.column.remark"),
       valueType: 'textarea',
       dataIndex: 'remark',
     },
@@ -258,44 +258,44 @@ const Dept = () => {
   /** 部门用户列表表格列 */
   const usersColumns: TableProps<ISysUser>['columns'] = [
     {
-      title: t("sysUserDept.users.column.id"),
+      title: t("system.dept.users.column.id"),
       dataIndex: 'id',
       key: 'id',
       align: 'center',
     },
     {
-      title: t("sysUserDept.users.column.username"),
+      title: t("system.dept.users.column.username"),
       dataIndex: 'username',
       key: 'username',
       align: 'center',
     },
     {
-      title: t("sysUserDept.users.column.nickname"),
+      title: t("system.dept.users.column.nickname"),
       dataIndex: 'nickname',
       key: 'nickname',
       align: 'center',
     },
     {
-      title: t("sysUserDept.users.column.nickname"),
+      title: t("system.dept.users.column.nickname"),
       dataIndex: 'email',
       key: 'email',
       align: 'center',
     },
     {
-      title: t("sysUserDept.users.column.mobile"),
+      title: t("system.dept.users.column.mobile"),
       dataIndex: 'mobile',
       key: 'mobile',
       align: 'center',
     },
     {
-      title: t("sysUserDept.users.column.status"),
+      title: t("system.dept.users.column.status"),
       dataIndex: 'status',
       key: 'status',
       align: 'center',
       render: (value) => (
         <>
-          {value === 1 && <Tag color={'success'}>{t("sysUserDept.users.column.status.0")}</Tag>}
-          {value === 0 && <Tag color={'error'}>{t("sysUserDept.users.column.status.1")}</Tag>}
+          {value === 1 && <Tag color={'success'}>{t("system.dept.users.column.status.0")}</Tag>}
+          {value === 0 && <Tag color={'error'}>{t("system.dept.users.column.status.1")}</Tag>}
         </>
       )
     },
@@ -306,8 +306,8 @@ const Dept = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Typography.Title level={3}>{t("sysUserDept.page.title")}</Typography.Title>
-        <Typography.Text type="secondary">{t("sysUserDept.page.description")}</Typography.Text>
+        <Typography.Title level={3}>{t("system.dept.page.title")}</Typography.Title>
+        <Typography.Text type="secondary">{t("system.dept.page.description")}</Typography.Text>
       </div>
       <Row gutter={[20, 20]}>
       <Col xxl={12} lg={12} xs={24}>
@@ -315,7 +315,7 @@ const Dept = () => {
           layoutType={'ModalForm'}
           formRef={modalFormRef}
           modalProps={{
-            title: t("sysUserDept.createModalTitle"),
+            title: t("system.dept.createModalTitle"),
             styles: { body: { paddingTop: 20} },
             width: 800
           }}
@@ -335,7 +335,7 @@ const Dept = () => {
               <AuthButton auth={"system.dept.create"}>
                 <Button
                   loading={loading}
-                  children={t("sysUserDept.createButton")}
+                  children={t("system.dept.createButton")}
                   icon={<PlusOutlined />}
                   type={'primary'}
                   onClick={() => addChange()}
@@ -344,7 +344,7 @@ const Dept = () => {
               <AuthButton auth={"system.dept.create"}>
                 <Button
                   loading={loading}
-                  children={t("sysUserDept.createChildrenButton")}
+                  children={t("system.dept.createChildrenButton")}
                   icon={<PlusOutlined />}
                   type={'primary'}
                   onClick={() => addChange(true)}
@@ -359,19 +359,19 @@ const Dept = () => {
           {checkedKeys.length > 0 && (
             <Alert
               style={{ marginBottom: 20 }}
-              description={t("sysUserDept.checkedMessage", {checked: checkedKeys.length})}
+              description={t("system.dept.checkedMessage", {checked: checkedKeys.length})}
               type="info"
               action={
                 <Space>
                   <Button size="small" type="primary" onClick={()=> setCheckedKeys([])}>
-                    {t("sysUserDept.unselect")}
+                    {t("system.dept.unselect")}
                   </Button>
                   <AuthButton auth={"system.dept.delete"}>
                     <Popconfirm
-                      okText={t("sysUserDept.delete.ok")}
-                      cancelText={t("sysUserDept.delete.cancel")}
-                      title={t("sysUserDept.delete.title")}
-                      description={t("sysUserDept.delete.description")}
+                      okText={t("system.dept.delete.ok")}
+                      cancelText={t("system.dept.delete.cancel")}
+                      title={t("system.dept.delete.title")}
+                      description={t("system.dept.delete.description")}
                       onConfirm={() => onDeleteConfirm()}
                     >
                       <Button type="primary" icon={<DeleteOutlined />} size={'small'} danger loading={loading}/>
@@ -417,7 +417,7 @@ const Dept = () => {
                   {dom['submit']}
                 </AuthButton>
               ),
-              submitText: t("sysUserDept.saveInfo")
+              submitText: t("system.dept.saveInfo")
             }}
           />
           <AuthButton auth={"system.dept.users"}>

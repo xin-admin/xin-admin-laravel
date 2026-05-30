@@ -39,64 +39,64 @@ const Table: React.FC = () => {
   /** 高级表格列配置 */
   const columns: XinTableColumn<ISysUser>[] = [
     {
-      title: t("sysUserList.id"),
+      title: t("system.user.id"),
       dataIndex: 'id',
       hideInForm: true,
       sorter: true,
       align: 'center',
     },
     {
-      title: t("sysUserList.username"),
+      title: t("system.user.username"),
       dataIndex: 'username',
       valueType: 'text',
       align: 'center',
       required: true,
-      rules: [{required: true, message: t("sysUserList.username.required")}],
+      rules: [{required: true, message: t("system.user.username.required")}],
     },
     {
-      title: t("sysUserList.nickname"),
+      title: t("system.user.nickname"),
       dataIndex: 'nickname',
       valueType: 'text',
       align: 'center',
       required: true,
-      rules: [{required: true, message: t("sysUserList.nickname.required")}],
+      rules: [{required: true, message: t("system.user.nickname.required")}],
     },
     {
-      title: t("sysUserList.sex"),
+      title: t("system.user.sex"),
       dataIndex: 'sex',
       valueType: 'radio',
       filters: [
-        { text: t("sysUserList.sex.0"), value: 0 },
-        { text: t("sysUserList.sex.1"), value: 1 },
+        { text: t("system.user.sex.0"), value: 0 },
+        { text: t("system.user.sex.1"), value: 1 },
       ],
       align: 'center',
       hideInSearch: true,
       fieldProps: {
         options: [
-          { value: 0, label: t("sysUserList.sex.0") },
-          { value: 1, label: t("sysUserList.sex.1") },
+          { value: 0, label: t("system.user.sex.0") },
+          { value: 1, label: t("system.user.sex.1") },
         ]
       },
       render: (value: number) => {
-        return value === 0 ? t("sysUserList.sex.0") : t("sysUserList.sex.1");
+        return value === 0 ? t("system.user.sex.0") : t("system.user.sex.1");
       }
     },
     {
-      title: t("sysUserList.email"),
+      title: t("system.user.email"),
       dataIndex: 'email',
       valueType: 'text',
       align: 'center',
       required: true,
-      rules: [{required: true, message: t("sysUserList.email.required")}],
+      rules: [{required: true, message: t("system.user.email.required")}],
     },
     {
-      title: t("sysUserList.role"),
+      title: t("system.user.role"),
       dataIndex: 'role_id',
       valueType: 'select',
       align: 'center',
       hideInSearch: true,
       required: true,
-      rules: [{required: true, message: t("sysUserList.role.required")}],
+      rules: [{required: true, message: t("system.user.role.required")}],
       render: (value: number[]) => (
         <>
           {value.map(item => (
@@ -112,12 +112,12 @@ const Table: React.FC = () => {
       },
     },
     {
-      title: t("sysUserList.dept"),
+      title: t("system.user.dept"),
       dataIndex: 'dept_id',
       valueType: 'treeSelect',
       align: 'center',
       required: true,
-      rules: [{required: true, message: t("sysUserList.dept.required")}],
+      rules: [{required: true, message: t("system.user.dept.required")}],
       render: (value) => (
         // 嵌套寻找部门名称
         <Tag color={'volcano'}>{departmentMap.get(value) || '-'}</Tag>
@@ -128,39 +128,39 @@ const Table: React.FC = () => {
       }
     },
     {
-      title: t("sysUserList.status"),
+      title: t("system.user.status"),
       dataIndex: 'status',
       valueType: 'radioButton',
       fieldProps: {
         options: [
-          { value: 0, label: t("sysUserList.status.0") },
-          { value: 1, label: t("sysUserList.status.1") },
+          { value: 0, label: t("system.user.status.0") },
+          { value: 1, label: t("system.user.status.1") },
         ]
       },
       render: (value: number) => {
         return value === 1
-          ? <Tag color="success">{t("sysUserList.status.1")}</Tag>
-          : <Tag color="error">{t("sysUserList.status.0")}</Tag>;
+          ? <Tag color="success">{t("system.user.status.1")}</Tag>
+          : <Tag color="error">{t("system.user.status.0")}</Tag>;
       },
       required: true,
-      rules: [{required: true, message: t("sysUserList.status.required")}],
+      rules: [{required: true, message: t("system.user.status.required")}],
       filters: [
-        { text: t("sysUserList.status.0"), value: 0 },
-        { text: t("sysUserList.status.1"), value: 1 },
+        { text: t("system.user.status.0"), value: 0 },
+        { text: t("system.user.status.1"), value: 1 },
       ],
       hideInSearch: true,
       align: 'center',
     },
     {
-      title: t("sysUserList.mobile"),
+      title: t("system.user.mobile"),
       dataIndex: 'mobile',
       valueType: 'text',
       required: true,
-      rules: [{required: true, message: t("sysUserList.mobile.required")}],
+      rules: [{required: true, message: t("system.user.mobile.required")}],
       align: 'center',
     },
     {
-      title: t("sysUserList.avatar"),
+      title: t("system.user.avatar"),
       dataIndex: 'avatar_url',
       hideInSearch: true,
       hideInForm: true,
@@ -168,27 +168,27 @@ const Table: React.FC = () => {
       align: 'center',
     },
     {
-      title: t("sysUserList.password"),
+      title: t("system.user.password"),
       dataIndex: 'password',
       valueType: 'password',
       hideInTable: true,
       hideInSearch: true,
       hideInUpdate: true,
-      rules: [{required: true, message: t("sysUserList.password.required")}],
+      rules: [{required: true, message: t("system.user.password.required")}],
       fieldProps: {autoComplete: 'new-password'},
     },
     {
-      title: t("sysUserList.rePassword"),
+      title: t("system.user.rePassword"),
       dataIndex: 'rePassword',
       valueType: 'password',
       hideInTable: true,
       hideInSearch: true,
       hideInUpdate: true,
-      rules: [{required: true, message: t("sysUserList.rePassword.required")}],
+      rules: [{required: true, message: t("system.user.rePassword.required")}],
       fieldProps: {autoComplete: 'new-password'},
     },
     {
-      title: t("sysUserList.created_at"),
+      title: t("system.user.created_at"),
       hideInForm: true,
       hideInSearch: true,
       dataIndex: 'created_at',
@@ -196,7 +196,7 @@ const Table: React.FC = () => {
       render: (value: string) => value ? dayjs(value).fromNow() : '-',
     },
     {
-      title: t("sysUserList.updated_at"),
+      title: t("system.user.updated_at"),
       hideInForm: true,
       hideInSearch: true,
       dataIndex: 'updated_at',
@@ -222,7 +222,7 @@ const Table: React.FC = () => {
       setButtonLoading(true);
       await resetPassword({...values, id: resetUserId!});
       setIsModalOpen(false);
-      message.success(t("sysUserList.resetSuccess"));
+      message.success(t("system.user.resetSuccess"));
     } finally {
       setButtonLoading(false);
     }
@@ -242,7 +242,7 @@ const Table: React.FC = () => {
     <>
       {record.id !== 1 &&
         <AuthButton auth={'system.user.resetPassword'}>
-          <Tooltip title={t("sysUserList.resetPassword")}>
+          <Tooltip title={t("system.user.resetPassword")}>
             <Button
               variant={'solid'}
               color={'pink'}
@@ -289,12 +289,12 @@ const Table: React.FC = () => {
   return (
     <>
       <div className={'mb-5'}>
-        <Title level={3}>{t("sysUserList.page.title")}</Title>
-        <Text type="secondary">{t("sysUserList.page.description")}</Text>
+        <Title level={3}>{t("system.user.page.title")}</Title>
+        <Text type="secondary">{t("system.user.page.description")}</Text>
       </div>
       <XinTable<ISysUser> {...tableProps} />
       <Modal
-        title={t("sysUserList.resetPassword")}
+        title={t("system.user.resetPassword")}
         closable={{'aria-label': 'Custom Close Button'}}
         open={isModalOpen}
         footer={null}
@@ -303,22 +303,22 @@ const Table: React.FC = () => {
       >
         <Form<ResetPasswordType> autoComplete="off" layout={'vertical'} onFinish={handleRedoSubmit}>
           <Form.Item
-            label={t("sysUserList.password")}
+            label={t("system.user.password")}
             name="password"
-            rules={[{required: true, message: t("sysUserList.password.required")}]}
+            rules={[{required: true, message: t("system.user.password.required")}]}
           >
             <Input.Password/>
           </Form.Item>
           <Form.Item
-            label={t("sysUserList.rePassword")}
+            label={t("system.user.rePassword")}
             name="rePassword"
-            rules={[{required: true, message: t("sysUserList.rePassword.required")}]}
+            rules={[{required: true, message: t("system.user.rePassword.required")}]}
           >
             <Input.Password/>
           </Form.Item>
           <Form.Item label={null} style={{marginTop: 30}}>
             <Button type="primary" block size={'large'} htmlType="submit" loading={buttonLoading}>
-              {t("sysUserList.resetButton")}
+              {t("system.user.resetButton")}
             </Button>
           </Form.Item>
         </Form>

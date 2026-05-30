@@ -60,7 +60,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       // 1. 文件类型校验
       const isImage = file.type.startsWith('image/');
       if (!isImage) {
-        message.error(t('xinForm.imageUploader.error.notImage'));
+        message.error(t('xin.form.imageUploader.error.notImage'));
         reject(false);
         return;
       }
@@ -68,7 +68,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       // 2. 文件大小校验
       const isLtMaxSize = file.size / 1024 / 1024 < maxSize;
       if (!isLtMaxSize) {
-        message.error(t('xinForm.imageUploader.error.sizeExceeded', { maxSize }));
+        message.error(t('xin.form.imageUploader.error.sizeExceeded', { maxSize }));
         reject(false);
         return;
       }
@@ -84,7 +84,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           const isValidHeight = img.height <= maxHeight;
 
           if (!isValidWidth || !isValidHeight) {
-            message.error(t('xinForm.imageUploader.error.dimensionExceeded', { maxWidth, maxHeight }));
+            message.error(t('xin.form.imageUploader.error.dimensionExceeded', { maxWidth, maxHeight }));
             reject(false);
             return;
           }
@@ -92,12 +92,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           resolve(true);
         };
         img.onerror = () => {
-          message.error(t('xinForm.imageUploader.error.loadFailed'));
+          message.error(t('xin.form.imageUploader.error.loadFailed'));
           reject(false);
         };
       };
       reader.onerror = () => {
-        message.error(t('xinForm.imageUploader.error.readFailed'));
+        message.error(t('xin.form.imageUploader.error.readFailed'));
         reject(false);
       };
     });
@@ -129,7 +129,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const uploadButton = useMemo(() => (
     <button style={{ border: 0, background: 'none' }} type="button">
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>{t('xinForm.imageUploader.uploadText')}</div>
+      <div style={{ marginTop: 8 }}>{t('xin.form.imageUploader.uploadText')}</div>
     </button>
   ), [t]);
 

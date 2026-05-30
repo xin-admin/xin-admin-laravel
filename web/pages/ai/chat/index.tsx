@@ -87,11 +87,11 @@ const ChatPage: React.FC = () => {
   // 删除会话
   const handleDelete = (convId: string) => {
     modal.confirm({
-      title: t('chat.delete.confirm'),
+      title: t('ai.chat.delete.confirm'),
       okButtonProps: { danger: true },
       onOk: async () => {
         await deleteConversation(convId);
-        appMessage.success(t('chat.delete.success'));
+        appMessage.success(t('ai.chat.delete.success'));
         if (activeConversationKey === convId) {
           setActiveConversationKey('');
           setMessages([]);
@@ -289,8 +289,8 @@ const ChatPage: React.FC = () => {
                 width: '80%',
                 padding: '20px'
               }}
-              title={t('chat.welcome.title')}
-              description={t('chat.welcome.description')}
+              title={t('ai.chat.welcome.title')}
+              description={t('ai.chat.welcome.description')}
               variant="borderless"
             />
           </div>
@@ -316,7 +316,7 @@ const ChatPage: React.FC = () => {
             disabled={senderDisabled}
             value={senderValue}
             onChange={setSenderValue}
-            placeholder={t('chat.placeholder')}
+            placeholder={t('ai.chat.placeholder')}
             onSubmit={handleSend}
             onCancel={() => setLoading(false)}
             autoSize={{minRows: 1, maxRows: 6}}
