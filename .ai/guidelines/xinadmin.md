@@ -53,6 +53,8 @@ Source lives in `web/`. Bundled with Vite, outputting to `public/`. Package mana
 - Zustand stores: `State` + `Actions` → `persist` + `devtools` → localStorage
 - Access stores via selector: `useXxxStore(state => state.field)`
 - All user-facing text via `useTranslation()` (react-i18next)
+- Locale files mirror page paths: `pages/system/user.tsx` → `locales/zh_CN/system/user.ts`, key prefix `system.user`
+- All keys dot-separated, double quotes, 2-space indent. See `@skill:xinadmin-development` for details
 - Permission checks: `<AuthButton auth="system.user.create">` or `useAuth().auth('permission')`
 - HTTP client auto-attaches `Authorization: Bearer`, `User-Language`, handles 401 auto-logout
 - Pages in `web/pages/` are auto-routed; `index.tsx` maps to parent directory; root `/` → `/dashboard/analysis`

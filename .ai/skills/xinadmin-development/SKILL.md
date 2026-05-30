@@ -35,6 +35,15 @@ End-to-end flow for building a new feature in four phases:
 - Controller MUST have `#[RequestAttribute]` to be discovered
 - Inherit `BaseController` for `success()` / `error()` response helpers
 
+### 3. i18n Locale Conventions → `rules/i18n-conventions.md`
+
+- Locale files mirror page paths: `pages/system/user.tsx` → `locales/zh_CN/system/user.ts`, prefix `system.user`
+- `index.tsx` pages drop `/index`: `pages/ai/chat/index.tsx` → `locales/zh_CN/ai/chat.ts`, prefix `ai.chat`
+- Shared component translations go in `components/` directory: `xin.form.*`, `xin.table.*`, `xin.crud.*`
+- Layout translations go in `layout/` directory: `layout.*`
+- Standalone files (`menu.ts`, `login.ts`) stay at locale root
+- All keys dot-separated, double quotes, 2-space indent
+
 ## How to Apply
 
 Always use a sub-agent to read rule files and explore this skill's content.
