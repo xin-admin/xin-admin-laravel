@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SystemTool\Ai\Agents;
+namespace Modules\SystemAgent\Ai\Agents;
 
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;

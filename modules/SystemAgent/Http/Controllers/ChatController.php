@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\SystemTool\Http\Controllers;
+namespace Modules\SystemAgent\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Laravel\Ai\Responses\StreamableAgentResponse;
 use Modules\AnnoRoute\Attribute\DeleteRoute;
 use Modules\AnnoRoute\Attribute\GetRoute;
 use Modules\AnnoRoute\Attribute\PostRoute;
 use Modules\AnnoRoute\Attribute\RequestAttribute;
 use Modules\Common\Http\Controllers\BaseController;
-use Modules\SystemTool\Ai\Agents\XinChatAgent;
-use Laravel\Ai\Responses\StreamableAgentResponse;
+use Modules\SystemAgent\Ai\Agents\XinChatAgent;
 
 #[RequestAttribute('/ai/chat', 'ai.chat')]
 class ChatController extends BaseController

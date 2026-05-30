@@ -14,7 +14,7 @@ class SysAgentSeeder extends Seeder
     {
         $agents = [
             [
-                'namespace' => 'Modules\SystemTool\Ai\Agents\XinChatAgent',
+                'namespace' => 'Modules\SystemAgent\Ai\Agents\XinChatAgent',
                 'name' => 'Xin Chat',
                 'icon' => 'https://file.xinadmin.cn/file/favicons.ico',
                 'description' => 'XinAdmin 默认 AI 助手，支持多轮对话和上下文记忆。',

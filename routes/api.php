@@ -21,8 +21,14 @@ Route::controller(App\Http\Controllers\UserController::class)->prefix('api/user'
     Route::post('/setPwd', 'setPassword')->middleware(['auth:sanctum', 'authGuard:users', 'abilities:']);
 });
 
+// AgentController
+Route::controller(Modules\SystemAgent\Http\Controllers\AgentController::class)->prefix('ai/agent')->group(function () {
+    Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.agent.query']);
+    Route::put('/{id}', 'update')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.agent.update']);
+});
+
 // ChatController
-Route::controller(Modules\SystemTool\Http\Controllers\ChatController::class)->prefix('ai/chat')->group(function () {
+Route::controller(Modules\SystemAgent\Http\Controllers\ChatController::class)->prefix('ai/chat')->group(function () {
     Route::post('/send', 'send')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.send']);
     Route::get('/conversations', 'conversations')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.conversations']);
     Route::get('/messages/{conversationId}', 'messages')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.chat.messages']);
@@ -30,7 +36,7 @@ Route::controller(Modules\SystemTool\Http\Controllers\ChatController::class)->pr
 });
 
 // ConversationController
-Route::controller(Modules\SystemTool\Http\Controllers\ConversationController::class)->prefix('ai/conversation')->group(function () {
+Route::controller(Modules\SystemAgent\Http\Controllers\ConversationController::class)->prefix('ai/conversation')->group(function () {
     Route::get('/', 'query')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.query']);
     Route::delete('/{id}', 'delete')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.delete']);
     Route::get('/{id}/messages', 'messages')->middleware(['auth:sanctum', 'authGuard', 'abilities:ai.conversation.query']);
