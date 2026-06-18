@@ -110,7 +110,7 @@ class RouteRegisterService
             }
             if (is_string($authorize) && !empty($abilitiesPrefix)) {
                 $authMiddleware[] = 'abilities:' .  $abilitiesPrefix . '.' . $authorize;
-            } else {
+            } else if ($authorize !== true) {
                 $authMiddleware[] = 'abilities:' . $authorize;
             }
         }

@@ -167,8 +167,8 @@ class GenerateRouteHelperCommand extends Command
 
         if (is_string($authorize) && !empty($abilitiesPrefix)) {
             $authMiddleware[] = 'abilities:' . $abilitiesPrefix . '.' . $authorize;
-        } else {
-            $authMiddleware[] = 'abilities:' . (is_string($authorize) ? $authorize : '');
+        } else if ($authorize !== true) {
+            $authMiddleware[] = 'abilities:' . $authorize ;
         }
 
         return $authMiddleware;
