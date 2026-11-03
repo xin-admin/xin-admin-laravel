@@ -1,0 +1,128 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Ai\Agents\XinChatAgent;
+use App\Http\Controllers\BaseController;
+use App\Models\AgentModel;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Laravel\Ai\Responses\StreamableAgentResponse;
+use Xin\AttrRoute\Attribute\DeleteRoute;
+use Xin\AttrRoute\Attribute\GetRoute;
+use Xin\AttrRoute\Attribute\PostRoute;
+use Xin\AttrRoute\Attribute\RequestAttribute;
+
+#[RequestAttribute('/ai/chat', 'ai.chat')]
+class ChatController extends BaseController
+{
+    /**
+     * 发送消息并返回 SSE 流式响应
+     */
+    #[PostRoute('/send', 'send')]
+    public function send(Request $request): StreamableAgentResponse|JsonResponse
+    {
+        $request->validate([
+            'message' => 'required|string|max:10000',
+            'conversation_id' => 'nullable|string|max:36',
+            'agent_id' => 'nullable|integer|exists:agents,id',
+        ]);
+
+        $message = $request->input('message');
+        $conversationId = $request->input('conversation_id');
+        $agentId = $request->input('agent_id');
+        $user = $request->user();
+
+        try {
+            if ($agentId) {
+                $agentModel = AgentModel::findOrFail($agentId);
+                $agentClass = $agentModel->namespace;
+                $agent = $agentClass::make();
+            } else {
+                $agent = XinChatAgent::make();
+            }
+
+            if ($conversationId) {
+                // 继续已有会话
+                $response = $agent
+                    ->continue($conversationId, as: $user)
+                    ->stream($message);
+            } else {
+                // 新建会话
+                $response = $agent
+                    ->forUser($user)
+                    ->stream($message);
+            }
+
+            return $response;
+        } catch (\Throwable $e) {
+            return $this->error('AI 响应失败：' . $e->getMessage());
+        }
+    }
+
+    /**
+     * 获取当前用户的会话列表
+     */
+    #[GetRoute('/conversations', 'conversations')]
+    public function conversations(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $conversations = $user->conversations()
+            ->latest('updated_at')
+            ->get()
+            ->map(fn ($conversation) => [
+                'key' => $conversation->id,
+                'label' => $conversation->title,
+                'updated_at' => $conversation->updated_at->toISOString(),
+            ]);
+
+        return $this->success($conversations->toArray());
+    }
+
+    /**
+     * 获取指定会话的消息列表
+     */
+    #[GetRoute('/messages/{conversationId}', 'messages')]
+    public function messages(Request $request, string $conversationId): JsonResponse
+    {
+        $user = $request->user();
+
+        $conversation = $user->conversations()->find($conversationId);
+
+        if (! $conversation) {
+            return $this->error('会话不存在');
+        }
+
+        $messages = $conversation->messages()
+            ->oldest()
+            ->get()
+            ->map(fn ($msg) => [
+                'key' => $msg->id,
+                'role' => $msg->role,
+                'content' => $msg->content,
+                'created_at' => $msg->created_at->toISOString(),
+            ]);
+
+        return $this->success($messages->toArray());
+    }
+
+    /**
+     * 删除指定会话
+     */
+    #[DeleteRoute('/messages/{conversationId}', 'delete')]
+    public function deleteConversation(Request $request, string $conversationId): JsonResponse
+    {
+        $user = $request->user();
+
+        $conversation = $user->conversations()->find($conversationId);
+
+        if (! $conversation) {
+            return $this->error('会话不存在');
+        }
+
+        $conversation->delete();
+
+        return $this->success('会话已删除');
+    }
+}

@@ -8,25 +8,24 @@ return [
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing extends to have
+    | as Resend, Postmark, AWS, and more. This file provides the de facto
+    | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
     |
     */
 
     'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
+        'key' => env('POSTMARK_API_KEY'),
+    ],
+
+    'resend' => [
+        'key' => env('RESEND_API_KEY'),
     ],
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-        'token' => env('AWS_SESSION_TOKEN'),
-    ],
-
-    'resend' => [
-        'key' => env('RESEND_KEY'),
     ],
 
     'slack' => [
@@ -36,10 +35,4 @@ return [
         ],
     ],
 
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
-    ],
 ];

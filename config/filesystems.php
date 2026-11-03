@@ -29,13 +29,24 @@ return [
     */
 
     'disks' => [
+
         'local' => [
             'driver' => 'local',
-            'root' => public_path('storage'),
-            'url' => env('FILESYSTEM_LOCAL_URL', env('APP_URL').'/storage'),
+            'root' => storage_path('app/private'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
+            'report' => false,
         ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -46,31 +57,37 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
+            'report' => false,
         ],
+
         'ftp' => [
             'driver' => 'ftp',
             'host' => env('FTP_HOST'),
+            'port' => (int) env('FTP_PORT', 21),
             'username' => env('FTP_USERNAME'),
             'password' => env('FTP_PASSWORD'),
-            'port' => env('FTP_PORT', 21),
-            'root' => env('FTP_ROOT', ''),
-            'passive' => env('FTP_PASSIVE', true),
+            'root' => env('FTP_ROOT'),
+            'passive' => true,
             'ssl' => env('FTP_SSL', false),
-            'timeout' => env('FTP_TIMEOUT', 30),
+            'timeout' => 30,
             'throw' => false,
+            'report' => false,
         ],
+
         'sftp' => [
             'driver' => 'sftp',
             'host' => env('SFTP_HOST'),
+            'port' => (int) env('SFTP_PORT', 22),
             'username' => env('SFTP_USERNAME'),
             'password' => env('SFTP_PASSWORD'),
-            'port' => env('SFTP_PORT', 22),
-            'root' => env('SFTP_ROOT', ''),
-            'timeout' => env('SFTP_TIMEOUT', 30),
             'privateKey' => env('SFTP_PRIVATE_KEY'),
             'passphrase' => env('SFTP_PASSPHRASE'),
+            'root' => env('SFTP_ROOT'),
+            'timeout' => 30,
             'throw' => false,
+            'report' => false,
         ],
+
     ],
 
     /*
@@ -84,6 +101,8 @@ return [
     |
     */
 
-    'links' => [],
+    'links' => [
+        public_path('storage') => storage_path('app/public'),
+    ],
 
 ];

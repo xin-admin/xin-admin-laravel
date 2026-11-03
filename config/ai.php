@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'openai',
+    'default' => 'deepseek',
     'default_for_images' => 'gemini',
     'default_for_audio' => 'openai',
     'default_for_transcription' => 'openai',
@@ -34,7 +34,7 @@ return [
     'caching' => [
         'embeddings' => [
             'cache' => false,
-            'store' => env('CACHE_STORE', 'redis'),
+            'store' => env('CACHE_STORE', 'database'),
         ],
     ],
 

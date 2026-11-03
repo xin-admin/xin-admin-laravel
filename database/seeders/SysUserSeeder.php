@@ -282,74 +282,10 @@ class SysUserSeeder extends Seeder
                     ],
                     [
                         'type' => 'route',
-                        'name' => '固定头部',
-                        'local' => "menu.page-layout.fix-header",
-                        'key' => 'page-layout.fix-header',
-                        'path' => '/page-layout/fix-header',
-                    ],
-                    [
-                        'type' => 'route',
                         'name' => '页面描述',
                         'local' => "menu.page-layout.descriptions",
                         'key' => 'page-layout.descriptions',
                         'path' => '/page-layout/descriptions',
-                    ]
-                ]
-            ],
-            [
-                'type' => 'menu',
-                'key' => "example",
-                'name' => "组件示例",
-                'path' => "",
-                'icon' => "AppstoreOutlined",
-                'local' => "menu.example",
-                'hidden' => 1,
-                'link' => 0,
-                'children' => [
-                    [
-                        'type' => "route",
-                        'key' => "example.user-selector",
-                        'name' => "用户选择器",
-                        'path' => "/example/user-selector",
-                        'local' => "menu.example.user-selector",
-                        'hidden' => 1,
-                        'link' => 0
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "example.icon-selector",
-                        'name' => "图标",
-                        'path' => "/example/icon-selector",
-                        'local' => "menu.example.icon-selector",
-                        'hidden' => 1,
-                        'link' => 0
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "example.image-uploader",
-                        'name' => "图片上传器",
-                        'path' => "/example/image-uploader",
-                        'local' => "menu.example.image-uploader",
-                        'hidden' => 1,
-                        'link' => 0
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "example.xin-form",
-                        'name' => "XinForm 表单",
-                        'path' => "/example/xin-form",
-                        'local' => "menu.example.xin-form",
-                        'hidden' => 1,
-                        'link' => 0
-                    ],
-                    [
-                        'type' => "route",
-                        'key' => "example.xin-table",
-                        'name' => "XinTable 表格",
-                        'path' => "/example/xin-table",
-                        'local' => "menu.example.xin-table",
-                        'hidden' => 1,
-                        'link' => 0
                     ]
                 ]
             ],
@@ -526,50 +462,6 @@ class SysUserSeeder extends Seeder
                             ['type' => 'rule', 'name' => '配置组列表', 'key' => 'system.config.group.query'],
                             ['type' => 'rule', 'name' => '配置组新增', 'key' => 'system.config.group.create'],
                         ]
-                    ],
-                    [
-                        'type' => 'route',
-                        'key' => 'system.mail',
-                        'name' => '邮件配置',
-                        'path' => '/system/mail',
-                        'local' => 'menu.system.mail',
-                        'children' => [
-                            ['type' => 'rule', 'name' => '获取配置', 'key' => 'system.mail.config'],
-                            ['type' => 'rule', 'name' => '保存配置', 'key' => 'system.mail.save'],
-                            ['type' => 'rule', 'name' => '发送测试', 'key' => 'system.mail.test'],
-                        ]
-                    ],
-                    [
-                        'type' => 'route',
-                        'key' => 'system.storage',
-                        'name' => '存储配置',
-                        'path' => '/system/storage',
-                        'local' => 'menu.system.storage',
-                        'children' => [
-                            ['type' => 'rule', 'name' => '获取配置', 'key' => 'system.storage.config'],
-                            ['type' => 'rule', 'name' => '保存配置', 'key' => 'system.storage.save'],
-                            ['type' => 'rule', 'name' => '测试连接', 'key' => 'system.storage.test'],
-                        ]
-                    ],
-                    [
-                        'type' => 'route',
-                        'key' => 'system.ai',
-                        'name' => 'AI 配置',
-                        'path' => '/system/ai',
-                        'local' => 'menu.system.ai',
-                        'children' => [
-                            ['type' => 'rule', 'name' => '获取可用AI列表', 'key' => 'system.ai.list'],
-                            ['type' => 'rule', 'name' => '获取AI配置', 'key' => 'system.ai.config'],
-                            ['type' => 'rule', 'name' => '保存AI配置', 'key' => 'system.ai.save'],
-                            ['type' => 'rule', 'name' => '测试连接', 'key' => 'system.ai.test'],
-                        ]
-                    ],
-                    [
-                        'type' => "route",
-                        'name' => "系统信息",
-                        'local' => "menu.system.info",
-                        'key' => "system.info",
-                        'path' => "/system/info",
                     ]
                 ]
             ],

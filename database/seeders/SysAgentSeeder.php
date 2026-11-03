@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\SysAgentModel;
 use Illuminate\Database\Seeder;
-use Modules\SystemAgent\Models\AgentModel;
 
 class SysAgentSeeder extends Seeder
 {
@@ -31,7 +31,7 @@ class SysAgentSeeder extends Seeder
         ];
 
         foreach ($agents as $agent) {
-            AgentModel::firstOrCreate(
+            SysAgentModel::firstOrCreate(
                 ['namespace' => $agent['namespace']],
                 $agent
             );

@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'sys_users',
-        'passwords' => 'sys_users',
+        'guard' => env('AUTH_GUARD', 'web'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -36,11 +36,7 @@ return [
     */
 
     'guards' => [
-        'sys_users' => [
-            'driver' => 'session',
-            'provider' => 'sys_users',
-        ],
-        'users' => [
+        'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -64,14 +60,15 @@ return [
     */
 
     'providers' => [
-        'sys_users' => [
-            'driver' => 'eloquent',
-            'model' => \Modules\SystemUser\Models\SysUserModel::class
-        ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\UserModel::class
+            'model' => env('AUTH_MODEL', \App\Models\SysUserModel::class),
         ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*
@@ -94,17 +91,9 @@ return [
     */
 
     'passwords' => [
-        'sys_users' => [
-            'driver' => 'cache',
-            'provider' => 'sys_users',
-            'store' => 'sys_passwords',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
         'users' => [
-            'driver' => 'cache',
             'provider' => 'users',
-            'store' => 'passwords',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],
@@ -115,7 +104,7 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
+    | Here you may define the number of seconds before a password confirmation
     | window expires and users are asked to re-enter their password via the
     | confirmation screen. By default, the timeout lasts for three hours.
     |

@@ -36,12 +36,6 @@ return [
     */
 
     'mailers' => [
-        'mailgun' => [
-            'transport' => 'mailgun',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
-        ],
 
         'smtp' => [
             'transport' => 'smtp',
@@ -52,7 +46,7 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
         'ses' => [
@@ -78,7 +72,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL', 'stack'),
+            'channel' => env('MAIL_LOG_CHANNEL'),
         ],
 
         'array' => [
@@ -87,12 +81,20 @@ return [
 
         'failover' => [
             'transport' => 'failover',
-            'mailers' => explode(",", env('MAIL_FAILOVER_MAILERS', 'smtp,log')),
+            'mailers' => [
+                'smtp',
+                'log',
+            ],
+            'retry_after' => 60,
         ],
 
         'roundrobin' => [
             'transport' => 'roundrobin',
-            'mailers' => explode(",", env('MAIL_ROUNDROBIN_MAILERS', 'ses,postmark')),
+            'mailers' => [
+                'ses',
+                'postmark',
+            ],
+            'retry_after' => 60,
         ],
 
     ],
@@ -110,7 +112,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
 ];
